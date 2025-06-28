@@ -150,9 +150,8 @@ Users can adjust rankings during events for various reasons:
 ### 4. Select Dancers Screen (`SelectDancersScreen`)
 **Purpose**: Select multiple existing dancers to add to event ranking (for planning phase)
 **Actions**:
-- View list of all dancers in database
+- View list of unranked dancers only (dancers not yet added to this event)
 - Search dancers by name or notes
-- Filter to show only unranked dancers
 - Multi-select dancers using checkboxes
 - Add selected dancers to event with default rank (Neutral)
 **Navigation**:

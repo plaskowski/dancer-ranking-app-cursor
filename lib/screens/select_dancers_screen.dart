@@ -24,7 +24,6 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   bool _isLoading = false;
-  bool _showOnlyUnranked = false;
 
   @override
   void dispose() {
@@ -125,43 +124,21 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
       ),
       body: Column(
         children: [
-          // Search and Filter Section
+          // Search Section
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                TextField(
-                  controller: _searchController,
-                  decoration: const InputDecoration(
-                    labelText: 'Search dancers',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      _searchQuery = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CheckboxListTile(
-                        title: const Text('Show only unranked dancers'),
-                        value: _showOnlyUnranked,
-                        onChanged: (value) {
-                          setState(() {
-                            _showOnlyUnranked = value ?? false;
-                          });
-                        },
-                        controlAffinity: ListTileControlAffinity.leading,
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            child: TextField(
+              controller: _searchController,
+              decoration: const InputDecoration(
+                labelText: 'Search dancers',
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
             ),
           ),
 
@@ -191,9 +168,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                         Text(
                           _searchQuery.isNotEmpty
                               ? 'No dancers found matching "$_searchQuery"'
-                              : _showOnlyUnranked
-                                  ? 'All dancers are already ranked for this event'
-                                  : 'No dancers available',
+                              : 'All dancers are already ranked for this event',
                           style:
                               const TextStyle(fontSize: 18, color: Colors.grey),
                           textAlign: TextAlign.center,
@@ -209,7 +184,6 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                   itemBuilder: (context, index) {
                     final dancer = filteredDancers[index];
                     final isSelected = _selectedDancerIds.contains(dancer.id);
-                    final hasRanking = dancer.hasRanking;
 
                     return Card(
                       margin: const EdgeInsets.only(bottom: 8),
@@ -218,46 +192,24 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                           dancer.name,
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (dancer.notes != null &&
-                                dancer.notes!.isNotEmpty)
-                              Text(
-                                dancer.notes!,
-                                style: const TextStyle(
-                                    fontSize: 12, color: Colors.grey),
-                              ),
-                            if (hasRanking)
-                              Row(
-                                children: [
-                                  const Icon(Icons.star,
-                                      size: 16, color: Colors.blue),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    'Already ranked: ${dancer.rankName}',
+                        subtitle:
+                            dancer.notes != null && dancer.notes!.isNotEmpty
+                                ? Text(
+                                    dancer.notes!,
                                     style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                          ],
-                        ),
+                                        fontSize: 12, color: Colors.grey),
+                                  )
+                                : null,
                         value: isSelected,
-                        onChanged: hasRanking
-                            ? null
-                            : (bool? value) {
-                                setState(() {
-                                  if (value == true) {
-                                    _selectedDancerIds.add(dancer.id);
-                                  } else {
-                                    _selectedDancerIds.remove(dancer.id);
-                                  }
-                                });
-                              },
+                        onChanged: (bool? value) {
+                          setState(() {
+                            if (value == true) {
+                              _selectedDancerIds.add(dancer.id);
+                            } else {
+                              _selectedDancerIds.remove(dancer.id);
+                            }
+                          });
+                        },
                         controlAffinity: ListTileControlAffinity.leading,
                       ),
                     );
@@ -295,6 +247,9 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
   List<DancerWithEventInfo> _filterDancers(List<DancerWithEventInfo> dancers) {
     var filtered = dancers;
 
+    // Always show only unranked dancers
+    filtered = filtered.where((dancer) => !dancer.hasRanking).toList();
+
     // Filter by search query
     if (_searchQuery.isNotEmpty) {
       filtered = filtered.where((dancer) {
@@ -303,11 +258,6 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
         final query = _searchQuery.toLowerCase();
         return name.contains(query) || notes.contains(query);
       }).toList();
-    }
-
-    // Filter to show only unranked dancers if the option is enabled
-    if (_showOnlyUnranked) {
-      filtered = filtered.where((dancer) => !dancer.hasRanking).toList();
     }
 
     return filtered;
