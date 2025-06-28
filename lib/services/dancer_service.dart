@@ -9,14 +9,13 @@ class DancerService {
   // Get all dancers ordered by name
   Stream<List<Dancer>> watchAllDancers() {
     return (_database.select(_database.dancers)
-      ..orderBy([(d) => OrderingTerm.asc(d.name)]))
-      .watch();
+          ..orderBy([(d) => OrderingTerm.asc(d.name)]))
+        .watch();
   }
 
   // Get a specific dancer by ID
   Future<Dancer?> getDancer(int id) {
-    return (_database.select(_database.dancers)
-          ..where((d) => d.id.equals(id)))
+    return (_database.select(_database.dancers)..where((d) => d.id.equals(id)))
         .getSingleOrNull();
   }
 
@@ -25,21 +24,21 @@ class DancerService {
     if (query.isEmpty) {
       return watchAllDancers();
     }
-    
+
     return (_database.select(_database.dancers)
-      ..where((d) => d.name.contains(query))
-      ..orderBy([(d) => OrderingTerm.asc(d.name)]))
-      .watch();
+          ..where((d) => d.name.contains(query))
+          ..orderBy([(d) => OrderingTerm.asc(d.name)]))
+        .watch();
   }
 
   // Create a new dancer
   Future<int> createDancer({required String name, String? notes}) {
     return _database.into(_database.dancers).insert(
-      DancersCompanion.insert(
-        name: name,
-        notes: Value(notes),
-      ),
-    );
+          DancersCompanion.insert(
+            name: name,
+            notes: Value(notes),
+          ),
+        );
   }
 
   // Update an existing dancer
@@ -48,17 +47,16 @@ class DancerService {
     if (dancer == null) return false;
 
     return _database.update(_database.dancers).replace(
-      dancer.copyWith(
-        name: name ?? dancer.name,
-        notes: Value(notes ?? dancer.notes),
-      ),
-    );
+          dancer.copyWith(
+            name: name ?? dancer.name,
+            notes: Value(notes ?? dancer.notes),
+          ),
+        );
   }
 
   // Delete a dancer (this will cascade delete rankings and attendances)
   Future<int> deleteDancer(int id) {
-    return (_database.delete(_database.dancers)
-          ..where((d) => d.id.equals(id)))
+    return (_database.delete(_database.dancers)..where((d) => d.id.equals(id)))
         .go();
   }
 
@@ -97,7 +95,12 @@ class DancerService {
     final result = await _database.customSelect(
       query,
       variables: [Variable<int>(eventId), Variable<int>(eventId)],
-      readsFrom: {_database.dancers, _database.rankings, _database.ranks, _database.attendances},
+      readsFrom: {
+        _database.dancers,
+        _database.rankings,
+        _database.ranks,
+        _database.attendances
+      },
     ).get();
 
     return result.map((row) => DancerWithEventInfo.fromRow(row.data)).toList();
@@ -141,24 +144,37 @@ class DancerWithEventInfo {
       notes: row['notes'] as String?,
       createdAt: DateTime.parse(row['created_at'] as String),
       rankName: row['rank_name'] != null ? row['rank_name'] as String : null,
-      rankOrdinal: row['rank_ordinal'] != null ? row['rank_ordinal'] as int : null,
-      rankingReason: row['ranking_reason'] != null ? row['ranking_reason'] as String : null,
-      rankingUpdated: row['ranking_updated'] != null 
-        ? DateTime.parse(row['ranking_updated'] as String) 
-        : null,
-      attendanceMarkedAt: row['attendance_marked_at'] != null 
-        ? DateTime.parse(row['attendance_marked_at'] as String) 
-        : null,
-      hasDanced: row['has_danced'] != null ? (row['has_danced'] as int) == 1 : false,
-      dancedAt: row['danced_at'] != null 
-        ? DateTime.parse(row['danced_at'] as String) 
-        : null,
-      impression: row['impression'] != null ? row['impression'] as String : null,
+      rankOrdinal:
+          row['rank_ordinal'] != null ? row['rank_ordinal'] as int : null,
+      rankingReason: row['ranking_reason'] != null
+          ? row['ranking_reason'] as String
+          : null,
+      rankingUpdated: row['ranking_updated'] != null
+          ? DateTime.parse(row['ranking_updated'] as String)
+          : null,
+      attendanceMarkedAt: row['attendance_marked_at'] != null
+          ? DateTime.parse(row['attendance_marked_at'] as String)
+          : null,
+      hasDanced: _parseBoolFromSqlite(row['has_danced']),
+      dancedAt: row['danced_at'] != null
+          ? DateTime.parse(row['danced_at'] as String)
+          : null,
+      impression:
+          row['impression'] != null ? row['impression'] as String : null,
     );
+  }
+
+  // Helper method to safely parse boolean values from SQLite
+  static bool _parseBoolFromSqlite(dynamic value) {
+    if (value == null) return false;
+    if (value is bool) return value;
+    if (value is int) return value == 1;
+    if (value is String) return value == '1' || value.toLowerCase() == 'true';
+    return false;
   }
 
   // Helper getters
   bool get isPresent => attendanceMarkedAt != null;
   bool get hasRanking => rankName != null;
   bool get isRanked => hasRanking;
-} 
+}
