@@ -49,6 +49,7 @@
 - `impression` (Text, Optional) - Post-dance impression/notes
 - **Unique constraint**: (event_id, dancer_id)
 - **Note**: Record existence indicates presence at event
+- **Special case**: When adding new dancer with "already danced" option, creates record with has_danced=true
 
 ### Key Relationships
 - One Event has many Rankings and Attendances
@@ -73,6 +74,8 @@ Users can adjust rankings during events for various reasons:
 - **Recent interaction**: Had a great conversation, want to dance now
 - **Energy levels**: Person seems tired/energetic, affecting dance appeal
 - **Context changes**: Different music style suits this person better
+- **New person met**: Just danced with someone new, want to rank them immediately
+- **Post-dance addition**: Add someone you just danced with and mark dance completion instantly
 
 ## Screens
 
@@ -126,15 +129,17 @@ Users can adjust rankings during events for various reasons:
 **Actions (all tabs)**:
 - Set/edit dancer ranking in real-time (tap ranking button → Ranking Dialog)
 - Update ranking reasons based on current situation
-- Add to event / Remove from event (tap attendance button)
+- Add / Remove from event (tap attendance button)
 - Record dance with impression (tap dance button → Dance Dialog)
-- Add new dancer (app bar action)
+- Add new dancer without leaving event screen (quick action → Add Dancer Dialog)
+  - Option to mark as "already danced" with impression for post-dance additions
 
 **Navigation**:
 - ← Back to Home Screen
 - → Dancers Screen (app bar action)
 - → Ranking Dialog (modal)
 - → Dance Recording Dialog (modal)
+- → Add Dancer Dialog (modal) - Create new dancers during events
 
 ### 4. Dancers Screen (`DancersScreen`)
 **Purpose**: Manage all dancers in the database
@@ -161,6 +166,12 @@ Users can adjust rankings during events for various reasons:
 - Name input (required)
 - Notes input (optional)
 - Save/cancel actions
+- **Accessible from Event Screen**: Create new dancers during events without navigation
+  - **Special Event Context Features**:
+    - "Already danced with this person" checkbox
+    - Optional impression field (if already danced checked)
+    - Automatically adds to current event and marks dance completion
+- **Accessible from Dancers Screen**: Full dancer management
 
 **Dance Recording Dialog**:
 - Confirmation of dance partner
@@ -178,20 +189,23 @@ Home Screen
 │   ├── Present Tab  
 │   ├── Ranked Tab
 │   ├── Ranking Dialog (modal) - Real-time ranking adjustments
-│   └── Dance Recording Dialog (modal)
+│   ├── Dance Recording Dialog (modal)
+│   └── Add Dancer Dialog (modal) - Quick dancer creation during events
 └── Dancers Screen
-    └── Add/Edit Dancer Dialog (modal)
+    └── Add/Edit Dancer Dialog (modal) - Full dancer management
 ```
 
 ### Event Workflow with Dynamic Rankings
 1. **Pre-event**: Set initial rankings based on general preferences
 2. **Arrive at event**: Open Event Screen, switch to Present/Ranked tabs
-3. **Spot someone**: Add them to event (creates Attendance record)
-4. **Assess situation**: Notice they look great/different → tap rank button
-5. **Adjust ranking**: Change rank and add reason ("Looking amazing tonight!")
-6. **Check priorities**: Ranked tab now shows updated order
-7. **Dance and record**: Choose from top-ranked present dancers
-8. **Continuous adjustment**: Update rankings throughout the event as needed
+3. **Spot someone**: Tap "Add" to add them to event (creates Attendance record)
+4. **New person**: If unknown, quickly add new dancer without leaving screen
+   - **Already danced**: Check "Already danced" and add impression if you just finished dancing
+5. **Assess situation**: Notice they look great/different → tap rank button
+6. **Adjust ranking**: Change rank and add reason ("Looking amazing tonight!")
+7. **Check priorities**: Ranked tab now shows updated order
+8. **Dance and record**: Choose from top-ranked present dancers
+9. **Continuous adjustment**: Update rankings throughout the event as needed
 
 ### Key Features
 - **Pre-event planning**: Add dancers, set initial rank preferences with reasons
@@ -199,7 +213,8 @@ Home Screen
 - **Simple attendance tracking**: Add people to event when spotted (no pre-marking needed)
 - **Dance prioritization**: Ranked tab shows best rank ordinal first based on current rankings
 - **Integrated dance tracking**: Record completed dances and impressions in attendance records
-- **Flexible dancer management**: Add new people during events
+- **Seamless dancer management**: Add new people during events without leaving screen
+- **Post-dance integration**: Mark new dancers as already danced with immediate impression capture
 - **Rich context**: Notes, reasons, and impressions for informed decisions
 - **Ranking history**: Track when rankings were last updated for context
 - **Streamlined data model**: Record existence indicates presence, no boolean flags needed
