@@ -113,6 +113,7 @@ Users can adjust rankings during events for various reasons:
 - Add dancers to event when spotted (creates Attendance record)
 - Adjust rankings in real-time based on current impressions
 - Record dances for dancers at event
+- **Add multiple dancers** (FAB → Select Dancers Screen)
 
 **Present Tab**:
 - View only dancers who have been added to the event (have Attendance records)
@@ -126,13 +127,18 @@ Users can adjust rankings during events for various reasons:
 - Clear rank badges, reasons, and last update timestamps
 - Quick ranking adjustments for immediate priority changes
 
-**Actions (all tabs)**:
+**Actions (Present Tab only)**:
 - Set/edit dancer ranking in real-time (tap ranking button → Ranking Dialog)
 - Update ranking reasons based on current situation
 - Add / Remove from event (tap attendance button)
 - Record dance with impression (tap dance button → Dance Dialog)
 - Add new dancer without leaving event screen (quick action → Add Dancer Dialog)
   - Option to mark as "already danced" with impression for post-dance additions
+
+**Actions (Planning Tab)**:
+- Set/edit dancer ranking (tap ranking button → Ranking Dialog)
+- Update ranking reasons for pre-event planning
+- Multi-select existing dancers to add to event (FAB → Select Dancers Screen)
 
 **Navigation**:
 - ← Back to Home Screen
@@ -141,7 +147,18 @@ Users can adjust rankings during events for various reasons:
 - → Dance Recording Dialog (modal)
 - → Add Dancer Dialog (modal) - Create new dancers during events
 
-### 4. Dancers Screen (`DancersScreen`)
+### 4. Select Dancers Screen (`SelectDancersScreen`)
+**Purpose**: Select multiple existing dancers to add to event ranking (for planning phase)
+**Actions**:
+- View list of all dancers in database
+- Search dancers by name or notes
+- Filter to show only unranked dancers
+- Multi-select dancers using checkboxes
+- Add selected dancers to event with default rank (Neutral)
+**Navigation**:
+- ← Back to Event Screen
+
+### 5. Dancers Screen (`DancersScreen`)
 **Purpose**: Manage all dancers in the database
 **Actions**:
 - View list of all dancers
@@ -153,7 +170,7 @@ Users can adjust rankings during events for various reasons:
 - ← Back to previous screen
 - → Add/Edit Dancer Dialog (modal)
 
-### 5. Dialogs and Modals
+### 6. Dialogs and Modals
 
 **Ranking Dialog (`RankingDialog`)**:
 - Interactive rank selection from predefined options
@@ -186,17 +203,22 @@ Home Screen
 ├── Create Event Screen
 ├── Event Screen
 │   ├── Planning Tab
+│   │   └── Select Dancers Screen (FAB) - Multi-select existing dancers for planning
 │   ├── Present Tab  
 │   ├── Ranked Tab
 │   ├── Ranking Dialog (modal) - Real-time ranking adjustments
 │   ├── Dance Recording Dialog (modal)
-│   └── Add Dancer Dialog (modal) - Quick dancer creation during events
+│   └── Add Dancer Dialog (modal) - Quick dancer creation during events (Present Tab)
 └── Dancers Screen
     └── Add/Edit Dancer Dialog (modal) - Full dancer management
 ```
 
 ### Event Workflow with Dynamic Rankings
 1. **Pre-event**: Set initial rankings based on general preferences
+   - Use Planning Tab → Add Button (FAB) → Select Dancers Screen
+   - Multi-select dancers from database to add to event ranking
+   - All selected dancers get default "Neutral" rank initially
+   - Adjust individual rankings using Ranking Dialog
 2. **Arrive at event**: Open Event Screen, switch to Present/Ranked tabs
 3. **Spot someone**: Tap "Add" to add them to event (creates Attendance record)
 4. **New person**: If unknown, quickly add new dancer without leaving screen

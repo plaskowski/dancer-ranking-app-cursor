@@ -6,6 +6,7 @@ import '../services/event_service.dart';
 import '../services/dancer_service.dart';
 import '../widgets/add_dancer_dialog.dart';
 import '../widgets/dancer_actions_dialog.dart';
+import 'select_dancers_screen.dart';
 
 class EventScreen extends StatefulWidget {
   final int eventId;
@@ -16,7 +17,8 @@ class EventScreen extends StatefulWidget {
   State<EventScreen> createState() => _EventScreenState();
 }
 
-class _EventScreenState extends State<EventScreen> with TickerProviderStateMixin {
+class _EventScreenState extends State<EventScreen>
+    with TickerProviderStateMixin {
   late TabController _tabController;
   Event? _event;
 
@@ -76,11 +78,23 @@ class _EventScreenState extends State<EventScreen> with TickerProviderStateMixin
     );
   }
 
-  void _addDancer() {
-    showDialog(
-      context: context,
-      builder: (context) => AddDancerDialog(eventId: widget.eventId),
+  void _addDancer() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectDancersScreen(
+          eventId: widget.eventId,
+          eventName: _event!.name,
+        ),
+      ),
     );
+
+    // Refresh the screen if dancers were added
+    if (result == true) {
+      setState(() {
+        // This will trigger a rebuild and refresh the data
+      });
+    }
   }
 }
 
@@ -130,7 +144,7 @@ class _PlanningTab extends StatelessWidget {
 
         // Group dancers by rank
         final Map<String, List<DancerWithEventInfo>> groupedDancers = {};
-        
+
         for (final dancer in dancers) {
           final rankName = dancer.rankName ?? 'No ranking yet';
           if (!groupedDancers.containsKey(rankName)) {
@@ -140,21 +154,23 @@ class _PlanningTab extends StatelessWidget {
         }
 
         // Sort groups by rank ordinal
-        final sortedKeys = groupedDancers.keys.toList()..sort((a, b) {
-          if (a == 'No ranking yet') return 1;
-          if (b == 'No ranking yet') return -1;
-          
-          final dancerA = groupedDancers[a]!.first;
-          final dancerB = groupedDancers[b]!.first;
-          
-          return (dancerA.rankOrdinal ?? 999).compareTo(dancerB.rankOrdinal ?? 999);
-        });
+        final sortedKeys = groupedDancers.keys.toList()
+          ..sort((a, b) {
+            if (a == 'No ranking yet') return 1;
+            if (b == 'No ranking yet') return -1;
+
+            final dancerA = groupedDancers[a]!.first;
+            final dancerB = groupedDancers[b]!.first;
+
+            return (dancerA.rankOrdinal ?? 999)
+                .compareTo(dancerB.rankOrdinal ?? 999);
+          });
 
         return ListView(
           padding: const EdgeInsets.all(16),
           children: sortedKeys.map((rankName) {
             final rankDancers = groupedDancers[rankName]!;
-            
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -168,10 +184,10 @@ class _PlanningTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 ...rankDancers.map((dancer) => _DancerCard(
-                  dancer: dancer,
-                  eventId: eventId,
-                  showPresenceIndicator: true,
-                )),
+                      dancer: dancer,
+                      eventId: eventId,
+                      showPresenceIndicator: true,
+                    )),
                 const SizedBox(height: 16),
               ],
             );
@@ -229,7 +245,7 @@ class _PresentTab extends StatelessWidget {
 
         // Group present dancers by rank
         final Map<String, List<DancerWithEventInfo>> groupedDancers = {};
-        
+
         for (final dancer in presentDancers) {
           final rankName = dancer.rankName ?? 'No ranking yet';
           if (!groupedDancers.containsKey(rankName)) {
@@ -239,21 +255,23 @@ class _PresentTab extends StatelessWidget {
         }
 
         // Sort groups by rank ordinal
-        final sortedKeys = groupedDancers.keys.toList()..sort((a, b) {
-          if (a == 'No ranking yet') return 1;
-          if (b == 'No ranking yet') return -1;
-          
-          final dancerA = groupedDancers[a]!.first;
-          final dancerB = groupedDancers[b]!.first;
-          
-          return (dancerA.rankOrdinal ?? 999).compareTo(dancerB.rankOrdinal ?? 999);
-        });
+        final sortedKeys = groupedDancers.keys.toList()
+          ..sort((a, b) {
+            if (a == 'No ranking yet') return 1;
+            if (b == 'No ranking yet') return -1;
+
+            final dancerA = groupedDancers[a]!.first;
+            final dancerB = groupedDancers[b]!.first;
+
+            return (dancerA.rankOrdinal ?? 999)
+                .compareTo(dancerB.rankOrdinal ?? 999);
+          });
 
         return ListView(
           padding: const EdgeInsets.all(16),
           children: sortedKeys.map((rankName) {
             final rankDancers = groupedDancers[rankName]!;
-            
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -267,10 +285,10 @@ class _PresentTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 ...rankDancers.map((dancer) => _DancerCard(
-                  dancer: dancer,
-                  eventId: eventId,
-                  showPresenceIndicator: false,
-                )),
+                      dancer: dancer,
+                      eventId: eventId,
+                      showPresenceIndicator: false,
+                    )),
                 const SizedBox(height: 16),
               ],
             );
@@ -340,4 +358,4 @@ class _DancerCard extends StatelessWidget {
       ),
     );
   }
-} 
+}

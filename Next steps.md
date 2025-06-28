@@ -1,10 +1,3 @@
-# tweak wireframes
-- create event screen
-  - I want only date
-- Event screen
-  - remove Dancers button from the app bar
-  - don't use stars for ranks, ranks are not easily comparable (despite global order)
-  - the buttons in the row make too much clutter, let's use a pattern "tap to show row actions dialog" instead
+
 - Planning tab
-  - group the dancers by rank similar to Present tab
-  - indicate that given person was already marked as present
+  - when the planning tab is ready the Add button should lead to a new screen that allows to select multiple dancers to be added to event ranking, desribe all of this in the specification
