@@ -1,0 +1,53 @@
+name: dancer_ranking_app
+description: A social dancer's companion app for planning and tracking dance events
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Database & Persistence
+  drift: ^2.14.1
+  sqlite3_flutter_libs: ^0.5.15
+  path_provider: ^2.1.1
+  path: ^1.8.3
+
+  # State Management
+  provider: ^6.1.1
+
+  # UI & Date/Time
+  flutter_datetime_picker: ^1.5.1
+  intl: ^0.18.1
+
+  # Icons
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Database code generation
+  drift_dev: ^2.14.1
+  build_runner: ^2.4.7
+
+  # Linting
+  flutter_lints: ^3.0.1
+
+  # App customization
+  flutter_launcher_icons: ^0.13.1
+
+flutter:
+  uses-material-design: true
+
+# App Icon Configuration
+flutter_launcher_icons:
+  android: true
+  macos: true
+  image_path: "assets/icon/app_icon.png"
+  adaptive_icon_background: "#2196F3"
+  adaptive_icon_foreground: "assets/icon/app_icon_foreground.png"
