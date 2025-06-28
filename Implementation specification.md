@@ -41,30 +41,27 @@
 - `id` (Primary Key, Auto Increment)
 - `event_id` (Foreign Key → Events.id) - Which event
 - `dancer_id` (Foreign Key → Dancers.id) - Which dancer
+- `is_present` (Boolean, Default: false) - Whether dancer is present at event
+- `marked_at` (DateTime, Auto) - When attendance was marked
+- `has_danced` (Boolean, Default: false) - Whether you danced with this person
+- `danced_at` (DateTime, Optional) - When dance occurred
+- `impression` (Text, Optional) - Post-dance impression/notes
 - **Unique constraint**: (event_id, dancer_id)
 
-**Dances Table**
-- `id` (Primary Key, Auto Increment)
-- `event_id` (Foreign Key → Events.id) - Which event
-- `dancer_id` (Foreign Key → Dancers.id) - Which dancer
-- `impression` (Text, Optional) - Post-dance impression/notes
-- `danced_at` (DateTime, Auto) - When dance was recorded
-
 ### Key Relationships
-- One Event has many Rankings, Attendances, and Dances
-- One Dancer has many Rankings, Attendances, and Dances
+- One Event has many Rankings and Attendances
+- One Dancer has many Rankings and Attendances  
 - One Rank has many Rankings (many-to-one)
 - Rankings track pre-event planning (rank selection + reasons)
-- Attendances track who's actually present at the event
-- Dances track completed dances with impressions
+- Attendances track presence, dance completion, and impressions
 
 ### Default Rank Data
 The Ranks table should be pre-populated with:
-1. Level 1: "Not really interested" (Red)
-2. Level 2: "Maybe later" (Orange) 
-3. Level 3: "Neutral / Default" (Yellow)
-4. Level 4: "Would like to dance" (Light Green)
-5. Level 5: "Really want to dance!" (Green)
+1. Ordinal 1: "Really want to dance!" (best rank)
+2. Ordinal 2: "Would like to dance"
+3. Ordinal 3: "Neutral / Default" 
+4. Ordinal 4: "Maybe later"
+5. Ordinal 5: "Not really interested" (lowest rank)
 
 ## Screens
 
@@ -108,14 +105,14 @@ The Ranks table should be pre-populated with:
 - Visual indication of attendance status
 
 **Ranked Tab**:
-- View present dancers sorted by rank level (level 5 first)
+- View present dancers sorted by rank ordinal (ordinal 1 first)
 - Prioritized list for dance decision making
-- Clear rank badges with colors and reasons
+- Clear rank badges and reasons
 
 **Actions (all tabs)**:
 - Set/edit dancer ranking (tap ranking button → Ranking Dialog)
 - Toggle attendance (tap attendance button)
-- Record dance (tap dance button → Dance Dialog)
+- Record dance with impression (tap dance button → Dance Dialog)
 - Add new dancer (app bar action)
 
 **Navigation**:
@@ -140,9 +137,8 @@ The Ranks table should be pre-populated with:
 
 **Ranking Dialog (`RankingDialog`)**:
 - Interactive rank selection from predefined options
-- Display rank names, descriptions, and colors
+- Display rank names in ordinal order
 - Optional reason text field
-- Color-coded rank levels
 - Save/cancel actions
 
 **Add/Edit Dancer Dialog**:
@@ -153,6 +149,7 @@ The Ranks table should be pre-populated with:
 **Dance Recording Dialog**:
 - Confirmation of dance partner
 - Optional impression text field
+- Updates attendance record with dance completion
 - Prevents duplicate dance records
 - Save/cancel actions
 
@@ -164,8 +161,8 @@ Home Screen
 │   ├── Planning Tab
 │   ├── Present Tab  
 │   ├── Ranked Tab
-│   └── Ranking Dialog (modal)
-│   └── Dance Dialog (modal)
+│   ├── Ranking Dialog (modal)
+│   └── Dance Recording Dialog (modal)
 └── Dancers Screen
     └── Add/Edit Dancer Dialog (modal)
 ```
@@ -173,8 +170,8 @@ Home Screen
 ### Key Features
 - **Pre-event planning**: Add dancers, set rank preferences with reasons
 - **Event attendance**: Mark who's present, filter views accordingly  
-- **Dance prioritization**: Ranked tab shows highest rank level first
-- **Dance tracking**: Record completed dances, prevent duplicates
+- **Dance prioritization**: Ranked tab shows best rank ordinal first
+- **Integrated dance tracking**: Record completed dances and impressions in attendance records
 - **Flexible dancer management**: Add new people during events
 - **Rich context**: Notes, reasons, and impressions for informed decisions
-- **Customizable ranking system**: Predefined ranks with names, colors, and descriptions
+- **Streamlined data model**: Simplified database with merged attendance/dance tracking
