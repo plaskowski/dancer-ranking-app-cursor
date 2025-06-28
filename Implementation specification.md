@@ -35,7 +35,9 @@
 - `rank_id` (Foreign Key → Ranks.id) - Selected eagerness rank
 - `reason` (Text, Optional) - Why this ranking
 - `created_at` (DateTime, Auto) - Creation timestamp
+- `last_updated` (DateTime, Auto) - When ranking was last modified
 - **Unique constraint**: (event_id, dancer_id)
+- **Note**: Rankings can be adjusted during events based on real-time impressions
 
 **Attendances Table**
 - `id` (Primary Key, Auto Increment)
@@ -62,6 +64,15 @@ The Ranks table should be pre-populated with:
 3. Ordinal 3: "Neutral / Default" 
 4. Ordinal 4: "Maybe later"
 5. Ordinal 5: "Not really interested" (lowest rank)
+
+### Dynamic Ranking Use Cases
+Users can adjust rankings during events for various reasons:
+- **Better presentation**: Person looks particularly good/stylish that night
+- **Mood changes**: Person seems more/less engaging than usual
+- **Long absence**: Haven't seen this person for a while, want to prioritize
+- **Recent interaction**: Had a great conversation, want to dance now
+- **Energy levels**: Person seems tired/energetic, affecting dance appeal
+- **Context changes**: Different music style suits this person better
 
 ## Screens
 
@@ -95,22 +106,26 @@ The Ranks table should be pre-populated with:
 **Planning Tab**:
 - View all dancers in database
 - Set/edit rank selection (using predefined ranks)
-- Add reasons for rankings
+- Add reasons for rankings (pre-event planning)
 - Add dancers to event when spotted (creates Attendance record)
+- Adjust rankings in real-time based on current impressions
 - Record dances for dancers at event
 
 **Present Tab**:
 - View only dancers who have been added to the event (have Attendance records)
-- Quick access to ranking and dance recording
+- Quick access to ranking adjustments and dance recording
 - Shows when each person was first spotted
+- Easy ranking modification based on current presentation/mood
 
 **Ranked Tab**:
 - View dancers at event sorted by rank ordinal (ordinal 1 first)
-- Prioritized list for dance decision making
-- Clear rank badges and reasons
+- Prioritized list for dance decision making based on current rankings
+- Clear rank badges, reasons, and last update timestamps
+- Quick ranking adjustments for immediate priority changes
 
 **Actions (all tabs)**:
-- Set/edit dancer ranking (tap ranking button → Ranking Dialog)
+- Set/edit dancer ranking in real-time (tap ranking button → Ranking Dialog)
+- Update ranking reasons based on current situation
 - Add to event / Remove from event (tap attendance button)
 - Record dance with impression (tap dance button → Dance Dialog)
 - Add new dancer (app bar action)
@@ -138,8 +153,9 @@ The Ranks table should be pre-populated with:
 **Ranking Dialog (`RankingDialog`)**:
 - Interactive rank selection from predefined options
 - Display rank names in ordinal order
-- Optional reason text field
-- Save/cancel actions
+- Optional reason text field for current situation context
+- Shows when ranking was last updated
+- Save/cancel actions (updates `last_updated` timestamp)
 
 **Add/Edit Dancer Dialog**:
 - Name input (required)
@@ -161,17 +177,29 @@ Home Screen
 │   ├── Planning Tab
 │   ├── Present Tab  
 │   ├── Ranked Tab
-│   ├── Ranking Dialog (modal)
+│   ├── Ranking Dialog (modal) - Real-time ranking adjustments
 │   └── Dance Recording Dialog (modal)
 └── Dancers Screen
     └── Add/Edit Dancer Dialog (modal)
 ```
 
+### Event Workflow with Dynamic Rankings
+1. **Pre-event**: Set initial rankings based on general preferences
+2. **Arrive at event**: Open Event Screen, switch to Present/Ranked tabs
+3. **Spot someone**: Add them to event (creates Attendance record)
+4. **Assess situation**: Notice they look great/different → tap rank button
+5. **Adjust ranking**: Change rank and add reason ("Looking amazing tonight!")
+6. **Check priorities**: Ranked tab now shows updated order
+7. **Dance and record**: Choose from top-ranked present dancers
+8. **Continuous adjustment**: Update rankings throughout the event as needed
+
 ### Key Features
-- **Pre-event planning**: Add dancers, set rank preferences with reasons
+- **Pre-event planning**: Add dancers, set initial rank preferences with reasons
+- **Dynamic ranking adjustment**: Change rankings during events based on real-time impressions
 - **Simple attendance tracking**: Add people to event when spotted (no pre-marking needed)
-- **Dance prioritization**: Ranked tab shows best rank ordinal first  
+- **Dance prioritization**: Ranked tab shows best rank ordinal first based on current rankings
 - **Integrated dance tracking**: Record completed dances and impressions in attendance records
 - **Flexible dancer management**: Add new people during events
 - **Rich context**: Notes, reasons, and impressions for informed decisions
+- **Ranking history**: Track when rankings were last updated for context
 - **Streamlined data model**: Record existence indicates presence, no boolean flags needed
