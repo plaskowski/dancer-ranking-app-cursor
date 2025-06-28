@@ -75,7 +75,10 @@ class DancerService {
   Future<List<DancerWithEventInfo>> getDancersForEvent(int eventId) async {
     const query = '''
       SELECT 
-        d.*,
+        d.id,
+        d.name,
+        d.notes,
+        d.created_at,
         r.name as rank_name,
         r.ordinal as rank_ordinal,
         rk.reason as ranking_reason,
@@ -137,20 +140,20 @@ class DancerWithEventInfo {
       name: row['name'] as String,
       notes: row['notes'] as String?,
       createdAt: DateTime.parse(row['created_at'] as String),
-      rankName: row['rank_name'] as String?,
-      rankOrdinal: row['rank_ordinal'] as int?,
-      rankingReason: row['ranking_reason'] as String?,
+      rankName: row['rank_name'] != null ? row['rank_name'] as String : null,
+      rankOrdinal: row['rank_ordinal'] != null ? row['rank_ordinal'] as int : null,
+      rankingReason: row['ranking_reason'] != null ? row['ranking_reason'] as String : null,
       rankingUpdated: row['ranking_updated'] != null 
         ? DateTime.parse(row['ranking_updated'] as String) 
         : null,
       attendanceMarkedAt: row['attendance_marked_at'] != null 
         ? DateTime.parse(row['attendance_marked_at'] as String) 
         : null,
-      hasDanced: (row['has_danced'] as int?) == 1,
+      hasDanced: row['has_danced'] != null ? (row['has_danced'] as int) == 1 : false,
       dancedAt: row['danced_at'] != null 
         ? DateTime.parse(row['danced_at'] as String) 
         : null,
-      impression: row['impression'] as String?,
+      impression: row['impression'] != null ? row['impression'] as String : null,
     );
   }
 

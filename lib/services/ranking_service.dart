@@ -71,7 +71,7 @@ class RankingService {
 
   // Get all rankings for an event with dancer and rank info
   Future<List<RankingWithInfo>> getRankingsForEvent(int eventId) async {
-    final query = '''
+    const query = '''
       SELECT 
         rk.*,
         d.name as dancer_name,
