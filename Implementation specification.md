@@ -14,7 +14,6 @@
 **Events Table**
 - `id` (Primary Key, Auto Increment)
 - `name` (Text, Required) - Event name
-- `description` (Text, Optional) - Event description
 - `date` (DateTime, Required) - Event date and time
 - `created_at` (DateTime, Auto) - Creation timestamp
 
@@ -27,9 +26,7 @@
 **Ranks Table** (Dictionary/Lookup Table)
 - `id` (Primary Key, Auto Increment)
 - `name` (Text, Required) - Display name (e.g., "Really want to dance!")
-- `level` (Integer, Required) - Numeric level for sorting (1-5)
-- `color` (Text, Optional) - Color code for UI display
-- `description` (Text, Optional) - Detailed description
+- `oridinal` (Integer, Required) - Sets the order from great to meh (the lower the better) 
 
 **Rankings Table**
 - `id` (Primary Key, Auto Increment)
@@ -44,8 +41,6 @@
 - `id` (Primary Key, Auto Increment)
 - `event_id` (Foreign Key → Events.id) - Which event
 - `dancer_id` (Foreign Key → Dancers.id) - Which dancer
-- `is_present` (Boolean, Default: false) - Whether dancer is present
-- `marked_at` (DateTime, Auto) - When attendance was marked
 - **Unique constraint**: (event_id, dancer_id)
 
 **Dances Table**
