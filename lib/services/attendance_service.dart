@@ -1,0 +1,268 @@
+import 'package:drift/drift.dart';
+import '../database/database.dart';
+
+class AttendanceService {
+  final AppDatabase _database;
+
+  AttendanceService(this._database);
+
+  // Mark a dancer as present at an event
+  Future<int> markPresent(int eventId, int dancerId) async {
+    // Check if attendance already exists
+    final existingAttendance = await (_database.select(_database.attendances)
+          ..where((a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
+        .getSingleOrNull();
+
+    if (existingAttendance != null) {
+      // Already marked as present
+      return existingAttendance.id;
+    }
+
+    // Create new attendance record
+    return _database.into(_database.attendances).insert(
+      AttendancesCompanion.insert(
+        eventId: eventId,
+        dancerId: dancerId,
+      ),
+    );
+  }
+
+  // Remove a dancer from the present list
+  Future<int> removeFromPresent(int eventId, int dancerId) {
+    return (_database.delete(_database.attendances)
+          ..where((a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
+        .go();
+  }
+
+  // Record a dance with impression
+  Future<bool> recordDance({
+    required int eventId,
+    required int dancerId,
+    String? impression,
+  }) async {
+    final attendance = await (_database.select(_database.attendances)
+          ..where((a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
+        .getSingleOrNull();
+
+    if (attendance == null) {
+      // Dancer not marked as present, mark them first
+      await markPresent(eventId, dancerId);
+      
+      // Get the newly created attendance record
+      final newAttendance = await (_database.select(_database.attendances)
+            ..where((a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
+          .getSingle();
+
+      // Update with dance info
+      return _database.update(_database.attendances).replace(
+        newAttendance.copyWith(
+          hasDanced: true,
+          dancedAt: Value(DateTime.now()),
+          impression: Value(impression),
+        ),
+      );
+    } else {
+      // Update existing attendance record
+      return _database.update(_database.attendances).replace(
+        attendance.copyWith(
+          hasDanced: true,
+          dancedAt: Value(DateTime.now()),
+          impression: Value(impression),
+        ),
+      );
+    }
+  }
+
+  // Get attendance record for a dancer at an event
+  Future<Attendance?> getAttendance(int eventId, int dancerId) {
+    return (_database.select(_database.attendances)
+          ..where((a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
+        .getSingleOrNull();
+  }
+
+  // Check if dancer is present at event
+  Future<bool> isPresent(int eventId, int dancerId) async {
+    final attendance = await getAttendance(eventId, dancerId);
+    return attendance != null;
+  }
+
+  // Check if danced with dancer at event
+  Future<bool> hasDanced(int eventId, int dancerId) async {
+    final attendance = await getAttendance(eventId, dancerId);
+    return attendance?.hasDanced ?? false;
+  }
+
+  // Get all present dancers for an event
+  Stream<List<Attendance>> watchPresentDancers(int eventId) {
+    return (_database.select(_database.attendances)
+      ..where((a) => a.eventId.equals(eventId))
+      ..orderBy([(a) => OrderingTerm.desc(a.markedAt)]))
+      .watch();
+  }
+
+  // Get present dancers with their info
+  Future<List<AttendanceWithDancerInfo>> getPresentDancersWithInfo(int eventId) async {
+    const query = '''
+      SELECT 
+        a.*,
+        d.name as dancer_name,
+        d.notes as dancer_notes
+      FROM attendances a
+      JOIN dancers d ON a.dancer_id = d.id
+      WHERE a.event_id = ?
+      ORDER BY a.marked_at DESC
+    ''';
+
+    final result = await _database.customSelect(
+      query,
+      variables: [Variable<int>(eventId)],
+      readsFrom: {_database.attendances, _database.dancers},
+    ).get();
+
+    return result.map((row) => AttendanceWithDancerInfo.fromRow(row.data)).toList();
+  }
+
+  // Get danced dancers for an event
+  Future<List<AttendanceWithDancerInfo>> getDancedDancers(int eventId) async {
+    const query = '''
+      SELECT 
+        a.*,
+        d.name as dancer_name,
+        d.notes as dancer_notes
+      FROM attendances a
+      JOIN dancers d ON a.dancer_id = d.id
+      WHERE a.event_id = ? AND a.has_danced = 1
+      ORDER BY a.danced_at DESC
+    ''';
+
+    final result = await _database.customSelect(
+      query,
+      variables: [Variable<int>(eventId)],
+      readsFrom: {_database.attendances, _database.dancers},
+    ).get();
+
+    return result.map((row) => AttendanceWithDancerInfo.fromRow(row.data)).toList();
+  }
+
+  // Get present count for an event
+  Future<int> getPresentCount(int eventId) async {
+    final result = await _database.customSelect(
+      'SELECT COUNT(*) as count FROM attendances WHERE event_id = ?',
+      variables: [Variable<int>(eventId)],
+      readsFrom: {_database.attendances},
+    ).getSingle();
+    return result.data['count'] as int;
+  }
+
+  // Get danced count for an event
+  Future<int> getDancedCount(int eventId) async {
+    final result = await _database.customSelect(
+      'SELECT COUNT(*) as count FROM attendances WHERE event_id = ? AND has_danced = 1',
+      variables: [Variable<int>(eventId)],
+      readsFrom: {_database.attendances},
+    ).getSingle();
+    return result.data['count'] as int;
+  }
+
+  // Create attendance with dance completion (for "already danced" option)
+  Future<int> createAttendanceWithDance({
+    required int eventId,
+    required int dancerId,
+    String? impression,
+  }) {
+    return _database.into(_database.attendances).insert(
+      AttendancesCompanion.insert(
+        eventId: eventId,
+        dancerId: dancerId,
+        hasDanced: const Value(true),
+        dancedAt: Value(DateTime.now()),
+        impression: Value(impression),
+      ),
+    );
+  }
+
+  // Update dance impression
+  Future<bool> updateDanceImpression({
+    required int eventId,
+    required int dancerId,
+    String? impression,
+  }) async {
+    final attendance = await getAttendance(eventId, dancerId);
+    if (attendance == null) return false;
+
+    return _database.update(_database.attendances).replace(
+      attendance.copyWith(
+        impression: Value(impression),
+      ),
+    );
+  }
+
+  // Get attendance statistics for an event
+  Future<AttendanceStats> getAttendanceStats(int eventId) async {
+    final presentCount = await getPresentCount(eventId);
+    final dancedCount = await getDancedCount(eventId);
+    
+    return AttendanceStats(
+      presentCount: presentCount,
+      dancedCount: dancedCount,
+      notDancedCount: presentCount - dancedCount,
+    );
+  }
+}
+
+// Helper class for attendance with dancer info
+class AttendanceWithDancerInfo {
+  final int id;
+  final int eventId;
+  final int dancerId;
+  final DateTime markedAt;
+  final bool hasDanced;
+  final DateTime? dancedAt;
+  final String? impression;
+  final String dancerName;
+  final String? dancerNotes;
+
+  AttendanceWithDancerInfo({
+    required this.id,
+    required this.eventId,
+    required this.dancerId,
+    required this.markedAt,
+    required this.hasDanced,
+    this.dancedAt,
+    this.impression,
+    required this.dancerName,
+    this.dancerNotes,
+  });
+
+  factory AttendanceWithDancerInfo.fromRow(Map<String, dynamic> row) {
+    return AttendanceWithDancerInfo(
+      id: row['id'] as int,
+      eventId: row['event_id'] as int,
+      dancerId: row['dancer_id'] as int,
+      markedAt: DateTime.parse(row['marked_at'] as String),
+      hasDanced: (row['has_danced'] as int) == 1,
+      dancedAt: row['danced_at'] != null 
+        ? DateTime.parse(row['danced_at'] as String) 
+        : null,
+      impression: row['impression'] as String?,
+      dancerName: row['dancer_name'] as String,
+      dancerNotes: row['dancer_notes'] as String?,
+    );
+  }
+}
+
+// Attendance statistics
+class AttendanceStats {
+  final int presentCount;
+  final int dancedCount;
+  final int notDancedCount;
+
+  AttendanceStats({
+    required this.presentCount,
+    required this.dancedCount,
+    required this.notDancedCount,
+  });
+
+  double get dancedPercentage => 
+    presentCount > 0 ? (dancedCount / presentCount) * 100 : 0;
+} 
