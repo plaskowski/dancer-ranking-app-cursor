@@ -41,19 +41,19 @@
 - `id` (Primary Key, Auto Increment)
 - `event_id` (Foreign Key → Events.id) - Which event
 - `dancer_id` (Foreign Key → Dancers.id) - Which dancer
-- `is_present` (Boolean, Default: false) - Whether dancer is present at event
-- `marked_at` (DateTime, Auto) - When attendance was marked
+- `marked_at` (DateTime, Auto) - When person was first spotted at event
 - `has_danced` (Boolean, Default: false) - Whether you danced with this person
 - `danced_at` (DateTime, Optional) - When dance occurred
 - `impression` (Text, Optional) - Post-dance impression/notes
 - **Unique constraint**: (event_id, dancer_id)
+- **Note**: Record existence indicates presence at event
 
 ### Key Relationships
 - One Event has many Rankings and Attendances
 - One Dancer has many Rankings and Attendances  
 - One Rank has many Rankings (many-to-one)
 - Rankings track pre-event planning (rank selection + reasons)
-- Attendances track presence, dance completion, and impressions
+- Attendances track actual presence (record creation), dance completion, and impressions
 
 ### Default Rank Data
 The Ranks table should be pre-populated with:
@@ -96,22 +96,22 @@ The Ranks table should be pre-populated with:
 - View all dancers in database
 - Set/edit rank selection (using predefined ranks)
 - Add reasons for rankings
-- Mark dancers as present/absent
-- Record dances for present dancers
+- Add dancers to event when spotted (creates Attendance record)
+- Record dances for dancers at event
 
 **Present Tab**:
-- View only dancers marked as present
+- View only dancers who have been added to the event (have Attendance records)
 - Quick access to ranking and dance recording
-- Visual indication of attendance status
+- Shows when each person was first spotted
 
 **Ranked Tab**:
-- View present dancers sorted by rank ordinal (ordinal 1 first)
+- View dancers at event sorted by rank ordinal (ordinal 1 first)
 - Prioritized list for dance decision making
 - Clear rank badges and reasons
 
 **Actions (all tabs)**:
 - Set/edit dancer ranking (tap ranking button → Ranking Dialog)
-- Toggle attendance (tap attendance button)
+- Add to event / Remove from event (tap attendance button)
 - Record dance with impression (tap dance button → Dance Dialog)
 - Add new dancer (app bar action)
 
@@ -169,9 +169,9 @@ Home Screen
 
 ### Key Features
 - **Pre-event planning**: Add dancers, set rank preferences with reasons
-- **Event attendance**: Mark who's present, filter views accordingly  
-- **Dance prioritization**: Ranked tab shows best rank ordinal first
+- **Simple attendance tracking**: Add people to event when spotted (no pre-marking needed)
+- **Dance prioritization**: Ranked tab shows best rank ordinal first  
 - **Integrated dance tracking**: Record completed dances and impressions in attendance records
 - **Flexible dancer management**: Add new people during events
 - **Rich context**: Notes, reasons, and impressions for informed decisions
-- **Streamlined data model**: Simplified database with merged attendance/dance tracking
+- **Streamlined data model**: Record existence indicates presence, no boolean flags needed
