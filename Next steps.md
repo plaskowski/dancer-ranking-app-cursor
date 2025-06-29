@@ -4,7 +4,7 @@
 
 ## Upcoming Improvements
 
-- show the general note and rank note on the person card in the Present tab
+- in the present tab don't show the genral note and ranking note for a person I already danced with as they don't matter anymore
 - TODO: Add more improvements here...
 
 ## Development Process

@@ -4,6 +4,28 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.16.0] - 2025-06-29
+
+### User Requests
+- "continue" (from Next steps: "update the workflow rule - include the spec update and next steps update in the commit")
+
+### Improved
+- **Enhanced Workflow Rule**: Updated development workflow to explicitly include Implementation specification.md and Next steps.md updates in commit process
+- **Better Documentation Sync**: More structured approach to keeping all documentation files synchronized
+- **Cleaner Process**: Explicit steps for specification updates and next steps cleanup
+
+### Changed
+- **Cursor Rules**: Modified the 5-step workflow rule to separate specification updates (step 3) and next steps cleanup (step 4) from commit process (step 5)
+- **Commit Process**: Now explicitly includes code changes, changelog, specification updates, and next steps cleanup in single commit
+
+### Technical
+- Updated `.cursorrules` file with enhanced workflow rule
+- Added explicit steps for Implementation specification.md updates
+- Added explicit steps for Next steps.md cleanup
+- Improved documentation synchronization process
+
+---
+
 ## [v0.15.0] - 2025-06-29
 
 ### User Requests

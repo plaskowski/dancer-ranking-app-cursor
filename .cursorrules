@@ -76,14 +76,19 @@
    - Add "User Requests" section listing the user's messages that triggered this work
    - Use proper categorization: Added, Changed, Improved, Fixed, Technical
    - Include brief description of what was changed and why
-3. **Commit all changes** with concise message:
+3. **Update Implementation specification.md** if behavior changed:
+   - Add new features to relevant screen descriptions and key features
+   - Update navigation flow when UI/UX changes
+   - Modify database schema documentation for data model changes
+   - Ensure workflow descriptions match new implementation
+4. **Update Next steps.md**:
+   - Remove completed task from Upcoming Improvements section
+   - Keep file clean and current with only remaining tasks
+5. **Commit all changes** with concise message:
    - Use conventional commit format: `feat:`, `fix:`, `docs:`, `refactor:`, etc.
    - Keep message brief and focused (1-2 lines max)
    - Reference the version number
-4. **Sync documentation** as needed:
-   - Update Implementation specification.md if behavior changed
-   - Update any relevant README or documentation files
-   - Ensure all cross-references are accurate
+   - Include code changes, changelog, specification updates, and next steps cleanup in single commit
 
 ### Changelog Standards
 - Follow [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format with immediate version bumping

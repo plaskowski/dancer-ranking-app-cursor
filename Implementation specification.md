@@ -6,6 +6,12 @@
 - put each component class into separate file
 - use Drift expressions instead of raw SQL queries
 
+# Development workflow
+- Follow 5-step workflow: Implement → Update Changelog → Update Specification → Update Next Steps → Commit
+- Each improvement gets immediate version bump with complete documentation
+- Single commit includes all changes: code, changelog, specification updates, and next steps cleanup
+- Maintain synchronized documentation across all specification files
+
 # App structure
 
 ## Theme System
