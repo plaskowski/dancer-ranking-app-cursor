@@ -4,6 +4,29 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.18.0] - 2025-06-29
+
+### User Requests
+- "continue" (from Next steps: "Let's try save some vertical space - add all notes in the person card right after the person name")
+
+### Changed
+- **Compact Dancer Cards**: Redesigned dancer cards to display all information inline after the dancer's name
+- **Single-Line Layout**: Converted from multi-line subtitle with Column to inline RichText with bullet separators
+
+### Improved
+- **Vertical Space Efficiency**: Significantly reduced card height by eliminating multiple subtitle rows
+- **Cleaner Design**: Information flows naturally in a single line: "Name • Notes • Ranking • Dance Status"
+- **Better Screen Utilization**: More dancers visible on screen without scrolling
+
+### Technical
+- Updated `lib/widgets/dancer_card.dart` with inline RichText layout
+- Replaced Column subtitle structure with single RichText widget using TextSpan elements
+- Used bullet separators (•) between different information types for readability
+- Maintained all conditional logic for showing/hiding information based on dance status
+- Fixed text color to use theme-aware `onSurface` color for dark mode compatibility
+
+---
+
 ## [v0.17.0] - 2025-06-29
 
 ### User Requests

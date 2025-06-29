@@ -295,11 +295,13 @@ Home Screen
 - **Rich context**: Notes, reasons, and impressions for informed decisions
 - **Ranking history**: Track when rankings were last updated for context
 - **Streamlined data model**: Record existence indicates presence, no boolean flags needed
-- **Enhanced dancer cards**: Display comprehensive information with visual distinction between personal notes, event-specific context, and dance impressions
-  - **Personal notes**: Gray icon with dancer's general notes (hidden for danced dancers in Present tab)
-  - **Ranking reasons**: Blue psychology icon with italic event-specific reasoning (hidden for danced dancers in Present tab)
-  - **Dance status with impressions**: Music note icon with "Danced!" text followed by italicized impression text when available
+- **Compact dancer cards**: Display all information inline for maximum vertical space efficiency
+  - **Single-line layout**: Name followed by bullet-separated information: "Name • Notes • Ranking • Dance Status"
+  - **Personal notes**: General dancer notes displayed inline (hidden for danced dancers in Present tab)
+  - **Ranking reasons**: Italic event-specific reasoning in blue (hidden for danced dancers in Present tab)
+  - **Dance status with impressions**: "Danced!" text followed by italicized impression text when available
   - **Context-aware display**: Pre-event information (notes, ranking reasons) hidden after dancing in Present tab to focus on post-dance impressions
+  - **Responsive design**: Uses RichText with TextSpan elements for flexible text styling within single line
 
 ### Code Architecture
 - **Reactive Data Layer**: Drift database streams with automatic UI updates via StreamBuilder
