@@ -4,9 +4,17 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../services/event_service.dart';
 import '../services/dancer_service.dart';
+import '../services/attendance_service.dart';
 import '../widgets/add_dancer_dialog.dart';
 import '../widgets/dancer_actions_dialog.dart';
 import 'select_dancers_screen.dart';
+
+// Interface for tab components to define their available actions
+abstract class EventTabActions {
+  Future<void> onFabPressed(BuildContext context, VoidCallback onRefresh);
+  String get fabTooltip;
+  IconData get fabIcon;
+}
 
 class EventScreen extends StatefulWidget {
   final int eventId;
@@ -21,11 +29,16 @@ class _EventScreenState extends State<EventScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
   Event? _event;
+  late List<EventTabActions> _tabActions;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _tabActions = [
+      _PlanningTabActions(eventId: widget.eventId),
+      _PresentTabActions(eventId: widget.eventId),
+    ];
     _loadEvent();
   }
 
@@ -53,6 +66,8 @@ class _EventScreenState extends State<EventScreen>
       );
     }
 
+    final currentTabActions = _tabActions[_tabController.index];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_event!.name),
@@ -62,6 +77,11 @@ class _EventScreenState extends State<EventScreen>
             Tab(text: 'Planning'),
             Tab(text: 'Present'),
           ],
+          onTap: (index) {
+            setState(() {
+              // Trigger rebuild to update FAB
+            });
+          },
         ),
       ),
       body: TabBarView(
@@ -72,30 +92,77 @@ class _EventScreenState extends State<EventScreen>
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _addDancer(),
-        child: const Icon(Icons.add),
+        onPressed: () => currentTabActions.onFabPressed(context, () {
+          setState(() {
+            // Trigger rebuild to refresh the active tab
+          });
+        }),
+        tooltip: currentTabActions.fabTooltip,
+        child: Icon(currentTabActions.fabIcon),
       ),
     );
   }
+}
 
-  void _addDancer() async {
+// Planning Tab Actions Implementation
+class _PlanningTabActions implements EventTabActions {
+  final int eventId;
+
+  const _PlanningTabActions({required this.eventId});
+
+  @override
+  Future<void> onFabPressed(
+      BuildContext context, VoidCallback onRefresh) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => SelectDancersScreen(
-          eventId: widget.eventId,
-          eventName: _event!.name,
+          eventId: eventId,
+          eventName: 'Planning', // We'll get event name from context if needed
         ),
       ),
     );
 
     // Refresh the screen if dancers were added
     if (result == true) {
-      setState(() {
-        // This will trigger a rebuild and refresh the data
-      });
+      onRefresh();
     }
   }
+
+  @override
+  String get fabTooltip => 'Add multiple dancers to event';
+
+  @override
+  IconData get fabIcon => Icons.group_add;
+}
+
+// Present Tab Actions Implementation
+class _PresentTabActions implements EventTabActions {
+  final int eventId;
+
+  const _PresentTabActions({required this.eventId});
+
+  @override
+  Future<void> onFabPressed(
+      BuildContext context, VoidCallback onRefresh) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AddDancerDialog(
+        eventId: eventId,
+      ),
+    );
+
+    // Refresh the screen if a dancer was added
+    if (result == true) {
+      onRefresh();
+    }
+  }
+
+  @override
+  String get fabTooltip => 'Add newly met dancer';
+
+  @override
+  IconData get fabIcon => Icons.person_add;
 }
 
 // Planning Tab - Shows all dancers grouped by rank
@@ -185,8 +252,10 @@ class _PlanningTab extends StatelessWidget {
                 const SizedBox(height: 8),
                 ...rankDancers.map((dancer) => _DancerCard(
                       dancer: dancer,
-                      eventId: eventId,
+                      eventId: widget.eventId,
                       showPresenceIndicator: true,
+                      isPlanningMode: true,
+                      onPresenceChanged: _refreshData,
                     )),
                 const SizedBox(height: 16),
               ],
@@ -288,6 +357,7 @@ class _PresentTab extends StatelessWidget {
                       dancer: dancer,
                       eventId: eventId,
                       showPresenceIndicator: false,
+                      isPlanningMode: false,
                     )),
                 const SizedBox(height: 16),
               ],
@@ -304,11 +374,15 @@ class _DancerCard extends StatelessWidget {
   final DancerWithEventInfo dancer;
   final int eventId;
   final bool showPresenceIndicator;
+  final bool isPlanningMode;
+  final VoidCallback? onPresenceChanged;
 
   const _DancerCard({
     required this.dancer,
     required this.eventId,
     required this.showPresenceIndicator,
+    required this.isPlanningMode,
+    this.onPresenceChanged,
   });
 
   @override
@@ -326,6 +400,14 @@ class _DancerCard extends StatelessWidget {
             ),
             if (showPresenceIndicator && dancer.isPresent)
               const Icon(Icons.check, color: Colors.green, size: 20),
+            // Show "Mark Present" button in Planning mode for absent dancers
+            if (isPlanningMode && !dancer.isPresent)
+              IconButton(
+                icon:
+                    const Icon(Icons.location_on_outlined, color: Colors.blue),
+                tooltip: 'Mark Present',
+                onPressed: () => _markPresent(context),
+              ),
           ],
         ),
         subtitle: Column(
@@ -352,10 +434,44 @@ class _DancerCard extends StatelessWidget {
             builder: (context) => DancerActionsDialog(
               dancer: dancer,
               eventId: eventId,
+              isPlanningMode: isPlanningMode,
             ),
           );
         },
       ),
     );
+  }
+
+  Future<void> _markPresent(BuildContext context) async {
+    try {
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
+      await attendanceService.markPresent(eventId, dancer.id);
+
+      // Show success feedback
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${dancer.name} marked as present'),
+            duration: const Duration(seconds: 2),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        // Trigger refresh
+        onPresenceChanged?.call();
+      }
+    } catch (e) {
+      // Show error feedback
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error marking present: $e'),
+            duration: const Duration(seconds: 3),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }
