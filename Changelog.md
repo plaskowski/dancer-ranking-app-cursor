@@ -4,6 +4,27 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.17.0] - 2025-06-29
+
+### User Requests
+- "continue" (from Next steps: "in the present tab don't show the general note and ranking note for a person I already danced with as they don't matter anymore")
+
+### Changed
+- **Present Tab Display Logic**: Hide general notes and ranking reasons for dancers already danced with
+- **Conditional Information Display**: Pre-event notes and ranking reasons only shown for dancers not yet danced with in Present tab
+
+### Improved
+- **Cleaner Present Tab**: Focus on relevant information - once danced, only show "Danced!" indicator with impression
+- **Better UX**: Removes cognitive load from irrelevant pre-event information after dancing
+- **Context-Aware Display**: Planning tab still shows all information for planning purposes
+
+### Technical
+- Updated `lib/widgets/dancer_card.dart` with conditional logic for notes and ranking reasons display
+- Added `(isPlanningMode || !dancer.hasDanced)` condition for both general notes and ranking reasons
+- Maintains full information display in Planning mode while streamlining Present mode for post-dance experience
+
+---
+
 ## [v0.16.0] - 2025-06-29
 
 ### User Requests

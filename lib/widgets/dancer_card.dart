@@ -39,8 +39,10 @@ class DancerCard extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Show dancer notes if they exist
-            if (dancer.notes != null && dancer.notes!.isNotEmpty)
+            // Show dancer notes if they exist (hide for danced dancers in Present tab)
+            if (dancer.notes != null &&
+                dancer.notes!.isNotEmpty &&
+                (isPlanningMode || !dancer.hasDanced))
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Row(
@@ -65,9 +67,10 @@ class DancerCard extends StatelessWidget {
                 ),
               ),
 
-            // Show ranking reason if it exists
+            // Show ranking reason if it exists (hide for danced dancers in Present tab)
             if (dancer.rankingReason != null &&
-                dancer.rankingReason!.isNotEmpty)
+                dancer.rankingReason!.isNotEmpty &&
+                (isPlanningMode || !dancer.hasDanced))
               Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Row(

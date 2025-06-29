@@ -296,9 +296,10 @@ Home Screen
 - **Ranking history**: Track when rankings were last updated for context
 - **Streamlined data model**: Record existence indicates presence, no boolean flags needed
 - **Enhanced dancer cards**: Display comprehensive information with visual distinction between personal notes, event-specific context, and dance impressions
-  - **Personal notes**: Gray icon with dancer's general notes
-  - **Ranking reasons**: Blue psychology icon with italic event-specific reasoning
+  - **Personal notes**: Gray icon with dancer's general notes (hidden for danced dancers in Present tab)
+  - **Ranking reasons**: Blue psychology icon with italic event-specific reasoning (hidden for danced dancers in Present tab)
   - **Dance status with impressions**: Music note icon with "Danced!" text followed by italicized impression text when available
+  - **Context-aware display**: Pre-event information (notes, ranking reasons) hidden after dancing in Present tab to focus on post-dance impressions
 
 ### Code Architecture
 - **Reactive Data Layer**: Drift database streams with automatic UI updates via StreamBuilder
