@@ -1,0 +1,21 @@
+{
+  "cursor.agent.autoApprove": {
+    "terminal": {
+      "patterns": [
+        "flutter analyze",
+        "flutter doctor",
+        "flutter test",
+        "dart format .",
+        "dart analyze",
+        "git status",
+        "git diff",
+        "git log --oneline -10",
+      ],
+      "cwd": "/Users/plaskowski/dev/private/dancer-ranking-app-cursor"
+    }
+  },
+  "cursor.agent.trustedWorkspaces": [
+    "/Users/plaskowski/dev/private/dancer-ranking-app-cursor"
+  ],
+  "cursor.agent.autoApproveInTrustedWorkspaces": true
+} 
