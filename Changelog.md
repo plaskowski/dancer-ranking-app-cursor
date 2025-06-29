@@ -4,6 +4,38 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.28.0] - 2025-01-11
+
+### User Requests
+- "It looks like you have modified the AppBar while shinking the tabs header. Please revert this."
+- "Great, but I want the AppBar to be the standard size and the tab header to have minimal hight"
+- "Can AppBar have subtitle?" "Let's try the first one" (Column approach)
+- "Let's go for option one, use a more compact date format, I don't need the year part"
+- "Is there an alternative component similar to Tabs but with a header indicator flowing over the tab content?"
+- "try thrird one" (Material 3 style), "Let's try the first approach instead."
+- "Nah, still to much vertical space. Try option 2.", "Hmm, let's keep the PageController and remove the tabs header."
+- "Great. Now we need some indicator of the current tab. Let's use the AppBar subtitle for that."
+- "Let's list all tabs in the subtitle and mark somehow the active one"
+- "Don't use color for that. Use some characters instead."
+
+### Improved
+- **Clean Navigation Design**: Removed tab header entirely for maximum vertical space efficiency
+- **AppBar Subtitle Navigation**: Added subtitle showing both tabs with bracket indicators for active tab
+- **Swipe-Only Navigation**: Pure swipe gesture navigation using PageController instead of TabController
+- **Compact Date Format**: Event date shows as "MMM d" format without year for cleaner appearance
+- **Bullet Separator**: Used bullet (•) separator between event name and date for modern look
+- **Character-Based Indicators**: Active tab marked with brackets [Planning] • Present for accessibility
+
+### Technical
+- **Navigation Architecture**: Replaced TabController with PageController for swipe-only navigation
+- **State Management**: Added _currentPage tracking for subtitle updates
+- **AppBar Structure**: Title reduced to 16px, subtitle at 12px with dynamic tab indication
+- **Removed Components**: Eliminated PreferredSize wrapper, TabBar, and all tab styling
+- **Gesture Navigation**: onPageChanged callback updates current page state for subtitle
+- **Character Formatting**: Dynamic string formatting shows active tab in brackets
+
+---
+
 ## [v0.27.3] - 2025-06-29
 
 ### User Requests

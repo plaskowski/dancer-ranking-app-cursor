@@ -129,10 +129,12 @@ Users can adjust rankings during events for various reasons:
 - → Home Screen (after successful creation)
 
 ### 3. Event Screen (`EventScreen`)
-**Purpose**: Main event management with tabbed interface
-**Title**: Displays event name and date in single line format (e.g., "Salsa Night - Dec 15")
-**Swipe-Optimized Tab Header**: Extremely compact 14px height TabBar optimized for swipe-only navigation with zero padding and 10px font size
-**Tabs**:
+**Purpose**: Main event management with swipe-based navigation
+**AppBar Design**: 
+- **Title**: Event name with bullet separator and compact date format (e.g., "Salsa Night • Dec 15")
+- **Subtitle**: Dynamic tab indicator showing both tabs with active one in brackets (e.g., "[Planning] • Present")
+- **Navigation**: Pure swipe-based using PageController - no visible tab header for maximum vertical space efficiency
+**Pages**:
 
 **Planning Tab**:
 - View only ranked dancers who are NOT present yet (focused on marking presence)
@@ -260,12 +262,12 @@ Users can adjust rankings during events for various reasons:
 ```
 Home Screen
 ├── Create Event Screen
-├── Event Screen
-│   ├── Planning Tab
-│   │   ├── FAB → Select Dancers Screen (tab-specific action)
+├── Event Screen (Swipe-based Pages)
+│   ├── Planning Page (Page 0)
+│   │   ├── FAB → Select Dancers Screen (page-specific action)
 │   │   ├── Tap dancer → Planning Actions Dialog (rank/notes editing only)
 │   │   └── Blue location icon → Instant "Mark Present" (context action)
-│   ├── Present Tab
+│   ├── Present Page (Page 1)
 │   │   ├── FAB → Modal Menu
 │   │   │   ├── → Add Dancer Dialog (create new dancer)
 │   │   │   └── → Add Existing Dancer Screen (mark existing as present)
@@ -273,6 +275,7 @@ Home Screen
 │   │       ├── → Ranking Dialog
 │   │       ├── → Dance Recording Dialog
 │   │       └── → Attendance management
+│   └── Swipe Left/Right → Switch between Planning and Present pages
 └── Dancers Screen
     └── Add/Edit Dancer Dialog (modal) - Full dancer management
 ```

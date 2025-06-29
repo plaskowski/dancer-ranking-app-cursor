@@ -17,21 +17,22 @@ class EventScreen extends StatefulWidget {
   State<EventScreen> createState() => _EventScreenState();
 }
 
-class _EventScreenState extends State<EventScreen> with TickerProviderStateMixin {
-  late TabController _tabController;
+class _EventScreenState extends State<EventScreen> {
+  late PageController _pageController;
+  int _currentPage = 0;
   Event? _event;
   late List<EventTabActions> _tabActions;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _pageController = PageController();
     _loadEvent();
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
@@ -64,58 +65,34 @@ class _EventScreenState extends State<EventScreen> with TickerProviderStateMixin
       );
     }
 
-    final currentTabActions = _tabActions[_tabController.index];
+    final currentTabActions = _tabActions[_currentPage];
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          '${_event!.name} - ${DateFormat('MMM d').format(_event!.date)}',
-          style: const TextStyle(fontSize: 20),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(14), // Minimal height for swipe-only
-          child: Container(
-            color: Theme.of(context).colorScheme.surface,
-            child: TabBar(
-              controller: _tabController,
-              labelPadding: EdgeInsets.zero, // No padding needed for swipe-only
-              indicatorPadding: const EdgeInsets.symmetric(horizontal: 4),
-              indicatorWeight: 1.0, // Minimal indicator
-              labelStyle: const TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
-                height: 0.8, // Extremely tight line height
-              ),
-              unselectedLabelStyle: const TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.normal,
-                height: 0.8,
-              ),
-              tabs: const [
-                Tab(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 2), // Minimal text spacing
-                    child: Text('Planning', style: TextStyle(fontSize: 10)),
-                  ),
-                ),
-                Tab(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 2), // Minimal text spacing
-                    child: Text('Present', style: TextStyle(fontSize: 10)),
-                  ),
-                ),
-              ],
-              onTap: (index) {
-                setState(() {
-                  // Trigger rebuild to update FAB
-                });
-              },
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '${_event!.name} • ${DateFormat('MMM d').format(_event!.date)}',
+              style: const TextStyle(fontSize: 16),
             ),
-          ),
+            Text(
+              _currentPage == 0
+                  ? '[Planning] • Present'
+                  : 'Planning • [Present]',
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.normal,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) => setState(() => _currentPage = index),
         children: [
           PlanningTab(eventId: widget.eventId),
           PresentTab(eventId: widget.eventId),
