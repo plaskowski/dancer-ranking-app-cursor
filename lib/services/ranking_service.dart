@@ -247,6 +247,131 @@ class RankingService {
     return setRanking(
         eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
   }
+
+  // Import rankings from another event
+  Future<ImportRankingsResult> importRankingsFromEvent({
+    required int sourceEventId,
+    required int targetEventId,
+    bool overwriteExisting = false,
+  }) async {
+    ActionLogger.logServiceCall('RankingService', 'importRankingsFromEvent', {
+      'sourceEventId': sourceEventId,
+      'targetEventId': targetEventId,
+      'overwriteExisting': overwriteExisting,
+    });
+
+    try {
+      // Get all rankings from source event
+      final sourceRankings = await (_database.select(_database.rankings)
+            ..where((r) => r.eventId.equals(sourceEventId)))
+          .get();
+
+      if (sourceRankings.isEmpty) {
+        ActionLogger.logAction(
+            'RankingService.importRankingsFromEvent', 'no_source_rankings', {
+          'sourceEventId': sourceEventId,
+          'targetEventId': targetEventId,
+        });
+        return ImportRankingsResult(
+          imported: 0,
+          skipped: 0,
+          overwritten: 0,
+          sourceRankingsCount: 0,
+        );
+      }
+
+      // Get existing rankings in target event
+      final existingRankings = await (_database.select(_database.rankings)
+            ..where((r) => r.eventId.equals(targetEventId)))
+          .get();
+
+      final existingDancerIds = existingRankings.map((r) => r.dancerId).toSet();
+
+      int imported = 0;
+      int skipped = 0;
+      int overwritten = 0;
+
+      // Process each source ranking
+      for (final sourceRanking in sourceRankings) {
+        final dancerId = sourceRanking.dancerId;
+
+        if (existingDancerIds.contains(dancerId)) {
+          if (overwriteExisting) {
+            // Update existing ranking
+            await setRanking(
+              eventId: targetEventId,
+              dancerId: dancerId,
+              rankId: sourceRanking.rankId,
+              reason:
+                  'Imported from another event: ${sourceRanking.reason ?? ''}'
+                      .trim(),
+            );
+            overwritten++;
+            ActionLogger.logAction('RankingService.importRankingsFromEvent',
+                'ranking_overwritten', {
+              'sourceEventId': sourceEventId,
+              'targetEventId': targetEventId,
+              'dancerId': dancerId,
+              'rankId': sourceRanking.rankId,
+            });
+          } else {
+            // Skip existing ranking
+            skipped++;
+            ActionLogger.logAction(
+                'RankingService.importRankingsFromEvent', 'ranking_skipped', {
+              'sourceEventId': sourceEventId,
+              'targetEventId': targetEventId,
+              'dancerId': dancerId,
+              'reason': 'already_exists',
+            });
+          }
+        } else {
+          // Create new ranking
+          await setRanking(
+            eventId: targetEventId,
+            dancerId: dancerId,
+            rankId: sourceRanking.rankId,
+            reason: 'Imported from another event: ${sourceRanking.reason ?? ''}'
+                .trim(),
+          );
+          imported++;
+          ActionLogger.logAction(
+              'RankingService.importRankingsFromEvent', 'ranking_imported', {
+            'sourceEventId': sourceEventId,
+            'targetEventId': targetEventId,
+            'dancerId': dancerId,
+            'rankId': sourceRanking.rankId,
+          });
+        }
+      }
+
+      final result = ImportRankingsResult(
+        imported: imported,
+        skipped: skipped,
+        overwritten: overwritten,
+        sourceRankingsCount: sourceRankings.length,
+      );
+
+      ActionLogger.logAction(
+          'RankingService.importRankingsFromEvent', 'import_completed', {
+        'sourceEventId': sourceEventId,
+        'targetEventId': targetEventId,
+        'imported': imported,
+        'skipped': skipped,
+        'overwritten': overwritten,
+        'sourceRankingsCount': sourceRankings.length,
+      });
+
+      return result;
+    } catch (e) {
+      ActionLogger.logError(
+          'RankingService.importRankingsFromEvent', e.toString(), {
+        'sourceEventId': sourceEventId,
+        'targetEventId': targetEventId,
+      });
+      rethrow;
+    }
+  }
 }
 
 // Helper class for rankings with additional info
@@ -288,5 +413,36 @@ class RankingWithInfo {
       rankName: row['rank_name'] as String,
       rankOrdinal: row['rank_ordinal'] as int,
     );
+  }
+}
+
+// Helper class for import rankings results
+class ImportRankingsResult {
+  final int imported;
+  final int skipped;
+  final int overwritten;
+  final int sourceRankingsCount;
+
+  ImportRankingsResult({
+    required this.imported,
+    required this.skipped,
+    required this.overwritten,
+    required this.sourceRankingsCount,
+  });
+
+  int get totalProcessed => imported + skipped + overwritten;
+  bool get hasAnyChanges => imported > 0 || overwritten > 0;
+
+  String get summaryMessage {
+    if (sourceRankingsCount == 0) {
+      return 'No rankings found in source event';
+    }
+
+    final parts = <String>[];
+    if (imported > 0) parts.add('$imported imported');
+    if (overwritten > 0) parts.add('$overwritten overwritten');
+    if (skipped > 0) parts.add('$skipped skipped');
+
+    return parts.isEmpty ? 'No changes made' : parts.join(', ');
   }
 }

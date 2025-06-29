@@ -4,6 +4,39 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.33.0] - 2025-01-11
+
+### User Requests
+- "Let's implement next step" - referring to "Import ranking from another event"
+- "the rationale is that similar set of people come to similar type of event"
+
+### Added
+- **Import Rankings Feature**: Complete functionality to copy rankings from one event to another
+- **Event Context Menu Integration**: Added "Import Rankings" option to event long-press context menu
+- **Source Event Selection**: Dialog allowing users to select which event to import rankings from
+- **Conflict Handling**: Option to overwrite existing rankings or skip dancers who already have rankings
+- **Smart Filtering**: Only shows events that actually have rankings as source options
+- **Comprehensive Feedback**: Detailed success messages showing imported, skipped, and overwritten counts
+
+### Enhanced
+- **RankingService**: Added `importRankingsFromEvent()` method with full conflict resolution
+- **Event Management**: Extended event context menu with new import functionality
+- **User Experience**: Clear visual feedback with summary of import results
+- **Data Integrity**: Preserves original reasons while marking imported rankings appropriately
+
+### Technical
+- **ImportRankingsResult Class**: Structured result object with detailed statistics and summary messaging
+- **Batch Operations**: Efficient bulk import processing with proper error handling and logging
+- **UI Components**: New `ImportRankingsDialog` with event selection and configuration options
+- **ActionLogger Integration**: Complete logging coverage for import operations and user interactions
+- **Conflict Resolution**: Configurable overwrite behavior with skip/overwrite options
+
+### Data Flow
+- **Source Validation**: Filters events to only show those with existing rankings
+- **Target Protection**: Handles existing rankings based on user preference (skip vs overwrite)
+- **Reason Enhancement**: Automatically appends "Imported from another event" to preserve context
+- **Result Tracking**: Returns detailed statistics for user feedback and debugging
+
 ## [v0.32.0] - 2025-01-11
 
 ### User Requests

@@ -318,6 +318,13 @@ Home Screen
 - **Rich context**: Notes, reasons, and impressions for informed decisions
 - **Ranking history**: Track when rankings were last updated for context
 - **Streamlined data model**: Record existence indicates presence, no boolean flags needed
+- **Import rankings from other events**: Copy rankings between similar events to leverage existing preferences
+  - **Smart source filtering**: Only shows events that have existing rankings as import options
+  - **Conflict resolution**: Choose to skip or overwrite existing rankings for dancers already ranked in target event
+  - **Batch import processing**: Efficiently copy multiple rankings in a single operation
+  - **Context preservation**: Imported rankings marked with source event context while preserving original reasons
+  - **Detailed feedback**: Shows summary of imported, skipped, and overwritten rankings for transparency
+  - **Event context menu integration**: Accessible via long-press context menu on events for seamless workflow
 - **Compact dancer cards**: Display all information inline for maximum vertical space efficiency
   - **Single-line layout**: Name followed by bullet-separated information: "Name • Notes • Ranking • Dance Status"
   - **Personal notes**: General dancer notes displayed inline (hidden for danced dancers in Present tab)

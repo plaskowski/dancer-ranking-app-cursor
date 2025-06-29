@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../services/event_service.dart';
 import '../utils/action_logger.dart';
+import '../widgets/import_rankings_dialog.dart';
 import 'create_event_screen.dart';
 import 'dancers_screen.dart';
 import 'event_screen.dart';
@@ -172,6 +173,24 @@ class _EventCard extends StatelessWidget {
 
                   Navigator.pop(context);
                   _showChangeDateDialog(context);
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.file_download,
+                  color: Theme.of(context).colorScheme.tertiary,
+                ),
+                title: const Text('Import Rankings'),
+                subtitle: const Text('Copy rankings from another event'),
+                onTap: () {
+                  ActionLogger.logUserAction(
+                      'EventCard', 'context_import_rankings_tapped', {
+                    'eventId': event.id,
+                    'eventName': event.name,
+                  });
+
+                  Navigator.pop(context);
+                  _showImportRankingsDialog(context);
                 },
               ),
               ListTile(
@@ -448,6 +467,34 @@ class _EventCard extends StatelessWidget {
           ),
         );
       }
+    }
+  }
+
+  void _showImportRankingsDialog(BuildContext context) async {
+    ActionLogger.logUserAction('EventCard', 'import_rankings_dialog_opened', {
+      'eventId': event.id,
+      'eventName': event.name,
+    });
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => ImportRankingsDialog(
+        targetEventId: event.id,
+        targetEventName: event.name,
+      ),
+    );
+
+    if (result == true) {
+      ActionLogger.logUserAction('EventCard', 'import_rankings_completed', {
+        'eventId': event.id,
+        'eventName': event.name,
+      });
+      // The success message is already shown by the dialog
+    } else {
+      ActionLogger.logUserAction('EventCard', 'import_rankings_cancelled', {
+        'eventId': event.id,
+        'eventName': event.name,
+      });
     }
   }
 
