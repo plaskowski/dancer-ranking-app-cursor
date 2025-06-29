@@ -1,3 +1,3 @@
 
-- Planning tab
-  - when the planning tab is ready the Add button should lead to a new screen that allows to select multiple dancers to be added to event ranking, desribe all of this in the specification
+- fix the listing issue in event screen
+- the add button, when the present tab is active, should open the dialog to add newly met person

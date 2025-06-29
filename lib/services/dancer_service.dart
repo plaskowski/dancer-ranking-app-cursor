@@ -138,30 +138,97 @@ class DancerWithEventInfo {
   });
 
   factory DancerWithEventInfo.fromRow(Map<String, dynamic> row) {
-    return DancerWithEventInfo(
-      id: row['id'] as int,
-      name: row['name'] as String,
-      notes: row['notes'] as String?,
-      createdAt: DateTime.parse(row['created_at'] as String),
-      rankName: row['rank_name'] != null ? row['rank_name'] as String : null,
-      rankOrdinal:
-          row['rank_ordinal'] != null ? row['rank_ordinal'] as int : null,
-      rankingReason: row['ranking_reason'] != null
-          ? row['ranking_reason'] as String
-          : null,
-      rankingUpdated: row['ranking_updated'] != null
-          ? DateTime.parse(row['ranking_updated'] as String)
-          : null,
-      attendanceMarkedAt: row['attendance_marked_at'] != null
-          ? DateTime.parse(row['attendance_marked_at'] as String)
-          : null,
-      hasDanced: _parseBoolFromSqlite(row['has_danced']),
-      dancedAt: row['danced_at'] != null
-          ? DateTime.parse(row['danced_at'] as String)
-          : null,
-      impression:
-          row['impression'] != null ? row['impression'] as String : null,
-    );
+    try {
+      return DancerWithEventInfo(
+        id: _safeIntCast(row['id'], 'id'),
+        name: _safeStringCast(row['name'], 'name'),
+        notes: row['notes'] != null ? row['notes'] as String : null,
+        createdAt: _safeDateTimeParse(row['created_at'], 'created_at'),
+        rankName: row['rank_name'] != null ? row['rank_name'] as String : null,
+        rankOrdinal: row['rank_ordinal'] != null
+            ? _safeIntCast(row['rank_ordinal'], 'rank_ordinal')
+            : null,
+        rankingReason: row['ranking_reason'] != null
+            ? row['ranking_reason'] as String
+            : null,
+        rankingUpdated: row['ranking_updated'] != null
+            ? _safeDateTimeParse(row['ranking_updated'], 'ranking_updated')
+            : null,
+        attendanceMarkedAt: row['attendance_marked_at'] != null
+            ? _safeDateTimeParse(
+                row['attendance_marked_at'], 'attendance_marked_at')
+            : null,
+        hasDanced: _parseBoolFromSqlite(row['has_danced']),
+        dancedAt: row['danced_at'] != null
+            ? _safeDateTimeParse(row['danced_at'], 'danced_at')
+            : null,
+        impression:
+            row['impression'] != null ? row['impression'] as String : null,
+      );
+    } catch (e) {
+      print('Error parsing row data: $e');
+      print('Row data: $row');
+      rethrow;
+    }
+  }
+
+  // Helper methods for safe casting
+  static int _safeIntCast(dynamic value, String fieldName) {
+    if (value == null) {
+      throw ArgumentError('Field $fieldName cannot be null');
+    }
+    if (value is int) return value;
+    if (value is String) {
+      final parsed = int.tryParse(value);
+      if (parsed != null) return parsed;
+    }
+    throw ArgumentError(
+        'Field $fieldName expected int, got ${value.runtimeType}: $value');
+  }
+
+  static String _safeStringCast(dynamic value, String fieldName) {
+    if (value == null) {
+      throw ArgumentError('Field $fieldName cannot be null');
+    }
+    if (value is String) return value;
+    throw ArgumentError(
+        'Field $fieldName expected String, got ${value.runtimeType}: $value');
+  }
+
+  static DateTime _safeDateTimeParse(dynamic value, String fieldName) {
+    if (value == null) {
+      throw ArgumentError('Field $fieldName cannot be null');
+    }
+
+    // Handle string format (ISO 8601)
+    if (value is String) {
+      try {
+        return DateTime.parse(value);
+      } catch (e) {
+        throw ArgumentError('Field $fieldName invalid date format: $value');
+      }
+    }
+
+    // Handle Unix timestamp (seconds since epoch)
+    if (value is int) {
+      try {
+        return DateTime.fromMillisecondsSinceEpoch(value * 1000);
+      } catch (e) {
+        throw ArgumentError('Field $fieldName invalid Unix timestamp: $value');
+      }
+    }
+
+    // Handle double (in case it comes as a decimal)
+    if (value is double) {
+      try {
+        return DateTime.fromMillisecondsSinceEpoch((value * 1000).round());
+      } catch (e) {
+        throw ArgumentError('Field $fieldName invalid Unix timestamp: $value');
+      }
+    }
+
+    throw ArgumentError(
+        'Field $fieldName expected String or int timestamp, got ${value.runtimeType}: $value');
   }
 
   // Helper method to safely parse boolean values from SQLite
