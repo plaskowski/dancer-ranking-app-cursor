@@ -1,0 +1,47 @@
+# Dancer Ranking App - Cursor Rules
+
+## Documentation Sync Rule
+**CRITICAL**: Whenever you make changes to the implementation (code, UI, functionality, data models), you MUST also update the corresponding sections in the Implementation specification.md file.
+
+### Always Update Specification For:
+- **New features or functionality**: Add to relevant screen descriptions, navigation flow, key features
+- **UI/UX changes**: Update screen descriptions, actions, navigation patterns
+- **Data model changes**: Update database schema, relationships, workflow descriptions
+- **Dialog/modal changes**: Update navigation flow and screen actions
+- **Service method changes**: Update workflow descriptions and feature explanations
+- **Tab behavior changes**: Update tab-specific actions and navigation flow
+- **Context action additions**: Update actions lists and workflow steps
+
+### Specification Sections to Consider:
+- **Screens section**: Update affected screen descriptions and actions
+- **Navigation Flow**: Update flowchart when navigation changes
+- **Event Workflow**: Update workflow steps when user experience changes
+- **Key Features**: Add new features or update existing feature descriptions
+- **Database Schema**: Update when data models change
+
+### Process:
+1. Make implementation changes
+2. Identify which specification sections are affected
+3. Update the specification to match the new implementation
+4. Ensure examples and workflow descriptions are accurate
+5. Update navigation flow diagrams if needed
+
+### Example Triggers:
+- Adding new buttons or actions → Update screen actions
+- Changing dialog content → Update navigation flow
+- Adding new screens → Update navigation flow and screens section
+- Modifying user workflow → Update event workflow section
+- Adding database fields → Update schema section
+
+## Code Quality Rules
+- Use descriptive variable and method names
+- Add comments for complex business logic
+- Follow Flutter/Dart conventions
+- Use proper error handling with user-friendly messages
+- Implement loading states for async operations
+
+## UI/UX Consistency
+- Use consistent color schemes (blue for primary actions, green for success, red for errors)
+- Provide visual feedback for user actions (snackbars, loading indicators)
+- Follow Material Design principles
+- Ensure accessibility with proper semantic labels 
