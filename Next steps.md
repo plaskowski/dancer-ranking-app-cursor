@@ -1,89 +1,28 @@
 # Next Steps
 
 > **Note**: All completed improvements have been migrated to [Changelog.md](./Changelog.md)
+> 
+> **Future Roadmap**: Comprehensive feature plans are documented in [Roadmap.md](./Roadmap.md)
 
-- add a structured action log to every action, printed to console, so that I can review what exact actions led to a bug
-  - print all list items that got rendered (some short info including ID)
-  - use format that will be easy to process by Cursor agent
+## Immediate Next Steps
 
-## Upcoming Improvements
+Based on the current app state and user feedback, the most logical next improvements would be:
 
-### Near-term (next few weeks)
+### Priority 1: User Experience Polish
+- Fix the **Date Change Bug** (context menu date picker doesn't persist)
+- Add basic search functionality for dancers by name
+- Improve loading states and error handling
 
-1. **Search & Filter Features**
-   - Search functionality for dancers by name and notes
-   - Filter events by date range (past/upcoming)
-   - Quick filter buttons (present/absent, danced/not danced)
-   - Advanced search with multiple criteria
+### Priority 2: Core Features
+- Implement simple filtering (show/hide dancers who left)
+- Add bulk operations for common tasks
+- Export basic event summaries
 
-2. **Advanced Ranking System**
-   - Multiple evaluation criteria (technique, musicality, stage presence)
-   - Weighted scoring system with customizable weights
-   - Ranking templates for different event types
-   - Composite scores with detailed breakdowns
+### Priority 3: Data Management
+- Basic backup/restore functionality
+- Event templates for recurring events
 
-3. **Batch Operations**
-   - Select multiple dancers for bulk actions
-   - Bulk rank assignment
-   - Bulk presence marking
-   - Mass export/import operations
-
-4. **Export & Reporting**
-   - CSV export for events and dancer data
-   - PDF reports with event summaries
-   - Performance analytics reports
-   - Custom report templates
-
-### Medium-term (next few months)
-
-1. **User Experience Enhancements**
-   - Dark mode support with theme switching
-   - Bulk import from CSV files
-   - Event templates for recurring event types
-   - Improved offline functionality and sync
-   - Animation improvements and smooth transitions
-   - Better loading states and progress indicators
-
-2. **Data Management**
-   - Data backup and restore functionality
-   - Archive system for old events
-   - Event duplication/cloning
-   - Data cleanup and optimization tools
-   - Import/export between different formats
-
-3. **Analytics and Insights**
-   - Performance tracking over time
-   - Dancer progress analytics
-   - Event comparison tools
-   - Statistical insights and trends
-   - Personalized recommendations
-
-### Future Enhancements
-
-1. **Collaboration Features**
-   - Multi-judge support with role-based access
-   - Judge consensus tracking and conflict resolution
-   - Comment system for evaluations
-   - Real-time collaboration during events
-
-2. **Advanced Functionality**
-   - Video recording integration
-   - Photo attachments for dancers
-   - Custom evaluation forms and criteria
-   - Tournament bracket generation
-   - Integration with external dance systems
-
-3. **Platform Expansion**
-   - Web version for desktop use
-   - Cloud synchronization across devices
-   - Mobile responsiveness improvements
-   - Cross-platform data sharing
-
-4. **Polish & Performance**
-   - Enhanced error handling and recovery
-   - Performance optimizations for large datasets
-   - Accessibility improvements
-   - Internationalization support
+> **See [Roadmap.md](./Roadmap.md)** for the complete feature roadmap organized by timeline and priority.
 
 ## Known Bugs
 
@@ -108,7 +47,13 @@
 - ✅ Change date UI (buggy database update)
 
 ## Development Process
-1. Implement the improvement
-2. Update the changelog with a clear summary  
-3. Commit all changes with descriptive messages
-4. Keep documentation synchronized
+
+> **All development follows the rules defined in cursor_rules for this repository**
+
+### Workflow
+1. Implement improvement with proper error handling
+2. Update Changelog.md with version bump and user request documentation
+3. Update Implementation specification.md if behavior changes
+4. Clean up Next steps.md by removing completed tasks
+5. Commit changes with conventional commit format
+6. Test functionality before marking as complete
