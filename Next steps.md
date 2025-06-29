@@ -6,5 +6,4 @@ What to do/fix next:
   → **MAJOR IMPROVEMENT**: Converted to reactive streams architecture with Drift database observation
   → Replaced manual callback chains with StreamBuilder + watchDancersForEvent()
   → UI now automatically refreshes for ALL data changes (notes, rankings, attendance, etc.)
-- ✅ check for other idiomatic flutter patterns we are missing in the impl, report them first
-  → **THEME SYSTEM**: Implemented Material Design 3 theme with automatic light/dark mode support
+- Introduce Theme System based on Material 3
