@@ -30,6 +30,7 @@ History:
   → **Better UX**: Each piece of information has proper styling and color coding for easy distinction
   → **Complete Context**: Users now see full dancer context including personal notes from dancer profile and event-specific ranking reasoning
 
-Next step:
+Next step (remember to update the spec):
 - need a way to add a present existing dancer that was not included in planning
+- hide present ones from planning tab as while at event I will use that tab only for marking presence
 - ...
