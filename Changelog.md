@@ -4,6 +4,23 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.27.0] - 2025-06-29
+
+### User Requests
+- "Let's revise this. For the accessibility I can just swipe left and right to switch the tabs. But the tabs header is too big. Is there some more compact tabs header?"
+
+### Improved
+- **Compact Tab Header**: Reduced tab bar height from ~48px to 36px for significant vertical space savings
+- **Optimized Typography**: Smaller font sizes (14px) with proper weight differentiation for selected/unselected tabs
+- **Better Spacing**: Reduced padding while maintaining touch targets and visual clarity
+- **Preserved Functionality**: Maintains all swipe gestures and tab switching behavior
+
+### Technical
+- Wrapped TabBar in PreferredSize widget to control exact height (36px)
+- Added custom labelPadding (vertical: 8px) and indicatorPadding (horizontal: 16px)
+- Implemented custom labelStyle and unselectedLabelStyle for typography optimization
+- Maintained accessibility standards while reducing visual footprint
+
 ## [v0.26.0] - 2025-06-29
 
 ### User Requests

@@ -73,17 +73,28 @@ class _EventScreenState extends State<EventScreen>
           '${_event!.name} - ${DateFormat('MMM d').format(_event!.date)}',
           style: const TextStyle(fontSize: 20),
         ),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'Planning'),
-            Tab(text: 'Present'),
-          ],
-          onTap: (index) {
-            setState(() {
-              // Trigger rebuild to update FAB
-            });
-          },
+        bottom: PreferredSize(
+          preferredSize:
+              const Size.fromHeight(36), // Reduced from default ~48px
+          child: TabBar(
+            controller: _tabController,
+            labelPadding:
+                const EdgeInsets.symmetric(vertical: 8), // Reduced padding
+            indicatorPadding: const EdgeInsets.symmetric(horizontal: 16),
+            labelStyle: const TextStyle(
+                fontSize: 14, fontWeight: FontWeight.w600), // Smaller text
+            unselectedLabelStyle:
+                const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+            tabs: const [
+              Tab(text: 'Planning'),
+              Tab(text: 'Present'),
+            ],
+            onTap: (index) {
+              setState(() {
+                // Trigger rebuild to update FAB
+              });
+            },
+          ),
         ),
       ),
       body: TabBarView(
