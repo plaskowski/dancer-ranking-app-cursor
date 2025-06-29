@@ -4,6 +4,7 @@
 
 # Coding guidelines
 - put each component class into separate file
+- use Drift expressions instead of raw SQL queries
 
 # App structure
 

@@ -62,48 +62,60 @@ class DancerService {
 
   // Get dancers count
   Future<int> getDancersCount() async {
-    final result = await _database.customSelect(
-      'SELECT COUNT(*) as count FROM dancers',
-      readsFrom: {_database.dancers},
-    ).getSingle();
-    return result.data['count'] as int;
+    final countExp = countAll();
+    final query = _database.selectOnly(_database.dancers)
+      ..addColumns([countExp]);
+
+    final result = await query.getSingle();
+    return result.read(countExp)!;
   }
 
   // Get dancers for a specific event (with rankings and attendance)
   Future<List<DancerWithEventInfo>> getDancersForEvent(int eventId) async {
-    const query = '''
-      SELECT 
-        d.id,
-        d.name,
-        d.notes,
-        d.created_at,
-        r.name as rank_name,
-        r.ordinal as rank_ordinal,
-        rk.reason as ranking_reason,
-        rk.last_updated as ranking_updated,
-        a.marked_at as attendance_marked_at,
-        a.has_danced,
-        a.danced_at,
-        a.impression
-      FROM dancers d
-      LEFT JOIN rankings rk ON d.id = rk.dancer_id AND rk.event_id = ?
-      LEFT JOIN ranks r ON rk.rank_id = r.id
-      LEFT JOIN attendances a ON d.id = a.dancer_id AND a.event_id = ?
-      ORDER BY d.name
-    ''';
-
-    final result = await _database.customSelect(
-      query,
-      variables: [Variable<int>(eventId), Variable<int>(eventId)],
-      readsFrom: {
-        _database.dancers,
+    final query = _database.select(_database.dancers).join([
+      // LEFT JOIN rankings ON dancers.id = rankings.dancer_id AND rankings.event_id = eventId
+      leftOuterJoin(
         _database.rankings,
+        _database.dancers.id.equalsExp(_database.rankings.dancerId) &
+            _database.rankings.eventId.equals(eventId),
+      ),
+      // LEFT JOIN ranks ON rankings.rank_id = ranks.id
+      leftOuterJoin(
         _database.ranks,
-        _database.attendances
-      },
-    ).get();
+        _database.rankings.rankId.equalsExp(_database.ranks.id),
+      ),
+      // LEFT JOIN attendances ON dancers.id = attendances.dancer_id AND attendances.event_id = eventId
+      leftOuterJoin(
+        _database.attendances,
+        _database.dancers.id.equalsExp(_database.attendances.dancerId) &
+            _database.attendances.eventId.equals(eventId),
+      ),
+    ])
+      ..orderBy([OrderingTerm.asc(_database.dancers.name)]);
 
-    return result.map((row) => DancerWithEventInfo.fromRow(row.data)).toList();
+    final result = await query.get();
+
+    return result.map((row) {
+      final dancer = row.readTable(_database.dancers);
+      final ranking = row.readTableOrNull(_database.rankings);
+      final rank = row.readTableOrNull(_database.ranks);
+      final attendance = row.readTableOrNull(_database.attendances);
+
+      return DancerWithEventInfo(
+        id: dancer.id,
+        name: dancer.name,
+        notes: dancer.notes,
+        createdAt: dancer.createdAt,
+        rankName: rank?.name,
+        rankOrdinal: rank?.ordinal,
+        rankingReason: ranking?.reason,
+        rankingUpdated: ranking?.lastUpdated,
+        attendanceMarkedAt: attendance?.markedAt,
+        hasDanced: attendance?.hasDanced ?? false,
+        dancedAt: attendance?.dancedAt,
+        impression: attendance?.impression,
+      );
+    }).toList();
   }
 }
 
@@ -136,109 +148,6 @@ class DancerWithEventInfo {
     this.dancedAt,
     this.impression,
   });
-
-  factory DancerWithEventInfo.fromRow(Map<String, dynamic> row) {
-    try {
-      return DancerWithEventInfo(
-        id: _safeIntCast(row['id'], 'id'),
-        name: _safeStringCast(row['name'], 'name'),
-        notes: row['notes'] != null ? row['notes'] as String : null,
-        createdAt: _safeDateTimeParse(row['created_at'], 'created_at'),
-        rankName: row['rank_name'] != null ? row['rank_name'] as String : null,
-        rankOrdinal: row['rank_ordinal'] != null
-            ? _safeIntCast(row['rank_ordinal'], 'rank_ordinal')
-            : null,
-        rankingReason: row['ranking_reason'] != null
-            ? row['ranking_reason'] as String
-            : null,
-        rankingUpdated: row['ranking_updated'] != null
-            ? _safeDateTimeParse(row['ranking_updated'], 'ranking_updated')
-            : null,
-        attendanceMarkedAt: row['attendance_marked_at'] != null
-            ? _safeDateTimeParse(
-                row['attendance_marked_at'], 'attendance_marked_at')
-            : null,
-        hasDanced: _parseBoolFromSqlite(row['has_danced']),
-        dancedAt: row['danced_at'] != null
-            ? _safeDateTimeParse(row['danced_at'], 'danced_at')
-            : null,
-        impression:
-            row['impression'] != null ? row['impression'] as String : null,
-      );
-    } catch (e) {
-      print('Error parsing row data: $e');
-      print('Row data: $row');
-      rethrow;
-    }
-  }
-
-  // Helper methods for safe casting
-  static int _safeIntCast(dynamic value, String fieldName) {
-    if (value == null) {
-      throw ArgumentError('Field $fieldName cannot be null');
-    }
-    if (value is int) return value;
-    if (value is String) {
-      final parsed = int.tryParse(value);
-      if (parsed != null) return parsed;
-    }
-    throw ArgumentError(
-        'Field $fieldName expected int, got ${value.runtimeType}: $value');
-  }
-
-  static String _safeStringCast(dynamic value, String fieldName) {
-    if (value == null) {
-      throw ArgumentError('Field $fieldName cannot be null');
-    }
-    if (value is String) return value;
-    throw ArgumentError(
-        'Field $fieldName expected String, got ${value.runtimeType}: $value');
-  }
-
-  static DateTime _safeDateTimeParse(dynamic value, String fieldName) {
-    if (value == null) {
-      throw ArgumentError('Field $fieldName cannot be null');
-    }
-
-    // Handle string format (ISO 8601)
-    if (value is String) {
-      try {
-        return DateTime.parse(value);
-      } catch (e) {
-        throw ArgumentError('Field $fieldName invalid date format: $value');
-      }
-    }
-
-    // Handle Unix timestamp (seconds since epoch)
-    if (value is int) {
-      try {
-        return DateTime.fromMillisecondsSinceEpoch(value * 1000);
-      } catch (e) {
-        throw ArgumentError('Field $fieldName invalid Unix timestamp: $value');
-      }
-    }
-
-    // Handle double (in case it comes as a decimal)
-    if (value is double) {
-      try {
-        return DateTime.fromMillisecondsSinceEpoch((value * 1000).round());
-      } catch (e) {
-        throw ArgumentError('Field $fieldName invalid Unix timestamp: $value');
-      }
-    }
-
-    throw ArgumentError(
-        'Field $fieldName expected String or int timestamp, got ${value.runtimeType}: $value');
-  }
-
-  // Helper method to safely parse boolean values from SQLite
-  static bool _parseBoolFromSqlite(dynamic value) {
-    if (value == null) return false;
-    if (value is bool) return value;
-    if (value is int) return value == 1;
-    if (value is String) return value == '1' || value.toLowerCase() == 'true';
-    return false;
-  }
 
   // Helper getters
   bool get isPresent => attendanceMarkedAt != null;
