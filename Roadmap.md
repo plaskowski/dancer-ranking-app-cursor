@@ -8,6 +8,4 @@ Nice to have:
 - dancers avatars?
 
 Working with cursor:
-- update the rule
-  - commit the impl update and next steps update in the commit
 - ability to run user stories to check for regression testing
