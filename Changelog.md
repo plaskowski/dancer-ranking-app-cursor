@@ -4,6 +4,30 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.22.0] - 2025-06-29
+
+### User Requests
+- "Do next item" (from Next steps: "Add a contextual action to remove a person from planned tab")
+
+### Added
+- **Remove from Planning Action**: Added contextual action to remove dancers from event planning
+- **Planning Management**: Users can now remove ranking assignments for dancers from the Planning tab
+- **Clean Workflow**: Remove dancers who no longer need to be ranked for specific events
+
+### Improved
+- **Flexible Planning**: Easy way to clean up planning lists by removing unwanted rankings
+- **Contextual Actions**: New action only appears for ranked dancers, maintaining clean interface
+- **Immediate Feedback**: Clear visual confirmation when dancers are removed from planning
+
+### Technical
+- Added "Remove from Planning" action to Dancer Actions Dialog
+- Implemented `_removeFromPlanning()` method using `RankingService.deleteRanking()`
+- Action only shows when `dancer.hasRanking` is true
+- Proper error handling with user feedback via snackbars
+- Added RankingService import to dancer_actions_dialog.dart
+
+---
+
 ## [v0.21.0] - 2025-06-29
 
 ### User Requests
