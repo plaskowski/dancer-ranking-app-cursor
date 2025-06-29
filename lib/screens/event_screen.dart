@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../database/database.dart';
@@ -68,7 +69,20 @@ class _EventScreenState extends State<EventScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_event!.name),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _event!.name,
+              style: const TextStyle(fontSize: 20),
+            ),
+            Text(
+              DateFormat('MMM d, y').format(_event!.date),
+              style:
+                  const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+            ),
+          ],
+        ),
         bottom: TabBar(
           controller: _tabController,
           tabs: const [

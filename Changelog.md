@@ -4,6 +4,31 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.12.0] - 2025-06-29
+
+### User Requests
+- "implement next step" (from Next steps: "the event screen title should include the event date because I may have many events with same name (recurring events)")
+
+### Added
+- **Event Date in Title**: Event Screen now displays both event name and formatted date in the AppBar title
+- **Better Event Identification**: Users can now distinguish between recurring events with the same name
+
+### Changed
+- **Event Screen AppBar**: Modified title from single text to column layout with event name and date
+- **Title Layout**: Event name shown in larger font (20px) with date subtitle in smaller font (14px)
+
+### Improved
+- **Recurring Event Support**: Much easier to identify which specific occurrence of a recurring event you're viewing
+- **User Experience**: Clear visual hierarchy with event name prominent and date as supporting information
+
+### Technical
+- Enhanced `lib/screens/event_screen.dart` with multi-line AppBar title
+- Added `intl` package import for DateFormat functionality
+- Used `DateFormat('MMM d, y')` for consistent date formatting (e.g., "Dec 15, 2024")
+- Implemented Column layout with proper text styling and alignment
+
+---
+
 ## [v0.11.0] - 2025-06-29
 
 ### User Requests
