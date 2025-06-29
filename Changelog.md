@@ -4,6 +4,32 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.19.0] - 2025-06-29
+
+### User Requests
+- "let's go" (from Next steps: "I want to try out this as an Android app")
+- "Wow, it worked out of the box and all things are working as expected"
+
+### Added
+- **Android Platform Support**: Successfully deployed and tested the Dancer Ranking App on Android
+- **Cross-Platform Compatibility**: App now runs on both macOS and Android with full functionality
+- **Android Emulator Setup**: Configured and tested with Pixel 3a API 34 emulator
+
+### Improved
+- **Platform Reach**: Users can now access the app on Android devices and emulators
+- **Mobile Experience**: All features (database, UI, navigation) work seamlessly on Android
+- **Development Workflow**: Established Android development and testing environment
+
+### Technical
+- **Android SDK Configuration**: Located and configured existing Android SDK at `/Users/plaskowski/Library/Android/sdk`
+- **Emulator Setup**: Successfully launched `Pixel_3a_API_34_extension_level_7_arm64-v8a` emulator
+- **Flutter Build**: Clean Android build with no platform-specific issues
+- **Database Compatibility**: SQLite with Drift library works perfectly on Android
+- **UI Rendering**: Material 3 design system renders correctly on Android
+- **All Features Verified**: Event management, dancer cards, ranking system, and navigation all functional
+
+---
+
 ## [v0.18.0] - 2025-06-29
 
 ### User Requests

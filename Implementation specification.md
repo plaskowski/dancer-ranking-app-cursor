@@ -1,6 +1,7 @@
 # General principles
-- Android application using Flutter framework
+- Cross-platform application using Flutter framework (supports macOS and Android)
 - save the data into SQLite using Drift library
+- Material 3 design system ensures consistent experience across platforms
 
 # Coding guidelines
 - put each component class into separate file
