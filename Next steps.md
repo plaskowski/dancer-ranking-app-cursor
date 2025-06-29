@@ -4,7 +4,7 @@
 
 ## Upcoming Improvements
 
-- show the impression next to the "Danced" indicator
+- show the general note and rank note on the person card in the Present tab
 - TODO: Add more improvements here...
 
 ## Development Process

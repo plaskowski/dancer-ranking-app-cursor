@@ -4,6 +4,29 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.15.0] - 2025-06-29
+
+### User Requests
+- "continue" (from Next steps: "put the event date into the same line in Event Screen title and skip the year")
+
+### Changed
+- **Event Screen Title Format**: Combined event name and date on single line with cleaner format
+- **Date Display**: Removed year from event date, showing only month and day (e.g., "Dec 15" instead of "Dec 15, 2024")
+- **Title Layout**: Simplified from Column layout to single Text widget for more compact appearance
+
+### Improved
+- **Compact Design**: More space-efficient title bar allows for longer event names
+- **Cleaner Look**: Single-line format reduces visual clutter and improves readability
+- **Better UX**: Current year is implied, showing only essential date information
+
+### Technical
+- Updated `lib/screens/event_screen.dart` with simplified AppBar title layout
+- Changed DateFormat from 'MMM d, y' to 'MMM d' to exclude year
+- Replaced Column widget with single Text widget using string interpolation
+- Format: "Event Name - Dec 15" instead of two-line layout
+
+---
+
 ## [v0.14.0] - 2025-06-29
 
 ### User Requests

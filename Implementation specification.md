@@ -118,6 +118,7 @@ Users can adjust rankings during events for various reasons:
 
 ### 3. Event Screen (`EventScreen`)
 **Purpose**: Main event management with tabbed interface
+**Title**: Displays event name and date in single line format (e.g., "Salsa Night - Dec 15")
 **Tabs**:
 
 **Planning Tab**:
