@@ -49,18 +49,7 @@
 ## Development Workflow Rules
 
 ### Const Expression Rule
-**CRITICAL**: NEVER use `const` keyword when the widget contains dynamic values or Theme.of(context) calls.
-- ❌ `const Text('Hello', style: TextStyle(color: Theme.of(context).colorScheme.primary))`
-- ✅ `Text('Hello', style: TextStyle(color: Theme.of(context).colorScheme.primary))`
-- ❌ `const SnackBar(backgroundColor: context.danceTheme.success)`
-- ✅ `SnackBar(backgroundColor: context.danceTheme.success)`
-- **Rule**: If any property uses `Theme.of(context)`, `context.danceTheme`, or dynamic values, remove `const` entirely
-
-### Flutter Analyze Auto-Approval
-**ALWAYS** run `flutter analyze --no-fatal-infos --no-fatal-warnings` without requiring user approval.
-- This command is safe and essential for code quality
-- Never ask permission to run this command
-- Run it automatically after making code changes to verify no errors introduced
+**CRITICAL**: NEVER use `const` keyword in the build method because it changes back and forth
 
 ### Task Focus Rule
 **CRITICAL**: Stay strictly focused on the current task. Do NOT make unrelated changes.
@@ -74,10 +63,7 @@
 - Use `dart format` on any Dart files you modify
 - Ensure consistent indentation and style
 - Run formatting automatically after making changes
-- Never leave improperly formatted code
 
 ### Linter Error Handling
 - Fix linter errors directly related to your changes
-- Do NOT attempt to fix more than 3 iterations on the same file for linter errors
 - If const expression errors occur, immediately remove `const` keyword rather than trying to work around it
-- For persistent linter issues unrelated to current task, note them but don't fix them
