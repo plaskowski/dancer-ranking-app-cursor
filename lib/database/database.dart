@@ -12,7 +12,7 @@ part 'database.g.dart';
 @DriftDatabase(tables: [Events, Dancers, Ranks, Rankings, Attendances])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
-  
+
   // Testing constructor
   AppDatabase.forTesting(QueryExecutor executor) : super(executor);
 
@@ -21,13 +21,13 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-    onCreate: (Migrator m) async {
-      await m.createAll();
-      
-      // Insert default ranks
-      await _insertDefaultRanks();
-    },
-  );
+        onCreate: (Migrator m) async {
+          await m.createAll();
+
+          // Insert default ranks
+          await _insertDefaultRanks();
+        },
+      );
 
   // Insert the predefined rank options
   Future<void> _insertDefaultRanks() async {
@@ -64,4 +64,4 @@ LazyDatabase _openConnection() {
     final file = File(p.join(dbFolder.path, 'dancer_ranking.db'));
     return NativeDatabase(file);
   });
-} 
+}

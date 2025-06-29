@@ -9,14 +9,13 @@ class RankingService {
   // Get all available ranks ordered by ordinal (best first)
   Future<List<Rank>> getAllRanks() {
     return (_database.select(_database.ranks)
-      ..orderBy([(r) => OrderingTerm.asc(r.ordinal)]))
-      .get();
+          ..orderBy([(r) => OrderingTerm.asc(r.ordinal)]))
+        .get();
   }
 
   // Get a specific rank by ID
   Future<Rank?> getRank(int id) {
-    return (_database.select(_database.ranks)
-          ..where((r) => r.id.equals(id)))
+    return (_database.select(_database.ranks)..where((r) => r.id.equals(id)))
         .getSingleOrNull();
   }
 
@@ -36,36 +35,38 @@ class RankingService {
   }) async {
     // Check if ranking already exists
     final existingRanking = await (_database.select(_database.rankings)
-          ..where((r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
+          ..where(
+              (r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
         .getSingleOrNull();
 
     if (existingRanking != null) {
       // Update existing ranking
       await _database.update(_database.rankings).replace(
-        existingRanking.copyWith(
-          rankId: rankId,
-          reason: Value(reason),
-          lastUpdated: DateTime.now(),
-        ),
-      );
+            existingRanking.copyWith(
+              rankId: rankId,
+              reason: Value(reason),
+              lastUpdated: DateTime.now(),
+            ),
+          );
       return existingRanking.id;
     } else {
       // Create new ranking
       return _database.into(_database.rankings).insert(
-        RankingsCompanion.insert(
-          eventId: eventId,
-          dancerId: dancerId,
-          rankId: rankId,
-          reason: Value(reason),
-        ),
-      );
+            RankingsCompanion.insert(
+              eventId: eventId,
+              dancerId: dancerId,
+              rankId: rankId,
+              reason: Value(reason),
+            ),
+          );
     }
   }
 
   // Get ranking for a specific dancer at an event
   Future<Ranking?> getRanking(int eventId, int dancerId) {
     return (_database.select(_database.rankings)
-          ..where((r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
+          ..where(
+              (r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
         .getSingleOrNull();
   }
 
@@ -94,7 +95,8 @@ class RankingService {
   }
 
   // Get rankings grouped by rank for an event
-  Future<Map<String, List<RankingWithInfo>>> getRankingsGroupedByRank(int eventId) async {
+  Future<Map<String, List<RankingWithInfo>>> getRankingsGroupedByRank(
+      int eventId) async {
     final rankings = await getRankingsForEvent(eventId);
     final Map<String, List<RankingWithInfo>> grouped = {};
 
@@ -112,7 +114,8 @@ class RankingService {
   // Delete a ranking
   Future<int> deleteRanking(int eventId, int dancerId) {
     return (_database.delete(_database.rankings)
-          ..where((r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
+          ..where(
+              (r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
         .go();
   }
 
@@ -127,39 +130,49 @@ class RankingService {
   }
 
   // Quick rank assignment methods
-  Future<int> setRankReallyWantToDance(int eventId, int dancerId, {String? reason}) async {
+  Future<int> setRankReallyWantToDance(int eventId, int dancerId,
+      {String? reason}) async {
     final rank = await (_database.select(_database.ranks)
           ..where((r) => r.ordinal.equals(1)))
         .getSingle();
-    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
+    return setRanking(
+        eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
   }
 
-  Future<int> setRankWouldLikeToDance(int eventId, int dancerId, {String? reason}) async {
+  Future<int> setRankWouldLikeToDance(int eventId, int dancerId,
+      {String? reason}) async {
     final rank = await (_database.select(_database.ranks)
           ..where((r) => r.ordinal.equals(2)))
         .getSingle();
-    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
+    return setRanking(
+        eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
   }
 
-  Future<int> setRankNeutral(int eventId, int dancerId, {String? reason}) async {
+  Future<int> setRankNeutral(int eventId, int dancerId,
+      {String? reason}) async {
     final rank = await (_database.select(_database.ranks)
           ..where((r) => r.ordinal.equals(3)))
         .getSingle();
-    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
+    return setRanking(
+        eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
   }
 
-  Future<int> setRankMaybeLater(int eventId, int dancerId, {String? reason}) async {
+  Future<int> setRankMaybeLater(int eventId, int dancerId,
+      {String? reason}) async {
     final rank = await (_database.select(_database.ranks)
           ..where((r) => r.ordinal.equals(4)))
         .getSingle();
-    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
+    return setRanking(
+        eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
   }
 
-  Future<int> setRankNotInterested(int eventId, int dancerId, {String? reason}) async {
+  Future<int> setRankNotInterested(int eventId, int dancerId,
+      {String? reason}) async {
     final rank = await (_database.select(_database.ranks)
           ..where((r) => r.ordinal.equals(5)))
         .getSingle();
-    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
+    return setRanking(
+        eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
   }
 }
 
@@ -203,4 +216,4 @@ class RankingWithInfo {
       rankOrdinal: row['rank_ordinal'] as int,
     );
   }
-} 
+}

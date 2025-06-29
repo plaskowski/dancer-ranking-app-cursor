@@ -8,7 +8,7 @@ class Events extends Table {
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 }
 
-// Dancers table  
+// Dancers table
 class Dancers extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 1, max: 100)();
@@ -26,31 +26,39 @@ class Ranks extends Table {
 // Rankings table (event-specific dancer rankings)
 class Rankings extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get eventId => integer().references(Events, #id, onDelete: KeyAction.cascade)();
-  IntColumn get dancerId => integer().references(Dancers, #id, onDelete: KeyAction.cascade)();
+  IntColumn get eventId =>
+      integer().references(Events, #id, onDelete: KeyAction.cascade)();
+  IntColumn get dancerId =>
+      integer().references(Dancers, #id, onDelete: KeyAction.cascade)();
   IntColumn get rankId => integer().references(Ranks, #id)();
   TextColumn get reason => text().nullable()(); // Optional reason for ranking
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
-  DateTimeColumn get lastUpdated => dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get lastUpdated =>
+      dateTime().withDefault(currentDateAndTime)();
 
   @override
   List<Set<Column>> get uniqueKeys => [
-    {eventId, dancerId}, // One ranking per dancer per event
-  ];
+        {eventId, dancerId}, // One ranking per dancer per event
+      ];
 }
 
 // Attendances table (tracks presence and dance completion)
 class Attendances extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get eventId => integer().references(Events, #id, onDelete: KeyAction.cascade)();
-  IntColumn get dancerId => integer().references(Dancers, #id, onDelete: KeyAction.cascade)();
-  DateTimeColumn get markedAt => dateTime().withDefault(currentDateAndTime)(); // When spotted at event
-  BoolColumn get hasDanced => boolean().withDefault(const Constant(false))(); // Whether danced with this person
+  IntColumn get eventId =>
+      integer().references(Events, #id, onDelete: KeyAction.cascade)();
+  IntColumn get dancerId =>
+      integer().references(Dancers, #id, onDelete: KeyAction.cascade)();
+  DateTimeColumn get markedAt =>
+      dateTime().withDefault(currentDateAndTime)(); // When spotted at event
+  BoolColumn get hasDanced => boolean()
+      .withDefault(const Constant(false))(); // Whether danced with this person
   DateTimeColumn get dancedAt => dateTime().nullable()(); // When dance occurred
-  TextColumn get impression => text().nullable()(); // Post-dance impression/notes
+  TextColumn get impression =>
+      text().nullable()(); // Post-dance impression/notes
 
   @override
   List<Set<Column>> get uniqueKeys => [
-    {eventId, dancerId}, // One attendance record per dancer per event
-  ];
-} 
+        {eventId, dancerId}, // One attendance record per dancer per event
+      ];
+}
