@@ -1,4 +1,3 @@
-
 # Problem statement
 I am a social dancer. I attend many social dancing parties where I can with a lot of partners.
 I know most of them, some I meet there the first time.
@@ -17,3 +16,27 @@ Then, after the dance I want to mark that I have danced with them.
 Sometimes I meet new people, so I want to add a new person.
 I may want to add a comment why I am eager to dance with given person.
 Later I may want to add a comment on my impression on given person that night.
+
+# Future Vision
+
+## Enhanced Evaluation System
+- **Multi-criteria ranking**: Beyond simple preference, evaluate technique, musicality, stage presence
+- **Weighted scoring**: Customize importance of different criteria for personal preferences
+- **Contextual notes**: Track specific reasons for rankings and impressions over time
+
+## Advanced Data Management
+- **Historical analysis**: Track dancing patterns and preferences over multiple events
+- **Search and filtering**: Quickly find dancers by name, ranking, notes, or event history  
+- **Import/Export**: Bulk operations for managing large dancer databases
+- **Data insights**: Analytics on dancing patterns, preference changes, and event trends
+
+## Collaboration Features
+- **Multi-judge events**: Support for competitions or workshops with multiple evaluators
+- **Shared events**: Collaborate with friends on event planning and dancer tracking
+- **Community features**: Optional dancer profiles and reputation tracking across users
+
+## Platform Evolution
+- **Cross-device sync**: Access data from phone, tablet, and web
+- **Offline-first**: Full functionality without internet connection
+- **Export capabilities**: Generate reports, share event summaries, backup data
+- **Integration**: Connect with calendar apps, social media, or dance event platforms
