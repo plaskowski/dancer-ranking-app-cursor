@@ -70,6 +70,19 @@ class DancerCard extends StatelessWidget {
                       ),
                     ],
 
+                    // Show "Left" indicator if they left before dancing
+                    if (dancer.hasLeft) ...[
+                      const TextSpan(text: ' • '),
+                      TextSpan(
+                        text: 'Left',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: context.danceTheme.warning,
+                        ),
+                      ),
+                    ],
+
                     // Show "Danced!" indicator with impression if they have danced
                     if (dancer.hasDanced) ...[
                       const TextSpan(text: ' • '),

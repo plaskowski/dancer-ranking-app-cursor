@@ -102,6 +102,15 @@ class DancerActionsDialog extends StatelessWidget {
             },
           ),
 
+          // Mark as Left - only show for present dancers who haven't danced yet
+          if (dancer.isPresent && !dancer.hasDanced)
+            ListTile(
+              leading: Icon(Icons.exit_to_app, color: context.danceTheme.warning),
+              title: const Text('Mark as left'),
+              subtitle: const Text('Left before dancing'),
+              onTap: () => _markAsLeft(context),
+            ),
+
           // Remove from Event - only show for ranked dancers
           if (dancer.hasRanking)
             ListTile(
@@ -226,6 +235,35 @@ class DancerActionsDialog extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error removing from planning: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _markAsLeft(BuildContext context) async {
+    try {
+      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+
+      // Mark the dancer as left
+      await attendanceService.markAsLeft(eventId, dancer.id);
+
+      if (context.mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${dancer.name} marked as left'),
+            backgroundColor: context.danceTheme.warning,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error marking as left: $e'),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );

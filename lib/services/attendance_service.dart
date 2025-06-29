@@ -35,6 +35,21 @@ class AttendanceService {
         .go();
   }
 
+  // Mark a dancer as left (they left before dancing)
+  Future<bool> markAsLeft(int eventId, int dancerId) async {
+    final attendance = await getAttendance(eventId, dancerId);
+    if (attendance == null) return false;
+
+    // Only allow marking as left if they haven't danced yet
+    if (attendance.status == 'served') return false;
+
+    return _database.update(_database.attendances).replace(
+          attendance.copyWith(
+            status: 'left',
+          ),
+        );
+  }
+
   // Record a dance with impression
   Future<bool> recordDance({
     required int eventId,

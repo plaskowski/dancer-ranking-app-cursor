@@ -233,8 +233,9 @@ Users can adjust rankings during events for various reasons:
 - **Visual Feedback**: Snackbar notifications provide immediate feedback after dialog closes
 - **Tab-Specific Actions**: Different action sets available based on Planning vs Present mode
 - **Efficient Navigation**: Quick action → feedback → return to main view for next task
-- **Action Types**: Set/Edit Ranking, Mark/Remove Present, Record Dance, Edit Notes, Remove from Event, Combo Actions
+- **Action Types**: Set/Edit Ranking, Mark/Remove Present, Record Dance, Edit Notes, Remove from Event, Mark as Left, Combo Actions
 - **Event Management**: "Remove from event" action only appears for ranked dancers, allowing cleanup of event rankings
+- **Left Tracking**: "Mark as left" action only appears for present dancers who haven't been danced with yet, tracking early departures
 
 **Add/Edit Dancer Dialog**:
 - Name input (required)

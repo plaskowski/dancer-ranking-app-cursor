@@ -4,6 +4,32 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.24.0] - 2025-06-29
+
+### User Requests
+- "continue" (from Next steps: "add an action to mark a present dancer as 'left' when they leave before I danced with them")
+
+### Added
+- **Mark as Left Action**: New action to mark present dancers as 'left' when they leave before dancing
+- **Smart Visibility**: Action only appears for present dancers who haven't been danced with yet
+- **Visual Indication**: "Left" status now displays in dancer cards with warning color
+- **Accurate Tracking**: Better overview of who was present vs who you actually danced with
+
+### Improved
+- **Event Management**: Can now track dancers who left early vs those you danced with
+- **Clear Status Display**: Dancer cards show "Left" indicator for departed dancers
+- **Contextual Actions**: Intelligent action visibility prevents marking danced dancers as left
+- **Better Analytics**: Maintains complete record of who was present vs who you engaged with
+
+### Technical
+- Added `markAsLeft()` method to AttendanceService with validation
+- Added "Mark as left" action to Dancer Actions Dialog with conditional visibility
+- Updated DancerCard to display "Left" status with warning theme color
+- Action only shows when `dancer.isPresent && !dancer.hasDanced` for logical consistency
+- Leverages new status field architecture from v0.23.0 schema refactoring
+
+---
+
 ## [v0.23.0] - 2025-06-29
 
 ### User Requests
