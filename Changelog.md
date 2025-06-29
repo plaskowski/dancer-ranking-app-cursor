@@ -4,6 +4,28 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.27.2] - 2025-06-29
+
+### User Requests
+- "Try to reduce spacing around the tab title, keeping the text size the same"
+- "As I don't need to tap them, I will use swiping"
+
+### Improved
+- **Swipe-Optimized Tab Header**: Reduced to 14px height optimized for swipe-only navigation
+- **Zero-Padding Design**: Eliminated all unnecessary padding since touch targets not needed
+- **Minimal Text Spacing**: Only 2px vertical padding around text for readability
+- **Maximum Space Efficiency**: 71% smaller than original while maintaining 10px text size
+
+### Technical
+- PreferredSize height reduced to 14px (from 18px) 
+- labelPadding set to EdgeInsets.zero for swipe-only usage
+- indicatorPadding reduced to 4px horizontal (from 8px)
+- indicatorWeight reduced to 1.0px for minimal visual weight
+- Line height compressed to 0.8 for tightest text layout
+- Added Padding widgets around text with 2px vertical spacing
+
+---
+
 ## [v0.27.1] - 2025-06-29
 
 ### User Requests

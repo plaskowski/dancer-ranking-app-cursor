@@ -73,30 +73,36 @@ class _EventScreenState extends State<EventScreen> with TickerProviderStateMixin
           style: const TextStyle(fontSize: 20),
         ),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(18), // Ultra compact!
+          preferredSize: const Size.fromHeight(14), // Minimal height for swipe-only
           child: Container(
             color: Theme.of(context).colorScheme.surface,
             child: TabBar(
               controller: _tabController,
-              labelPadding: const EdgeInsets.symmetric(vertical: 1), // Ultra minimal padding
-              indicatorPadding: const EdgeInsets.symmetric(horizontal: 8),
-              indicatorWeight: 1.5, // Very thin indicator
+              labelPadding: EdgeInsets.zero, // No padding needed for swipe-only
+              indicatorPadding: const EdgeInsets.symmetric(horizontal: 4),
+              indicatorWeight: 1.0, // Minimal indicator
               labelStyle: const TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w600,
-                height: 0.9, // Super tight line height
+                height: 0.8, // Extremely tight line height
               ),
               unselectedLabelStyle: const TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.normal,
-                height: 0.9,
+                height: 0.8,
               ),
               tabs: const [
                 Tab(
-                  child: Text('Planning', style: TextStyle(fontSize: 10)),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2), // Minimal text spacing
+                    child: Text('Planning', style: TextStyle(fontSize: 10)),
+                  ),
                 ),
                 Tab(
-                  child: Text('Present', style: TextStyle(fontSize: 10)),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2), // Minimal text spacing
+                    child: Text('Present', style: TextStyle(fontSize: 10)),
+                  ),
                 ),
               ],
               onTap: (index) {
