@@ -4,6 +4,36 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.31.0] - 2025-01-11
+
+### User Requests
+- "add a structured action log to every action, printed to console, so that I can review what exact actions led to a bug"
+- "print all list items that got rendered (some short info including ID)"
+- "use format that will be easy to process by Cursor agent"
+
+### Added
+- **Centralized Action Logger**: New `ActionLogger` utility with structured, timestamp-based logging format
+- **Comprehensive Service Logging**: All database operations (CRUD) tracked with detailed context
+- **List Rendering Logs**: All UI lists log their rendered items with IDs and key properties
+- **User Interaction Tracking**: Context menu actions, dialog lifecycle, navigation events
+- **Screen Lifecycle Logging**: Screen initialization, disposal, tab changes with full context
+- **Error Context Logging**: Enhanced error tracking with operation context and parameters
+
+### Technical
+- **Logging Categories**: `[ACTION_LOG]`, `[LIST_LOG]`, `[STATE_LOG]`, `[ERROR_LOG]` for easy parsing
+- **Service Integration**: DancerService, AttendanceService, RankingService with method-level logging
+- **UI Component Logging**: Planning/Present tabs, DancerActionsDialog, EventScreen with interaction tracking
+- **Cursor Agent Friendly**: Structured format designed for easy automated analysis
+- **Performance Optimized**: Uses both `developer.log()` and `print()` for comprehensive coverage
+- **Context Rich**: Each log includes relevant IDs, status changes, filtering results, and user actions
+
+### Debugging Enhancement
+- **Bug Reproduction**: Complete action trail for recreating user workflows
+- **Data Flow Tracking**: Database operations with before/after states
+- **UI State Visibility**: List contents, filtering results, navigation patterns
+- **Error Context**: Full parameter context when operations fail
+- **Workflow Analysis**: End-to-end user interaction patterns
+
 ## [v0.30.0] - 2025-01-11
 
 ### User Requests

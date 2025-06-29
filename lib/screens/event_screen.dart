@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../database/database.dart';
 import '../services/event_service.dart';
+import '../utils/action_logger.dart';
 import 'event_tab_actions.dart';
 import 'tabs/planning_tab.dart';
 import 'tabs/present_tab.dart';
@@ -28,10 +29,20 @@ class _EventScreenState extends State<EventScreen> {
     super.initState();
     _pageController = PageController();
     _loadEvent();
+
+    ActionLogger.logAction('UI_EventScreen', 'screen_initialized', {
+      'eventId': widget.eventId,
+      'initialTab': 'planning',
+    });
   }
 
   @override
   void dispose() {
+    ActionLogger.logAction('UI_EventScreen', 'screen_disposed', {
+      'eventId': widget.eventId,
+      'lastTab': _currentPage == 0 ? 'planning' : 'present',
+    });
+
     _pageController.dispose();
     super.dispose();
   }
@@ -57,8 +68,27 @@ class _EventScreenState extends State<EventScreen> {
     }
   }
 
+  void _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+
+    ActionLogger.logAction('UI_EventScreen', 'tab_changed', {
+      'eventId': widget.eventId,
+      'fromTab': _currentPage == 0 ? 'present' : 'planning',
+      'toTab': index == 0 ? 'planning' : 'present',
+      'tabIndex': index,
+      'changeMethod': 'swipe',
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    ActionLogger.logAction('UI_EventScreen', 'build_called', {
+      'eventId': widget.eventId,
+      'currentTab': _currentPage == 0 ? 'planning' : 'present',
+    });
+
     if (_event == null) {
       return const Scaffold(
         body: Center(child: CircularProgressIndicator()),
@@ -77,7 +107,9 @@ class _EventScreenState extends State<EventScreen> {
               style: const TextStyle(fontSize: 16),
             ),
             Text(
-              _currentPage == 0 ? '[Planning] • Present' : 'Planning • [Present]',
+              _currentPage == 0
+                  ? '[Planning] • Present'
+                  : 'Planning • [Present]',
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.normal,
@@ -89,7 +121,7 @@ class _EventScreenState extends State<EventScreen> {
       ),
       body: PageView(
         controller: _pageController,
-        onPageChanged: (index) => setState(() => _currentPage = index),
+        onPageChanged: _onPageChanged,
         children: [
           PlanningTab(eventId: widget.eventId),
           PresentTab(eventId: widget.eventId),

@@ -9,12 +9,15 @@ class DancerService {
 
   // Get all dancers ordered by name
   Stream<List<Dancer>> watchAllDancers() {
-    return (_database.select(_database.dancers)..orderBy([(d) => OrderingTerm.asc(d.name)])).watch();
+    return (_database.select(_database.dancers)
+          ..orderBy([(d) => OrderingTerm.asc(d.name)]))
+        .watch();
   }
 
   // Get a specific dancer by ID
   Future<Dancer?> getDancer(int id) {
-    return (_database.select(_database.dancers)..where((d) => d.id.equals(id))).getSingleOrNull();
+    return (_database.select(_database.dancers)..where((d) => d.id.equals(id)))
+        .getSingleOrNull();
   }
 
   // Search dancers by name
@@ -54,13 +57,15 @@ class DancerService {
 
   // Delete a dancer (this will cascade delete rankings and attendances)
   Future<int> deleteDancer(int id) {
-    return (_database.delete(_database.dancers)..where((d) => d.id.equals(id))).go();
+    return (_database.delete(_database.dancers)..where((d) => d.id.equals(id)))
+        .go();
   }
 
   // Get dancers count
   Future<int> getDancersCount() async {
     final countExp = countAll();
-    final query = _database.selectOnly(_database.dancers)..addColumns([countExp]);
+    final query = _database.selectOnly(_database.dancers)
+      ..addColumns([countExp]);
 
     final result = await query.getSingle();
     return result.read(countExp)!;
@@ -72,7 +77,8 @@ class DancerService {
       // LEFT JOIN rankings ON dancers.id = rankings.dancer_id AND rankings.event_id = eventId
       leftOuterJoin(
         _database.rankings,
-        _database.dancers.id.equalsExp(_database.rankings.dancerId) & _database.rankings.eventId.equals(eventId),
+        _database.dancers.id.equalsExp(_database.rankings.dancerId) &
+            _database.rankings.eventId.equals(eventId),
       ),
       // LEFT JOIN ranks ON rankings.rank_id = ranks.id
       leftOuterJoin(
@@ -82,7 +88,8 @@ class DancerService {
       // LEFT JOIN attendances ON dancers.id = attendances.dancer_id AND attendances.event_id = eventId
       leftOuterJoin(
         _database.attendances,
-        _database.dancers.id.equalsExp(_database.attendances.dancerId) & _database.attendances.eventId.equals(eventId),
+        _database.dancers.id.equalsExp(_database.attendances.dancerId) &
+            _database.attendances.eventId.equals(eventId),
       ),
     ])
       ..orderBy([OrderingTerm.asc(_database.dancers.name)]);
@@ -113,33 +120,44 @@ class DancerService {
   }
 
   // Get only dancers that don't have rankings for a specific event AND are not present (for selection dialog)
-  Future<List<DancerWithEventInfo>> getUnrankedDancersForEvent(int eventId) async {
+  Future<List<DancerWithEventInfo>> getUnrankedDancersForEvent(
+      int eventId) async {
     // Get all ranked dancer IDs for this event
-    final rankedDancerIdsDebug =
-        await (_database.select(_database.rankings)..where((r) => r.eventId.equals(eventId))).get();
+    final rankedDancerIdsDebug = await (_database.select(_database.rankings)
+          ..where((r) => r.eventId.equals(eventId)))
+        .get();
 
     // Get all present dancer IDs for this event
-    final presentDancerIds =
-        await (_database.select(_database.attendances)..where((a) => a.eventId.equals(eventId))).get();
+    final presentDancerIds = await (_database.select(_database.attendances)
+          ..where((a) => a.eventId.equals(eventId)))
+        .get();
 
-    print('DEBUG: Ranked dancer IDs for event $eventId: ${rankedDancerIdsDebug.map((r) => r.dancerId).toList()}');
-    print('DEBUG: Present dancer IDs for event $eventId: ${presentDancerIds.map((a) => a.dancerId).toList()}');
+    print(
+        'DEBUG: Ranked dancer IDs for event $eventId: ${rankedDancerIdsDebug.map((r) => r.dancerId).toList()}');
+    print(
+        'DEBUG: Present dancer IDs for event $eventId: ${presentDancerIds.map((a) => a.dancerId).toList()}');
 
     // Get all dancers
-    final allDancers = await (_database.select(_database.dancers)..orderBy([(d) => OrderingTerm.asc(d.name)])).get();
+    final allDancers = await (_database.select(_database.dancers)
+          ..orderBy([(d) => OrderingTerm.asc(d.name)]))
+        .get();
 
     // Filter out dancers that have rankings OR are present for this event
     final rankedDancerIds = rankedDancerIdsDebug.map((r) => r.dancerId).toSet();
     final presentDancerIdSet = presentDancerIds.map((a) => a.dancerId).toSet();
     final availableDancers = allDancers
-        .where((dancer) => !rankedDancerIds.contains(dancer.id) && !presentDancerIdSet.contains(dancer.id))
+        .where((dancer) =>
+            !rankedDancerIds.contains(dancer.id) &&
+            !presentDancerIdSet.contains(dancer.id))
         .toList();
 
     print('DEBUG: All dancers count: ${allDancers.length}');
     print('DEBUG: Ranked dancers count: ${rankedDancerIds.length}');
     print('DEBUG: Present dancers count: ${presentDancerIdSet.length}');
-    print('DEBUG: Available (unranked + absent) dancers count: ${availableDancers.length}');
-    print('DEBUG: Available dancer names: ${availableDancers.map((d) => d.name).toList()}');
+    print(
+        'DEBUG: Available (unranked + absent) dancers count: ${availableDancers.length}');
+    print(
+        'DEBUG: Available dancer names: ${availableDancers.map((d) => d.name).toList()}');
 
     return availableDancers.map((dancer) {
       return DancerWithEventInfo(

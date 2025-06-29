@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/dancer_service.dart';
+import '../../utils/action_logger.dart';
 import '../../widgets/add_dancer_dialog.dart';
 import '../../widgets/dancer_card.dart';
 import '../add_existing_dancer_screen.dart';
@@ -15,16 +16,25 @@ class PresentTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ActionLogger.logAction(
+        'UI_PresentTab', 'build_called', {'eventId': eventId});
+
     final dancerService = Provider.of<DancerService>(context);
 
     return StreamBuilder<List<DancerWithEventInfo>>(
       stream: dancerService.watchDancersForEvent(eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
+          ActionLogger.logAction(
+              'UI_PresentTab', 'loading_state', {'eventId': eventId});
           return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasError) {
+          ActionLogger.logError('UI_PresentTab', 'stream_error', {
+            'eventId': eventId,
+            'error': snapshot.error.toString(),
+          });
           return Center(child: Text('Error: ${snapshot.error}'));
         }
 
@@ -33,35 +43,51 @@ class PresentTab extends StatelessWidget {
             .where((d) => d.status == 'present' || d.status == 'served')
             .toList();
 
+        ActionLogger.logListRendering(
+            'UI_PresentTab',
+            'present_dancers',
+            presentDancers
+                .map((d) => {
+                      'id': d.id,
+                      'name': d.name,
+                      'status': d.status,
+                      'isPresent': d.isPresent,
+                      'hasRanking': d.hasRanking,
+                      'rankName': d.rankName,
+                      'rankOrdinal': d.rankOrdinal,
+                      'hasDanced': d.hasDanced,
+                    })
+                .toList());
+
+        ActionLogger.logAction('UI_PresentTab', 'filtering_complete', {
+          'eventId': eventId,
+          'totalDancers': allDancers.length,
+          'presentDancers': presentDancers.length,
+          'dancedCount': presentDancers.where((d) => d.hasDanced).length,
+          'leftCount': allDancers.where((d) => d.status == 'left').length,
+          'absentCount': allDancers.where((d) => d.status == 'absent').length,
+        });
+
         if (presentDancers.isEmpty) {
-          return Center(
+          return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.location_on,
-                    size: 64,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant),
-                const SizedBox(height: 16),
+                Icon(Icons.people_outline, size: 64, color: Colors.grey),
+                SizedBox(height: 16),
+                Text('No dancers present yet'),
+                SizedBox(height: 8),
                 Text(
-                  'No one currently at the event',
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Use the + button to add dancers',
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  'Mark dancers as present to see them here',
+                  style: TextStyle(color: Colors.grey),
                 ),
               ],
             ),
           );
         }
 
-        // Group present dancers by rank
+        // Group dancers by rank
         final Map<String, List<DancerWithEventInfo>> groupedDancers = {};
-
         for (final dancer in presentDancers) {
           final rankName = dancer.rankName ?? 'No ranking yet';
           if (!groupedDancers.containsKey(rankName)) {
@@ -70,7 +96,7 @@ class PresentTab extends StatelessWidget {
           groupedDancers[rankName]!.add(dancer);
         }
 
-        // Sort groups by rank ordinal
+        // Sort ranks by ordinal (best first)
         final sortedKeys = groupedDancers.keys.toList()
           ..sort((a, b) {
             if (a == 'No ranking yet') return 1;
@@ -82,6 +108,12 @@ class PresentTab extends StatelessWidget {
             return (dancerA.rankOrdinal ?? 999)
                 .compareTo(dancerB.rankOrdinal ?? 999);
           });
+
+        ActionLogger.logAction('UI_PresentTab', 'grouping_complete', {
+          'eventId': eventId,
+          'rankGroups': sortedKeys.length,
+          'groupSizes': groupedDancers.map((k, v) => MapEntry(k, v.length)),
+        });
 
         return ListView(
           padding: const EdgeInsets.all(16),

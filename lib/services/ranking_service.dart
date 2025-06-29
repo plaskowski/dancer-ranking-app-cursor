@@ -1,5 +1,7 @@
 import 'package:drift/drift.dart';
+
 import '../database/database.dart';
+import '../utils/action_logger.dart';
 
 class RankingService {
   final AppDatabase _database;
@@ -33,32 +35,82 @@ class RankingService {
     required int rankId,
     String? reason,
   }) async {
-    // Check if ranking already exists
-    final existingRanking = await (_database.select(_database.rankings)
-          ..where(
-              (r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
-        .getSingleOrNull();
+    ActionLogger.logServiceCall('RankingService', 'setRanking', {
+      'eventId': eventId,
+      'dancerId': dancerId,
+      'rankId': rankId,
+      'hasReason': reason != null,
+    });
 
-    if (existingRanking != null) {
-      // Update existing ranking
-      await _database.update(_database.rankings).replace(
-            existingRanking.copyWith(
-              rankId: rankId,
-              reason: Value(reason),
-              lastUpdated: DateTime.now(),
-            ),
-          );
-      return existingRanking.id;
-    } else {
-      // Create new ranking
-      return _database.into(_database.rankings).insert(
-            RankingsCompanion.insert(
-              eventId: eventId,
-              dancerId: dancerId,
-              rankId: rankId,
-              reason: Value(reason),
-            ),
-          );
+    try {
+      // Check if ranking already exists
+      final existingRanking = await (_database.select(_database.rankings)
+            ..where(
+                (r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
+          .getSingleOrNull();
+
+      if (existingRanking != null) {
+        ActionLogger.logAction(
+            'RankingService.setRanking', 'updating_existing', {
+          'eventId': eventId,
+          'dancerId': dancerId,
+          'oldRankId': existingRanking.rankId,
+          'newRankId': rankId,
+          'rankingId': existingRanking.id,
+        });
+
+        // Update existing ranking
+        await _database.update(_database.rankings).replace(
+              existingRanking.copyWith(
+                rankId: rankId,
+                reason: Value(reason),
+                lastUpdated: DateTime.now(),
+              ),
+            );
+
+        ActionLogger.logDbOperation('UPDATE', 'rankings', {
+          'id': existingRanking.id,
+          'eventId': eventId,
+          'dancerId': dancerId,
+          'rankId': rankId,
+          'reason': reason,
+        });
+
+        return existingRanking.id;
+      } else {
+        ActionLogger.logAction('RankingService.setRanking', 'creating_new', {
+          'eventId': eventId,
+          'dancerId': dancerId,
+          'rankId': rankId,
+        });
+
+        // Create new ranking
+        final id = await _database.into(_database.rankings).insert(
+              RankingsCompanion.insert(
+                eventId: eventId,
+                dancerId: dancerId,
+                rankId: rankId,
+                reason: Value(reason),
+              ),
+            );
+
+        ActionLogger.logDbOperation('INSERT', 'rankings', {
+          'id': id,
+          'eventId': eventId,
+          'dancerId': dancerId,
+          'rankId': rankId,
+          'reason': reason,
+        });
+
+        return id;
+      }
+    } catch (e) {
+      ActionLogger.logError('RankingService.setRanking', e.toString(), {
+        'eventId': eventId,
+        'dancerId': dancerId,
+        'rankId': rankId,
+      });
+      rethrow;
     }
   }
 
@@ -112,11 +164,32 @@ class RankingService {
   }
 
   // Delete a ranking
-  Future<int> deleteRanking(int eventId, int dancerId) {
-    return (_database.delete(_database.rankings)
-          ..where(
-              (r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
-        .go();
+  Future<int> deleteRanking(int eventId, int dancerId) async {
+    ActionLogger.logServiceCall('RankingService', 'deleteRanking', {
+      'eventId': eventId,
+      'dancerId': dancerId,
+    });
+
+    try {
+      final result = await (_database.delete(_database.rankings)
+            ..where(
+                (r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
+          .go();
+
+      ActionLogger.logDbOperation('DELETE', 'rankings', {
+        'eventId': eventId,
+        'dancerId': dancerId,
+        'affected_rows': result,
+      });
+
+      return result;
+    } catch (e) {
+      ActionLogger.logError('RankingService.deleteRanking', e.toString(), {
+        'eventId': eventId,
+        'dancerId': dancerId,
+      });
+      rethrow;
+    }
   }
 
   // Get rankings count for an event

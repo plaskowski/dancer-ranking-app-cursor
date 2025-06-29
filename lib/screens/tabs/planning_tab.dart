@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../services/dancer_service.dart';
 import '../../theme/theme_extensions.dart';
+import '../../utils/action_logger.dart';
 import '../../widgets/dancer_card.dart';
 import '../event_tab_actions.dart';
 import '../select_dancers_screen.dart';
@@ -20,16 +21,25 @@ class PlanningTab extends StatefulWidget {
 class _PlanningTabState extends State<PlanningTab> {
   @override
   Widget build(BuildContext context) {
+    ActionLogger.logAction(
+        'UI_PlanningTab', 'build_called', {'eventId': widget.eventId});
+
     final dancerService = Provider.of<DancerService>(context);
 
     return StreamBuilder<List<DancerWithEventInfo>>(
       stream: dancerService.watchDancersForEvent(widget.eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
+          ActionLogger.logAction(
+              'UI_PlanningTab', 'loading_state', {'eventId': widget.eventId});
           return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasError) {
+          ActionLogger.logError('UI_PlanningTab', 'stream_error', {
+            'eventId': widget.eventId,
+            'error': snapshot.error.toString(),
+          });
           return Center(child: Text('Error: ${snapshot.error}'));
         }
 
@@ -37,6 +47,29 @@ class _PlanningTabState extends State<PlanningTab> {
         // Only show dancers that have been explicitly added to the event (have rankings) AND are not present yet
         final dancers =
             allDancers.where((d) => d.hasRanking && !d.isPresent).toList();
+
+        ActionLogger.logListRendering(
+            'UI_PlanningTab',
+            'filtered_dancers',
+            dancers
+                .map((d) => {
+                      'id': d.id,
+                      'name': d.name,
+                      'status': d.status,
+                      'isPresent': d.isPresent,
+                      'hasRanking': d.hasRanking,
+                      'rankName': d.rankName,
+                      'rankOrdinal': d.rankOrdinal,
+                    })
+                .toList());
+
+        ActionLogger.logAction('UI_PlanningTab', 'filtering_complete', {
+          'eventId': widget.eventId,
+          'totalDancers': allDancers.length,
+          'filteredDancers': dancers.length,
+          'presentDancers': allDancers.where((d) => d.isPresent).length,
+          'rankedDancers': allDancers.where((d) => d.hasRanking).length,
+        });
 
         if (dancers.isEmpty) {
           // Check if there are any ranked dancers at all for this event
@@ -99,6 +132,12 @@ class _PlanningTabState extends State<PlanningTab> {
             return (dancerA.rankOrdinal ?? 999)
                 .compareTo(dancerB.rankOrdinal ?? 999);
           });
+
+        ActionLogger.logAction('UI_PlanningTab', 'grouping_complete', {
+          'eventId': widget.eventId,
+          'rankGroups': sortedKeys.length,
+          'groupSizes': groupedDancers.map((k, v) => MapEntry(k, v.length)),
+        });
 
         return ListView(
           padding: const EdgeInsets.all(16),

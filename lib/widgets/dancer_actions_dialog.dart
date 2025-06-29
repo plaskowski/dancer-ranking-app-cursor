@@ -6,6 +6,7 @@ import '../services/attendance_service.dart';
 import '../services/dancer_service.dart';
 import '../services/ranking_service.dart';
 import '../theme/theme_extensions.dart';
+import '../utils/action_logger.dart';
 import 'add_dancer_dialog.dart';
 import 'dance_recording_dialog.dart';
 import 'ranking_dialog.dart';
@@ -24,6 +25,16 @@ class DancerActionsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ActionLogger.logUserAction('DancerActionsDialog', 'dialog_opened', {
+      'dancerId': dancer.id,
+      'dancerName': dancer.name,
+      'eventId': eventId,
+      'isPlanningMode': isPlanningMode,
+      'dancerStatus': dancer.status,
+      'isPresent': dancer.isPresent,
+      'hasRanking': dancer.hasRanking,
+    });
+
     return AlertDialog(
       title: Text(dancer.name),
       content: Column(
@@ -34,6 +45,14 @@ class DancerActionsDialog extends StatelessWidget {
             leading: Icon(Icons.star, color: context.danceTheme.rankingHigh),
             title: Text(dancer.hasRanking ? 'Edit Ranking' : 'Set Ranking'),
             onTap: () {
+              ActionLogger.logUserAction(
+                  'DancerActionsDialog', 'ranking_action_tapped', {
+                'dancerId': dancer.id,
+                'eventId': eventId,
+                'hasExistingRanking': dancer.hasRanking,
+                'currentRank': dancer.rankName,
+              });
+
               Navigator.pop(context);
               showDialog(
                 context: context,
@@ -75,6 +94,13 @@ class DancerActionsDialog extends StatelessWidget {
               title:
                   Text(dancer.hasDanced ? 'Edit impression' : 'Record Dance'),
               onTap: () {
+                ActionLogger.logUserAction(
+                    'DancerActionsDialog', 'record_dance_tapped', {
+                  'dancerId': dancer.id,
+                  'eventId': eventId,
+                  'hasAlreadyDanced': dancer.hasDanced,
+                });
+
                 Navigator.pop(context);
                 showDialog(
                   context: context,
@@ -93,6 +119,12 @@ class DancerActionsDialog extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary),
             title: const Text('Edit general note'),
             onTap: () {
+              ActionLogger.logUserAction(
+                  'DancerActionsDialog', 'edit_notes_tapped', {
+                'dancerId': dancer.id,
+                'eventId': eventId,
+              });
+
               Navigator.pop(context);
               // Convert DancerWithEventInfo to Dancer for editing
               final dancerEntity = Dancer(
@@ -129,7 +161,14 @@ class DancerActionsDialog extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            ActionLogger.logUserAction(
+                'DancerActionsDialog', 'dialog_cancelled', {
+              'dancerId': dancer.id,
+              'eventId': eventId,
+            });
+            Navigator.pop(context);
+          },
           child: const Text('Cancel'),
         ),
       ],
@@ -137,6 +176,14 @@ class DancerActionsDialog extends StatelessWidget {
   }
 
   Future<void> _togglePresence(BuildContext context) async {
+    ActionLogger.logUserAction(
+        'DancerActionsDialog', 'toggle_presence_started', {
+      'dancerId': dancer.id,
+      'eventId': eventId,
+      'currentlyPresent': dancer.isPresent,
+      'action': dancer.isPresent ? 'mark_absent' : 'mark_present',
+    });
+
     try {
       final attendanceService =
           Provider.of<AttendanceService>(context, listen: false);
@@ -145,6 +192,12 @@ class DancerActionsDialog extends StatelessWidget {
         // Mark as absent
         await attendanceService.removeFromPresent(eventId, dancer.id);
         if (context.mounted) {
+          ActionLogger.logUserAction(
+              'DancerActionsDialog', 'mark_absent_completed', {
+            'dancerId': dancer.id,
+            'eventId': eventId,
+          });
+
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -157,6 +210,12 @@ class DancerActionsDialog extends StatelessWidget {
         // Mark as present
         await attendanceService.markPresent(eventId, dancer.id);
         if (context.mounted) {
+          ActionLogger.logUserAction(
+              'DancerActionsDialog', 'mark_present_completed', {
+            'dancerId': dancer.id,
+            'eventId': eventId,
+          });
+
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -167,6 +226,13 @@ class DancerActionsDialog extends StatelessWidget {
         }
       }
     } catch (e) {
+      ActionLogger.logError(
+          'DancerActionsDialog._togglePresence', e.toString(), {
+        'dancerId': dancer.id,
+        'eventId': eventId,
+        'action': dancer.isPresent ? 'mark_absent' : 'mark_present',
+      });
+
       if (context.mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
@@ -180,41 +246,49 @@ class DancerActionsDialog extends StatelessWidget {
   }
 
   Future<void> _markPresentAndRecordDance(BuildContext context) async {
+    ActionLogger.logUserAction('DancerActionsDialog', 'combo_action_started', {
+      'dancerId': dancer.id,
+      'eventId': eventId,
+      'action': 'mark_present_and_record_dance',
+    });
+
     try {
-      // First mark as present
       final attendanceService =
           Provider.of<AttendanceService>(context, listen: false);
-      await attendanceService.markPresent(eventId, dancer.id);
+
+      // Mark as present and record dance
+      await attendanceService.recordDance(
+        eventId: eventId,
+        dancerId: dancer.id,
+      );
 
       if (context.mounted) {
-        // Close current dialog
-        Navigator.pop(context);
+        ActionLogger.logUserAction(
+            'DancerActionsDialog', 'combo_action_completed', {
+          'dancerId': dancer.id,
+          'eventId': eventId,
+        });
 
-        // Show success feedback
+        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${dancer.name} marked as present'),
-            duration: const Duration(seconds: 1), // Shorter duration
+            content: Text('${dancer.name} marked present and dance recorded'),
             backgroundColor: context.danceTheme.success,
-          ),
-        );
-
-        // Immediately open dance recording dialog
-        showDialog(
-          context: context,
-          builder: (context) => DanceRecordingDialog(
-            dancerId: dancer.id,
-            eventId: eventId,
-            dancerName: dancer.name,
           ),
         );
       }
     } catch (e) {
+      ActionLogger.logError(
+          'DancerActionsDialog._markPresentAndRecordDance', e.toString(), {
+        'dancerId': dancer.id,
+        'eventId': eventId,
+      });
+
       if (context.mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error marking present: $e'),
+            content: Text('Error recording dance: $e'),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -223,6 +297,13 @@ class DancerActionsDialog extends StatelessWidget {
   }
 
   Future<void> _removeFromPlanning(BuildContext context) async {
+    ActionLogger.logUserAction(
+        'DancerActionsDialog', 'remove_from_planning_started', {
+      'dancerId': dancer.id,
+      'eventId': eventId,
+      'currentRank': dancer.rankName,
+    });
+
     try {
       final rankingService =
           Provider.of<RankingService>(context, listen: false);
@@ -231,6 +312,12 @@ class DancerActionsDialog extends StatelessWidget {
       await rankingService.deleteRanking(eventId, dancer.id);
 
       if (context.mounted) {
+        ActionLogger.logUserAction(
+            'DancerActionsDialog', 'remove_from_planning_completed', {
+          'dancerId': dancer.id,
+          'eventId': eventId,
+        });
+
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -240,6 +327,12 @@ class DancerActionsDialog extends StatelessWidget {
         );
       }
     } catch (e) {
+      ActionLogger.logError(
+          'DancerActionsDialog._removeFromPlanning', e.toString(), {
+        'dancerId': dancer.id,
+        'eventId': eventId,
+      });
+
       if (context.mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
@@ -253,6 +346,12 @@ class DancerActionsDialog extends StatelessWidget {
   }
 
   Future<void> _markAsLeft(BuildContext context) async {
+    ActionLogger.logUserAction('DancerActionsDialog', 'mark_as_left_started', {
+      'dancerId': dancer.id,
+      'eventId': eventId,
+      'currentStatus': dancer.status,
+    });
+
     try {
       final attendanceService =
           Provider.of<AttendanceService>(context, listen: false);
@@ -261,6 +360,12 @@ class DancerActionsDialog extends StatelessWidget {
       await attendanceService.markAsLeft(eventId, dancer.id);
 
       if (context.mounted) {
+        ActionLogger.logUserAction(
+            'DancerActionsDialog', 'mark_as_left_completed', {
+          'dancerId': dancer.id,
+          'eventId': eventId,
+        });
+
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -270,6 +375,11 @@ class DancerActionsDialog extends StatelessWidget {
         );
       }
     } catch (e) {
+      ActionLogger.logError('DancerActionsDialog._markAsLeft', e.toString(), {
+        'dancerId': dancer.id,
+        'eventId': eventId,
+      });
+
       if (context.mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
