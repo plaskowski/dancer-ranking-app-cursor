@@ -1,4 +1,3 @@
-
 # Next Steps
 
 > **Note**: All completed improvements have been migrated to [Changelog.md](./Changelog.md)

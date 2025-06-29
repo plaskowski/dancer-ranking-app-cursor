@@ -4,6 +4,24 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.11.0] - 2025-06-29
+
+### User Requests
+- "take next item" (from Next steps: "make sure events are sorted by date descending")
+
+### Changed
+- **Documentation Updated**: Clarified that events are sorted by date descending (newest first) in Implementation specification
+
+### Improved
+- **Specification Accuracy**: Home Screen section now explicitly documents event sorting behavior
+
+### Technical
+- Verified existing `OrderingTerm.desc(e.date)` implementation is working correctly
+- Updated `Implementation specification.md` Home Screen section with sorting documentation
+- No code changes needed - sorting was already implemented properly
+
+---
+
 ## [v0.10.0] - 2025-06-29
 
 ### User Requests

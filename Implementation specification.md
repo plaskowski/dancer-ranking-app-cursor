@@ -96,7 +96,7 @@ Users can adjust rankings during events for various reasons:
 ### 1. Home Screen (`HomeScreen`)
 **Purpose**: Main entry point showing all events
 **Actions**:
-- View list of all events (past and upcoming)
+- View list of all events (past and upcoming) **sorted by date descending (newest first)**
 - Navigate to event details by tapping event
 - Create new event (FAB)
 - Navigate to dancers management
