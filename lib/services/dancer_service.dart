@@ -121,19 +121,32 @@ class DancerService {
   // Get only dancers that don't have rankings for a specific event (for selection dialog)
   Future<List<DancerWithEventInfo>> getUnrankedDancersForEvent(
       int eventId) async {
-    // Subquery to get dancer IDs that already have rankings for this event
-    final rankedDancerIds = _database.selectOnly(_database.rankings)
-      ..where(_database.rankings.eventId.equals(eventId))
-      ..addColumns([_database.rankings.dancerId]);
+    // First, let's get all ranked dancer IDs for debugging
+    final rankedDancerIdsDebug = await (_database.select(_database.rankings)
+          ..where((r) => r.eventId.equals(eventId)))
+        .get();
 
-    // Main query: get dancers that are NOT in the ranked dancers subquery
-    final query = _database.select(_database.dancers)
-      ..where((d) => d.id.isNotInQuery(rankedDancerIds))
-      ..orderBy([(d) => OrderingTerm.asc(d.name)]);
+    print(
+        'DEBUG: Ranked dancer IDs for event $eventId: ${rankedDancerIdsDebug.map((r) => r.dancerId).toList()}');
 
-    final result = await query.get();
+    // Get all dancers
+    final allDancers = await (_database.select(_database.dancers)
+          ..orderBy([(d) => OrderingTerm.asc(d.name)]))
+        .get();
 
-    return result.map((dancer) {
+    // Filter out dancers that have rankings for this event
+    final rankedDancerIds = rankedDancerIdsDebug.map((r) => r.dancerId).toSet();
+    final unrankedDancers = allDancers
+        .where((dancer) => !rankedDancerIds.contains(dancer.id))
+        .toList();
+
+    print('DEBUG: All dancers count: ${allDancers.length}');
+    print('DEBUG: Ranked dancers count: ${rankedDancerIds.length}');
+    print('DEBUG: Unranked dancers count: ${unrankedDancers.length}');
+    print(
+        'DEBUG: Unranked dancer names: ${unrankedDancers.map((d) => d.name).toList()}');
+
+    return unrankedDancers.map((dancer) {
       return DancerWithEventInfo(
         id: dancer.id,
         name: dancer.name,

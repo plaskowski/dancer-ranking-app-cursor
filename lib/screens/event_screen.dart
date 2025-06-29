@@ -119,7 +119,9 @@ class _PlanningTab extends StatelessWidget {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
 
-        final dancers = snapshot.data ?? [];
+        final allDancers = snapshot.data ?? [];
+        // Only show dancers that have been explicitly added to the event (have rankings)
+        final dancers = allDancers.where((d) => d.hasRanking).toList();
 
         if (dancers.isEmpty) {
           return const Center(
@@ -129,7 +131,7 @@ class _PlanningTab extends StatelessWidget {
                 Icon(Icons.people, size: 64, color: Colors.grey),
                 SizedBox(height: 16),
                 Text(
-                  'No dancers yet',
+                  'No dancers added yet',
                   style: TextStyle(fontSize: 18, color: Colors.grey),
                 ),
                 SizedBox(height: 8),
@@ -142,11 +144,12 @@ class _PlanningTab extends StatelessWidget {
           );
         }
 
-        // Group dancers by rank
+        // Group dancers by rank (only dancers with rankings will be shown)
         final Map<String, List<DancerWithEventInfo>> groupedDancers = {};
 
         for (final dancer in dancers) {
-          final rankName = dancer.rankName ?? 'No ranking yet';
+          final rankName =
+              dancer.rankName!; // Safe since we filtered for hasRanking
           if (!groupedDancers.containsKey(rankName)) {
             groupedDancers[rankName] = [];
           }
@@ -156,9 +159,6 @@ class _PlanningTab extends StatelessWidget {
         // Sort groups by rank ordinal
         final sortedKeys = groupedDancers.keys.toList()
           ..sort((a, b) {
-            if (a == 'No ranking yet') return 1;
-            if (b == 'No ranking yet') return -1;
-
             final dancerA = groupedDancers[a]!.first;
             final dancerB = groupedDancers[b]!.first;
 
