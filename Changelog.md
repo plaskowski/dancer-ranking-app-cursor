@@ -4,6 +4,24 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.21.0] - 2025-06-29
+
+### User Requests
+- "Nice, but now when I mark single dancer as present it is not reflected in Add Existing Dancer dialog."
+
+### Fixed
+- **Reactive List Updates**: Fixed Add Existing Dancer screen to automatically update when dancers are marked as present
+- **Real-time UI Updates**: Converted from FutureBuilder to StreamBuilder for reactive data updates
+- **Immediate Feedback**: Dancers now disappear from the list immediately after being marked present
+
+### Technical
+- Replaced `FutureBuilder` with `StreamBuilder` in Add Existing Dancer screen
+- Changed `_getAvailableDancers()` Future method to `_getAvailableDancersStream()` Stream method
+- Uses reactive `watchDancersForEvent()` with filtering for unranked and absent dancers
+- Automatic UI updates when attendance database changes occur
+
+---
+
 ## [v0.20.0] - 2025-06-29
 
 ### User Requests

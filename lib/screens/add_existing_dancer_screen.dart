@@ -120,8 +120,8 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
 
           // Dancers List
           Expanded(
-            child: FutureBuilder<List<DancerWithEventInfo>>(
-              future: _getAvailableDancers(),
+            child: StreamBuilder<List<DancerWithEventInfo>>(
+              stream: _getAvailableDancersStream(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -214,11 +214,18 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
     );
   }
 
-  Future<List<DancerWithEventInfo>> _getAvailableDancers() async {
+  Stream<List<DancerWithEventInfo>> _getAvailableDancersStream() {
     final dancerService = Provider.of<DancerService>(context, listen: false);
 
-    // Get unranked and absent dancers for this event (dancers not ranked and not present)
-    return dancerService.getUnrankedDancersForEvent(widget.eventId);
+    // Use reactive stream and filter to show only unranked and absent dancers
+    return dancerService.watchDancersForEvent(widget.eventId).map((allDancers) {
+      return allDancers.where((dancer) {
+        // Show dancers who are NOT ranked (no rankName) AND NOT present (no attendanceMarkedAt)
+        final isUnranked = dancer.rankName == null;
+        final isAbsent = dancer.attendanceMarkedAt == null;
+        return isUnranked && isAbsent;
+      }).toList();
+    });
   }
 
   List<DancerWithEventInfo> _filterDancers(List<DancerWithEventInfo> dancers) {
