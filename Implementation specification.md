@@ -131,7 +131,7 @@ Users can adjust rankings during events for various reasons:
 ### 3. Event Screen (`EventScreen`)
 **Purpose**: Main event management with tabbed interface
 **Title**: Displays event name and date in single line format (e.g., "Salsa Night - Dec 15")
-**Compact Tab Header**: Optimized 36px height TabBar with reduced padding and 14px font size for vertical space efficiency
+**Ultra Compact Tab Header**: Extremely optimized 18px height TabBar with minimal 1px padding and 10px font size for maximum vertical space efficiency
 **Tabs**:
 
 **Planning Tab**:

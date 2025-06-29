@@ -4,6 +4,26 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.27.1] - 2025-06-29
+
+### User Requests
+- "Seems to be working, shrink it twice more"
+
+### Improved
+- **Ultra Compact Tab Header**: Further reduced tab bar height from 28px to 18px (62% smaller than original)
+- **Micro Typography**: Reduced font size to 10px for maximum space efficiency
+- **Minimal Spacing**: Ultra-thin padding (1px vertical) and narrow indicator (1.5px weight)
+- **Extreme Space Savings**: Now uses ~63% less vertical space than original Material Design tabs
+
+### Technical
+- PreferredSize height reduced to 18px (down from 28px)
+- labelPadding reduced to 1px vertical (from 4px)
+- Font size reduced to 10px (from 13px)
+- indicatorWeight set to 1.5px for ultra-thin appearance
+- Line height compressed to 0.9 for tightest possible layout
+
+---
+
 ## [v0.27.0] - 2025-06-29
 
 ### User Requests

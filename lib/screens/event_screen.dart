@@ -17,8 +17,7 @@ class EventScreen extends StatefulWidget {
   State<EventScreen> createState() => _EventScreenState();
 }
 
-class _EventScreenState extends State<EventScreen>
-    with TickerProviderStateMixin {
+class _EventScreenState extends State<EventScreen> with TickerProviderStateMixin {
   late TabController _tabController;
   Event? _event;
   late List<EventTabActions> _tabActions;
@@ -74,26 +73,38 @@ class _EventScreenState extends State<EventScreen>
           style: const TextStyle(fontSize: 20),
         ),
         bottom: PreferredSize(
-          preferredSize:
-              const Size.fromHeight(36), // Reduced from default ~48px
-          child: TabBar(
-            controller: _tabController,
-            labelPadding:
-                const EdgeInsets.symmetric(vertical: 8), // Reduced padding
-            indicatorPadding: const EdgeInsets.symmetric(horizontal: 16),
-            labelStyle: const TextStyle(
-                fontSize: 14, fontWeight: FontWeight.w600), // Smaller text
-            unselectedLabelStyle:
-                const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
-            tabs: const [
-              Tab(text: 'Planning'),
-              Tab(text: 'Present'),
-            ],
-            onTap: (index) {
-              setState(() {
-                // Trigger rebuild to update FAB
-              });
-            },
+          preferredSize: const Size.fromHeight(18), // Ultra compact!
+          child: Container(
+            color: Theme.of(context).colorScheme.surface,
+            child: TabBar(
+              controller: _tabController,
+              labelPadding: const EdgeInsets.symmetric(vertical: 1), // Ultra minimal padding
+              indicatorPadding: const EdgeInsets.symmetric(horizontal: 8),
+              indicatorWeight: 1.5, // Very thin indicator
+              labelStyle: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                height: 0.9, // Super tight line height
+              ),
+              unselectedLabelStyle: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.normal,
+                height: 0.9,
+              ),
+              tabs: const [
+                Tab(
+                  child: Text('Planning', style: TextStyle(fontSize: 10)),
+                ),
+                Tab(
+                  child: Text('Present', style: TextStyle(fontSize: 10)),
+                ),
+              ],
+              onTap: (index) {
+                setState(() {
+                  // Trigger rebuild to update FAB
+                });
+              },
+            ),
           ),
         ),
       ),
