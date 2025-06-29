@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+
 import '../database/database.dart';
 
 class EventService {
@@ -30,14 +31,17 @@ class EventService {
   }
 
   // Update an existing event
-  Future<bool> updateEvent(int id, {String? name, DateTime? date}) {
+  Future<bool> updateEvent(int id, {String? name, DateTime? date}) async {
+    // Get current event to preserve unchanged fields
+    final currentEvent = await getEvent(id);
+    if (currentEvent == null) return false;
+
     return _database.update(_database.events).replace(
           Event(
             id: id,
-            name: name ?? '', // This will be properly handled in the UI
-            date: date ??
-                DateTime.now(), // This will be properly handled in the UI
-            createdAt: DateTime.now(), // This will be ignored by update
+            name: name ?? currentEvent.name,
+            date: date ?? currentEvent.date,
+            createdAt: currentEvent.createdAt,
           ),
         );
   }

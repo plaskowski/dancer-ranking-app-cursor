@@ -4,6 +4,38 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.29.0] - 2025-01-11
+
+### User Requests
+- "add long press context menu to events screen" with "Rename" and "Delete"
+- "Make sure the list gets refreshed after the contextual action"
+- "When I confirm the date picker dialog after changing the date it does not get changed in events screen"
+- "Still no good. Write it down as a bug to address later."
+
+### Added
+- **Long Press Context Menu**: Added long press gesture to event cards showing bottom sheet menu
+- **Rename Event Action**: Full rename functionality with text field dialog and validation
+- **Delete Event Action**: Delete with confirmation dialog and cascade deletion of related data
+- **Change Date Action**: UI for date picker (functional but has database update bug)
+
+### Improved
+- **Event Management**: Enhanced event cards with contextual actions for better user control
+- **Visual Feedback**: Comprehensive snackbar notifications for all actions with success/error states
+- **Error Handling**: Proper try-catch blocks with user-friendly error messages
+- **Input Validation**: Trim whitespace and prevent empty names in rename dialog
+
+### Technical
+- Added modal bottom sheet context menu with three actions (Rename, Change Date, Delete)
+- Implemented separate dialog methods for each action with proper state management
+- Enhanced EventService.updateEvent method with better field preservation
+- Added keyboard shortcut support (Enter key) for rename dialog
+- Proper async/await handling and context.mounted checks for navigation safety
+
+### Known Issues
+- **Date Change Bug**: Date picker selection doesn't persist to database (needs investigation)
+  - UI shows date picker and success message but database update fails
+  - May be related to DateTime comparison or Drift ORM update method
+
 ## [v0.28.1] - 2025-01-11
 
 ### User Requests
