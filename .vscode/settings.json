@@ -1,0 +1,17 @@
+{
+  "dart.formatOnSave": true,
+  "dart.lineLength": 120,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+  "dart.analysisExcludedFolders": [
+    ".dart_tool",
+    "build"
+  ],
+  "dart.runPubGetOnPubspecChanges": true,
+  "files.associations": {
+    "*.dart": "dart"
+  }
+}
