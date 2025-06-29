@@ -248,7 +248,7 @@ Home Screen
 - **Context-aware actions**: Different dialog contents based on Planning vs Present mode
 - **Streamlined workflow**: Stay on Planning tab for batch presence marking
 - **Dual FAB behavior**: Tab-specific actions (Select Dancers vs Add Dancer)
-- **Dance prioritization**: Ranked tab shows best rank ordinal first based on current rankings
+- **Dance prioritization**: Present tab shows dancers sorted by rank ordinal for decision making
 - **Integrated dance tracking**: Record completed dances and impressions in attendance records
 - **Seamless dancer management**: Add new people during events without leaving screen
 - **Post-dance integration**: Mark new dancers as already danced with immediate impression capture
