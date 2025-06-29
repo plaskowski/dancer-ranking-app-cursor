@@ -65,12 +65,17 @@ Material 3 theme implementation with custom dance-specific color extensions.
 - `event_id` (Foreign Key → Events.id) - Which event
 - `dancer_id` (Foreign Key → Dancers.id) - Which dancer
 - `marked_at` (DateTime, Auto) - When person was first spotted at event
-- `has_danced` (Boolean, Default: false) - Whether you danced with this person
+- `status` (Text, Default: 'present') - Dancer status: 'present', 'served', 'left', 'absent'
 - `danced_at` (DateTime, Optional) - When dance occurred
 - `impression` (Text, Optional) - Post-dance impression/notes
 - **Unique constraint**: (event_id, dancer_id)
 - **Note**: Record existence indicates presence at event
-- **Special case**: When adding new dancer with "already danced" option, creates record with has_danced=true
+- **Status Values**:
+  - `'present'`: Dancer is at event but haven't danced yet
+  - `'served'`: Have danced with this dancer
+  - `'left'`: Dancer left before being asked to dance
+  - `'absent'`: Not present at event (used for untracked dancers)
+- **Special case**: When adding new dancer with "already danced" option, creates record with status='served'
 
 ### Key Relationships
 - One Event has many Rankings and Attendances

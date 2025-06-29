@@ -4,6 +4,32 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.23.0] - 2025-06-29
+
+### User Requests
+- "Implement next step" (from Next steps: "Refactor the attendance record to have a status field instead of hasDanced")
+
+### Changed
+- **Database Schema Migration**: Replaced `hasDanced` boolean field with `status` text field in attendances table
+- **Status Values**: Now supports "present", "served", "left", and "absent" states instead of just true/false
+- **Enhanced Tracking**: Better semantic representation of dancer states throughout event lifecycle
+
+### Added
+- **New Status Field**: Attendances table now uses status enum: present, served, left, absent
+- **Database Migration**: Automatic migration from v1 to v2 schema preserving existing data
+- **Backward Compatibility**: Added convenience getters (`hasDanced`, `hasLeft`, `isAbsent`) for existing code
+- **Future Extensibility**: Framework for tracking dancers who left before being asked to dance
+
+### Technical
+- **Schema Version**: Bumped database schema from v1 to v2
+- **Migration Logic**: Custom migration preserves existing hasDanced=true as status='served', hasDanced=false as status='present'
+- **Service Layer Updates**: Updated AttendanceService, DancerService to use status field
+- **SQL Query Updates**: Modified custom queries to use status='served' instead of has_danced=1
+- **Class Updates**: Updated DancerWithEventInfo and AttendanceWithDancerInfo to use status
+- **Compatibility Getters**: Maintained `hasDanced` getter for seamless transition
+
+---
+
 ## [v0.22.1] - 2025-06-29
 
 ### User Requests

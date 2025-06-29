@@ -1162,16 +1162,13 @@ class $AttendancesTable extends Attendances
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
       defaultValue: currentDateAndTime);
-  static const VerificationMeta _hasDancedMeta =
-      const VerificationMeta('hasDanced');
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
-  late final GeneratedColumn<bool> hasDanced = GeneratedColumn<bool>(
-      'has_danced', aliasedName, false,
-      type: DriftSqlType.bool,
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+      'status', aliasedName, false,
+      type: DriftSqlType.string,
       requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("has_danced" IN (0, 1))'),
-      defaultValue: const Constant(false));
+      defaultValue: const Constant('present'));
   static const VerificationMeta _dancedAtMeta =
       const VerificationMeta('dancedAt');
   @override
@@ -1186,7 +1183,7 @@ class $AttendancesTable extends Attendances
       type: DriftSqlType.string, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, eventId, dancerId, markedAt, hasDanced, dancedAt, impression];
+      [id, eventId, dancerId, markedAt, status, dancedAt, impression];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1216,9 +1213,9 @@ class $AttendancesTable extends Attendances
       context.handle(_markedAtMeta,
           markedAt.isAcceptableOrUnknown(data['marked_at']!, _markedAtMeta));
     }
-    if (data.containsKey('has_danced')) {
-      context.handle(_hasDancedMeta,
-          hasDanced.isAcceptableOrUnknown(data['has_danced']!, _hasDancedMeta));
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
     }
     if (data.containsKey('danced_at')) {
       context.handle(_dancedAtMeta,
@@ -1251,8 +1248,8 @@ class $AttendancesTable extends Attendances
           .read(DriftSqlType.int, data['${effectivePrefix}dancer_id'])!,
       markedAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}marked_at'])!,
-      hasDanced: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}has_danced'])!,
+      status: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
       dancedAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}danced_at']),
       impression: attachedDatabase.typeMapping
@@ -1271,7 +1268,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
   final int eventId;
   final int dancerId;
   final DateTime markedAt;
-  final bool hasDanced;
+  final String status;
   final DateTime? dancedAt;
   final String? impression;
   const Attendance(
@@ -1279,7 +1276,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       required this.eventId,
       required this.dancerId,
       required this.markedAt,
-      required this.hasDanced,
+      required this.status,
       this.dancedAt,
       this.impression});
   @override
@@ -1289,7 +1286,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
     map['event_id'] = Variable<int>(eventId);
     map['dancer_id'] = Variable<int>(dancerId);
     map['marked_at'] = Variable<DateTime>(markedAt);
-    map['has_danced'] = Variable<bool>(hasDanced);
+    map['status'] = Variable<String>(status);
     if (!nullToAbsent || dancedAt != null) {
       map['danced_at'] = Variable<DateTime>(dancedAt);
     }
@@ -1305,7 +1302,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       eventId: Value(eventId),
       dancerId: Value(dancerId),
       markedAt: Value(markedAt),
-      hasDanced: Value(hasDanced),
+      status: Value(status),
       dancedAt: dancedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(dancedAt),
@@ -1323,7 +1320,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       eventId: serializer.fromJson<int>(json['eventId']),
       dancerId: serializer.fromJson<int>(json['dancerId']),
       markedAt: serializer.fromJson<DateTime>(json['markedAt']),
-      hasDanced: serializer.fromJson<bool>(json['hasDanced']),
+      status: serializer.fromJson<String>(json['status']),
       dancedAt: serializer.fromJson<DateTime?>(json['dancedAt']),
       impression: serializer.fromJson<String?>(json['impression']),
     );
@@ -1336,7 +1333,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       'eventId': serializer.toJson<int>(eventId),
       'dancerId': serializer.toJson<int>(dancerId),
       'markedAt': serializer.toJson<DateTime>(markedAt),
-      'hasDanced': serializer.toJson<bool>(hasDanced),
+      'status': serializer.toJson<String>(status),
       'dancedAt': serializer.toJson<DateTime?>(dancedAt),
       'impression': serializer.toJson<String?>(impression),
     };
@@ -1347,7 +1344,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
           int? eventId,
           int? dancerId,
           DateTime? markedAt,
-          bool? hasDanced,
+          String? status,
           Value<DateTime?> dancedAt = const Value.absent(),
           Value<String?> impression = const Value.absent()}) =>
       Attendance(
@@ -1355,7 +1352,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
         eventId: eventId ?? this.eventId,
         dancerId: dancerId ?? this.dancerId,
         markedAt: markedAt ?? this.markedAt,
-        hasDanced: hasDanced ?? this.hasDanced,
+        status: status ?? this.status,
         dancedAt: dancedAt.present ? dancedAt.value : this.dancedAt,
         impression: impression.present ? impression.value : this.impression,
       );
@@ -1365,7 +1362,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       eventId: data.eventId.present ? data.eventId.value : this.eventId,
       dancerId: data.dancerId.present ? data.dancerId.value : this.dancerId,
       markedAt: data.markedAt.present ? data.markedAt.value : this.markedAt,
-      hasDanced: data.hasDanced.present ? data.hasDanced.value : this.hasDanced,
+      status: data.status.present ? data.status.value : this.status,
       dancedAt: data.dancedAt.present ? data.dancedAt.value : this.dancedAt,
       impression:
           data.impression.present ? data.impression.value : this.impression,
@@ -1379,7 +1376,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
           ..write('eventId: $eventId, ')
           ..write('dancerId: $dancerId, ')
           ..write('markedAt: $markedAt, ')
-          ..write('hasDanced: $hasDanced, ')
+          ..write('status: $status, ')
           ..write('dancedAt: $dancedAt, ')
           ..write('impression: $impression')
           ..write(')'))
@@ -1388,7 +1385,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
 
   @override
   int get hashCode => Object.hash(
-      id, eventId, dancerId, markedAt, hasDanced, dancedAt, impression);
+      id, eventId, dancerId, markedAt, status, dancedAt, impression);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1397,7 +1394,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
           other.eventId == this.eventId &&
           other.dancerId == this.dancerId &&
           other.markedAt == this.markedAt &&
-          other.hasDanced == this.hasDanced &&
+          other.status == this.status &&
           other.dancedAt == this.dancedAt &&
           other.impression == this.impression);
 }
@@ -1407,7 +1404,7 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
   final Value<int> eventId;
   final Value<int> dancerId;
   final Value<DateTime> markedAt;
-  final Value<bool> hasDanced;
+  final Value<String> status;
   final Value<DateTime?> dancedAt;
   final Value<String?> impression;
   const AttendancesCompanion({
@@ -1415,7 +1412,7 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
     this.eventId = const Value.absent(),
     this.dancerId = const Value.absent(),
     this.markedAt = const Value.absent(),
-    this.hasDanced = const Value.absent(),
+    this.status = const Value.absent(),
     this.dancedAt = const Value.absent(),
     this.impression = const Value.absent(),
   });
@@ -1424,7 +1421,7 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
     required int eventId,
     required int dancerId,
     this.markedAt = const Value.absent(),
-    this.hasDanced = const Value.absent(),
+    this.status = const Value.absent(),
     this.dancedAt = const Value.absent(),
     this.impression = const Value.absent(),
   })  : eventId = Value(eventId),
@@ -1434,7 +1431,7 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
     Expression<int>? eventId,
     Expression<int>? dancerId,
     Expression<DateTime>? markedAt,
-    Expression<bool>? hasDanced,
+    Expression<String>? status,
     Expression<DateTime>? dancedAt,
     Expression<String>? impression,
   }) {
@@ -1443,7 +1440,7 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
       if (eventId != null) 'event_id': eventId,
       if (dancerId != null) 'dancer_id': dancerId,
       if (markedAt != null) 'marked_at': markedAt,
-      if (hasDanced != null) 'has_danced': hasDanced,
+      if (status != null) 'status': status,
       if (dancedAt != null) 'danced_at': dancedAt,
       if (impression != null) 'impression': impression,
     });
@@ -1454,7 +1451,7 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
       Value<int>? eventId,
       Value<int>? dancerId,
       Value<DateTime>? markedAt,
-      Value<bool>? hasDanced,
+      Value<String>? status,
       Value<DateTime?>? dancedAt,
       Value<String?>? impression}) {
     return AttendancesCompanion(
@@ -1462,7 +1459,7 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
       eventId: eventId ?? this.eventId,
       dancerId: dancerId ?? this.dancerId,
       markedAt: markedAt ?? this.markedAt,
-      hasDanced: hasDanced ?? this.hasDanced,
+      status: status ?? this.status,
       dancedAt: dancedAt ?? this.dancedAt,
       impression: impression ?? this.impression,
     );
@@ -1483,8 +1480,8 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
     if (markedAt.present) {
       map['marked_at'] = Variable<DateTime>(markedAt.value);
     }
-    if (hasDanced.present) {
-      map['has_danced'] = Variable<bool>(hasDanced.value);
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
     }
     if (dancedAt.present) {
       map['danced_at'] = Variable<DateTime>(dancedAt.value);
@@ -1502,7 +1499,7 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
           ..write('eventId: $eventId, ')
           ..write('dancerId: $dancerId, ')
           ..write('markedAt: $markedAt, ')
-          ..write('hasDanced: $hasDanced, ')
+          ..write('status: $status, ')
           ..write('dancedAt: $dancedAt, ')
           ..write('impression: $impression')
           ..write(')'))
@@ -2822,7 +2819,7 @@ typedef $$AttendancesTableCreateCompanionBuilder = AttendancesCompanion
   required int eventId,
   required int dancerId,
   Value<DateTime> markedAt,
-  Value<bool> hasDanced,
+  Value<String> status,
   Value<DateTime?> dancedAt,
   Value<String?> impression,
 });
@@ -2832,7 +2829,7 @@ typedef $$AttendancesTableUpdateCompanionBuilder = AttendancesCompanion
   Value<int> eventId,
   Value<int> dancerId,
   Value<DateTime> markedAt,
-  Value<bool> hasDanced,
+  Value<String> status,
   Value<DateTime?> dancedAt,
   Value<String?> impression,
 });
@@ -2886,8 +2883,8 @@ class $$AttendancesTableFilterComposer
   ColumnFilters<DateTime> get markedAt => $composableBuilder(
       column: $table.markedAt, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<bool> get hasDanced => $composableBuilder(
-      column: $table.hasDanced, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<DateTime> get dancedAt => $composableBuilder(
       column: $table.dancedAt, builder: (column) => ColumnFilters(column));
@@ -2951,8 +2948,8 @@ class $$AttendancesTableOrderingComposer
   ColumnOrderings<DateTime> get markedAt => $composableBuilder(
       column: $table.markedAt, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<bool> get hasDanced => $composableBuilder(
-      column: $table.hasDanced, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<DateTime> get dancedAt => $composableBuilder(
       column: $table.dancedAt, builder: (column) => ColumnOrderings(column));
@@ -3016,8 +3013,8 @@ class $$AttendancesTableAnnotationComposer
   GeneratedColumn<DateTime> get markedAt =>
       $composableBuilder(column: $table.markedAt, builder: (column) => column);
 
-  GeneratedColumn<bool> get hasDanced =>
-      $composableBuilder(column: $table.hasDanced, builder: (column) => column);
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
 
   GeneratedColumn<DateTime> get dancedAt =>
       $composableBuilder(column: $table.dancedAt, builder: (column) => column);
@@ -3093,7 +3090,7 @@ class $$AttendancesTableTableManager extends RootTableManager<
             Value<int> eventId = const Value.absent(),
             Value<int> dancerId = const Value.absent(),
             Value<DateTime> markedAt = const Value.absent(),
-            Value<bool> hasDanced = const Value.absent(),
+            Value<String> status = const Value.absent(),
             Value<DateTime?> dancedAt = const Value.absent(),
             Value<String?> impression = const Value.absent(),
           }) =>
@@ -3102,7 +3099,7 @@ class $$AttendancesTableTableManager extends RootTableManager<
             eventId: eventId,
             dancerId: dancerId,
             markedAt: markedAt,
-            hasDanced: hasDanced,
+            status: status,
             dancedAt: dancedAt,
             impression: impression,
           ),
@@ -3111,7 +3108,7 @@ class $$AttendancesTableTableManager extends RootTableManager<
             required int eventId,
             required int dancerId,
             Value<DateTime> markedAt = const Value.absent(),
-            Value<bool> hasDanced = const Value.absent(),
+            Value<String> status = const Value.absent(),
             Value<DateTime?> dancedAt = const Value.absent(),
             Value<String?> impression = const Value.absent(),
           }) =>
@@ -3120,7 +3117,7 @@ class $$AttendancesTableTableManager extends RootTableManager<
             eventId: eventId,
             dancerId: dancerId,
             markedAt: markedAt,
-            hasDanced: hasDanced,
+            status: status,
             dancedAt: dancedAt,
             impression: impression,
           ),

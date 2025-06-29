@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+
 import '../database/database.dart';
 
 class AttendanceService {
@@ -10,8 +11,7 @@ class AttendanceService {
   Future<int> markPresent(int eventId, int dancerId) async {
     // Check if attendance already exists
     final existingAttendance = await (_database.select(_database.attendances)
-          ..where(
-              (a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
+          ..where((a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
         .getSingleOrNull();
 
     if (existingAttendance != null) {
@@ -31,8 +31,7 @@ class AttendanceService {
   // Remove a dancer from the present list
   Future<int> removeFromPresent(int eventId, int dancerId) {
     return (_database.delete(_database.attendances)
-          ..where(
-              (a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
+          ..where((a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
         .go();
   }
 
@@ -43,8 +42,7 @@ class AttendanceService {
     String? impression,
   }) async {
     final attendance = await (_database.select(_database.attendances)
-          ..where(
-              (a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
+          ..where((a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
         .getSingleOrNull();
 
     if (attendance == null) {
@@ -53,14 +51,13 @@ class AttendanceService {
 
       // Get the newly created attendance record
       final newAttendance = await (_database.select(_database.attendances)
-            ..where(
-                (a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
+            ..where((a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
           .getSingle();
 
       // Update with dance info
       return _database.update(_database.attendances).replace(
             newAttendance.copyWith(
-              hasDanced: true,
+              status: 'served',
               dancedAt: Value(DateTime.now()),
               impression: Value(impression),
             ),
@@ -69,7 +66,7 @@ class AttendanceService {
       // Update existing attendance record
       return _database.update(_database.attendances).replace(
             attendance.copyWith(
-              hasDanced: true,
+              status: 'served',
               dancedAt: Value(DateTime.now()),
               impression: Value(impression),
             ),
@@ -80,8 +77,7 @@ class AttendanceService {
   // Get attendance record for a dancer at an event
   Future<Attendance?> getAttendance(int eventId, int dancerId) {
     return (_database.select(_database.attendances)
-          ..where(
-              (a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
+          ..where((a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
         .getSingleOrNull();
   }
 
@@ -94,7 +90,7 @@ class AttendanceService {
   // Check if danced with dancer at event
   Future<bool> hasDanced(int eventId, int dancerId) async {
     final attendance = await getAttendance(eventId, dancerId);
-    return attendance?.hasDanced ?? false;
+    return attendance?.status == 'served';
   }
 
   // Get all present dancers for an event
@@ -106,8 +102,7 @@ class AttendanceService {
   }
 
   // Get present dancers with their info
-  Future<List<AttendanceWithDancerInfo>> getPresentDancersWithInfo(
-      int eventId) async {
+  Future<List<AttendanceWithDancerInfo>> getPresentDancersWithInfo(int eventId) async {
     const query = '''
       SELECT 
         a.*,
@@ -125,9 +120,7 @@ class AttendanceService {
       readsFrom: {_database.attendances, _database.dancers},
     ).get();
 
-    return result
-        .map((row) => AttendanceWithDancerInfo.fromRow(row.data))
-        .toList();
+    return result.map((row) => AttendanceWithDancerInfo.fromRow(row.data)).toList();
   }
 
   // Get danced dancers for an event
@@ -139,7 +132,7 @@ class AttendanceService {
         d.notes as dancer_notes
       FROM attendances a
       JOIN dancers d ON a.dancer_id = d.id
-      WHERE a.event_id = ? AND a.has_danced = 1
+      WHERE a.event_id = ? AND a.status = 'served'
       ORDER BY a.danced_at DESC
     ''';
 
@@ -149,9 +142,7 @@ class AttendanceService {
       readsFrom: {_database.attendances, _database.dancers},
     ).get();
 
-    return result
-        .map((row) => AttendanceWithDancerInfo.fromRow(row.data))
-        .toList();
+    return result.map((row) => AttendanceWithDancerInfo.fromRow(row.data)).toList();
   }
 
   // Get present count for an event
@@ -167,7 +158,7 @@ class AttendanceService {
   // Get danced count for an event
   Future<int> getDancedCount(int eventId) async {
     final result = await _database.customSelect(
-      'SELECT COUNT(*) as count FROM attendances WHERE event_id = ? AND has_danced = 1',
+      'SELECT COUNT(*) as count FROM attendances WHERE event_id = ? AND status = \'served\'',
       variables: [Variable<int>(eventId)],
       readsFrom: {_database.attendances},
     ).getSingle();
@@ -184,7 +175,7 @@ class AttendanceService {
           AttendancesCompanion.insert(
             eventId: eventId,
             dancerId: dancerId,
-            hasDanced: const Value(true),
+            status: const Value('served'),
             dancedAt: Value(DateTime.now()),
             impression: Value(impression),
           ),
@@ -226,7 +217,7 @@ class AttendanceWithDancerInfo {
   final int eventId;
   final int dancerId;
   final DateTime markedAt;
-  final bool hasDanced;
+  final String status;
   final DateTime? dancedAt;
   final String? impression;
   final String dancerName;
@@ -237,12 +228,15 @@ class AttendanceWithDancerInfo {
     required this.eventId,
     required this.dancerId,
     required this.markedAt,
-    required this.hasDanced,
+    required this.status,
     this.dancedAt,
     this.impression,
     required this.dancerName,
     this.dancerNotes,
   });
+
+  // Backward compatibility getter
+  bool get hasDanced => status == 'served';
 
   factory AttendanceWithDancerInfo.fromRow(Map<String, dynamic> row) {
     return AttendanceWithDancerInfo(
@@ -250,10 +244,8 @@ class AttendanceWithDancerInfo {
       eventId: row['event_id'] as int,
       dancerId: row['dancer_id'] as int,
       markedAt: DateTime.parse(row['marked_at'] as String),
-      hasDanced: (row['has_danced'] as int) == 1,
-      dancedAt: row['danced_at'] != null
-          ? DateTime.parse(row['danced_at'] as String)
-          : null,
+      status: row['status'] as String,
+      dancedAt: row['danced_at'] != null ? DateTime.parse(row['danced_at'] as String) : null,
       impression: row['impression'] as String?,
       dancerName: row['dancer_name'] as String,
       dancerNotes: row['dancer_notes'] as String?,
@@ -273,6 +265,5 @@ class AttendanceStats {
     required this.notDancedCount,
   });
 
-  double get dancedPercentage =>
-      presentCount > 0 ? (dancedCount / presentCount) * 100 : 0;
+  double get dancedPercentage => presentCount > 0 ? (dancedCount / presentCount) * 100 : 0;
 }

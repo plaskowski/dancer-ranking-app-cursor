@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 import 'tables.dart';
 
@@ -14,10 +14,10 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   // Testing constructor
-  AppDatabase.forTesting(QueryExecutor executor) : super(executor);
+  AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -27,7 +27,42 @@ class AppDatabase extends _$AppDatabase {
           // Insert default ranks
           await _insertDefaultRanks();
         },
+        onUpgrade: (Migrator m, int from, int to) async {
+          if (from < 2) {
+            // Migration from v1 to v2: Replace hasDanced boolean with status text field
+            await _migrateToStatusField(m);
+          }
+        },
       );
+
+  // Migration helper to convert hasDanced boolean to status field
+  Future<void> _migrateToStatusField(Migrator m) async {
+    // For this migration, we'll recreate the attendances table with the new schema
+    // First, create a temporary table with old data
+    await customStatement('''
+      CREATE TABLE attendances_temp AS 
+      SELECT id, event_id, dancer_id, marked_at, 
+             CASE WHEN has_danced = 1 THEN 'served' ELSE 'present' END as status,
+             danced_at, impression
+      FROM attendances
+    ''');
+
+    // Drop the old table
+    await customStatement('DROP TABLE attendances');
+
+    // Create the new table with the updated schema
+    await m.createTable(attendances);
+
+    // Copy data back from temp table
+    await customStatement('''
+      INSERT INTO attendances (id, event_id, dancer_id, marked_at, status, danced_at, impression)
+      SELECT id, event_id, dancer_id, marked_at, status, danced_at, impression
+      FROM attendances_temp
+    ''');
+
+    // Drop the temporary table
+    await customStatement('DROP TABLE attendances_temp');
+  }
 
   // Insert the predefined rank options
   Future<void> _insertDefaultRanks() async {
