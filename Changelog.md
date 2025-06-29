@@ -4,6 +4,23 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.20.0] - 2025-06-29
+
+### User Requests
+- "Continue" (from Next steps: "Mark as present should not close the dialog")
+
+### Improved
+- **Persistent Dialog Actions**: "Mark as present" and "Remove from present" actions no longer close the dancer actions dialog
+- **Enhanced Workflow Efficiency**: Users can now perform multiple actions on the same dancer without reopening dialogs repeatedly
+- **Better User Experience**: Visual feedback still provided via snackbars while keeping dialog open for additional actions
+
+### Technical
+- **DancerActionsDialog**: Removed `Navigator.pop(context)` calls from `_togglePresence` method
+- **Retained Feedback**: Snackbar notifications still display success/error messages for presence updates
+- **Context Safety**: Maintained proper context mounted checks for safe UI updates
+
+---
+
 ## [v0.19.0] - 2025-06-29
 
 ### User Requests

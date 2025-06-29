@@ -220,6 +220,14 @@ Users can adjust rankings during events for various reasons:
 - Shows when ranking was last updated
 - Save/cancel actions (updates `last_updated` timestamp)
 
+**Dancer Actions Dialog (`DancerActionsDialog`)**:
+- Context-aware actions based on dancer state and tab mode
+- **Persistent Dialog**: Actions like "Mark Present" and "Remove from Present" keep dialog open for multiple operations
+- **Visual Feedback**: Snackbar notifications provide immediate feedback while maintaining dialog state
+- **Tab-Specific Actions**: Different action sets available based on Planning vs Present mode
+- **Workflow Efficiency**: Users can perform multiple actions without dialog reopening
+- **Action Types**: Set/Edit Ranking, Mark/Remove Present, Record Dance, Edit Notes, Combo Actions
+
 **Add/Edit Dancer Dialog**:
 - Name input (required)
 - Notes input (optional)
@@ -291,6 +299,7 @@ Home Screen
 - **Dance prioritization**: Present tab shows dancers sorted by rank ordinal for decision making
 - **Integrated dance tracking**: Record completed dances and impressions in attendance records
 - **Streamlined combo actions**: One-click "Mark Present & Record Dance" for absent dancers
+- **Persistent dialogs**: Actions like marking presence keep dialogs open for multiple operations
 - **Seamless dancer management**: Add new people during events without leaving screen
 - **Post-dance integration**: Mark new dancers as already danced with immediate impression capture
 - **Rich context**: Notes, reasons, and impressions for informed decisions

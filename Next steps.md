@@ -4,7 +4,6 @@
 
 ## Upcoming Improvements
 
-- Mark as present should not close the dialog
 - TODO: Add more improvements here...
 
 ## Development Process

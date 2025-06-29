@@ -126,7 +126,6 @@ class DancerActionsDialog extends StatelessWidget {
         // Remove from present
         await attendanceService.removeFromPresent(eventId, dancer.id);
         if (context.mounted) {
-          Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('${dancer.name} removed from present list'),
@@ -138,7 +137,6 @@ class DancerActionsDialog extends StatelessWidget {
         // Mark as present
         await attendanceService.markPresent(eventId, dancer.id);
         if (context.mounted) {
-          Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('${dancer.name} marked as present'),
@@ -149,7 +147,6 @@ class DancerActionsDialog extends StatelessWidget {
       }
     } catch (e) {
       if (context.mounted) {
-        Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error updating presence: $e'),
