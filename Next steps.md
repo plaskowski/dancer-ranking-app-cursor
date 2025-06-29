@@ -2,6 +2,8 @@
 
 ## Immediate Priorities
 
+- Import ranking from another event
+
 ### Bug Fixes
 - **Event Date Change**: Context menu date picker shows but changes don't persist to database
   - Location: `lib/screens/home_screen.dart` - `_performDateChange` method

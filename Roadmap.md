@@ -94,7 +94,6 @@
 
 ## Nice to Have Ideas
 
-- Import ranking from another event
 - Dancers avatars/photos
 - Switch for filtering off dancers that 'left' in Present Tab
 - Custom themes and personalization
