@@ -24,6 +24,12 @@ History:
 - fix the Cursor config so that it can run flutter analyze without waiting for approval
   → **Solution**: Enabled Auto-run mode in Cursor Settings with allowlist for flutter/dart commands
   → **Result**: `flutter analyze` and `dart format` now execute automatically without approval dialogs
+- ✅ **ENHANCED DANCER CARD DISPLAY**: Show both dancer notes and ranking reason in tab items
+  → **Improved Information Display**: Enhanced DancerCard widget to show both personal notes and event-specific ranking reasons
+  → **Visual Enhancement**: Added distinct icons (note_outlined for personal notes, psychology_outlined for ranking reasons)
+  → **Better UX**: Each piece of information has proper styling and color coding for easy distinction
+  → **Complete Context**: Users now see full dancer context including personal notes from dancer profile and event-specific ranking reasoning
 
 Next step:
+- need a way to add a present existing dancer that was not included in planning
 - ...
