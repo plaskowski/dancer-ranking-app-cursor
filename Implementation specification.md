@@ -207,12 +207,12 @@ Home Screen
 ├── Create Event Screen
 ├── Event Screen
 │   ├── Planning Tab
-│   │   ├── FAB → Select Dancers Screen (multi-select existing dancers)
+│   │   ├── FAB → Select Dancers Screen (tab-specific action)
 │   │   ├── Tap dancer → Planning Actions Dialog (rank/notes editing only)
-│   │   └── Blue location icon → Instant "Mark Present" (with success feedback)
+│   │   └── Blue location icon → Instant "Mark Present" (context action)
 │   ├── Present Tab
-│   │   ├── FAB → Add Dancer Dialog (create new dancers)
-│   │   └── Tap dancer → Full Actions Dialog
+│   │   ├── FAB → Add Dancer Dialog (tab-specific action)
+│   │   └── Tap dancer → Full Actions Dialog (context-aware)
 │   │       ├── → Ranking Dialog
 │   │       ├── → Dance Recording Dialog
 │   │       └── → Attendance management
@@ -255,3 +255,9 @@ Home Screen
 - **Rich context**: Notes, reasons, and impressions for informed decisions
 - **Ranking history**: Track when rankings were last updated for context
 - **Streamlined data model**: Record existence indicates presence, no boolean flags needed
+
+### Code Architecture
+- **Modular Structure**: Components split into focused, single-responsibility modules
+- **Tab Actions Interface**: Clean abstraction for tab-specific FAB behaviors
+- **Reusable Components**: Shared widgets across tabs with different behavioral modes
+- **Separation of Concerns**: UI components separated from business logic and data access
