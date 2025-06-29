@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../database/database.dart';
 import '../../services/dancer_service.dart';
 import '../../widgets/dancer_card.dart';
+import '../event_tab_actions.dart';
+import '../../widgets/add_dancer_dialog.dart';
 
 // Present Tab - Shows only dancers who are present, grouped by rank
 class PresentTab extends StatelessWidget {
@@ -105,4 +106,33 @@ class PresentTab extends StatelessWidget {
       },
     );
   }
+}
+
+// Present Tab Actions Implementation
+class PresentTabActions implements EventTabActions {
+  final int eventId;
+
+  const PresentTabActions({required this.eventId});
+
+  @override
+  Future<void> onFabPressed(
+      BuildContext context, VoidCallback onRefresh) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AddDancerDialog(
+        eventId: eventId,
+      ),
+    );
+
+    // Refresh the screen if a dancer was added
+    if (result == true) {
+      onRefresh();
+    }
+  }
+
+  @override
+  String get fabTooltip => 'Add newly met dancer';
+
+  @override
+  IconData get fabIcon => Icons.person_add;
 }

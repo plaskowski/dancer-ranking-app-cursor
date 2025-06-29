@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../database/database.dart';
 import '../services/attendance_service.dart';
+import '../services/dancer_service.dart';
 import 'dancer_actions_dialog.dart';
 
 // Dancer Card widget used in both tabs

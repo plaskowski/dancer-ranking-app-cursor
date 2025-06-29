@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../database/database.dart';
 import '../services/dancer_service.dart';
 import '../services/ranking_service.dart';
 

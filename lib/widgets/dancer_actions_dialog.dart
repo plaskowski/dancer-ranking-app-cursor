@@ -11,11 +11,13 @@ import 'add_dancer_dialog.dart';
 class DancerActionsDialog extends StatelessWidget {
   final DancerWithEventInfo dancer;
   final int eventId;
+  final bool isPlanningMode;
 
   const DancerActionsDialog({
     super.key,
     required this.dancer,
     required this.eventId,
+    required this.isPlanningMode,
   });
 
   @override
@@ -40,34 +42,36 @@ class DancerActionsDialog extends StatelessWidget {
               );
             },
           ),
-          
+
           // Mark Present / Remove from Present
           ListTile(
             leading: Icon(
               dancer.isPresent ? Icons.location_off : Icons.location_on,
               color: dancer.isPresent ? Colors.red : Colors.green,
             ),
-            title: Text(dancer.isPresent ? 'Remove from Present' : 'Mark Present'),
+            title:
+                Text(dancer.isPresent ? 'Remove from Present' : 'Mark Present'),
             onTap: () => _togglePresence(context),
           ),
-          
-          // Record Dance
-          ListTile(
-            leading: const Icon(Icons.music_note, color: Colors.purple),
-            title: const Text('Record Dance'),
-            onTap: () {
-              Navigator.pop(context);
-              showDialog(
-                context: context,
-                builder: (context) => DanceRecordingDialog(
-                  dancerId: dancer.id,
-                  eventId: eventId,
-                  dancerName: dancer.name,
-                ),
-              );
-            },
-          ),
-          
+
+          // Record Dance - only available in Present mode
+          if (!isPlanningMode)
+            ListTile(
+              leading: const Icon(Icons.music_note, color: Colors.purple),
+              title: const Text('Record Dance'),
+              onTap: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (context) => DanceRecordingDialog(
+                    dancerId: dancer.id,
+                    eventId: eventId,
+                    dancerName: dancer.name,
+                  ),
+                );
+              },
+            ),
+
           // Edit Notes
           ListTile(
             leading: const Icon(Icons.edit_note, color: Colors.blue),
@@ -100,8 +104,9 @@ class DancerActionsDialog extends StatelessWidget {
 
   Future<void> _togglePresence(BuildContext context) async {
     try {
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
-      
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
+
       if (dancer.isPresent) {
         // Remove from present
         await attendanceService.removeFromPresent(eventId, dancer.id);
@@ -139,4 +144,4 @@ class DancerActionsDialog extends StatelessWidget {
       }
     }
   }
-} 
+}

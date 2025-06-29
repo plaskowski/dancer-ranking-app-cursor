@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../database/database.dart';
 import '../../services/dancer_service.dart';
 import '../../widgets/dancer_card.dart';
+import '../event_tab_actions.dart';
+import '../select_dancers_screen.dart';
 
 // Planning Tab - Shows all dancers grouped by rank
 class PlanningTab extends StatefulWidget {
@@ -116,4 +117,40 @@ class _PlanningTabState extends State<PlanningTab> {
       },
     );
   }
+}
+
+// Planning Tab Actions Implementation
+class PlanningTabActions implements EventTabActions {
+  final int eventId;
+  final String eventName;
+
+  const PlanningTabActions({
+    required this.eventId,
+    required this.eventName,
+  });
+
+  @override
+  Future<void> onFabPressed(
+      BuildContext context, VoidCallback onRefresh) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectDancersScreen(
+          eventId: eventId,
+          eventName: eventName,
+        ),
+      ),
+    );
+
+    // Refresh the screen if dancers were added
+    if (result == true) {
+      onRefresh();
+    }
+  }
+
+  @override
+  String get fabTooltip => 'Add multiple dancers to event';
+
+  @override
+  IconData get fabIcon => Icons.group_add;
 }
