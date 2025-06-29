@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../database/database.dart';
 import '../services/dancer_service.dart';
+import '../theme/theme_extensions.dart';
 import '../widgets/add_dancer_dialog.dart';
 
 class DancersScreen extends StatefulWidget {
@@ -51,7 +52,7 @@ class _DancersScreenState extends State<DancersScreen> {
               onChanged: _onSearchChanged,
             ),
           ),
-          
+
           // Dancers list
           Expanded(
             child: StreamBuilder<List<Dancer>>(
@@ -74,26 +75,30 @@ class _DancersScreenState extends State<DancersScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.people,
                           size: 64,
-                          color: Colors.grey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          _searchQuery.isEmpty ? 'No dancers yet' : 'No dancers found',
-                          style: const TextStyle(
+                          _searchQuery.isEmpty
+                              ? 'No dancers yet'
+                              : 'No dancers found',
+                          style: TextStyle(
                             fontSize: 18,
-                            color: Colors.grey,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          _searchQuery.isEmpty 
-                            ? 'Tap + to add your first dancer'
-                            : 'Try a different search',
-                          style: const TextStyle(
-                            color: Colors.grey,
+                          _searchQuery.isEmpty
+                              ? 'Tap + to add your first dancer'
+                              : 'Try a different search',
+                          style: TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -144,7 +149,8 @@ class _DancersScreenState extends State<DancersScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete Dancer'),
-        content: Text('Are you sure you want to delete ${dancer.name}? This will also remove all their rankings and attendance records.'),
+        content: Text(
+            'Are you sure you want to delete ${dancer.name}? This will also remove all their rankings and attendance records.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -153,15 +159,16 @@ class _DancersScreenState extends State<DancersScreen> {
           TextButton(
             onPressed: () async {
               try {
-                final dancerService = Provider.of<DancerService>(context, listen: false);
+                final dancerService =
+                    Provider.of<DancerService>(context, listen: false);
                 await dancerService.deleteDancer(dancer.id);
-                
+
                 if (mounted) {
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('${dancer.name} deleted'),
-                      backgroundColor: Colors.green,
+                      backgroundColor: context.danceTheme.success,
                     ),
                   );
                 }
@@ -171,13 +178,14 @@ class _DancersScreenState extends State<DancersScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Error deleting dancer: $e'),
-                      backgroundColor: Colors.red,
+                      backgroundColor: Theme.of(context).colorScheme.error,
                     ),
                   );
                 }
               }
             },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.error),
             child: const Text('Delete'),
           ),
         ],
@@ -203,11 +211,11 @@ class _DancerCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Colors.blue.shade100,
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
           child: Text(
             dancer.name.isNotEmpty ? dancer.name[0].toUpperCase() : '?',
             style: TextStyle(
-              color: Colors.blue.shade700,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -222,9 +230,10 @@ class _DancerCard extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               )
-            : const Text(
+            : Text(
                 'No notes yet',
-                style: TextStyle(color: Colors.grey),
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant),
               ),
         trailing: PopupMenuButton<String>(
           onSelected: (value) {
@@ -248,4 +257,4 @@ class _DancerCard extends StatelessWidget {
       ),
     );
   }
-} 
+}

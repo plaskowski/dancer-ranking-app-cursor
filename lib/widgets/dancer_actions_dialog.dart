@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../services/dancer_service.dart';
 import '../services/attendance_service.dart';
 import '../database/database.dart';
+import '../theme/theme_extensions.dart';
 import 'ranking_dialog.dart';
 import 'dance_recording_dialog.dart';
 import 'add_dancer_dialog.dart';
@@ -29,7 +30,7 @@ class DancerActionsDialog extends StatelessWidget {
         children: [
           // Set/Edit Ranking
           ListTile(
-            leading: const Icon(Icons.star, color: Colors.orange),
+            leading: Icon(Icons.star, color: context.danceTheme.rankingHigh),
             title: Text(dancer.hasRanking ? 'Edit Ranking' : 'Set Ranking'),
             onTap: () {
               Navigator.pop(context);
@@ -47,7 +48,9 @@ class DancerActionsDialog extends StatelessWidget {
           ListTile(
             leading: Icon(
               dancer.isPresent ? Icons.location_off : Icons.location_on,
-              color: dancer.isPresent ? Colors.red : Colors.green,
+              color: dancer.isPresent
+                  ? context.danceTheme.absent
+                  : context.danceTheme.present,
             ),
             title:
                 Text(dancer.isPresent ? 'Remove from Present' : 'Mark Present'),
@@ -57,8 +60,8 @@ class DancerActionsDialog extends StatelessWidget {
           // Combined action for absent dancers - Mark Present & Record Dance
           if (!dancer.isPresent && !isPlanningMode)
             ListTile(
-              leading: const Icon(Icons.music_note_outlined,
-                  color: Colors.deepPurple),
+              leading: Icon(Icons.music_note_outlined,
+                  color: context.danceTheme.danceAccent),
               title: const Text('Mark Present & Record Dance'),
               subtitle: const Text('Quick combo action'),
               onTap: () => _markPresentAndRecordDance(context),
@@ -67,7 +70,8 @@ class DancerActionsDialog extends StatelessWidget {
           // Record Dance - only available for present dancers in Present mode
           if (!isPlanningMode && dancer.isPresent)
             ListTile(
-              leading: const Icon(Icons.music_note, color: Colors.purple),
+              leading:
+                  Icon(Icons.music_note, color: context.danceTheme.danceAccent),
               title: const Text('Record Dance'),
               onTap: () {
                 Navigator.pop(context);
@@ -84,7 +88,8 @@ class DancerActionsDialog extends StatelessWidget {
 
           // Edit Notes
           ListTile(
-            leading: const Icon(Icons.edit_note, color: Colors.blue),
+            leading: Icon(Icons.edit_note,
+                color: Theme.of(context).colorScheme.primary),
             title: const Text('Edit Notes'),
             onTap: () {
               Navigator.pop(context);
@@ -125,7 +130,7 @@ class DancerActionsDialog extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('${dancer.name} removed from present list'),
-              backgroundColor: Colors.orange,
+              backgroundColor: context.danceTheme.warning,
             ),
           );
         }
@@ -137,7 +142,7 @@ class DancerActionsDialog extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('${dancer.name} marked as present'),
-              backgroundColor: Colors.green,
+              backgroundColor: context.danceTheme.success,
             ),
           );
         }
@@ -148,7 +153,7 @@ class DancerActionsDialog extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error updating presence: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -171,7 +176,7 @@ class DancerActionsDialog extends StatelessWidget {
           SnackBar(
             content: Text('${dancer.name} marked as present'),
             duration: const Duration(seconds: 1), // Shorter duration
-            backgroundColor: Colors.green,
+            backgroundColor: context.danceTheme.success,
           ),
         );
 
@@ -191,7 +196,7 @@ class DancerActionsDialog extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error marking present: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }

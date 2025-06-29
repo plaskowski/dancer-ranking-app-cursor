@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../services/dancer_service.dart';
 import '../../widgets/dancer_card.dart';
+import '../../theme/theme_extensions.dart';
 import '../event_tab_actions.dart';
 import '../select_dancers_screen.dart';
 
@@ -37,20 +38,25 @@ class _PlanningTabState extends State<PlanningTab> {
         final dancers = allDancers.where((d) => d.hasRanking).toList();
 
         if (dancers.isEmpty) {
-          return const Center(
+          return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.people, size: 64, color: Colors.grey),
-                SizedBox(height: 16),
+                Icon(Icons.people,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant),
+                const SizedBox(height: 16),
                 Text(
                   'No dancers added yet',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   'Tap + to add dancers to this event',
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
               ],
             ),
@@ -89,10 +95,10 @@ class _PlanningTabState extends State<PlanningTab> {
               children: [
                 Text(
                   rankName,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
                 const SizedBox(height: 8),

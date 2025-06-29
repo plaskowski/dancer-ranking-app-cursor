@@ -4,11 +4,12 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../services/dancer_service.dart';
 import '../services/attendance_service.dart';
+import '../theme/theme_extensions.dart';
 
 class AddDancerDialog extends StatefulWidget {
   final Dancer? dancer; // If provided, we're editing
   final int? eventId; // If provided, we're adding during an event
-  
+
   const AddDancerDialog({
     super.key,
     this.dancer,
@@ -24,14 +25,14 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
   final _nameController = TextEditingController();
   final _notesController = TextEditingController();
   final _impressionController = TextEditingController();
-  
+
   bool _alreadyDanced = false;
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    
+
     // If editing, populate fields
     if (widget.dancer != null) {
       _nameController.text = widget.dancer!.name;
@@ -58,38 +59,39 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
     try {
       final dancerService = Provider.of<DancerService>(context, listen: false);
-      
+
       int dancerId;
-      
+
       if (widget.dancer != null) {
         // Editing existing dancer
         await dancerService.updateDancer(
           widget.dancer!.id,
           name: _nameController.text.trim(),
-          notes: _notesController.text.trim().isNotEmpty 
-            ? _notesController.text.trim() 
-            : null,
+          notes: _notesController.text.trim().isNotEmpty
+              ? _notesController.text.trim()
+              : null,
         );
         dancerId = widget.dancer!.id;
       } else {
         // Creating new dancer
         dancerId = await dancerService.createDancer(
           name: _nameController.text.trim(),
-          notes: _notesController.text.trim().isNotEmpty 
-            ? _notesController.text.trim() 
-            : null,
+          notes: _notesController.text.trim().isNotEmpty
+              ? _notesController.text.trim()
+              : null,
         );
       }
 
       // If we're adding during an event and "already danced" is checked
       if (widget.eventId != null && _alreadyDanced && widget.dancer == null) {
-        final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+        final attendanceService =
+            Provider.of<AttendanceService>(context, listen: false);
         await attendanceService.createAttendanceWithDance(
           eventId: widget.eventId!,
           dancerId: dancerId,
-          impression: _impressionController.text.trim().isNotEmpty 
-            ? _impressionController.text.trim() 
-            : null,
+          impression: _impressionController.text.trim().isNotEmpty
+              ? _impressionController.text.trim()
+              : null,
         );
       }
 
@@ -97,10 +99,10 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
         Navigator.pop(context, true); // Return true to indicate success
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(widget.dancer != null 
-              ? 'Dancer updated successfully!' 
-              : 'Dancer added successfully!'),
-            backgroundColor: Colors.green,
+            content: Text(widget.dancer != null
+                ? 'Dancer updated successfully!'
+                : 'Dancer added successfully!'),
+            backgroundColor: context.danceTheme.success,
           ),
         );
       }
@@ -109,7 +111,7 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error saving dancer: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -149,9 +151,9 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                 },
                 textCapitalization: TextCapitalization.words,
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               TextFormField(
                 controller: _notesController,
                 decoration: const InputDecoration(
@@ -162,7 +164,7 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                 maxLines: 2,
                 textCapitalization: TextCapitalization.sentences,
               ),
-              
+
               // Show "already danced" option only when adding during an event
               if (isEventContext && !isEditing) ...[
                 const SizedBox(height: 16),
@@ -177,7 +179,7 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                   controlAffinity: ListTileControlAffinity.leading,
                   contentPadding: EdgeInsets.zero,
                 ),
-                
+
                 // Show impression field if already danced is checked
                 if (_alreadyDanced) ...[
                   const SizedBox(height: 8),
@@ -215,4 +217,4 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
       ],
     );
   }
-} 
+}

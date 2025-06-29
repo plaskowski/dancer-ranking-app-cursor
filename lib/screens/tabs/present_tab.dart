@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../services/dancer_service.dart';
 import '../../widgets/dancer_card.dart';
+import '../../theme/theme_extensions.dart';
 import '../event_tab_actions.dart';
 import '../../widgets/add_dancer_dialog.dart';
 
@@ -35,16 +36,21 @@ class PresentTab extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.location_on, size: 64, color: Colors.grey),
+                Icon(Icons.location_on,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant),
                 SizedBox(height: 16),
                 Text(
                   'No one marked present yet',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
                 SizedBox(height: 8),
                 Text(
                   'Go to Planning tab to mark people as present',
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
               ],
             ),

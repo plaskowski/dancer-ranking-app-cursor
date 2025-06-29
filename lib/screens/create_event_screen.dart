@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 import '../services/event_service.dart';
+import '../theme/theme_extensions.dart';
 
 class CreateEventScreen extends StatefulWidget {
   const CreateEventScreen({super.key});
@@ -14,7 +15,7 @@ class CreateEventScreen extends StatefulWidget {
 class _CreateEventScreenState extends State<CreateEventScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  
+
   DateTime _selectedDate = DateTime.now();
   bool _isLoading = false;
 
@@ -31,7 +32,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       firstDate: DateTime.now().subtract(const Duration(days: 365)),
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
-    
+
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
@@ -50,7 +51,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
     try {
       final eventService = Provider.of<EventService>(context, listen: false);
-      
+
       await eventService.createEvent(
         name: _nameController.text.trim(),
         date: _selectedDate,
@@ -59,9 +60,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       if (mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Event created successfully!'),
-            backgroundColor: Colors.green,
+          SnackBar(
+            content: const Text('Event created successfully!'),
+            backgroundColor: context.danceTheme.success,
           ),
         );
       }
@@ -70,7 +71,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error creating event: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -111,16 +112,17 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 },
                 textCapitalization: TextCapitalization.words,
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Date selection
               InkWell(
                 onTap: _selectDate,
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.outline),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Row(
@@ -130,11 +132,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Event Date',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
                             ),
                           ),
                           Text(
@@ -147,10 +151,10 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         ],
                       ),
                       const Spacer(),
-                      const Text(
+                      Text(
                         'Change Date',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -158,24 +162,25 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   ),
                 ),
               ),
-              
+
               const Spacer(),
-              
+
               // Create button
               ElevatedButton(
                 onPressed: _isLoading ? null : _createEvent,
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 ),
                 child: _isLoading
-                    ? const SizedBox(
+                    ? SizedBox(
                         height: 20,
                         width: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Theme.of(context).colorScheme.onPrimary),
                         ),
                       )
                     : const Text(
@@ -192,4 +197,4 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       ),
     );
   }
-} 
+}

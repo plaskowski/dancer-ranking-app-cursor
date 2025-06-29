@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../database/database.dart';
 import '../services/event_service.dart';
+import '../theme/theme_extensions.dart';
 import 'create_event_screen.dart';
 import 'event_screen.dart';
 import 'dancers_screen.dart';
@@ -48,28 +49,28 @@ class HomeScreen extends StatelessWidget {
           final events = snapshot.data ?? [];
 
           if (events.isEmpty) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.event,
                     size: 64,
-                    color: Colors.grey,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Text(
                     'No events yet',
                     style: TextStyle(
                       fontSize: 18,
-                      color: Colors.grey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     'Tap + to create your first event',
                     style: TextStyle(
-                      color: Colors.grey,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                   ),
                 ],
@@ -119,18 +120,23 @@ class _EventCard extends StatelessWidget {
           event.name,
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: isPast ? Colors.grey : null,
+            color:
+                isPast ? Theme.of(context).colorScheme.onSurfaceVariant : null,
           ),
         ),
         subtitle: Text(
           formattedDate,
           style: TextStyle(
-            color: isPast ? Colors.grey : Colors.blue,
+            color: isPast
+                ? Theme.of(context).colorScheme.onSurfaceVariant
+                : Theme.of(context).colorScheme.primary,
           ),
         ),
         trailing: Icon(
           isPast ? Icons.history : Icons.arrow_forward_ios,
-          color: isPast ? Colors.grey : Colors.blue,
+          color: isPast
+              ? Theme.of(context).colorScheme.onSurfaceVariant
+              : Theme.of(context).colorScheme.primary,
         ),
         onTap: () {
           Navigator.push(
@@ -143,4 +149,4 @@ class _EventCard extends StatelessWidget {
       ),
     );
   }
-} 
+}

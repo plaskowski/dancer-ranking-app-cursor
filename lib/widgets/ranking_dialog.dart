@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../database/database.dart';
 import '../services/ranking_service.dart';
 import '../services/dancer_service.dart';
+import '../theme/theme_extensions.dart';
 
 class RankingDialog extends StatefulWidget {
   final int dancerId;
@@ -22,7 +23,7 @@ class RankingDialog extends StatefulWidget {
 
 class _RankingDialogState extends State<RankingDialog> {
   final _reasonController = TextEditingController();
-  
+
   List<Rank> _ranks = [];
   Rank? _selectedRank;
   String _dancerName = '';
@@ -48,25 +49,28 @@ class _RankingDialogState extends State<RankingDialog> {
     try {
       // Load ranks
       final ranks = await rankingService.getAllRanks();
-      
+
       // Load dancer name
       final dancer = await dancerService.getDancer(widget.dancerId);
-      
+
       // Load existing ranking if any
-      final existingRanking = await rankingService.getRanking(widget.eventId, widget.dancerId);
-      
+      final existingRanking =
+          await rankingService.getRanking(widget.eventId, widget.dancerId);
+
       if (mounted) {
         setState(() {
           _ranks = ranks;
           _dancerName = dancer?.name ?? 'Unknown';
-          
+
           if (existingRanking != null) {
-            _selectedRank = ranks.firstWhere((r) => r.id == existingRanking.rankId);
+            _selectedRank =
+                ranks.firstWhere((r) => r.id == existingRanking.rankId);
             _reasonController.text = existingRanking.reason ?? '';
             _lastUpdated = existingRanking.lastUpdated;
           } else {
             // Default to neutral rank
-            _selectedRank = ranks.firstWhere((r) => r.ordinal == 3, orElse: () => ranks.first);
+            _selectedRank = ranks.firstWhere((r) => r.ordinal == 3,
+                orElse: () => ranks.first);
           }
         });
       }
@@ -75,7 +79,7 @@ class _RankingDialogState extends State<RankingDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error loading data: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -90,15 +94,16 @@ class _RankingDialogState extends State<RankingDialog> {
     });
 
     try {
-      final rankingService = Provider.of<RankingService>(context, listen: false);
-      
+      final rankingService =
+          Provider.of<RankingService>(context, listen: false);
+
       await rankingService.setRanking(
         eventId: widget.eventId,
         dancerId: widget.dancerId,
         rankId: _selectedRank!.id,
-        reason: _reasonController.text.trim().isNotEmpty 
-          ? _reasonController.text.trim() 
-          : null,
+        reason: _reasonController.text.trim().isNotEmpty
+            ? _reasonController.text.trim()
+            : null,
       );
 
       if (mounted) {
@@ -106,7 +111,7 @@ class _RankingDialogState extends State<RankingDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Ranking updated for $_dancerName'),
-            backgroundColor: Colors.green,
+            backgroundColor: context.danceTheme.success,
           ),
         );
       }
@@ -115,7 +120,7 @@ class _RankingDialogState extends State<RankingDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error saving ranking: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -141,32 +146,32 @@ class _RankingDialogState extends State<RankingDialog> {
               'How eager are you to dance with this person?',
               style: TextStyle(fontSize: 16),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             const Text(
               'Rank Options:',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            
+
             const SizedBox(height: 8),
-            
+
             // Rank options
             ..._ranks.map((rank) => RadioListTile<Rank>(
-              title: Text(rank.name),
-              value: rank,
-              groupValue: _selectedRank,
-              onChanged: (Rank? value) {
-                setState(() {
-                  _selectedRank = value;
-                });
-              },
-              dense: true,
-              contentPadding: EdgeInsets.zero,
-            )),
-            
+                  title: Text(rank.name),
+                  value: rank,
+                  groupValue: _selectedRank,
+                  onChanged: (Rank? value) {
+                    setState(() {
+                      _selectedRank = value;
+                    });
+                  },
+                  dense: true,
+                  contentPadding: EdgeInsets.zero,
+                )),
+
             const SizedBox(height: 16),
-            
+
             // Reason field
             TextField(
               controller: _reasonController,
@@ -178,16 +183,16 @@ class _RankingDialogState extends State<RankingDialog> {
               maxLines: 3,
               textCapitalization: TextCapitalization.sentences,
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Last updated info
             if (_lastUpdated != null)
               Text(
                 'Last updated: ${DateFormat('MMM d, y \'at\' h:mm a').format(_lastUpdated!)}',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
           ],
@@ -211,4 +216,4 @@ class _RankingDialogState extends State<RankingDialog> {
       ],
     );
   }
-} 
+}

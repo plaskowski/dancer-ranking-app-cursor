@@ -13,3 +13,7 @@ History:
 
 Next step:
 - Continue migrating hardcoded colors throughout the app to use the new theme system
+- stop using "const" expression to avoid back and forth changes
+- fix the Cursor config so that it can run flutter analyze without waiting for approval
+- setup a strict Dart auto-formatter and make Cursor reformat all modified files after it is done with the changes
+- ...
