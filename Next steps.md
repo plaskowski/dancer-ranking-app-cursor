@@ -37,6 +37,11 @@ History:
   → **Context Display**: Shows dancer notes to help with identification
   → **Clear Guidance**: Info banner explains scope and directs users to Planning tab for ranked dancers
 
-Next step:
-- hide present ones from planning tab as while at event I will use that tab only for marking presence
+Next steps (remember to update the spec first):
+- ✅ hide present dancers in planning tab as while at event I will use that tab only for marking presence
+  → **EFFICIENT PRESENCE WORKFLOW**: Planning tab now only shows ranked dancers who aren't present yet
+  → **Smart Empty State**: Differentiates between no dancers added vs all dancers present
+  → **Improved Focus**: At events, planning tab becomes a focused checklist of absent dancers to spot
+  → **Better UX**: Clear guidance to switch to Present tab when all ranked dancers are present
+- don't suggest already present people in Add Existing Dancer dialog
 - ...

@@ -121,13 +121,14 @@ Users can adjust rankings during events for various reasons:
 **Tabs**:
 
 **Planning Tab**:
-- View dancers with rankings for this event (pre-event planning)
+- View only ranked dancers who are NOT present yet (focused on marking presence)
 - Set/edit rank selection (using predefined ranks)
 - Add reasons for rankings (pre-event planning)
 - **Add multiple existing dancers** (FAB → Select Dancers Screen)
   - Select from unranked dancers in database
   - Bulk add with default "Neutral" ranking
   - Planning-only actions: rank editing, notes editing
+- **Smart empty state**: Shows different messages based on whether all ranked dancers are present
 
 **Present Tab**:
 - View only dancers who are present at the event (have Attendance records)
@@ -260,6 +261,7 @@ Home Screen
 **Phase 2: At the Event**
 1. **Spot ranked dancers** → **Planning Tab** → click blue location icon for instant "Mark Present"
    - No dialog needed - immediate action with visual feedback
+   - Dancer disappears from Planning tab once marked present (focuses on remaining absent dancers)
    - Stay on Planning tab for efficient batch processing
 2. **Adjust rankings** → tap dancers for Planning Actions Dialog (rank/notes only)
 3. **Switch to Present Tab** for live event management when needed
@@ -272,9 +274,9 @@ Home Screen
 ### Key Features
 - **Pre-event planning**: Add dancers, set initial rank preferences with reasons
 - **Dynamic ranking adjustment**: Change rankings during events based on real-time impressions
-- **Efficient presence tracking**: One-click "Mark Present" with instant feedback
+- **Efficient presence tracking**: One-click "Mark Present" with instant feedback and automatic list refresh
 - **Context-aware actions**: Different dialog contents based on Planning vs Present mode
-- **Streamlined workflow**: Stay on Planning tab for batch presence marking
+- **Streamlined workflow**: Stay on Planning tab for batch presence marking, focuses only on absent dancers
 - **Dual FAB behavior**: Tab-specific actions (Select Dancers vs Add Dancer)
 - **Dance prioritization**: Present tab shows dancers sorted by rank ordinal for decision making
 - **Integrated dance tracking**: Record completed dances and impressions in attendance records

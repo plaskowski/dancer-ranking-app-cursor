@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/dancer_service.dart';
+import '../../theme/theme_extensions.dart';
 import '../../widgets/dancer_card.dart';
-
 import '../event_tab_actions.dart';
 import '../select_dancers_screen.dart';
 
@@ -34,29 +34,44 @@ class _PlanningTabState extends State<PlanningTab> {
         }
 
         final allDancers = snapshot.data ?? [];
-        // Only show dancers that have been explicitly added to the event (have rankings)
-        final dancers = allDancers.where((d) => d.hasRanking).toList();
+        // Only show dancers that have been explicitly added to the event (have rankings) AND are not present yet
+        final dancers =
+            allDancers.where((d) => d.hasRanking && !d.isPresent).toList();
 
         if (dancers.isEmpty) {
+          // Check if there are any ranked dancers at all for this event
+          final totalRankedDancers =
+              allDancers.where((d) => d.hasRanking).length;
+
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.people,
-                    size: 64,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant),
+                Icon(
+                  totalRankedDancers > 0 ? Icons.check_circle : Icons.people,
+                  size: 64,
+                  color: totalRankedDancers > 0
+                      ? context.danceTheme.success
+                      : Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
                 const SizedBox(height: 16),
                 Text(
-                  'No dancers added yet',
+                  totalRankedDancers > 0
+                      ? 'All ranked dancers are present!'
+                      : 'No dancers added yet',
                   style: TextStyle(
-                      fontSize: 18,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    fontSize: 18,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Tap + to add dancers to this event',
+                  totalRankedDancers > 0
+                      ? 'Switch to Present tab to manage attendance'
+                      : 'Tap + to add dancers to this event',
                   style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
