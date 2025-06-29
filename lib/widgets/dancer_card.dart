@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../services/dancer_service.dart';
 import '../theme/theme_extensions.dart';
+import '../utils/action_logger.dart';
 import 'dancer_actions_dialog.dart';
 
 // Dancer Card widget used in both tabs
@@ -42,7 +43,9 @@ class DancerCard extends StatelessWidget {
                     ),
 
                     // Show dancer notes if they exist (hide for danced dancers in Present tab)
-                    if (dancer.notes != null && dancer.notes!.isNotEmpty && (isPlanningMode || !dancer.hasDanced)) ...[
+                    if (dancer.notes != null &&
+                        dancer.notes!.isNotEmpty &&
+                        (isPlanningMode || !dancer.hasDanced)) ...[
                       const TextSpan(text: ' • '),
                       TextSpan(
                         text: dancer.notes!,
@@ -94,7 +97,8 @@ class DancerCard extends StatelessWidget {
                           color: context.danceTheme.danceAccent,
                         ),
                       ),
-                      if (dancer.impression != null && dancer.impression!.isNotEmpty) ...[
+                      if (dancer.impression != null &&
+                          dancer.impression!.isNotEmpty) ...[
                         TextSpan(
                           text: ' - ${dancer.impression!}',
                           style: TextStyle(
@@ -115,6 +119,17 @@ class DancerCard extends StatelessWidget {
           ],
         ),
         onTap: () {
+          ActionLogger.logUserAction('DancerCard', 'dancer_tapped', {
+            'dancerId': dancer.id,
+            'dancerName': dancer.name,
+            'eventId': eventId,
+            'isPlanningMode': isPlanningMode,
+            'dancerStatus': dancer.status,
+            'isPresent': dancer.isPresent,
+            'hasRanking': dancer.hasRanking,
+            'hasDanced': dancer.hasDanced,
+          });
+
           showDialog(
             context: context,
             builder: (context) => DancerActionsDialog(

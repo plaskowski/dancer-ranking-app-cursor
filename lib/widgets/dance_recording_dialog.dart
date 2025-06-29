@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../services/attendance_service.dart';
 import '../theme/theme_extensions.dart';
+import '../utils/action_logger.dart';
 
 class DanceRecordingDialog extends StatefulWidget {
   final int dancerId;
@@ -29,6 +30,13 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
   @override
   void initState() {
     super.initState();
+
+    ActionLogger.logUserAction('DanceRecordingDialog', 'dialog_opened', {
+      'dancerId': widget.dancerId,
+      'eventId': widget.eventId,
+      'dancerName': widget.dancerName,
+    });
+
     _checkIfAlreadyDanced();
   }
 
@@ -39,6 +47,12 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
   }
 
   Future<void> _checkIfAlreadyDanced() async {
+    ActionLogger.logUserAction(
+        'DanceRecordingDialog', 'checking_dance_history', {
+      'dancerId': widget.dancerId,
+      'eventId': widget.eventId,
+    });
+
     try {
       final attendanceService =
           Provider.of<AttendanceService>(context, listen: false);
@@ -46,16 +60,36 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
           await attendanceService.hasDanced(widget.eventId, widget.dancerId);
 
       if (mounted) {
+        ActionLogger.logUserAction(
+            'DanceRecordingDialog', 'dance_history_checked', {
+          'dancerId': widget.dancerId,
+          'eventId': widget.eventId,
+          'alreadyDanced': hasDanced,
+        });
+
         setState(() {
           _alreadyDanced = hasDanced;
         });
       }
     } catch (e) {
+      ActionLogger.logError(
+          'DanceRecordingDialog._checkIfAlreadyDanced', e.toString(), {
+        'dancerId': widget.dancerId,
+        'eventId': widget.eventId,
+      });
       // Handle error silently, user can still proceed
     }
   }
 
   Future<void> _recordDance() async {
+    ActionLogger.logUserAction('DanceRecordingDialog', 'record_dance_started', {
+      'dancerId': widget.dancerId,
+      'eventId': widget.eventId,
+      'hasImpression': _impressionController.text.trim().isNotEmpty,
+      'impressionLength': _impressionController.text.trim().length,
+      'alreadyDanced': _alreadyDanced,
+    });
+
     setState(() {
       _isLoading = true;
     });
@@ -73,6 +107,13 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
       );
 
       if (mounted) {
+        ActionLogger.logUserAction(
+            'DanceRecordingDialog', 'record_dance_completed', {
+          'dancerId': widget.dancerId,
+          'eventId': widget.eventId,
+          'dancerName': widget.dancerName,
+        });
+
         Navigator.pop(context, true); // Return true to indicate success
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -82,6 +123,12 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
         );
       }
     } catch (e) {
+      ActionLogger.logError('DanceRecordingDialog._recordDance', e.toString(), {
+        'dancerId': widget.dancerId,
+        'eventId': widget.eventId,
+        'dancerName': widget.dancerName,
+      });
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -159,7 +206,16 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: _isLoading ? null : () => Navigator.pop(context),
+          onPressed: _isLoading
+              ? null
+              : () {
+                  ActionLogger.logUserAction(
+                      'DanceRecordingDialog', 'dialog_cancelled', {
+                    'dancerId': widget.dancerId,
+                    'eventId': widget.eventId,
+                  });
+                  Navigator.pop(context);
+                },
           child: const Text('Cancel'),
         ),
         ElevatedButton(

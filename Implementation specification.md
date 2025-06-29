@@ -333,3 +333,49 @@ Home Screen
 - **Reusable Components**: Shared widgets across tabs with different behavioral modes
 - **Separation of Concerns**: UI components separated from business logic and data access
 - **Automatic Refresh**: No manual callbacks - UI updates automatically when any data changes
+
+# Implementation Specification
+
+## Overview
+A Flutter application for managing dancers at salsa events, with ranking, attendance tracking, and dance recording capabilities.
+
+## Debugging and Development Features
+
+### Action Logging System
+The app includes a comprehensive structured action logging system for debugging and development:
+
+#### Logging Categories
+- **`[ACTION_LOG]`**: User interactions, service calls, state changes, navigation events
+- **`[LIST_LOG]`**: UI list contents with item IDs and key properties for data visibility  
+- **`[STATE_LOG]`**: Before/after states, data transitions, filtering results
+- **`[ERROR_LOG]`**: Errors with full operational context and parameters
+- **`[Database]`**: CRUD operations with affected records and success status
+
+#### Coverage Areas
+- **Screen Lifecycle**: Initialization, disposal, tab changes with context
+- **User Interactions**: All taps, form submissions, dialog actions with parameters
+- **Service Operations**: All CRUD methods with input/output data
+- **Navigation**: Route changes, screen parameters, navigation method tracking
+- **Data Flow**: Database operations, filtering, list rendering with item details
+- **Error Handling**: Complete error context for debugging failures
+
+#### Log Format
+```
+[CATEGORY] TIMESTAMP | Component | Action | key1=value1, key2=value2
+```
+
+Example logs:
+```
+[ACTION_LOG] 2025-01-11T12:34:56.789 | UI_EventCard | event_tapped | eventId=2, eventName="DaMeTimba"
+[LIST_LOG] 2025-01-11T12:34:57.123 | UI_PresentTab | present_dancers | count=3 | items=[id=1, name="Alice", status="present"]
+[Database] 2025-01-11T12:34:57.456 | UPDATE attendances | id=22, oldStatus="present", newStatus="served", success=true
+```
+
+#### Development Benefits
+- **Bug Reproduction**: Complete action trails for recreating issues
+- **Workflow Analysis**: Step-by-step user interaction tracking
+- **Performance Monitoring**: Service call timing and database operation efficiency
+- **Data Visibility**: Real-time view of list contents and filtering results
+- **Error Debugging**: Full context for operation failures
+
+## Database Schema

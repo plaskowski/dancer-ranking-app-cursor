@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import '../database/database.dart';
+import '../utils/action_logger.dart';
 
 class DancerService {
   final AppDatabase _database;
@@ -9,6 +10,8 @@ class DancerService {
 
   // Get all dancers ordered by name
   Stream<List<Dancer>> watchAllDancers() {
+    ActionLogger.logServiceCall('DancerService', 'watchAllDancers');
+
     return (_database.select(_database.dancers)
           ..orderBy([(d) => OrderingTerm.asc(d.name)]))
         .watch();
@@ -16,12 +19,19 @@ class DancerService {
 
   // Get a specific dancer by ID
   Future<Dancer?> getDancer(int id) {
+    ActionLogger.logServiceCall('DancerService', 'getDancer', {'dancerId': id});
+
     return (_database.select(_database.dancers)..where((d) => d.id.equals(id)))
         .getSingleOrNull();
   }
 
   // Search dancers by name
   Stream<List<Dancer>> searchDancers(String query) {
+    ActionLogger.logServiceCall('DancerService', 'searchDancers', {
+      'query': query,
+      'queryLength': query.length,
+    });
+
     if (query.isEmpty) {
       return watchAllDancers();
     }
@@ -33,46 +43,136 @@ class DancerService {
   }
 
   // Create a new dancer
-  Future<int> createDancer({required String name, String? notes}) {
-    return _database.into(_database.dancers).insert(
-          DancersCompanion.insert(
-            name: name,
-            notes: Value(notes),
-          ),
-        );
+  Future<int> createDancer({required String name, String? notes}) async {
+    ActionLogger.logServiceCall('DancerService', 'createDancer', {
+      'name': name,
+      'hasNotes': notes != null,
+    });
+
+    try {
+      final id = await _database.into(_database.dancers).insert(
+            DancersCompanion.insert(
+              name: name,
+              notes: Value(notes),
+            ),
+          );
+
+      ActionLogger.logDbOperation('INSERT', 'dancers', {
+        'id': id,
+        'name': name,
+        'notes': notes,
+      });
+
+      return id;
+    } catch (e) {
+      ActionLogger.logError('DancerService.createDancer', e.toString(), {
+        'name': name,
+        'hasNotes': notes != null,
+      });
+      rethrow;
+    }
   }
 
   // Update an existing dancer
   Future<bool> updateDancer(int id, {String? name, String? notes}) async {
-    final dancer = await getDancer(id);
-    if (dancer == null) return false;
+    ActionLogger.logServiceCall('DancerService', 'updateDancer', {
+      'dancerId': id,
+      'hasName': name != null,
+      'hasNotes': notes != null,
+    });
 
-    return _database.update(_database.dancers).replace(
-          dancer.copyWith(
-            name: name ?? dancer.name,
-            notes: Value(notes ?? dancer.notes),
-          ),
-        );
+    try {
+      final dancer = await getDancer(id);
+      if (dancer == null) {
+        ActionLogger.logAction(
+            'DancerService.updateDancer', 'dancer_not_found', {
+          'dancerId': id,
+        });
+        return false;
+      }
+
+      final result = await _database.update(_database.dancers).replace(
+            dancer.copyWith(
+              name: name ?? dancer.name,
+              notes: Value(notes ?? dancer.notes),
+            ),
+          );
+
+      ActionLogger.logDbOperation('UPDATE', 'dancers', {
+        'id': id,
+        'oldName': dancer.name,
+        'newName': name ?? dancer.name,
+        'oldNotes': dancer.notes,
+        'newNotes': notes ?? dancer.notes,
+        'success': result,
+      });
+
+      return result;
+    } catch (e) {
+      ActionLogger.logError('DancerService.updateDancer', e.toString(), {
+        'dancerId': id,
+        'name': name,
+        'notes': notes,
+      });
+      rethrow;
+    }
   }
 
   // Delete a dancer (this will cascade delete rankings and attendances)
-  Future<int> deleteDancer(int id) {
-    return (_database.delete(_database.dancers)..where((d) => d.id.equals(id)))
-        .go();
+  Future<int> deleteDancer(int id) async {
+    ActionLogger.logServiceCall('DancerService', 'deleteDancer', {
+      'dancerId': id,
+    });
+
+    try {
+      final result = await (_database.delete(_database.dancers)
+            ..where((d) => d.id.equals(id)))
+          .go();
+
+      ActionLogger.logDbOperation('DELETE', 'dancers', {
+        'id': id,
+        'affected_rows': result,
+      });
+
+      return result;
+    } catch (e) {
+      ActionLogger.logError('DancerService.deleteDancer', e.toString(), {
+        'dancerId': id,
+      });
+      rethrow;
+    }
   }
 
   // Get dancers count
   Future<int> getDancersCount() async {
-    final countExp = countAll();
-    final query = _database.selectOnly(_database.dancers)
-      ..addColumns([countExp]);
+    ActionLogger.logServiceCall('DancerService', 'getDancersCount');
 
-    final result = await query.getSingle();
-    return result.read(countExp)!;
+    try {
+      final countExp = countAll();
+      final query = _database.selectOnly(_database.dancers)
+        ..addColumns([countExp]);
+
+      final result = await query.getSingle();
+      final count = result.read(countExp)!;
+
+      ActionLogger.logAction(
+          'DancerService.getDancersCount', 'count_retrieved', {
+        'count': count,
+      });
+
+      return count;
+    } catch (e) {
+      ActionLogger.logError('DancerService.getDancersCount', e.toString());
+      rethrow;
+    }
   }
 
   // Watch dancers for a specific event (with rankings and attendance) - reactive stream
   Stream<List<DancerWithEventInfo>> watchDancersForEvent(int eventId) {
+    ActionLogger.logServiceCall('DancerService', 'watchDancersForEvent', {
+      'eventId': eventId,
+    });
+
     final query = _database.select(_database.dancers).join([
       // LEFT JOIN rankings ON dancers.id = rankings.dancer_id AND rankings.event_id = eventId
       leftOuterJoin(
@@ -122,52 +222,75 @@ class DancerService {
   // Get only dancers that don't have rankings for a specific event AND are not present (for selection dialog)
   Future<List<DancerWithEventInfo>> getUnrankedDancersForEvent(
       int eventId) async {
-    // Get all ranked dancer IDs for this event
-    final rankedDancerIdsDebug = await (_database.select(_database.rankings)
-          ..where((r) => r.eventId.equals(eventId)))
-        .get();
+    ActionLogger.logServiceCall('DancerService', 'getUnrankedDancersForEvent', {
+      'eventId': eventId,
+    });
 
-    // Get all present dancer IDs for this event
-    final presentDancerIds = await (_database.select(_database.attendances)
-          ..where((a) => a.eventId.equals(eventId)))
-        .get();
+    try {
+      // Get all ranked dancer IDs for this event
+      final rankedDancerIdsDebug = await (_database.select(_database.rankings)
+            ..where((r) => r.eventId.equals(eventId)))
+          .get();
 
-    print(
-        'DEBUG: Ranked dancer IDs for event $eventId: ${rankedDancerIdsDebug.map((r) => r.dancerId).toList()}');
-    print(
-        'DEBUG: Present dancer IDs for event $eventId: ${presentDancerIds.map((a) => a.dancerId).toList()}');
+      // Get all present dancer IDs for this event
+      final presentDancerIds = await (_database.select(_database.attendances)
+            ..where((a) => a.eventId.equals(eventId)))
+          .get();
 
-    // Get all dancers
-    final allDancers = await (_database.select(_database.dancers)
-          ..orderBy([(d) => OrderingTerm.asc(d.name)]))
-        .get();
+      print(
+          'DEBUG: Ranked dancer IDs for event $eventId: ${rankedDancerIdsDebug.map((r) => r.dancerId).toList()}');
+      print(
+          'DEBUG: Present dancer IDs for event $eventId: ${presentDancerIds.map((a) => a.dancerId).toList()}');
 
-    // Filter out dancers that have rankings OR are present for this event
-    final rankedDancerIds = rankedDancerIdsDebug.map((r) => r.dancerId).toSet();
-    final presentDancerIdSet = presentDancerIds.map((a) => a.dancerId).toSet();
-    final availableDancers = allDancers
-        .where((dancer) =>
-            !rankedDancerIds.contains(dancer.id) &&
-            !presentDancerIdSet.contains(dancer.id))
-        .toList();
+      // Get all dancers
+      final allDancers = await (_database.select(_database.dancers)
+            ..orderBy([(d) => OrderingTerm.asc(d.name)]))
+          .get();
 
-    print('DEBUG: All dancers count: ${allDancers.length}');
-    print('DEBUG: Ranked dancers count: ${rankedDancerIds.length}');
-    print('DEBUG: Present dancers count: ${presentDancerIdSet.length}');
-    print(
-        'DEBUG: Available (unranked + absent) dancers count: ${availableDancers.length}');
-    print(
-        'DEBUG: Available dancer names: ${availableDancers.map((d) => d.name).toList()}');
+      // Filter out dancers that have rankings OR are present for this event
+      final rankedDancerIds =
+          rankedDancerIdsDebug.map((r) => r.dancerId).toSet();
+      final presentDancerIdSet =
+          presentDancerIds.map((a) => a.dancerId).toSet();
+      final availableDancers = allDancers
+          .where((dancer) =>
+              !rankedDancerIds.contains(dancer.id) &&
+              !presentDancerIdSet.contains(dancer.id))
+          .toList();
 
-    return availableDancers.map((dancer) {
-      return DancerWithEventInfo(
-        id: dancer.id,
-        name: dancer.name,
-        notes: dancer.notes,
-        createdAt: dancer.createdAt,
-        status: 'absent',
-      );
-    }).toList();
+      print('DEBUG: All dancers count: ${allDancers.length}');
+      print('DEBUG: Ranked dancers count: ${rankedDancerIds.length}');
+      print('DEBUG: Present dancers count: ${presentDancerIdSet.length}');
+      print(
+          'DEBUG: Available (unranked + absent) dancers count: ${availableDancers.length}');
+      print(
+          'DEBUG: Available dancer names: ${availableDancers.map((d) => d.name).toList()}');
+
+      ActionLogger.logAction(
+          'DancerService.getUnrankedDancersForEvent', 'filtering_complete', {
+        'eventId': eventId,
+        'totalDancers': allDancers.length,
+        'rankedDancers': rankedDancerIds.length,
+        'presentDancers': presentDancerIdSet.length,
+        'availableDancers': availableDancers.length,
+      });
+
+      return availableDancers.map((dancer) {
+        return DancerWithEventInfo(
+          id: dancer.id,
+          name: dancer.name,
+          notes: dancer.notes,
+          createdAt: dancer.createdAt,
+          status: 'absent',
+        );
+      }).toList();
+    } catch (e) {
+      ActionLogger.logError(
+          'DancerService.getUnrankedDancersForEvent', e.toString(), {
+        'eventId': eventId,
+      });
+      rethrow;
+    }
   }
 }
 

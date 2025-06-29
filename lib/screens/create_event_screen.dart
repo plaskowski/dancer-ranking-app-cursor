@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../services/event_service.dart';
 import '../theme/theme_extensions.dart';
+import '../utils/action_logger.dart';
 
 class CreateEventScreen extends StatefulWidget {
   const CreateEventScreen({super.key});
@@ -20,12 +21,22 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   bool _isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+    ActionLogger.logUserAction('CreateEventScreen', 'screen_opened');
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     super.dispose();
   }
 
   Future<void> _selectDate() async {
+    ActionLogger.logUserAction('CreateEventScreen', 'date_picker_opened', {
+      'currentDate': _selectedDate.toIso8601String(),
+    });
+
     final picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
@@ -34,14 +45,29 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     );
 
     if (picked != null && picked != _selectedDate) {
+      ActionLogger.logUserAction('CreateEventScreen', 'date_selected', {
+        'oldDate': _selectedDate.toIso8601String(),
+        'newDate': picked.toIso8601String(),
+      });
+
       setState(() {
         _selectedDate = picked;
       });
+    } else {
+      ActionLogger.logUserAction(
+          'CreateEventScreen', 'date_selection_cancelled');
     }
   }
 
   Future<void> _createEvent() async {
+    ActionLogger.logUserAction('CreateEventScreen', 'create_event_started', {
+      'eventName': _nameController.text.trim(),
+      'eventDate': _selectedDate.toIso8601String(),
+      'nameLength': _nameController.text.trim().length,
+    });
+
     if (!_formKey.currentState!.validate()) {
+      ActionLogger.logUserAction('CreateEventScreen', 'validation_failed');
       return;
     }
 
@@ -52,12 +78,19 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     try {
       final eventService = Provider.of<EventService>(context, listen: false);
 
-      await eventService.createEvent(
+      final eventId = await eventService.createEvent(
         name: _nameController.text.trim(),
         date: _selectedDate,
       );
 
       if (mounted) {
+        ActionLogger.logUserAction(
+            'CreateEventScreen', 'create_event_completed', {
+          'eventId': eventId,
+          'eventName': _nameController.text.trim(),
+          'eventDate': _selectedDate.toIso8601String(),
+        });
+
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -67,6 +100,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         );
       }
     } catch (e) {
+      ActionLogger.logError('CreateEventScreen._createEvent', e.toString(), {
+        'eventName': _nameController.text.trim(),
+        'eventDate': _selectedDate.toIso8601String(),
+      });
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

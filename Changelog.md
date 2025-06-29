@@ -4,6 +4,33 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.32.0] - 2025-01-11
+
+### User Requests
+- "Ok, double check that all actions emmit logs"
+- Request to verify comprehensive logging coverage across entire application
+
+### Added
+- **Complete Action Coverage**: Added ActionLogger to all missing UI components and user interactions
+- **Home Screen Logging**: Navigation actions, event card interactions, context menus (rename, delete, change date)
+- **Dialog Lifecycle Logging**: AddDancerDialog, DanceRecordingDialog, RankingDialog, CreateEventScreen with full workflow tracking
+- **Service Method Enhancement**: Comprehensive logging for DancerService and EventService CRUD operations
+- **Database Operation Tracking**: Enhanced error handling and success logging for all data operations
+- **Form Interaction Logging**: Validation failures, form submissions, field changes with detailed context
+- **Navigation Traceability**: Screen initialization, disposal, tab changes, route parameters
+
+### Enhanced
+- **Dancer Card Interactions**: Complete tap action logging with dancer state context
+- **Context Menu Actions**: Full workflow tracking for event management operations  
+- **Error Context**: Improved error logging with operational parameters and failure reasons
+- **Data Flow Visibility**: Service calls, database operations, and state transitions with timestamps
+
+### Technical
+- **100% Action Coverage**: Every user interaction now emits structured logs
+- **Debugging Ready**: Complete action traceability for bug reproduction and workflow analysis
+- **Structured Format**: Consistent logging categories with timestamps and contextual data
+- **Performance Optimized**: Efficient logging without impacting user experience
+
 ## [v0.31.0] - 2025-01-11
 
 ### User Requests

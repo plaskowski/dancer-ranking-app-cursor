@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../database/database.dart';
-import '../services/dancer_service.dart';
 import '../services/attendance_service.dart';
+import '../services/dancer_service.dart';
 import '../theme/theme_extensions.dart';
+import '../utils/action_logger.dart';
 
 class AddDancerDialog extends StatefulWidget {
   final Dancer? dancer; // If provided, we're editing
@@ -33,6 +34,13 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
   void initState() {
     super.initState();
 
+    ActionLogger.logUserAction('AddDancerDialog', 'dialog_opened', {
+      'isEditing': widget.dancer != null,
+      'eventId': widget.eventId,
+      'dancerId': widget.dancer?.id,
+      'dancerName': widget.dancer?.name,
+    });
+
     // If editing, populate fields
     if (widget.dancer != null) {
       _nameController.text = widget.dancer!.name;
@@ -49,7 +57,20 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
   }
 
   Future<void> _saveDancer() async {
+    ActionLogger.logUserAction('AddDancerDialog', 'save_started', {
+      'isEditing': widget.dancer != null,
+      'eventId': widget.eventId,
+      'dancerId': widget.dancer?.id,
+      'nameLength': _nameController.text.trim().length,
+      'hasNotes': _notesController.text.trim().isNotEmpty,
+      'alreadyDanced': _alreadyDanced,
+      'hasImpression': _impressionController.text.trim().isNotEmpty,
+    });
+
     if (!_formKey.currentState!.validate()) {
+      ActionLogger.logUserAction('AddDancerDialog', 'validation_failed', {
+        'isEditing': widget.dancer != null,
+      });
       return;
     }
 
@@ -64,6 +85,12 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
       if (widget.dancer != null) {
         // Editing existing dancer
+        ActionLogger.logUserAction('AddDancerDialog', 'updating_dancer', {
+          'dancerId': widget.dancer!.id,
+          'oldName': widget.dancer!.name,
+          'newName': _nameController.text.trim(),
+        });
+
         await dancerService.updateDancer(
           widget.dancer!.id,
           name: _nameController.text.trim(),
@@ -74,6 +101,11 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
         dancerId = widget.dancer!.id;
       } else {
         // Creating new dancer
+        ActionLogger.logUserAction('AddDancerDialog', 'creating_dancer', {
+          'name': _nameController.text.trim(),
+          'hasNotes': _notesController.text.trim().isNotEmpty,
+        });
+
         dancerId = await dancerService.createDancer(
           name: _nameController.text.trim(),
           notes: _notesController.text.trim().isNotEmpty
@@ -84,6 +116,13 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
       // If we're adding during an event and "already danced" is checked
       if (widget.eventId != null && _alreadyDanced && widget.dancer == null) {
+        ActionLogger.logUserAction(
+            'AddDancerDialog', 'recording_dance_during_creation', {
+          'eventId': widget.eventId!,
+          'dancerId': dancerId,
+          'hasImpression': _impressionController.text.trim().isNotEmpty,
+        });
+
         final attendanceService =
             Provider.of<AttendanceService>(context, listen: false);
         await attendanceService.createAttendanceWithDance(
@@ -96,6 +135,12 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
       }
 
       if (mounted) {
+        ActionLogger.logUserAction('AddDancerDialog', 'save_completed', {
+          'isEditing': widget.dancer != null,
+          'dancerId': dancerId,
+          'eventId': widget.eventId,
+        });
+
         Navigator.pop(context, true); // Return true to indicate success
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -107,6 +152,12 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
         );
       }
     } catch (e) {
+      ActionLogger.logError('AddDancerDialog._saveDancer', e.toString(), {
+        'isEditing': widget.dancer != null,
+        'eventId': widget.eventId,
+        'dancerId': widget.dancer?.id,
+      });
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -172,6 +223,12 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                   title: const Text('Already danced with this person'),
                   value: _alreadyDanced,
                   onChanged: (value) {
+                    ActionLogger.logUserAction(
+                        'AddDancerDialog', 'already_danced_toggled', {
+                      'value': value ?? false,
+                      'eventId': widget.eventId,
+                    });
+
                     setState(() {
                       _alreadyDanced = value ?? false;
                     });
@@ -201,7 +258,16 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: _isLoading ? null : () => Navigator.pop(context),
+          onPressed: _isLoading
+              ? null
+              : () {
+                  ActionLogger.logUserAction(
+                      'AddDancerDialog', 'dialog_cancelled', {
+                    'isEditing': widget.dancer != null,
+                    'eventId': widget.eventId,
+                  });
+                  Navigator.pop(context);
+                },
           child: const Text('Cancel'),
         ),
         ElevatedButton(

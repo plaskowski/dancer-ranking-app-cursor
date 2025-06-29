@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../database/database.dart';
 import '../services/event_service.dart';
+import '../utils/action_logger.dart';
 import 'create_event_screen.dart';
 import 'dancers_screen.dart';
 import 'event_screen.dart';
@@ -22,6 +23,10 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.people),
             onPressed: () {
+              ActionLogger.logUserAction('HomeScreen', 'navigate_to_dancers', {
+                'destination': 'DancersScreen',
+              });
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -89,6 +94,10 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          ActionLogger.logUserAction('HomeScreen', 'navigate_to_create_event', {
+            'destination': 'CreateEventScreen',
+          });
+
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -108,6 +117,12 @@ class _EventCard extends StatelessWidget {
   const _EventCard({required this.event});
 
   void _showContextMenu(BuildContext context) {
+    ActionLogger.logUserAction('EventCard', 'context_menu_opened', {
+      'eventId': event.id,
+      'eventName': event.name,
+      'eventDate': event.date.toIso8601String(),
+    });
+
     showModalBottomSheet(
       context: context,
       builder: (context) => SafeArea(
@@ -131,6 +146,12 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Rename'),
                 onTap: () {
+                  ActionLogger.logUserAction(
+                      'EventCard', 'context_rename_tapped', {
+                    'eventId': event.id,
+                    'eventName': event.name,
+                  });
+
                   Navigator.pop(context);
                   _showRenameDialog(context);
                 },
@@ -142,6 +163,13 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Change Date'),
                 onTap: () {
+                  ActionLogger.logUserAction(
+                      'EventCard', 'context_change_date_tapped', {
+                    'eventId': event.id,
+                    'eventName': event.name,
+                    'currentDate': event.date.toIso8601String(),
+                  });
+
                   Navigator.pop(context);
                   _showChangeDateDialog(context);
                 },
@@ -153,6 +181,12 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Delete'),
                 onTap: () {
+                  ActionLogger.logUserAction(
+                      'EventCard', 'context_delete_tapped', {
+                    'eventId': event.id,
+                    'eventName': event.name,
+                  });
+
                   Navigator.pop(context);
                   _showDeleteDialog(context);
                 },
@@ -165,6 +199,11 @@ class _EventCard extends StatelessWidget {
   }
 
   void _showRenameDialog(BuildContext context) {
+    ActionLogger.logUserAction('EventCard', 'rename_dialog_opened', {
+      'eventId': event.id,
+      'currentName': event.name,
+    });
+
     final controller = TextEditingController(text: event.name);
 
     showDialog(
@@ -195,6 +234,11 @@ class _EventCard extends StatelessWidget {
   }
 
   void _showChangeDateDialog(BuildContext context) async {
+    ActionLogger.logUserAction('EventCard', 'change_date_dialog_opened', {
+      'eventId': event.id,
+      'currentDate': event.date.toIso8601String(),
+    });
+
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: event.date,
@@ -204,22 +248,48 @@ class _EventCard extends StatelessWidget {
     );
 
     if (selectedDate != null) {
+      ActionLogger.logUserAction('EventCard', 'date_selected', {
+        'eventId': event.id,
+        'newDate': selectedDate.toIso8601String(),
+        'oldDate': event.date.toIso8601String(),
+      });
+
       _performDateChange(context, selectedDate);
+    } else {
+      ActionLogger.logUserAction('EventCard', 'date_change_cancelled', {
+        'eventId': event.id,
+      });
     }
   }
 
   void _performDateChange(BuildContext context, DateTime newDate) async {
+    ActionLogger.logUserAction('EventCard', 'date_change_started', {
+      'eventId': event.id,
+      'newDate': newDate.toIso8601String(),
+      'oldDate': event.date.toIso8601String(),
+    });
+
     try {
       final eventService = Provider.of<EventService>(context, listen: false);
       final success = await eventService.updateEvent(event.id, date: newDate);
 
       if (context.mounted) {
         if (success) {
+          ActionLogger.logUserAction('EventCard', 'date_change_completed', {
+            'eventId': event.id,
+            'newDate': newDate.toIso8601String(),
+          });
+
           final formattedDate = DateFormat('MMM d, y').format(newDate);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Event date changed to $formattedDate')),
           );
         } else {
+          ActionLogger.logError(
+              'EventCard.performDateChange', 'update_failed', {
+            'eventId': event.id,
+            'newDate': newDate.toIso8601String(),
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Failed to change event date'),
@@ -229,6 +299,10 @@ class _EventCard extends StatelessWidget {
         }
       }
     } catch (e) {
+      ActionLogger.logError('EventCard.performDateChange', e.toString(), {
+        'eventId': event.id,
+        'newDate': newDate.toIso8601String(),
+      });
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -243,10 +317,19 @@ class _EventCard extends StatelessWidget {
   void _performRename(
       BuildContext context, TextEditingController controller) async {
     final newName = controller.text.trim();
-    if (newName.isEmpty || newName == event.name) {
-      Navigator.pop(context);
+    if (newName.isEmpty) {
+      ActionLogger.logUserAction('EventCard', 'rename_validation_failed', {
+        'eventId': event.id,
+        'reason': 'empty_name',
+      });
       return;
     }
+
+    ActionLogger.logUserAction('EventCard', 'rename_started', {
+      'eventId': event.id,
+      'oldName': event.name,
+      'newName': newName,
+    });
 
     try {
       final eventService = Provider.of<EventService>(context, listen: false);
@@ -255,10 +338,18 @@ class _EventCard extends StatelessWidget {
       if (context.mounted) {
         Navigator.pop(context);
         if (success) {
+          ActionLogger.logUserAction('EventCard', 'rename_completed', {
+            'eventId': event.id,
+            'newName': newName,
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Event renamed to "$newName"')),
           );
         } else {
+          ActionLogger.logError('EventCard.performRename', 'update_failed', {
+            'eventId': event.id,
+            'newName': newName,
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Failed to rename event'),
@@ -268,6 +359,10 @@ class _EventCard extends StatelessWidget {
         }
       }
     } catch (e) {
+      ActionLogger.logError('EventCard.performRename', e.toString(), {
+        'eventId': event.id,
+        'newName': newName,
+      });
       if (context.mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
@@ -281,6 +376,11 @@ class _EventCard extends StatelessWidget {
   }
 
   void _showDeleteDialog(BuildContext context) {
+    ActionLogger.logUserAction('EventCard', 'delete_dialog_opened', {
+      'eventId': event.id,
+      'eventName': event.name,
+    });
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -306,6 +406,11 @@ class _EventCard extends StatelessWidget {
   }
 
   void _performDelete(BuildContext context) async {
+    ActionLogger.logUserAction('EventCard', 'delete_started', {
+      'eventId': event.id,
+      'eventName': event.name,
+    });
+
     try {
       final eventService = Provider.of<EventService>(context, listen: false);
       final deletedCount = await eventService.deleteEvent(event.id);
@@ -313,6 +418,10 @@ class _EventCard extends StatelessWidget {
       if (context.mounted) {
         Navigator.pop(context);
         if (deletedCount > 0) {
+          ActionLogger.logUserAction('EventCard', 'delete_completed', {
+            'eventId': event.id,
+            'eventName': event.name,
+          });
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Event "${event.name}" deleted')),
           );
@@ -326,6 +435,10 @@ class _EventCard extends StatelessWidget {
         }
       }
     } catch (e) {
+      ActionLogger.logError('EventCard.performDelete', e.toString(), {
+        'eventId': event.id,
+        'eventName': event.name,
+      });
       if (context.mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
@@ -345,30 +458,14 @@ class _EventCard extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        title: Text(
-          event.name,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            color:
-                isPast ? Theme.of(context).colorScheme.onSurfaceVariant : null,
-          ),
-        ),
-        subtitle: Text(
-          formattedDate,
-          style: TextStyle(
-            color: isPast
-                ? Theme.of(context).colorScheme.onSurfaceVariant
-                : Theme.of(context).colorScheme.primary,
-          ),
-        ),
-        trailing: Icon(
-          isPast ? Icons.history : Icons.arrow_forward_ios,
-          color: isPast
-              ? Theme.of(context).colorScheme.onSurfaceVariant
-              : Theme.of(context).colorScheme.primary,
-        ),
+      child: InkWell(
         onTap: () {
+          ActionLogger.logUserAction('EventCard', 'event_tapped', {
+            'eventId': event.id,
+            'eventName': event.name,
+            'eventDate': event.date.toIso8601String(),
+          });
+
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -377,6 +474,31 @@ class _EventCard extends StatelessWidget {
           );
         },
         onLongPress: () => _showContextMenu(context),
+        child: ListTile(
+          title: Text(
+            event.name,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: isPast
+                  ? Theme.of(context).colorScheme.onSurfaceVariant
+                  : null,
+            ),
+          ),
+          subtitle: Text(
+            formattedDate,
+            style: TextStyle(
+              color: isPast
+                  ? Theme.of(context).colorScheme.onSurfaceVariant
+                  : Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          trailing: Icon(
+            isPast ? Icons.history : Icons.arrow_forward_ios,
+            color: isPast
+                ? Theme.of(context).colorScheme.onSurfaceVariant
+                : Theme.of(context).colorScheme.primary,
+          ),
+        ),
       ),
     );
   }

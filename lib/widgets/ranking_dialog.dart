@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../database/database.dart';
-import '../services/ranking_service.dart';
 import '../services/dancer_service.dart';
+import '../services/ranking_service.dart';
 import '../theme/theme_extensions.dart';
+import '../utils/action_logger.dart';
 
 class RankingDialog extends StatefulWidget {
   final int dancerId;
@@ -33,6 +34,12 @@ class _RankingDialogState extends State<RankingDialog> {
   @override
   void initState() {
     super.initState();
+
+    ActionLogger.logUserAction('RankingDialog', 'dialog_opened', {
+      'dancerId': widget.dancerId,
+      'eventId': widget.eventId,
+    });
+
     _loadData();
   }
 
@@ -43,6 +50,11 @@ class _RankingDialogState extends State<RankingDialog> {
   }
 
   Future<void> _loadData() async {
+    ActionLogger.logUserAction('RankingDialog', 'loading_data', {
+      'dancerId': widget.dancerId,
+      'eventId': widget.eventId,
+    });
+
     final rankingService = Provider.of<RankingService>(context, listen: false);
     final dancerService = Provider.of<DancerService>(context, listen: false);
 
@@ -58,6 +70,15 @@ class _RankingDialogState extends State<RankingDialog> {
           await rankingService.getRanking(widget.eventId, widget.dancerId);
 
       if (mounted) {
+        ActionLogger.logUserAction('RankingDialog', 'data_loaded', {
+          'dancerId': widget.dancerId,
+          'eventId': widget.eventId,
+          'dancerName': dancer?.name ?? 'Unknown',
+          'ranksCount': ranks.length,
+          'hasExistingRanking': existingRanking != null,
+          'existingRankId': existingRanking?.rankId,
+        });
+
         setState(() {
           _ranks = ranks;
           _dancerName = dancer?.name ?? 'Unknown';
@@ -75,6 +96,11 @@ class _RankingDialogState extends State<RankingDialog> {
         });
       }
     } catch (e) {
+      ActionLogger.logError('RankingDialog._loadData', e.toString(), {
+        'dancerId': widget.dancerId,
+        'eventId': widget.eventId,
+      });
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -87,7 +113,23 @@ class _RankingDialogState extends State<RankingDialog> {
   }
 
   Future<void> _saveRanking() async {
-    if (_selectedRank == null) return;
+    if (_selectedRank == null) {
+      ActionLogger.logUserAction('RankingDialog', 'save_validation_failed', {
+        'dancerId': widget.dancerId,
+        'eventId': widget.eventId,
+        'reason': 'no_rank_selected',
+      });
+      return;
+    }
+
+    ActionLogger.logUserAction('RankingDialog', 'save_ranking_started', {
+      'dancerId': widget.dancerId,
+      'eventId': widget.eventId,
+      'rankId': _selectedRank!.id,
+      'rankName': _selectedRank!.name,
+      'hasReason': _reasonController.text.trim().isNotEmpty,
+      'reasonLength': _reasonController.text.trim().length,
+    });
 
     setState(() {
       _isLoading = true;
@@ -107,6 +149,14 @@ class _RankingDialogState extends State<RankingDialog> {
       );
 
       if (mounted) {
+        ActionLogger.logUserAction('RankingDialog', 'save_ranking_completed', {
+          'dancerId': widget.dancerId,
+          'eventId': widget.eventId,
+          'rankId': _selectedRank!.id,
+          'rankName': _selectedRank!.name,
+          'dancerName': _dancerName,
+        });
+
         Navigator.pop(context, true); // Return true to indicate success
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -116,6 +166,12 @@ class _RankingDialogState extends State<RankingDialog> {
         );
       }
     } catch (e) {
+      ActionLogger.logError('RankingDialog._saveRanking', e.toString(), {
+        'dancerId': widget.dancerId,
+        'eventId': widget.eventId,
+        'rankId': _selectedRank?.id,
+      });
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -162,6 +218,15 @@ class _RankingDialogState extends State<RankingDialog> {
                   value: rank,
                   groupValue: _selectedRank,
                   onChanged: (Rank? value) {
+                    ActionLogger.logUserAction(
+                        'RankingDialog', 'rank_selected', {
+                      'dancerId': widget.dancerId,
+                      'eventId': widget.eventId,
+                      'oldRankId': _selectedRank?.id,
+                      'newRankId': value?.id,
+                      'newRankName': value?.name,
+                    });
+
                     setState(() {
                       _selectedRank = value;
                     });
@@ -200,7 +265,16 @@ class _RankingDialogState extends State<RankingDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: _isLoading ? null : () => Navigator.pop(context),
+          onPressed: _isLoading
+              ? null
+              : () {
+                  ActionLogger.logUserAction(
+                      'RankingDialog', 'dialog_cancelled', {
+                    'dancerId': widget.dancerId,
+                    'eventId': widget.eventId,
+                  });
+                  Navigator.pop(context);
+                },
           child: const Text('Cancel'),
         ),
         ElevatedButton(
