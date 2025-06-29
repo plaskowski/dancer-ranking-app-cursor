@@ -171,7 +171,7 @@ Users can adjust rankings during events for various reasons:
     - Smart filtering prevents suggesting dancers who are already present
 - **Tap dancer**: Opens Full Actions Dialog with:
   - Set/edit dancer ranking in real-time (→ Ranking Dialog)
-  - Mark present / Remove from present (attendance management)
+  - Mark present / Mark absent (attendance management)
   - **Mark Present & Record Dance** (combo action for absent dancers) → marks present + opens Dance Recording Dialog
   - **Record dance / Edit impression** (context-aware) → opens Dance Recording Dialog with appropriate action text
   - Edit dancer notes
@@ -237,7 +237,7 @@ Users can adjust rankings during events for various reasons:
 - **Tab-Specific Actions**: Different action sets available based on Planning vs Present mode
 - **Efficient Navigation**: Quick action → feedback → return to main view for next task
 - **Action Types**: Set/Edit Ranking, Mark/Remove Present, Record Dance, Edit Notes, Remove from Event, Mark as Left, Combo Actions
-- **Event Management**: "Remove from event" action only appears for ranked dancers, allowing cleanup of event rankings
+- **Event Management**: "Remove from event" action only appears for ranked dancers in Planning mode, allowing cleanup of event rankings
 - **Left Tracking**: "Mark as left" action only appears for present dancers who haven't been danced with yet, tracking early departures
 
 **Add/Edit Dancer Dialog**:

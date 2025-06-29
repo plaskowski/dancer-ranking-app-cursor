@@ -4,6 +4,24 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.30.0] - 2025-01-11
+
+### User Requests
+- rename "Remove from Present" to "Mark absent"
+- remove "Remove from event" from menu when the Present tab is active
+
+### Improved
+- **Context Menu Text**: Renamed "Remove from Present" to "Mark absent" for clearer terminology
+- **Tab-Specific Actions**: "Remove from event" action only shows in Planning tab now
+- **User Experience**: Context menus are now more intuitive with tab-appropriate actions
+- **Consistent Feedback**: Updated snackbar message to reflect "marked as absent" terminology
+
+### Technical
+- Modified DancerActionsDialog to use "Mark absent" instead of "Remove from Present"
+- Added `isPlanningMode` condition to "Remove from event" action visibility
+- Updated snackbar message for absence marking to match new terminology
+- Enhanced tab-specific UI behavior for better user workflow
+
 ## [v0.29.0] - 2025-01-11
 
 ### User Requests

@@ -45,7 +45,7 @@ class DancerActionsDialog extends StatelessWidget {
             },
           ),
 
-          // Mark Present / Remove from Present
+          // Mark Present / Mark absent
           ListTile(
             leading: Icon(
               dancer.isPresent ? Icons.location_off : Icons.location_on,
@@ -53,8 +53,7 @@ class DancerActionsDialog extends StatelessWidget {
                   ? context.danceTheme.absent
                   : context.danceTheme.present,
             ),
-            title:
-                Text(dancer.isPresent ? 'Remove from Present' : 'Mark Present'),
+            title: Text(dancer.isPresent ? 'Mark absent' : 'Mark Present'),
             onTap: () => _togglePresence(context),
           ),
 
@@ -118,8 +117,8 @@ class DancerActionsDialog extends StatelessWidget {
               onTap: () => _markAsLeft(context),
             ),
 
-          // Remove from Event - only show for ranked dancers
-          if (dancer.hasRanking)
+          // Remove from Event - only show for ranked dancers in Planning mode
+          if (dancer.hasRanking && isPlanningMode)
             ListTile(
               leading: Icon(Icons.remove_circle_outline,
                   color: context.danceTheme.warning),
@@ -143,13 +142,13 @@ class DancerActionsDialog extends StatelessWidget {
           Provider.of<AttendanceService>(context, listen: false);
 
       if (dancer.isPresent) {
-        // Remove from present
+        // Mark as absent
         await attendanceService.removeFromPresent(eventId, dancer.id);
         if (context.mounted) {
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('${dancer.name} removed from present list'),
+              content: Text('${dancer.name} marked as absent'),
               backgroundColor: context.danceTheme.warning,
             ),
           );
