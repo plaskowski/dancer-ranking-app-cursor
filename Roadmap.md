@@ -6,4 +6,3 @@ Nice to have:
 
 Working with cursor:
 - ability to run user stories to check for regression testing
-- maybe always commit the performed changes along the summary
