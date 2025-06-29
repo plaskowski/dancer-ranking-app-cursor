@@ -115,7 +115,6 @@ class DancerActionsDialog extends StatelessWidget {
               leading:
                   Icon(Icons.exit_to_app, color: context.danceTheme.warning),
               title: const Text('Mark as left'),
-              subtitle: const Text('Left before dancing'),
               onTap: () => _markAsLeft(context),
             ),
 

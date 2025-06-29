@@ -4,6 +4,23 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.27.3] - 2025-06-29
+
+### User Requests
+- "remove 'left before dancing' subtitle as it is redundant"
+
+### Improved
+- **Cleaner Dialog Interface**: Removed redundant subtitle "left before dancing" from "Mark as left" action
+- **Simplified UI**: Action text "Mark as left" is clear enough without additional explanation
+- **Reduced Visual Clutter**: Streamlined Dancer Actions Dialog for better usability
+
+### Technical
+- Removed subtitle property from "Mark as left" ListTile in DancerActionsDialog
+- Applied proper Dart formatting to modified file
+- Maintained all functionality while simplifying UI text
+
+---
+
 ## [v0.27.2] - 2025-06-29
 
 ### User Requests
