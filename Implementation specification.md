@@ -128,11 +128,7 @@ Users can adjust rankings during events for various reasons:
 
 **Planning Tab Actions**:
 - **FAB**: Opens Select Dancers Screen → add multiple existing dancers to event ranking
-- **Tap dancer**: Opens Planning Actions Dialog → rank editing, notes editing only
-- **Quick context action**: Blue location icon button for absent dancers → instant "Mark Present"
-  - Immediate success feedback via green snackbar
-  - Auto-refresh to show updated presence status
-  - Error handling with red snackbar feedback
+- **Tap dancer**: Opens Planning Actions Dialog → rank editing, notes editing, mark present
 
 **Present Tab Actions**:
 - **FAB**: Opens Add Dancer Dialog → create new dancer and add to event
@@ -151,7 +147,7 @@ Users can adjust rankings during events for various reasons:
 - **Present Tab FAB** → Add Dancer Dialog (create new dancers during events)
 - **Planning Tab Actions** → Ranking Dialog, Notes editing only
 - **Present Tab Actions** → Full Actions Dialog → Ranking, Dance Recording, Attendance
-- **Quick Actions** → Blue location icon for instant presence marking
+
 
 ### 4. Select Dancers Screen (`SelectDancersScreen`)
 **Purpose**: Select multiple existing dancers to add to event ranking (for planning phase)

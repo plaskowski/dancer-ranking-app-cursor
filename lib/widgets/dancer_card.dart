@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../services/attendance_service.dart';
 import '../services/dancer_service.dart';
 import 'dancer_actions_dialog.dart';
 
@@ -37,14 +35,6 @@ class DancerCard extends StatelessWidget {
             ),
             if (showPresenceIndicator && dancer.isPresent)
               const Icon(Icons.check, color: Colors.green, size: 20),
-            // Show "Mark Present" button in Planning mode for absent dancers
-            if (isPlanningMode && !dancer.isPresent)
-              IconButton(
-                icon:
-                    const Icon(Icons.location_on_outlined, color: Colors.blue),
-                tooltip: 'Mark Present',
-                onPressed: () => _markPresent(context),
-              ),
           ],
         ),
         subtitle: Column(
@@ -77,38 +67,5 @@ class DancerCard extends StatelessWidget {
         },
       ),
     );
-  }
-
-  Future<void> _markPresent(BuildContext context) async {
-    try {
-      final attendanceService =
-          Provider.of<AttendanceService>(context, listen: false);
-      await attendanceService.markPresent(eventId, dancer.id);
-
-      // Show success feedback
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${dancer.name} marked as present'),
-            duration: const Duration(seconds: 2),
-            backgroundColor: Colors.green,
-          ),
-        );
-
-        // Trigger refresh
-        onPresenceChanged?.call();
-      }
-    } catch (e) {
-      // Show error feedback
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error marking present: $e'),
-            duration: const Duration(seconds: 3),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
   }
 }
