@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../services/dancer_service.dart';
 import '../../widgets/dancer_card.dart';
-import '../../theme/theme_extensions.dart';
+
 import '../event_tab_actions.dart';
 import '../select_dancers_screen.dart';
 

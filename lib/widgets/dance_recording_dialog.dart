@@ -169,12 +169,13 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
             foregroundColor: context.danceTheme.onDanceAccent,
           ),
           child: _isLoading
-              ? const SizedBox(
+              ? SizedBox(
                   height: 16,
                   width: 16,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        context.danceTheme.onDanceAccent),
                   ),
                 )
               : const Text('Record Dance'),

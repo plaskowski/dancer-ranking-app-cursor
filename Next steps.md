@@ -10,10 +10,11 @@ History:
   → **COMPREHENSIVE THEME SYSTEM**: Implemented complete Material 3 theme with custom extensions
   → Created theme foundation with proper color schemes (light/dark), semantic colors, and dance-specific extensions
   → Theme files: `app_theme.dart`, `color_schemes.dart`, `theme_extensions.dart`
+- ✅ Migrated all hardcoded colors to theme system
 
 Next step:
-- Continue migrating hardcoded colors throughout the app to use the new theme system
-- stop using "const" expression to avoid back and forth changes
+- write a Cursor rule to stop using "const" expression to avoid back and forth changes
 - fix the Cursor config so that it can run flutter analyze without waiting for approval
+- write a Cursor rule to not make changes that are unrelated to current task
 - setup a strict Dart auto-formatter and make Cursor reformat all modified files after it is done with the changes
 - ...

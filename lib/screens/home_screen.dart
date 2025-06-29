@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../database/database.dart';
 import '../services/event_service.dart';
-import '../theme/theme_extensions.dart';
+
 import 'create_event_screen.dart';
 import 'event_screen.dart';
 import 'dancers_screen.dart';

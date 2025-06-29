@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../services/dancer_service.dart';
+import '../theme/theme_extensions.dart';
 import '../services/ranking_service.dart';
 
 class SelectDancersScreen extends StatefulWidget {
@@ -33,9 +34,9 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
   Future<void> _addSelectedDancers() async {
     if (_selectedDancerIds.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select at least one dancer'),
-          backgroundColor: Colors.orange,
+        SnackBar(
+          content: const Text('Please select at least one dancer'),
+          backgroundColor: context.danceTheme.warning,
         ),
       );
       return;
@@ -71,7 +72,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
           SnackBar(
             content: Text(
                 'Added ${_selectedDancerIds.length} dancers to event ranking'),
-            backgroundColor: Colors.green,
+            backgroundColor: context.danceTheme.success,
           ),
         );
       }
@@ -80,7 +81,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error adding dancers: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -162,14 +163,20 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.people, size: 64, color: Colors.grey),
+                        Icon(Icons.people,
+                            size: 64,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant),
                         const SizedBox(height: 16),
                         Text(
                           _searchQuery.isNotEmpty
                               ? 'No dancers found matching "$_searchQuery"'
                               : 'All dancers are already ranked for this event',
-                          style:
-                              const TextStyle(fontSize: 18, color: Colors.grey),
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -195,8 +202,11 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                             dancer.notes != null && dancer.notes!.isNotEmpty
                                 ? Text(
                                     dancer.notes!,
-                                    style: const TextStyle(
-                                        fontSize: 12, color: Colors.grey),
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant),
                                   )
                                 : null,
                         value: isSelected,
@@ -223,12 +233,13 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
           ? FloatingActionButton.extended(
               onPressed: _isLoading ? null : _addSelectedDancers,
               icon: _isLoading
-                  ? const SizedBox(
+                  ? SizedBox(
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Theme.of(context).colorScheme.onPrimary),
                       ),
                     )
                   : const Icon(Icons.check),
