@@ -129,7 +129,8 @@ Users can adjust rankings during events for various reasons:
 **Planning Tab Actions**:
 - **FAB**: Opens Select Dancers Screen → add multiple existing dancers to event ranking
 - **Tap dancer**: Opens Ranking Dialog → edit rank and reason
-- **Planning-focused actions only**: No attendance tracking, no dance recording
+- **Context action**: Quick "Mark Present" button for dancers not yet present
+- **Planning-focused actions**: Rank editing, notes editing, presence marking
 
 **Present Tab Actions**:
 - **FAB**: Opens Add Dancer Dialog → create new dancer and add to event
@@ -204,15 +205,14 @@ Home Screen
 ├── Event Screen
 │   ├── Planning Tab
 │   │   ├── FAB → Select Dancers Screen (multi-select existing dancers)
-│   │   └── Tap dancer → Ranking Dialog (edit rank/reason)
+│   │   ├── Tap dancer → Ranking Dialog (edit rank/reason)
+│   │   └── Context action → Quick "Mark Present" (for absent dancers)
 │   ├── Present Tab
 │   │   ├── FAB → Add Dancer Dialog (create new dancers)
-│   │   ├── Tap dancer → Full Actions Dialog
-│   │   │   ├── → Ranking Dialog
-│   │   │   ├── → Dance Recording Dialog
-│   │   │   └── → Attendance management
-│   │   └── Ranked Tab
-│   └── Ranked Tab (sorted view for dance decisions)
+│   │   └── Tap dancer → Full Actions Dialog
+│   │       ├── → Ranking Dialog
+│   │       ├── → Dance Recording Dialog
+│   │       └── → Attendance management
 └── Dancers Screen
     └── Add/Edit Dancer Dialog (modal) - Full dancer management
 ```
@@ -227,13 +227,13 @@ Home Screen
 5. **Add reasons for rankings** based on general preferences
 
 **Phase 2: At the Event**
-1. **Switch to Present Tab** for live event management
-2. **Spot ranked dancers** → tap to mark present, adjust rankings, record dances
-3. **Meet new people** → **FAB** → **Add Dancer Dialog**
+1. **Spot ranked dancers** → **Planning Tab** → quick "Mark Present" action
+2. **Switch to Present Tab** for live event management
+3. **Adjust rankings** based on real-time impressions → tap dancers for full actions
+4. **Meet new people** → **Present Tab FAB** → **Add Dancer Dialog**
    - Create new dancer in database
    - Option to mark as "already danced with" + add impression
    - Automatically adds to event attendance
-4. **Dynamic ranking adjustments** based on real-time impressions
 5. **Dance and record** → choose from present dancers, record completion
 
 ### Key Features
