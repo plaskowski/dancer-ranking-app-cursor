@@ -128,17 +128,19 @@ Users can adjust rankings during events for various reasons:
 
 **Planning Tab Actions**:
 - **FAB**: Opens Select Dancers Screen → add multiple existing dancers to event ranking
-- **Tap dancer**: Opens Ranking Dialog → edit rank and reason
-- **Context action**: Quick "Mark Present" button for dancers not yet present
-- **Planning-focused actions**: Rank editing, notes editing, presence marking
+- **Tap dancer**: Opens Planning Actions Dialog → rank editing, notes editing only
+- **Quick context action**: Blue location icon button for absent dancers → instant "Mark Present"
+  - Immediate success feedback via green snackbar
+  - Auto-refresh to show updated presence status
+  - Error handling with red snackbar feedback
 
 **Present Tab Actions**:
 - **FAB**: Opens Add Dancer Dialog → create new dancer and add to event
   - Option to mark as "already danced with" + impression
-- **Tap dancer**: Opens full actions dialog with:
+- **Tap dancer**: Opens Full Actions Dialog with:
   - Set/edit dancer ranking in real-time (→ Ranking Dialog)
   - Mark present / Remove from present (attendance management)
-  - Record dance with impression (→ Dance Recording Dialog)
+  - Record dance with impression (→ Dance Recording Dialog)  
   - Edit dancer notes
 
 **Navigation**:
@@ -146,8 +148,9 @@ Users can adjust rankings during events for various reasons:
 - → Dancers Screen (app bar action)
 - **Planning Tab FAB** → Select Dancers Screen (multi-select existing dancers)
 - **Present Tab FAB** → Add Dancer Dialog (create new dancers during events)
-- → Ranking Dialog (modal) - From both tabs
-- → Dance Recording Dialog (modal) - Present tab only
+- **Planning Tab Actions** → Ranking Dialog, Notes editing only
+- **Present Tab Actions** → Full Actions Dialog → Ranking, Dance Recording, Attendance
+- **Quick Actions** → Blue location icon for instant presence marking
 
 ### 4. Select Dancers Screen (`SelectDancersScreen`)
 **Purpose**: Select multiple existing dancers to add to event ranking (for planning phase)
@@ -205,8 +208,8 @@ Home Screen
 ├── Event Screen
 │   ├── Planning Tab
 │   │   ├── FAB → Select Dancers Screen (multi-select existing dancers)
-│   │   ├── Tap dancer → Ranking Dialog (edit rank/reason)
-│   │   └── Context action → Quick "Mark Present" (for absent dancers)
+│   │   ├── Tap dancer → Planning Actions Dialog (rank/notes editing only)
+│   │   └── Blue location icon → Instant "Mark Present" (with success feedback)
 │   ├── Present Tab
 │   │   ├── FAB → Add Dancer Dialog (create new dancers)
 │   │   └── Tap dancer → Full Actions Dialog
@@ -227,19 +230,24 @@ Home Screen
 5. **Add reasons for rankings** based on general preferences
 
 **Phase 2: At the Event**
-1. **Spot ranked dancers** → **Planning Tab** → quick "Mark Present" action
-2. **Switch to Present Tab** for live event management
-3. **Adjust rankings** based on real-time impressions → tap dancers for full actions
+1. **Spot ranked dancers** → **Planning Tab** → click blue location icon for instant "Mark Present"
+   - No dialog needed - immediate action with visual feedback
+   - Stay on Planning tab for efficient batch processing
+2. **Adjust rankings** → tap dancers for Planning Actions Dialog (rank/notes only)
+3. **Switch to Present Tab** for live event management when needed
 4. **Meet new people** → **Present Tab FAB** → **Add Dancer Dialog**
    - Create new dancer in database
    - Option to mark as "already danced with" + add impression
    - Automatically adds to event attendance
-5. **Dance and record** → choose from present dancers, record completion
+5. **Dance and record** → Present Tab → choose from present dancers, record completion
 
 ### Key Features
 - **Pre-event planning**: Add dancers, set initial rank preferences with reasons
 - **Dynamic ranking adjustment**: Change rankings during events based on real-time impressions
-- **Simple attendance tracking**: Add people to event when spotted (no pre-marking needed)
+- **Efficient presence tracking**: One-click "Mark Present" with instant feedback
+- **Context-aware actions**: Different dialog contents based on Planning vs Present mode
+- **Streamlined workflow**: Stay on Planning tab for batch presence marking
+- **Dual FAB behavior**: Tab-specific actions (Select Dancers vs Add Dancer)
 - **Dance prioritization**: Ranked tab shows best rank ordinal first based on current rankings
 - **Integrated dance tracking**: Record completed dances and impressions in attendance records
 - **Seamless dancer management**: Add new people during events without leaving screen
