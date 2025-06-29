@@ -54,8 +54,18 @@ class DancerActionsDialog extends StatelessWidget {
             onTap: () => _togglePresence(context),
           ),
 
-          // Record Dance - only available in Present mode
-          if (!isPlanningMode)
+          // Combined action for absent dancers - Mark Present & Record Dance
+          if (!dancer.isPresent && !isPlanningMode)
+            ListTile(
+              leading: const Icon(Icons.music_note_outlined,
+                  color: Colors.deepPurple),
+              title: const Text('Mark Present & Record Dance'),
+              subtitle: const Text('Quick combo action'),
+              onTap: () => _markPresentAndRecordDance(context),
+            ),
+
+          // Record Dance - only available for present dancers in Present mode
+          if (!isPlanningMode && dancer.isPresent)
             ListTile(
               leading: const Icon(Icons.music_note, color: Colors.purple),
               title: const Text('Record Dance'),
@@ -138,6 +148,49 @@ class DancerActionsDialog extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error updating presence: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _markPresentAndRecordDance(BuildContext context) async {
+    try {
+      // First mark as present
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
+      await attendanceService.markPresent(eventId, dancer.id);
+
+      if (context.mounted) {
+        // Close current dialog
+        Navigator.pop(context);
+
+        // Show success feedback
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${dancer.name} marked as present'),
+            duration: const Duration(seconds: 1), // Shorter duration
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        // Immediately open dance recording dialog
+        showDialog(
+          context: context,
+          builder: (context) => DanceRecordingDialog(
+            dancerId: dancer.id,
+            eventId: eventId,
+            dancerName: dancer.name,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error marking present: $e'),
             backgroundColor: Colors.red,
           ),
         );

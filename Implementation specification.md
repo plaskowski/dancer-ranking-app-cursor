@@ -140,6 +140,7 @@ Users can adjust rankings during events for various reasons:
 - **Tap dancer**: Opens Full Actions Dialog with:
   - Set/edit dancer ranking in real-time (→ Ranking Dialog)
   - Mark present / Remove from present (attendance management)
+  - **Mark Present & Record Dance** (combo action for absent dancers) → marks present + opens Dance Recording Dialog
   - Record dance with impression (→ Dance Recording Dialog)  
   - Edit dancer notes
 
@@ -250,6 +251,7 @@ Home Screen
 - **Dual FAB behavior**: Tab-specific actions (Select Dancers vs Add Dancer)
 - **Dance prioritization**: Present tab shows dancers sorted by rank ordinal for decision making
 - **Integrated dance tracking**: Record completed dances and impressions in attendance records
+- **Streamlined combo actions**: One-click "Mark Present & Record Dance" for absent dancers
 - **Seamless dancer management**: Add new people during events without leaving screen
 - **Post-dance integration**: Mark new dancers as already danced with immediate impression capture
 - **Rich context**: Notes, reasons, and impressions for informed decisions
