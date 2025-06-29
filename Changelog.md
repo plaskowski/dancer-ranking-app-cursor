@@ -4,6 +4,21 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.26.0] - 2025-06-29
+
+### User Requests
+- "please continue" (from Next steps: "for the dancer I have danced with show an 'Edit impression' action text instead of 'Record dance', keep the action implementation the same")
+
+### Improved
+- **Context-Aware Action Text**: Action text now shows "Edit impression" for dancers already danced with and "Record Dance" for new dances
+- **Better User Experience**: More accurate action labels that reflect the actual operation being performed
+- **Consistent Functionality**: Same dialog and behavior, just clearer labeling based on dance status
+
+### Technical
+- Updated Dancer Actions Dialog to conditionally display action text based on `dancer.hasDanced` status
+- Changed from static "Record Dance" text to dynamic text using ternary operator
+- Functionality remains identical - still opens DanceRecordingDialog for both cases
+
 ## [v0.25.0] - 2025-06-29
 
 ### User Requests

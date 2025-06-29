@@ -49,26 +49,32 @@ class DancerActionsDialog extends StatelessWidget {
           ListTile(
             leading: Icon(
               dancer.isPresent ? Icons.location_off : Icons.location_on,
-              color: dancer.isPresent ? context.danceTheme.absent : context.danceTheme.present,
+              color: dancer.isPresent
+                  ? context.danceTheme.absent
+                  : context.danceTheme.present,
             ),
-            title: Text(dancer.isPresent ? 'Remove from Present' : 'Mark Present'),
+            title:
+                Text(dancer.isPresent ? 'Remove from Present' : 'Mark Present'),
             onTap: () => _togglePresence(context),
           ),
 
           // Combined action for absent dancers - Mark Present & Record Dance
           if (!dancer.isPresent && !isPlanningMode)
             ListTile(
-              leading: Icon(Icons.music_note_outlined, color: context.danceTheme.danceAccent),
+              leading: Icon(Icons.music_note_outlined,
+                  color: context.danceTheme.danceAccent),
               title: const Text('Mark Present & Record Dance'),
               subtitle: const Text('Quick combo action'),
               onTap: () => _markPresentAndRecordDance(context),
             ),
 
-          // Record Dance - only available for present dancers in Present mode
+          // Record Dance / Edit impression - only available for present dancers in Present mode
           if (!isPlanningMode && dancer.isPresent)
             ListTile(
-              leading: Icon(Icons.music_note, color: context.danceTheme.danceAccent),
-              title: const Text('Record Dance'),
+              leading:
+                  Icon(Icons.music_note, color: context.danceTheme.danceAccent),
+              title:
+                  Text(dancer.hasDanced ? 'Edit impression' : 'Record Dance'),
               onTap: () {
                 Navigator.pop(context);
                 showDialog(
@@ -84,7 +90,8 @@ class DancerActionsDialog extends StatelessWidget {
 
           // Edit General Notes
           ListTile(
-            leading: Icon(Icons.edit_note, color: Theme.of(context).colorScheme.primary),
+            leading: Icon(Icons.edit_note,
+                color: Theme.of(context).colorScheme.primary),
             title: const Text('Edit general note'),
             onTap: () {
               Navigator.pop(context);
@@ -105,7 +112,8 @@ class DancerActionsDialog extends StatelessWidget {
           // Mark as Left - only show for present dancers who haven't danced yet
           if (dancer.isPresent && !dancer.hasDanced)
             ListTile(
-              leading: Icon(Icons.exit_to_app, color: context.danceTheme.warning),
+              leading:
+                  Icon(Icons.exit_to_app, color: context.danceTheme.warning),
               title: const Text('Mark as left'),
               subtitle: const Text('Left before dancing'),
               onTap: () => _markAsLeft(context),
@@ -114,7 +122,8 @@ class DancerActionsDialog extends StatelessWidget {
           // Remove from Event - only show for ranked dancers
           if (dancer.hasRanking)
             ListTile(
-              leading: Icon(Icons.remove_circle_outline, color: context.danceTheme.warning),
+              leading: Icon(Icons.remove_circle_outline,
+                  color: context.danceTheme.warning),
               title: const Text('Remove from event'),
               onTap: () => _removeFromPlanning(context),
             ),
@@ -131,7 +140,8 @@ class DancerActionsDialog extends StatelessWidget {
 
   Future<void> _togglePresence(BuildContext context) async {
     try {
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
 
       if (dancer.isPresent) {
         // Remove from present
@@ -174,7 +184,8 @@ class DancerActionsDialog extends StatelessWidget {
   Future<void> _markPresentAndRecordDance(BuildContext context) async {
     try {
       // First mark as present
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
       await attendanceService.markPresent(eventId, dancer.id);
 
       if (context.mounted) {
@@ -215,7 +226,8 @@ class DancerActionsDialog extends StatelessWidget {
 
   Future<void> _removeFromPlanning(BuildContext context) async {
     try {
-      final rankingService = Provider.of<RankingService>(context, listen: false);
+      final rankingService =
+          Provider.of<RankingService>(context, listen: false);
 
       // Remove the ranking for this dancer from this event
       await rankingService.deleteRanking(eventId, dancer.id);
@@ -244,7 +256,8 @@ class DancerActionsDialog extends StatelessWidget {
 
   Future<void> _markAsLeft(BuildContext context) async {
     try {
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
 
       // Mark the dancer as left
       await attendanceService.markAsLeft(eventId, dancer.id);

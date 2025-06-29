@@ -170,7 +170,7 @@ Users can adjust rankings during events for various reasons:
   - Set/edit dancer ranking in real-time (→ Ranking Dialog)
   - Mark present / Remove from present (attendance management)
   - **Mark Present & Record Dance** (combo action for absent dancers) → marks present + opens Dance Recording Dialog
-  - Record dance with impression (→ Dance Recording Dialog)  
+  - **Record dance / Edit impression** (context-aware) → opens Dance Recording Dialog with appropriate action text
   - Edit dancer notes
 
 **Navigation**:
