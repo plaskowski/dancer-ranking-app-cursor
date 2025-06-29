@@ -117,6 +117,39 @@ class DancerService {
       );
     }).toList();
   }
+
+  // Get only dancers that don't have rankings for a specific event (for selection dialog)
+  Future<List<DancerWithEventInfo>> getUnrankedDancersForEvent(
+      int eventId) async {
+    // Subquery to get dancer IDs that already have rankings for this event
+    final rankedDancerIds = _database.selectOnly(_database.rankings)
+      ..where(_database.rankings.eventId.equals(eventId))
+      ..addColumns([_database.rankings.dancerId]);
+
+    // Main query: get dancers that are NOT in the ranked dancers subquery
+    final query = _database.select(_database.dancers)
+      ..where((d) => d.id.isNotInQuery(rankedDancerIds))
+      ..orderBy([(d) => OrderingTerm.asc(d.name)]);
+
+    final result = await query.get();
+
+    return result.map((dancer) {
+      return DancerWithEventInfo(
+        id: dancer.id,
+        name: dancer.name,
+        notes: dancer.notes,
+        createdAt: dancer.createdAt,
+        rankName: null, // No ranking for this event
+        rankOrdinal: null,
+        rankingReason: null,
+        rankingUpdated: null,
+        attendanceMarkedAt: null, // Not present yet
+        hasDanced: false,
+        dancedAt: null,
+        impression: null,
+      );
+    }).toList();
+  }
 }
 
 // Helper class to combine dancer info with event-specific data

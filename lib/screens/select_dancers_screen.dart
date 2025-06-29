@@ -241,14 +241,13 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
 
   Future<List<DancerWithEventInfo>> _getDancersForSelection() async {
     final dancerService = Provider.of<DancerService>(context, listen: false);
-    return dancerService.getDancersForEvent(widget.eventId);
+    return dancerService.getUnrankedDancersForEvent(widget.eventId);
   }
 
   List<DancerWithEventInfo> _filterDancers(List<DancerWithEventInfo> dancers) {
     var filtered = dancers;
 
-    // Always show only unranked dancers
-    filtered = filtered.where((dancer) => !dancer.hasRanking).toList();
+    // No need to filter by ranking since getUnrankedDancersForEvent() already returns only unranked dancers
 
     // Filter by search query
     if (_searchQuery.isNotEmpty) {
