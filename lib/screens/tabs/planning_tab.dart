@@ -17,18 +17,12 @@ class PlanningTab extends StatefulWidget {
 }
 
 class _PlanningTabState extends State<PlanningTab> {
-  void _refreshData() {
-    setState(() {
-      // This will trigger a rebuild and refresh the data
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final dancerService = Provider.of<DancerService>(context);
 
-    return FutureBuilder<List<DancerWithEventInfo>>(
-      future: dancerService.getDancersForEvent(widget.eventId),
+    return StreamBuilder<List<DancerWithEventInfo>>(
+      stream: dancerService.watchDancersForEvent(widget.eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -107,7 +101,6 @@ class _PlanningTabState extends State<PlanningTab> {
                       eventId: widget.eventId,
                       showPresenceIndicator: true,
                       isPlanningMode: true,
-                      onPresenceChanged: _refreshData,
                     )),
                 const SizedBox(height: 16),
               ],

@@ -255,7 +255,9 @@ Home Screen
 - **Streamlined data model**: Record existence indicates presence, no boolean flags needed
 
 ### Code Architecture
+- **Reactive Data Layer**: Drift database streams with automatic UI updates via StreamBuilder
 - **Modular Structure**: Components split into focused, single-responsibility modules
 - **Tab Actions Interface**: Clean abstraction for tab-specific FAB behaviors
 - **Reusable Components**: Shared widgets across tabs with different behavioral modes
 - **Separation of Concerns**: UI components separated from business logic and data access
+- **Automatic Refresh**: No manual callbacks - UI updates automatically when any data changes

@@ -70,8 +70,8 @@ class DancerService {
     return result.read(countExp)!;
   }
 
-  // Get dancers for a specific event (with rankings and attendance)
-  Future<List<DancerWithEventInfo>> getDancersForEvent(int eventId) async {
+  // Watch dancers for a specific event (with rankings and attendance) - reactive stream
+  Stream<List<DancerWithEventInfo>> watchDancersForEvent(int eventId) {
     final query = _database.select(_database.dancers).join([
       // LEFT JOIN rankings ON dancers.id = rankings.dancer_id AND rankings.event_id = eventId
       leftOuterJoin(
@@ -93,29 +93,29 @@ class DancerService {
     ])
       ..orderBy([OrderingTerm.asc(_database.dancers.name)]);
 
-    final result = await query.get();
+    return query.watch().map((result) {
+      return result.map((row) {
+        final dancer = row.readTable(_database.dancers);
+        final ranking = row.readTableOrNull(_database.rankings);
+        final rank = row.readTableOrNull(_database.ranks);
+        final attendance = row.readTableOrNull(_database.attendances);
 
-    return result.map((row) {
-      final dancer = row.readTable(_database.dancers);
-      final ranking = row.readTableOrNull(_database.rankings);
-      final rank = row.readTableOrNull(_database.ranks);
-      final attendance = row.readTableOrNull(_database.attendances);
-
-      return DancerWithEventInfo(
-        id: dancer.id,
-        name: dancer.name,
-        notes: dancer.notes,
-        createdAt: dancer.createdAt,
-        rankName: rank?.name,
-        rankOrdinal: rank?.ordinal,
-        rankingReason: ranking?.reason,
-        rankingUpdated: ranking?.lastUpdated,
-        attendanceMarkedAt: attendance?.markedAt,
-        hasDanced: attendance?.hasDanced ?? false,
-        dancedAt: attendance?.dancedAt,
-        impression: attendance?.impression,
-      );
-    }).toList();
+        return DancerWithEventInfo(
+          id: dancer.id,
+          name: dancer.name,
+          notes: dancer.notes,
+          createdAt: dancer.createdAt,
+          rankName: rank?.name,
+          rankOrdinal: rank?.ordinal,
+          rankingReason: ranking?.reason,
+          rankingUpdated: ranking?.lastUpdated,
+          attendanceMarkedAt: attendance?.markedAt,
+          hasDanced: attendance?.hasDanced ?? false,
+          dancedAt: attendance?.dancedAt,
+          impression: attendance?.impression,
+        );
+      }).toList();
+    });
   }
 
   // Get only dancers that don't have rankings for a specific event (for selection dialog)

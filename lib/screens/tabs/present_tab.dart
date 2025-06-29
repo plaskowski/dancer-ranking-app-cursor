@@ -16,8 +16,8 @@ class PresentTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final dancerService = Provider.of<DancerService>(context);
 
-    return FutureBuilder<List<DancerWithEventInfo>>(
-      future: dancerService.getDancersForEvent(eventId),
+    return StreamBuilder<List<DancerWithEventInfo>>(
+      stream: dancerService.watchDancersForEvent(eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

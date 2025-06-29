@@ -9,7 +9,7 @@
         "dart analyze",
         "git status",
         "git diff",
-        "git log --oneline -10",
+        "git log --oneline -10"
       ],
       "cwd": "/Users/plaskowski/dev/private/dancer-ranking-app-cursor"
     }

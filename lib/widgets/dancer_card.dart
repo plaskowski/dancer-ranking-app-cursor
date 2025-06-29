@@ -9,7 +9,6 @@ class DancerCard extends StatelessWidget {
   final int eventId;
   final bool showPresenceIndicator;
   final bool isPlanningMode;
-  final VoidCallback? onPresenceChanged;
 
   const DancerCard({
     super.key,
@@ -17,7 +16,6 @@ class DancerCard extends StatelessWidget {
     required this.eventId,
     required this.showPresenceIndicator,
     required this.isPlanningMode,
-    this.onPresenceChanged,
   });
 
   @override
