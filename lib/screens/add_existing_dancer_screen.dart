@@ -16,8 +16,7 @@ class AddExistingDancerScreen extends StatefulWidget {
   });
 
   @override
-  State<AddExistingDancerScreen> createState() =>
-      _AddExistingDancerScreenState();
+  State<AddExistingDancerScreen> createState() => _AddExistingDancerScreenState();
 }
 
 class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
@@ -32,8 +31,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
 
   Future<void> _markDancerPresent(int dancerId, String dancerName) async {
     try {
-      final attendanceService =
-          Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
 
       await attendanceService.markPresent(widget.eventId, dancerId);
 
@@ -144,13 +142,10 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          _searchQuery.isEmpty
-                              ? 'No unranked dancers available'
-                              : 'No dancers found',
+                          _searchQuery.isEmpty ? 'No unranked dancers available' : 'No dancers found',
                           style: TextStyle(
                             fontSize: 18,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -159,8 +154,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                               ? 'All unranked dancers are already present!'
                               : 'Try a different search term',
                           style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -181,21 +175,17 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                           dancer.name,
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
-                        subtitle:
-                            dancer.notes != null && dancer.notes!.isNotEmpty
-                                ? Text(
-                                    dancer.notes!,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurfaceVariant,
-                                    ),
-                                  )
-                                : null,
+                        subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
+                            ? Text(
+                                dancer.notes!,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                ),
+                              )
+                            : null,
                         trailing: ElevatedButton.icon(
-                          onPressed: () =>
-                              _markDancerPresent(dancer.id, dancer.name),
+                          onPressed: () => _markDancerPresent(dancer.id, dancer.name),
                           icon: const Icon(Icons.location_on, size: 18),
                           label: const Text('Mark Present'),
                         ),
