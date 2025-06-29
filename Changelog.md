@@ -7,17 +7,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [v0.20.0] - 2025-06-29
 
 ### User Requests
-- "Continue" (from Next steps: "Mark as present should not close the dialog")
+- "all the contextual dialogs should close after picking an action. The 'add absent existing dancers' screen should stay so I can mark multiple people."
 
 ### Improved
-- **Persistent Dialog Actions**: "Mark as present" and "Remove from present" actions no longer close the dancer actions dialog
-- **Enhanced Workflow Efficiency**: Users can now perform multiple actions on the same dancer without reopening dialogs repeatedly
-- **Better User Experience**: Visual feedback still provided via snackbars while keeping dialog open for additional actions
+- **Persistent Add Existing Dancer Screen**: Users can now mark multiple dancers as present without the screen closing
+- **Enhanced Bulk Operations**: Efficient workflow for marking multiple absent dancers as present during events
+- **Contextual Dialog Behavior**: Ensured all action dialogs close after picking an action as expected
+- **Shorter Feedback Duration**: Reduced snackbar duration to 1 second for faster bulk operations
 
 ### Technical
-- **DancerActionsDialog**: Removed `Navigator.pop(context)` calls from `_togglePresence` method
-- **Retained Feedback**: Snackbar notifications still display success/error messages for presence updates
-- **Context Safety**: Maintained proper context mounted checks for safe UI updates
+- **AddExistingDancerScreen**: Removed `Navigator.pop(context)` call from `_markDancerPresent` method
+- **DancerActionsDialog**: Restored proper dialog closing behavior for all actions
+- **Optimized UX**: Shorter snackbar duration for efficiency during multiple selections
 
 ---
 

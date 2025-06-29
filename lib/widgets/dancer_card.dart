@@ -42,9 +42,7 @@ class DancerCard extends StatelessWidget {
                     ),
 
                     // Show dancer notes if they exist (hide for danced dancers in Present tab)
-                    if (dancer.notes != null &&
-                        dancer.notes!.isNotEmpty &&
-                        (isPlanningMode || !dancer.hasDanced)) ...[
+                    if (dancer.notes != null && dancer.notes!.isNotEmpty && (isPlanningMode || !dancer.hasDanced)) ...[
                       const TextSpan(text: ' • '),
                       TextSpan(
                         text: dancer.notes!,
@@ -83,8 +81,7 @@ class DancerCard extends StatelessWidget {
                           color: context.danceTheme.danceAccent,
                         ),
                       ),
-                      if (dancer.impression != null &&
-                          dancer.impression!.isNotEmpty) ...[
+                      if (dancer.impression != null && dancer.impression!.isNotEmpty) ...[
                         TextSpan(
                           text: ' - ${dancer.impression!}',
                           style: TextStyle(

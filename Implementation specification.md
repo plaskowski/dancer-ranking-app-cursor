@@ -193,6 +193,8 @@ Users can adjust rankings during events for various reasons:
 - View list of unranked AND absent dancers only (excludes ranked dancers and already present dancers)
 - Search dancers by name or notes
 - One-tap "Mark Present" action for each dancer
+- **Persistent Screen**: Screen stays open after marking dancers to enable bulk operations
+- **Efficient Feedback**: Brief 1-second snackbar confirmations for rapid marking
 - Info banner explaining scope and guiding users about present dancers
 - Shows dancer context: notes for identification
 - **Smart filtering**: Automatically excludes dancers who are already present to prevent duplicates
@@ -222,10 +224,10 @@ Users can adjust rankings during events for various reasons:
 
 **Dancer Actions Dialog (`DancerActionsDialog`)**:
 - Context-aware actions based on dancer state and tab mode
-- **Persistent Dialog**: Actions like "Mark Present" and "Remove from Present" keep dialog open for multiple operations
-- **Visual Feedback**: Snackbar notifications provide immediate feedback while maintaining dialog state
+- **Auto-Closing Behavior**: All actions close the dialog after completion for focused workflows
+- **Visual Feedback**: Snackbar notifications provide immediate feedback after dialog closes
 - **Tab-Specific Actions**: Different action sets available based on Planning vs Present mode
-- **Workflow Efficiency**: Users can perform multiple actions without dialog reopening
+- **Efficient Navigation**: Quick action → feedback → return to main view for next task
 - **Action Types**: Set/Edit Ranking, Mark/Remove Present, Record Dance, Edit Notes, Combo Actions
 
 **Add/Edit Dancer Dialog**:
@@ -299,7 +301,7 @@ Home Screen
 - **Dance prioritization**: Present tab shows dancers sorted by rank ordinal for decision making
 - **Integrated dance tracking**: Record completed dances and impressions in attendance records
 - **Streamlined combo actions**: One-click "Mark Present & Record Dance" for absent dancers
-- **Persistent dialogs**: Actions like marking presence keep dialogs open for multiple operations
+- **Efficient bulk operations**: Persistent "Add Existing Dancer" screen for marking multiple dancers
 - **Seamless dancer management**: Add new people during events without leaving screen
 - **Post-dance integration**: Mark new dancers as already danced with immediate impression capture
 - **Rich context**: Notes, reasons, and impressions for informed decisions

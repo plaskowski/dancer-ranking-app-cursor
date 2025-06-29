@@ -3,7 +3,6 @@
 > **Note**: All completed improvements have been migrated to [Changelog.md](./Changelog.md)
 
 ## Upcoming Improvements
-
 - TODO: Add more improvements here...
 
 ## Development Process
