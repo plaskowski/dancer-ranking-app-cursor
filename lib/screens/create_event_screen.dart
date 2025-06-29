@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../services/event_service.dart';
 import '../theme/theme_extensions.dart';
@@ -99,6 +99,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
+                autofocus: true,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
                   labelText: 'Event Name *',
                   border: OutlineInputBorder(),

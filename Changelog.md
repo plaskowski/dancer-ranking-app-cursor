@@ -4,6 +4,24 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.10.0] - 2025-06-29
+
+### User Requests
+- "I can't type in the event name field"
+
+### Fixed
+- **Event Name Field Input Issue**: Added autofocus, keyboardType, and textInputAction to ensure proper text input functionality
+- **TextField Focus**: Event name field now automatically gets focus when Create Event screen opens
+- **Keyboard Appearance**: Explicit text input type ensures keyboard appears correctly on all platforms
+
+### Technical
+- Enhanced `lib/screens/create_event_screen.dart` with improved TextFormField configuration
+- Added `autofocus: true` for automatic field focus
+- Added `keyboardType: TextInputType.text` for explicit text input
+- Added `textInputAction: TextInputAction.next` for better UX
+
+---
+
 ## [v0.9.0] - 2025-06-29
 
 ### User Requests
