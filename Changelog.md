@@ -4,6 +4,28 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.14.0] - 2025-06-29
+
+### User Requests
+- "great, continue with next task" (from Next steps: "show the impression next to the 'Danced' indicator")
+
+### Added
+- **Impression Display**: Dance impressions now appear next to the "Danced!" indicator in dancer cards
+- **Rich Text Format**: Impressions displayed with italic styling to distinguish from the main "Danced!" text
+
+### Improved
+- **Better Context**: Users can now see dance impressions directly in the dancer card without opening dialogs
+- **Enhanced Information Display**: Consistent formatting with other dancer information (notes, ranking reasons)
+- **User Experience**: Quick access to post-dance feedback and impressions at a glance
+
+### Technical
+- Updated `lib/widgets/dancer_card.dart` with RichText widget for combined "Danced!" + impression display
+- Used TextSpan for different styling of "Danced!" text vs impression text
+- Maintained consistent sizing and padding with other information elements
+- Applied dart format for code consistency
+
+---
+
 ## [v0.13.0] - 2025-06-29
 
 ### User Requests

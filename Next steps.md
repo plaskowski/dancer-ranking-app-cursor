@@ -4,6 +4,7 @@
 
 ## Upcoming Improvements
 
+- show the impression next to the "Danced" indicator
 - TODO: Add more improvements here...
 
 ## Development Process

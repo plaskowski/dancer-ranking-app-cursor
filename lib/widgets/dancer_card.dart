@@ -93,16 +93,52 @@ class DancerCard extends StatelessWidget {
                 ),
               ),
 
-            // Show "Danced!" indicator if they have danced
+            // Show "Danced!" indicator with impression if they have danced
             if (dancer.hasDanced)
-              Row(
-                children: [
-                  Icon(Icons.music_note,
-                      size: 16, color: context.danceTheme.danceAccent),
-                  const SizedBox(width: 4),
-                  Text('Danced!',
-                      style: TextStyle(color: context.danceTheme.danceAccent)),
-                ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.music_note,
+                        size: 14, color: context.danceTheme.danceAccent),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Danced!',
+                              style: TextStyle(
+                                color: context.danceTheme.danceAccent,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            if (dancer.impression != null &&
+                                dancer.impression!.isNotEmpty) ...[
+                              TextSpan(
+                                text: ' - ',
+                                style: TextStyle(
+                                  color: context.danceTheme.danceAccent,
+                                  fontSize: 13,
+                                ),
+                              ),
+                              TextSpan(
+                                text: dancer.impression!,
+                                style: TextStyle(
+                                  color: context.danceTheme.danceAccent,
+                                  fontSize: 13,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
           ],
         ),
