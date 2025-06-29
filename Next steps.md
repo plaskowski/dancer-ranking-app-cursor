@@ -6,21 +6,10 @@
 
 ## Immediate Next Steps
 
-Based on the current app state and user feedback, the most logical next improvements would be:
-
-### Priority 1: User Experience Polish
-- Fix the **Date Change Bug** (context menu date picker doesn't persist)
-- Add basic search functionality for dancers by name
-- Improve loading states and error handling
-
-### Priority 2: Core Features
-- Implement simple filtering (show/hide dancers who left)
-- Add bulk operations for common tasks
-- Export basic event summaries
-
-### Priority 3: Data Management
-- Basic backup/restore functionality
-- Event templates for recurring events
+- add a structured action log to every action, printed to console, so that I can review what exact actions led to a bug
+  - print all list items that got rendered (some short info including ID)
+  - use format that will be easy to process by Cursor agent
+- ...
 
 > **See [Roadmap.md](./Roadmap.md)** for the complete feature roadmap organized by timeline and priority.
 
@@ -32,19 +21,6 @@ Based on the current app state and user feedback, the most logical next improvem
    - UI refreshes but shows original date
    - Needs investigation of EventService.updateEvent method and DateTime handling
    - Suspected issue: DateTime comparison or Drift ORM update mechanism
-
-## Recently Completed
-
-### Context Menu Implementation (v0.30.0)
-- ✅ Renamed "Remove from Present" to "Mark absent" for clearer terminology
-- ✅ Hide "Remove from event" action in Present tab for better workflow separation
-- ✅ Tab-specific context menus with appropriate actions only
-
-### Context Menu Implementation (v0.29.0)
-- ✅ Long press context menu on event cards
-- ✅ Rename event functionality
-- ✅ Delete event with confirmation
-- ✅ Change date UI (buggy database update)
 
 ## Development Process
 
