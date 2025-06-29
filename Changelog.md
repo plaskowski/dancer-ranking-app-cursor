@@ -4,25 +4,33 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [v0.9.0] - 2025-06-29
+
+### User Requests
+- "Now let's enhance this way of working: keep the commit message concise, add a section in the Changelog to the modified version with a list of my messages to Cursor agent and bump the version right away"
+- "Write a Cursor rule that describes this new flow"
+- "Nice, please migrate the history from @Next steps.md to @# Changelog"
+- "Let's change how we work. After you implement the step add summary to a Changelog.md and commit all the modified files."
+- "let's go!" (implementing smart filtering improvements)
+- "Let's continue" (continuing with planned next steps)
 
 ### Added
-- **Comprehensive Changelog**: Migrated all historical improvements from Next steps.md to proper changelog format
-- **Version History**: Organized development history into semantic versions with clear categorization
-- **Changelog & Commit Workflow Rule**: New mandatory Cursor rule enforcing structured development process
+- **User Request Tracking**: Changelog now includes "User Requests" section documenting development triggers
+- **Immediate Version Bumping**: Each development session gets its own version number
+- **Enhanced Workflow Rule**: Updated Cursor rule with concise commits and version management
 
 ### Changed
-- **Next Steps Cleanup**: Simplified Next steps.md to focus on future improvements only
-- **Development Workflow**: Added mandatory 4-step process (implement, changelog, commit, sync docs)
+- **Commit Message Style**: Now enforces concise, focused commit messages (1-2 lines max)
+- **Version Strategy**: Moved from [Unreleased] accumulation to immediate version bumping per session
+- **Changelog Format**: Each version now documents the user requests that drove the development
 
 ### Improved
-- **Documentation Organization**: Better historical tracking and cleaner future planning structure
-- **Development Standards**: Enforced changelog standards following Keep a Changelog format
+- **Development Traceability**: Clear connection between user requests and implemented changes
+- **Workflow Efficiency**: Faster version releases with focused, concise documentation
 
 ### Technical
-- Updated `.cursorrules` with new Changelog & Commit Workflow Rule and Changelog Standards
-- Added mandatory 4-step development process with conventional commit formatting
-- Integrated Keep a Changelog format requirements into development workflow
+- Updated `.cursorrules` with enhanced workflow including user request tracking and immediate versioning
+- Modified changelog standards to support per-session version bumping
 
 ---
 

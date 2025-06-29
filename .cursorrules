@@ -71,23 +71,24 @@
 ### Changelog & Commit Workflow Rule
 **MANDATORY**: After implementing any improvement, feature, or fix, follow this exact sequence:
 1. **Implement** the improvement (code changes, tests, documentation updates)
-2. **Update Changelog.md** with a clear summary:
-   - Add entry to `[Unreleased]` section
+2. **Update Changelog.md** with version bump and clear summary:
+   - Create new version section (e.g., `## [v0.9.0] - YYYY-MM-DD`)
+   - Add "User Requests" section listing the user's messages that triggered this work
    - Use proper categorization: Added, Changed, Improved, Fixed, Technical
    - Include brief description of what was changed and why
-   - Use consistent formatting with existing entries
-3. **Commit all changes** with descriptive commit message:
+3. **Commit all changes** with concise message:
    - Use conventional commit format: `feat:`, `fix:`, `docs:`, `refactor:`, etc.
-   - Include comprehensive description of changes
-   - Reference what problem was solved or improvement made
+   - Keep message brief and focused (1-2 lines max)
+   - Reference the version number
 4. **Sync documentation** as needed:
    - Update Implementation specification.md if behavior changed
    - Update any relevant README or documentation files
    - Ensure all cross-references are accurate
 
 ### Changelog Standards
-- Follow [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format
-- Always add entries to `[Unreleased]` section first
-- Use semantic versioning when creating version releases
+- Follow [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format with immediate version bumping
+- Create new version section for each development session
+- Include "User Requests" section documenting what the user asked for
+- Use semantic versioning (patch for fixes, minor for features, major for breaking changes)
 - Include technical details in Technical section when relevant
 - Cross-reference relevant files/components changed
