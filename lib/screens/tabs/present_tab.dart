@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/dancer_service.dart';
-import '../../widgets/dancer_card.dart';
-
-import '../event_tab_actions.dart';
 import '../../widgets/add_dancer_dialog.dart';
+import '../../widgets/dancer_card.dart';
+import '../add_existing_dancer_screen.dart';
+import '../event_tab_actions.dart';
 
 // Present Tab - Shows only dancers who are present, grouped by rank
 class PresentTab extends StatelessWidget {
@@ -36,21 +36,16 @@ class PresentTab extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.location_on,
-                    size: 64,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant),
+                Icon(Icons.location_on, size: 64, color: Theme.of(context).colorScheme.onSurfaceVariant),
                 const SizedBox(height: 16),
                 Text(
                   'No one marked present yet',
-                  style: TextStyle(
-                      fontSize: 18,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Go to Planning tab to mark people as present',
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  'Use the + button to add dancers',
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
               ],
             ),
@@ -77,8 +72,7 @@ class PresentTab extends StatelessWidget {
             final dancerA = groupedDancers[a]!.first;
             final dancerB = groupedDancers[b]!.first;
 
-            return (dancerA.rankOrdinal ?? 999)
-                .compareTo(dancerB.rankOrdinal ?? 999);
+            return (dancerA.rankOrdinal ?? 999).compareTo(dancerB.rankOrdinal ?? 999);
           });
 
         return ListView(
@@ -114,31 +108,98 @@ class PresentTab extends StatelessWidget {
   }
 }
 
-// Present Tab Actions Implementation
+// Present Tab Actions Implementation with Speed Dial Menu
 class PresentTabActions implements EventTabActions {
   final int eventId;
+  final String eventName;
 
-  const PresentTabActions({required this.eventId});
+  const PresentTabActions({
+    required this.eventId,
+    required this.eventName,
+  });
 
   @override
-  Future<void> onFabPressed(
-      BuildContext context, VoidCallback onRefresh) async {
-    final result = await showDialog<bool>(
+  Future<void> onFabPressed(BuildContext context, VoidCallback onRefresh) async {
+    // Show speed dial menu with two options
+    _showPresentTabSpeedDial(context, onRefresh);
+  }
+
+  void _showPresentTabSpeedDial(BuildContext context, VoidCallback onRefresh) {
+    showModalBottomSheet(
       context: context,
-      builder: (context) => AddDancerDialog(
-        eventId: eventId,
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Add Dancers',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Add New Dancer Option
+              ListTile(
+                leading: Icon(
+                  Icons.person_add,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                title: const Text('Add New Dancer'),
+                subtitle: const Text('Create a new dancer profile'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final result = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AddDancerDialog(
+                      eventId: eventId,
+                    ),
+                  );
+                  if (result == true) {
+                    onRefresh();
+                  }
+                },
+              ),
+
+              const Divider(),
+
+              // Add Existing Dancer Option
+              ListTile(
+                leading: Icon(
+                  Icons.person_search,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                title: const Text('Add Existing Dancer'),
+                subtitle: const Text('Mark unranked dancers as present'),
+                onTap: () async {
+                  Navigator.pop(context);
+                  final result = await Navigator.push<bool>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddExistingDancerScreen(
+                        eventId: eventId,
+                        eventName: eventName,
+                      ),
+                    ),
+                  );
+                  if (result == true) {
+                    onRefresh();
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
-
-    // Refresh the screen if a dancer was added
-    if (result == true) {
-      onRefresh();
-    }
   }
 
   @override
-  String get fabTooltip => 'Add newly met dancer';
+  String get fabTooltip => 'Add dancers to event';
 
   @override
-  IconData get fabIcon => Icons.person_add;
+  IconData get fabIcon => Icons.add;
 }

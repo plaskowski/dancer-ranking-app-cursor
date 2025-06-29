@@ -29,8 +29,14 @@ History:
   → **Visual Enhancement**: Added distinct icons (note_outlined for personal notes, psychology_outlined for ranking reasons)
   → **Better UX**: Each piece of information has proper styling and color coding for easy distinction
   → **Complete Context**: Users now see full dancer context including personal notes from dancer profile and event-specific ranking reasoning
+- ✅ **DUAL FAB ACTIONS FOR PRESENT TAB**: Add existing dancers to Present tab who weren't in planning
+  → **New Screen**: Created AddExistingDancerScreen for unranked dancers appearing at events
+  → **Enhanced FAB Menu**: Present tab FAB now shows modal with two options: "Add New Dancer" and "Add Existing Dancer"
+  → **Focused Scope**: Shows only unranked dancers (ranked dancers managed via Planning tab)
+  → **Simple UX**: One-tap to mark dancer as present with immediate action buttons
+  → **Context Display**: Shows dancer notes to help with identification
+  → **Clear Guidance**: Info banner explains scope and directs users to Planning tab for ranked dancers
 
-Next step (remember to update the spec):
-- need a way to add a present existing dancer that was not included in planning
+Next step:
 - hide present ones from planning tab as while at event I will use that tab only for marking presence
 - ...

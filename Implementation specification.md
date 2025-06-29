@@ -144,8 +144,13 @@ Users can adjust rankings during events for various reasons:
 - **Tap dancer**: Opens Planning Actions Dialog → rank editing, notes editing, mark present
 
 **Present Tab Actions**:
-- **FAB**: Opens Add Dancer Dialog → create new dancer and add to event
-  - Option to mark as "already danced with" + impression
+- **FAB**: Shows modal menu with dual options
+  - **"Add New Dancer"** → Opens Add Dancer Dialog to create new dancer and add to event
+    - Option to mark as "already danced with" + impression
+  - **"Add Existing Dancer"** → Opens Add Existing Dancer Screen to mark unranked dancers as present
+    - Shows only unranked dancers (ranked dancers managed via Planning tab)
+    - One-tap selection with immediate "Mark Present" action
+    - Search functionality by name or notes
 - **Tap dancer**: Opens Full Actions Dialog with:
   - Set/edit dancer ranking in real-time (→ Ranking Dialog)
   - Mark present / Remove from present (attendance management)
@@ -157,7 +162,7 @@ Users can adjust rankings during events for various reasons:
 - ← Back to Home Screen
 - → Dancers Screen (app bar action)
 - **Planning Tab FAB** → Select Dancers Screen (multi-select existing dancers)
-- **Present Tab FAB** → Add Dancer Dialog (create new dancers during events)
+- **Present Tab FAB** → Modal Menu → Add Dancer Dialog OR Add Existing Dancer Screen
 - **Planning Tab Actions** → Ranking Dialog, Notes editing only
 - **Present Tab Actions** → Full Actions Dialog → Ranking, Dance Recording, Attendance
 
@@ -169,6 +174,17 @@ Users can adjust rankings during events for various reasons:
 - Search dancers by name or notes
 - Multi-select dancers using checkboxes
 - Add selected dancers to event with default rank (Neutral)
+**Navigation**:
+- ← Back to Event Screen
+
+### 4b. Add Existing Dancer Screen (`AddExistingDancerScreen`)
+**Purpose**: Mark unranked dancers as present when they appear at events
+**Actions**:
+- View list of unranked dancers only (ranked dancers managed via Planning tab)
+- Search dancers by name or notes
+- One-tap "Mark Present" action for each dancer
+- Info banner explaining scope and guiding users to Planning tab for ranked dancers
+- Shows dancer context: notes for identification
 **Navigation**:
 - ← Back to Event Screen
 
@@ -221,7 +237,9 @@ Home Screen
 │   │   ├── Tap dancer → Planning Actions Dialog (rank/notes editing only)
 │   │   └── Blue location icon → Instant "Mark Present" (context action)
 │   ├── Present Tab
-│   │   ├── FAB → Add Dancer Dialog (tab-specific action)
+│   │   ├── FAB → Modal Menu
+│   │   │   ├── → Add Dancer Dialog (create new dancer)
+│   │   │   └── → Add Existing Dancer Screen (mark existing as present)
 │   │   └── Tap dancer → Full Actions Dialog (context-aware)
 │   │       ├── → Ranking Dialog
 │   │       ├── → Dance Recording Dialog

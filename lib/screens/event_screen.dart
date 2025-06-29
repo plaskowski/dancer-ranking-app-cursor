@@ -47,7 +47,10 @@ class _EventScreenState extends State<EventScreen>
             eventId: widget.eventId,
             eventName: _event!.name,
           ),
-          PresentTabActions(eventId: widget.eventId),
+          PresentTabActions(
+            eventId: widget.eventId,
+            eventName: _event!.name,
+          ),
         ];
       });
     }
