@@ -176,7 +176,7 @@
 │  └─────────────────────────────┘ │
 │                                 │
 │  ┌─────────────────────────────┐ │
-│  │  ✏️  Edit Notes             │ │
+│  │  ✏️  Edit general note       │ │
 │  └─────────────────────────────┘ │
 │                                 │
 │               [Cancel]          │
@@ -320,4 +320,4 @@ To recreate in Excalidraw:
 - **Tap "Set/Edit Ranking"** → Open ranking dialog
 - **Tap "Mark Present"** → Add to present list (Planning tab)
 - **Tap "Record Dance"** → Open dance recording dialog
-- **Tap "Edit Notes"** → Edit dancer's notes 
+- **Tap "Edit general note"** → Edit dancer's notes 

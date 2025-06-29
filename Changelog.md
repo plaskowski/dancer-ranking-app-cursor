@@ -4,6 +4,26 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.13.0] - 2025-06-29
+
+### User Requests
+- "go with next task" (from Next steps: "change 'Edit notes' to 'Edit general note'")
+
+### Changed
+- **UI Text Clarity**: Changed "Edit Notes" to "Edit general note" in dancer actions dialog
+- **Better Terminology**: More specific text helps distinguish between general dancer notes and event-specific notes/reasons
+
+### Improved
+- **User Interface Clarity**: Button text now clearly indicates it edits general dancer information, not event-specific context
+- **Consistent Documentation**: Updated both code implementation and wireframes documentation
+
+### Technical
+- Updated `lib/widgets/dancer_actions_dialog.dart` with clearer action text
+- Updated `Wireframes.md` documentation for consistency
+- Applied dart format to maintain code style standards
+
+---
+
 ## [v0.12.0] - 2025-06-29
 
 ### User Requests

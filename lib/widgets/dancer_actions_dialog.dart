@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../services/dancer_service.dart';
-import '../services/attendance_service.dart';
 import '../database/database.dart';
+import '../services/attendance_service.dart';
+import '../services/dancer_service.dart';
 import '../theme/theme_extensions.dart';
-import 'ranking_dialog.dart';
-import 'dance_recording_dialog.dart';
 import 'add_dancer_dialog.dart';
+import 'dance_recording_dialog.dart';
+import 'ranking_dialog.dart';
 
 class DancerActionsDialog extends StatelessWidget {
   final DancerWithEventInfo dancer;
@@ -86,11 +86,11 @@ class DancerActionsDialog extends StatelessWidget {
               },
             ),
 
-          // Edit Notes
+          // Edit General Notes
           ListTile(
             leading: Icon(Icons.edit_note,
                 color: Theme.of(context).colorScheme.primary),
-            title: const Text('Edit Notes'),
+            title: const Text('Edit general note'),
             onTap: () {
               Navigator.pop(context);
               // Convert DancerWithEventInfo to Dancer for editing
