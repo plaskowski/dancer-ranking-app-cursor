@@ -4,6 +4,23 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.22.1] - 2025-06-29
+
+### User Requests
+- "Nice, just the new action has too much text. 'Remove from event' will do."
+
+### Improved
+- **Cleaner UI Text**: Simplified "Remove from Planning" action to "Remove from event"
+- **Reduced Clutter**: Removed subtitle text for cleaner dialog interface
+- **Consistent Messaging**: Updated snackbar feedback to match new action text
+
+### Technical
+- Updated Dancer Actions Dialog title from "Remove from Planning" to "Remove from event"
+- Removed subtitle "Remove ranking for this event" for cleaner appearance
+- Updated snackbar message to match new terminology
+
+---
+
 ## [v0.22.0] - 2025-06-29
 
 ### User Requests

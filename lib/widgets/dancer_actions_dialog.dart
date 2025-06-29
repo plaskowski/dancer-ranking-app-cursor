@@ -102,12 +102,11 @@ class DancerActionsDialog extends StatelessWidget {
             },
           ),
 
-          // Remove from Planning - only show for ranked dancers
+          // Remove from Event - only show for ranked dancers
           if (dancer.hasRanking)
             ListTile(
               leading: Icon(Icons.remove_circle_outline, color: context.danceTheme.warning),
-              title: const Text('Remove from Planning'),
-              subtitle: const Text('Remove ranking for this event'),
+              title: const Text('Remove from event'),
               onTap: () => _removeFromPlanning(context),
             ),
         ],
@@ -216,7 +215,7 @@ class DancerActionsDialog extends StatelessWidget {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${dancer.name} removed from planning'),
+            content: Text('${dancer.name} removed from event'),
             backgroundColor: context.danceTheme.warning,
           ),
         );
