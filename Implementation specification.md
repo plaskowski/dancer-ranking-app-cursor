@@ -8,6 +8,19 @@
 
 # App structure
 
+## Theme System
+
+Material 3 theme implementation with custom dance-specific color extensions.
+
+**Files**: `lib/theme/app_theme.dart`, `color_schemes.dart`, `theme_extensions.dart`
+
+**Colors**: 
+- Primary (Blue), Secondary (Purple), Tertiary (Teal), Error (Red)
+- Custom extensions: dance accent, success, warning, present/absent colors
+- Automatic light/dark theme switching
+
+**Usage**: `Theme.of(context).colorScheme.primary`, `context.danceTheme.success`
+
 ## Database model
 
 ### Tables and Relations

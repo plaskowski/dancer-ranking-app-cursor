@@ -6,6 +6,10 @@ History:
   → **MAJOR IMPROVEMENT**: Converted to reactive streams architecture with Drift database observation
   → Replaced manual callback chains with StreamBuilder + watchDancersForEvent()
   → UI now automatically refreshes for ALL data changes (notes, rankings, attendance, etc.)
+- ✅ Introduce Theme System based on Material 3
+  → **COMPREHENSIVE THEME SYSTEM**: Implemented complete Material 3 theme with custom extensions
+  → Created theme foundation with proper color schemes (light/dark), semantic colors, and dance-specific extensions
+  → Theme files: `app_theme.dart`, `color_schemes.dart`, `theme_extensions.dart`
 
 Next step:
-- Introduce Theme System based on Material 3
+- Continue migrating hardcoded colors throughout the app to use the new theme system

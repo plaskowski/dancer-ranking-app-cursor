@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../services/attendance_service.dart';
+import '../theme/theme_extensions.dart';
 
 class DanceRecordingDialog extends StatefulWidget {
   final int dancerId;
@@ -21,7 +22,7 @@ class DanceRecordingDialog extends StatefulWidget {
 
 class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
   final _impressionController = TextEditingController();
-  
+
   bool _isLoading = false;
   bool _alreadyDanced = false;
 
@@ -39,9 +40,11 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
 
   Future<void> _checkIfAlreadyDanced() async {
     try {
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
-      final hasDanced = await attendanceService.hasDanced(widget.eventId, widget.dancerId);
-      
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
+      final hasDanced =
+          await attendanceService.hasDanced(widget.eventId, widget.dancerId);
+
       if (mounted) {
         setState(() {
           _alreadyDanced = hasDanced;
@@ -58,14 +61,15 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
     });
 
     try {
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
-      
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
+
       await attendanceService.recordDance(
         eventId: widget.eventId,
         dancerId: widget.dancerId,
-        impression: _impressionController.text.trim().isNotEmpty 
-          ? _impressionController.text.trim() 
-          : null,
+        impression: _impressionController.text.trim().isNotEmpty
+            ? _impressionController.text.trim()
+            : null,
       );
 
       if (mounted) {
@@ -73,7 +77,7 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Dance recorded with ${widget.dancerName}!'),
-            backgroundColor: Colors.green,
+            backgroundColor: context.danceTheme.success,
           ),
         );
       }
@@ -82,7 +86,7 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error recording dance: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -108,9 +112,9 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
               'Record that you danced with this person.',
               style: TextStyle(fontSize: 16),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Impression field
             TextField(
               controller: _impressionController,
@@ -122,27 +126,27 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
               maxLines: 4,
               textCapitalization: TextCapitalization.sentences,
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Warning if already danced
             if (_alreadyDanced)
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.orange.shade100,
+                  color: context.danceTheme.warningContainer,
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.orange.shade300),
+                  border: Border.all(color: context.danceTheme.warning),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.warning, color: Colors.orange.shade700),
+                    Icon(Icons.warning, color: context.danceTheme.warning),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         'Already danced with ${widget.dancerName} tonight!',
                         style: TextStyle(
-                          color: Colors.orange.shade700,
+                          color: context.danceTheme.onWarningContainer,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -161,8 +165,8 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
         ElevatedButton(
           onPressed: _isLoading ? null : _recordDance,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.purple,
-            foregroundColor: Colors.white,
+            backgroundColor: context.danceTheme.danceAccent,
+            foregroundColor: context.danceTheme.onDanceAccent,
           ),
           child: _isLoading
               ? const SizedBox(
@@ -178,4 +182,4 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
       ],
     );
   }
-} 
+}

@@ -7,6 +7,7 @@ import 'services/dancer_service.dart';
 import 'services/ranking_service.dart';
 import 'services/attendance_service.dart';
 import 'screens/home_screen.dart';
+import 'theme/app_theme.dart';
 
 void main() {
   runApp(const DancerRankingApp());
@@ -24,7 +25,7 @@ class DancerRankingApp extends StatelessWidget {
           create: (_) => AppDatabase(),
           dispose: (_, db) => db.close(),
         ),
-        
+
         // Services
         ProxyProvider<AppDatabase, EventService>(
           update: (_, db, __) => EventService(db),
@@ -41,10 +42,9 @@ class DancerRankingApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Dancer Ranking',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          useMaterial3: true,
-        ),
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
         home: const HomeScreen(),
         debugShowCheckedModeBanner: false,
       ),

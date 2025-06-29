@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../services/dancer_service.dart';
+import '../theme/theme_extensions.dart';
 import 'dancer_actions_dialog.dart';
 
 // Dancer Card widget used in both tabs
@@ -32,7 +33,7 @@ class DancerCard extends StatelessWidget {
               ),
             ),
             if (showPresenceIndicator && dancer.isPresent)
-              const Icon(Icons.check, color: Colors.green, size: 20),
+              Icon(Icons.check, color: context.danceTheme.present, size: 20),
           ],
         ),
         subtitle: Column(
@@ -44,11 +45,13 @@ class DancerCard extends StatelessWidget {
                 style: const TextStyle(fontStyle: FontStyle.italic),
               ),
             if (dancer.hasDanced)
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.music_note, size: 16, color: Colors.purple),
-                  SizedBox(width: 4),
-                  Text('Danced!', style: TextStyle(color: Colors.purple)),
+                  Icon(Icons.music_note,
+                      size: 16, color: context.danceTheme.danceAccent),
+                  const SizedBox(width: 4),
+                  Text('Danced!',
+                      style: TextStyle(color: context.danceTheme.danceAccent)),
                 ],
               ),
           ],
