@@ -4,6 +4,23 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.25.0] - 2025-06-29
+
+### User Requests
+- "If the person left, there is no point in showing them in the Present tab"
+
+### Improved
+- **Present Tab Filtering**: Dancers who have left the event are no longer shown in the Present tab
+- **Logical Display**: Present tab now only shows dancers with status 'present' or 'served', excluding those marked as 'left'
+- **Cleaner Interface**: Removes visual clutter from dancers who are no longer available for interaction
+- **Better Empty State**: Updated empty state message from "No one marked present yet" to "No one currently at the event"
+
+### Technical
+- Modified Present tab filtering logic to exclude dancers with status='left'
+- Changed filter from `d.isPresent` to `d.status == 'present' || d.status == 'served'`
+- Updated empty state messaging for better accuracy
+- Applied proper Dart formatting to modified files
+
 ## [v0.24.0] - 2025-06-29
 
 ### User Requests

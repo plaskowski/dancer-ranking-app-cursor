@@ -144,7 +144,7 @@ Users can adjust rankings during events for various reasons:
 - **Smart empty state**: Shows different messages based on whether all ranked dancers are present
 
 **Present Tab**:
-- View only dancers who are present at the event (have Attendance records)
+- View only dancers who are currently at the event (status 'present' or 'served', excludes 'left' or 'absent')
 - Quick access to ranking adjustments and dance recording
 - Shows when each person was first spotted
 - Easy ranking modification based on current presentation/mood

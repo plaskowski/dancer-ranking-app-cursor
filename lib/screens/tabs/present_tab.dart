@@ -29,23 +29,30 @@ class PresentTab extends StatelessWidget {
         }
 
         final allDancers = snapshot.data ?? [];
-        final presentDancers = allDancers.where((d) => d.isPresent).toList();
+        final presentDancers = allDancers
+            .where((d) => d.status == 'present' || d.status == 'served')
+            .toList();
 
         if (presentDancers.isEmpty) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.location_on, size: 64, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                Icon(Icons.location_on,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant),
                 const SizedBox(height: 16),
                 Text(
-                  'No one marked present yet',
-                  style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  'No one currently at the event',
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Use the + button to add dancers',
-                  style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
               ],
             ),
@@ -72,7 +79,8 @@ class PresentTab extends StatelessWidget {
             final dancerA = groupedDancers[a]!.first;
             final dancerB = groupedDancers[b]!.first;
 
-            return (dancerA.rankOrdinal ?? 999).compareTo(dancerB.rankOrdinal ?? 999);
+            return (dancerA.rankOrdinal ?? 999)
+                .compareTo(dancerB.rankOrdinal ?? 999);
           });
 
         return ListView(
@@ -119,7 +127,8 @@ class PresentTabActions implements EventTabActions {
   });
 
   @override
-  Future<void> onFabPressed(BuildContext context, VoidCallback onRefresh) async {
+  Future<void> onFabPressed(
+      BuildContext context, VoidCallback onRefresh) async {
     // Show speed dial menu with two options
     _showPresentTabSpeedDial(context, onRefresh);
   }
