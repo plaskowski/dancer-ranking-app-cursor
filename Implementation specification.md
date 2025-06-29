@@ -148,10 +148,11 @@ Users can adjust rankings during events for various reasons:
 - **FAB**: Shows modal menu with dual options
   - **"Add New Dancer"** → Opens Add Dancer Dialog to create new dancer and add to event
     - Option to mark as "already danced with" + impression
-  - **"Add Existing Dancer"** → Opens Add Existing Dancer Screen to mark unranked dancers as present
-    - Shows only unranked dancers (ranked dancers managed via Planning tab)
+  - **"Add Existing Dancer"** → Opens Add Existing Dancer Screen to mark unranked and absent dancers as present
+    - Shows only unranked AND absent dancers (excludes ranked dancers and already present dancers)
     - One-tap selection with immediate "Mark Present" action
     - Search functionality by name or notes
+    - Smart filtering prevents suggesting dancers who are already present
 - **Tap dancer**: Opens Full Actions Dialog with:
   - Set/edit dancer ranking in real-time (→ Ranking Dialog)
   - Mark present / Remove from present (attendance management)
@@ -179,13 +180,14 @@ Users can adjust rankings during events for various reasons:
 - ← Back to Event Screen
 
 ### 4b. Add Existing Dancer Screen (`AddExistingDancerScreen`)
-**Purpose**: Mark unranked dancers as present when they appear at events
+**Purpose**: Mark unranked and absent dancers as present when they appear at events
 **Actions**:
-- View list of unranked dancers only (ranked dancers managed via Planning tab)
+- View list of unranked AND absent dancers only (excludes ranked dancers and already present dancers)
 - Search dancers by name or notes
 - One-tap "Mark Present" action for each dancer
-- Info banner explaining scope and guiding users to Planning tab for ranked dancers
+- Info banner explaining scope and guiding users about present dancers
 - Shows dancer context: notes for identification
+- **Smart filtering**: Automatically excludes dancers who are already present to prevent duplicates
 **Navigation**:
 - ← Back to Event Screen
 

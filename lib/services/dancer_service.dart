@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+
 import '../database/database.dart';
 
 class DancerService {
@@ -118,48 +119,53 @@ class DancerService {
     });
   }
 
-  // Get only dancers that don't have rankings for a specific event (for selection dialog)
+  // Get only dancers that don't have rankings for a specific event AND are not present (for selection dialog)
   Future<List<DancerWithEventInfo>> getUnrankedDancersForEvent(
       int eventId) async {
-    // First, let's get all ranked dancer IDs for debugging
+    // Get all ranked dancer IDs for this event
     final rankedDancerIdsDebug = await (_database.select(_database.rankings)
           ..where((r) => r.eventId.equals(eventId)))
         .get();
 
+    // Get all present dancer IDs for this event
+    final presentDancerIds = await (_database.select(_database.attendances)
+          ..where((a) => a.eventId.equals(eventId)))
+        .get();
+
     print(
         'DEBUG: Ranked dancer IDs for event $eventId: ${rankedDancerIdsDebug.map((r) => r.dancerId).toList()}');
+    print(
+        'DEBUG: Present dancer IDs for event $eventId: ${presentDancerIds.map((a) => a.dancerId).toList()}');
 
     // Get all dancers
     final allDancers = await (_database.select(_database.dancers)
           ..orderBy([(d) => OrderingTerm.asc(d.name)]))
         .get();
 
-    // Filter out dancers that have rankings for this event
+    // Filter out dancers that have rankings OR are present for this event
     final rankedDancerIds = rankedDancerIdsDebug.map((r) => r.dancerId).toSet();
-    final unrankedDancers = allDancers
-        .where((dancer) => !rankedDancerIds.contains(dancer.id))
+    final presentDancerIdSet = presentDancerIds.map((a) => a.dancerId).toSet();
+    final availableDancers = allDancers
+        .where((dancer) =>
+            !rankedDancerIds.contains(dancer.id) &&
+            !presentDancerIdSet.contains(dancer.id))
         .toList();
 
     print('DEBUG: All dancers count: ${allDancers.length}');
     print('DEBUG: Ranked dancers count: ${rankedDancerIds.length}');
-    print('DEBUG: Unranked dancers count: ${unrankedDancers.length}');
+    print('DEBUG: Present dancers count: ${presentDancerIdSet.length}');
     print(
-        'DEBUG: Unranked dancer names: ${unrankedDancers.map((d) => d.name).toList()}');
+        'DEBUG: Available (unranked + absent) dancers count: ${availableDancers.length}');
+    print(
+        'DEBUG: Available dancer names: ${availableDancers.map((d) => d.name).toList()}');
 
-    return unrankedDancers.map((dancer) {
+    return availableDancers.map((dancer) {
       return DancerWithEventInfo(
         id: dancer.id,
         name: dancer.name,
         notes: dancer.notes,
         createdAt: dancer.createdAt,
-        rankName: null, // No ranking for this event
-        rankOrdinal: null,
-        rankingReason: null,
-        rankingUpdated: null,
-        attendanceMarkedAt: null, // Not present yet
         hasDanced: false,
-        dancedAt: null,
-        impression: null,
       );
     }).toList();
   }

@@ -43,5 +43,10 @@ Next steps (remember to update the spec first):
   → **Smart Empty State**: Differentiates between no dancers added vs all dancers present
   → **Improved Focus**: At events, planning tab becomes a focused checklist of absent dancers to spot
   → **Better UX**: Clear guidance to switch to Present tab when all ranked dancers are present
-- don't suggest already present people in Add Existing Dancer dialog
+- ✅ don't suggest already present people in Add Existing Dancer dialog
+  → **SMART FILTERING**: Add Existing Dancer screen now excludes both ranked AND already present dancers
+  → **Enhanced Service Layer**: Updated `getUnrankedDancersForEvent` to filter out present dancers from attendances table
+  → **Better UX**: No duplicate suggestions - dancers disappear from available list once marked present
+  → **Clear Messaging**: Updated all UI text to reflect "unranked AND absent" filtering scope
+  → **Improved Efficiency**: Users only see truly available dancers for marking present
 - ...

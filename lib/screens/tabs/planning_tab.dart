@@ -35,13 +35,11 @@ class _PlanningTabState extends State<PlanningTab> {
 
         final allDancers = snapshot.data ?? [];
         // Only show dancers that have been explicitly added to the event (have rankings) AND are not present yet
-        final dancers =
-            allDancers.where((d) => d.hasRanking && !d.isPresent).toList();
+        final dancers = allDancers.where((d) => d.hasRanking && !d.isPresent).toList();
 
         if (dancers.isEmpty) {
           // Check if there are any ranked dancers at all for this event
-          final totalRankedDancers =
-              allDancers.where((d) => d.hasRanking).length;
+          final totalRankedDancers = allDancers.where((d) => d.hasRanking).length;
 
           return Center(
             child: Column(
@@ -56,9 +54,7 @@ class _PlanningTabState extends State<PlanningTab> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  totalRankedDancers > 0
-                      ? 'All ranked dancers are present!'
-                      : 'No dancers added yet',
+                  totalRankedDancers > 0 ? 'All ranked dancers are present!' : 'No dancers added yet',
                   style: TextStyle(
                     fontSize: 18,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -82,8 +78,7 @@ class _PlanningTabState extends State<PlanningTab> {
         final Map<String, List<DancerWithEventInfo>> groupedDancers = {};
 
         for (final dancer in dancers) {
-          final rankName =
-              dancer.rankName!; // Safe since we filtered for hasRanking
+          final rankName = dancer.rankName!; // Safe since we filtered for hasRanking
           if (!groupedDancers.containsKey(rankName)) {
             groupedDancers[rankName] = [];
           }
@@ -96,8 +91,7 @@ class _PlanningTabState extends State<PlanningTab> {
             final dancerA = groupedDancers[a]!.first;
             final dancerB = groupedDancers[b]!.first;
 
-            return (dancerA.rankOrdinal ?? 999)
-                .compareTo(dancerB.rankOrdinal ?? 999);
+            return (dancerA.rankOrdinal ?? 999).compareTo(dancerB.rankOrdinal ?? 999);
           });
 
         return ListView(
@@ -144,8 +138,7 @@ class PlanningTabActions implements EventTabActions {
   });
 
   @override
-  Future<void> onFabPressed(
-      BuildContext context, VoidCallback onRefresh) async {
+  Future<void> onFabPressed(BuildContext context, VoidCallback onRefresh) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(

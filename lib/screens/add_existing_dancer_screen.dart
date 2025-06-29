@@ -70,7 +70,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
             child: TextField(
               controller: _searchController,
               decoration: const InputDecoration(
-                labelText: 'Search unranked dancers',
+                labelText: 'Search available dancers',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
                 hintText: 'Search by name or notes...',
@@ -101,7 +101,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Showing unranked dancers only. Use Planning tab for ranked dancers.',
+                    'Showing unranked and absent dancers only. Present dancers managed in Present tab.',
                     style: TextStyle(
                       fontSize: 12,
                       color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -117,7 +117,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
           // Dancers List
           Expanded(
             child: FutureBuilder<List<DancerWithEventInfo>>(
-              future: _getUnrankedAbsentDancers(),
+              future: _getAvailableDancers(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -142,7 +142,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          _searchQuery.isEmpty ? 'No unranked dancers available' : 'No dancers found',
+                          _searchQuery.isEmpty ? 'No available dancers' : 'No dancers found',
                           style: TextStyle(
                             fontSize: 18,
                             color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -151,7 +151,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                         const SizedBox(height: 8),
                         Text(
                           _searchQuery.isEmpty
-                              ? 'All unranked dancers are already present!'
+                              ? 'All unranked dancers are already present or ranked!'
                               : 'Try a different search term',
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -202,10 +202,10 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
     );
   }
 
-  Future<List<DancerWithEventInfo>> _getUnrankedAbsentDancers() async {
+  Future<List<DancerWithEventInfo>> _getAvailableDancers() async {
     final dancerService = Provider.of<DancerService>(context, listen: false);
 
-    // Get unranked dancers for this event (dancers not in the event at all)
+    // Get unranked and absent dancers for this event (dancers not ranked and not present)
     return dancerService.getUnrankedDancersForEvent(widget.eventId);
   }
 
