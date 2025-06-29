@@ -4,6 +4,22 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.28.1] - 2025-01-11
+
+### User Requests
+- "why the title and subtitle is not centered?"
+
+### Fixed
+- **AppBar Alignment**: Fixed title and subtitle alignment to be properly centered
+- **Visual Consistency**: AppBar content now aligns with Material Design standards and theme settings
+
+### Technical
+- Changed Column crossAxisAlignment from CrossAxisAlignment.start to CrossAxisAlignment.center
+- Leverages existing centerTitle: true theme setting for proper alignment
+- Applied proper Dart formatting to modified file
+
+---
+
 ## [v0.28.0] - 2025-01-11
 
 ### User Requests
