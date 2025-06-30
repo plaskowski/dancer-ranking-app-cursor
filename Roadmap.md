@@ -43,3 +43,4 @@
 - Performance benchmarking tools
 - Add a rule for the workflow to write down the mistakes that were made by cursor and add a cursor rule that will prevent it in the future
 - rule to always pick up only one task
+- how to keep the UX patterns consistent

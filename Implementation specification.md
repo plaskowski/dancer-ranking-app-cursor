@@ -405,16 +405,16 @@ Example logs:
 - View all ranks ordered by priority (visual position indicates priority)
 - Drag-to-reorder ranks to change priority
 - Add new rank (FloatingActionButton)
-- Edit rank name (tap rank)
-- Archive rank (popup menu button)
-- Delete rank with reassignment (popup menu button)
+- Edit rank name (tap rank → menu → edit)
+- Archive rank (tap rank → menu → archive)
+- Delete rank with reassignment (tap rank → menu → delete)
 - Visual feedback for all operations
 **UI Design**:
 - **Minimalist Cards**: Clean rank name display without visual clutter
-- **Popup Menu Interaction**: Context menu via trailing popup menu button for quick access
+- **Single Tap Interaction**: Context menu via tap gesture showing modal bottom sheet with all actions
 - **Visual Priority**: Position in list clearly indicates priority order (no numbers needed)
-- **Tap to Edit**: Primary interaction opens rename dialog
-- **Fast Access Pattern**: Instant popup menu eliminates slow long press interaction
+- **Unified Actions**: Single tap opens menu with Edit, Archive, and Delete options
+- **Simple Pattern**: Clean single-action interface eliminates interaction confusion
 - **Archived Status**: Shows "Archived" subtitle only when relevant
 **Features**:
 - **Smart Filtering**: Only active (non-archived) ranks shown in ranking dialogs

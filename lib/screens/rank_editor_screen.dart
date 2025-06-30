@@ -98,7 +98,7 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Drag to reorder priority. Tap to edit, use menu for more options.',
+                        'Drag to reorder priority. Tap for options.',
                         style: TextStyle(
                           fontSize: 12,
                           color:
@@ -594,45 +594,41 @@ class _RankCard extends StatelessWidget {
                 ),
               )
             : null,
-        onTap: onEdit,
-        trailing: PopupMenuButton<String>(
-          onSelected: (value) {
-            switch (value) {
-              case 'edit':
+        onTap: () => _showContextMenu(context),
+      ),
+    );
+  }
+
+  void _showContextMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('Edit'),
+              onTap: () {
+                Navigator.pop(context);
                 onEdit();
-                break;
-              case 'archive':
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.archive),
+              title: const Text('Archive'),
+              onTap: () {
+                Navigator.pop(context);
                 onArchive();
-                break;
-              case 'delete':
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete),
+              title: const Text('Delete'),
+              onTap: () {
+                Navigator.pop(context);
                 onDelete();
-                break;
-            }
-          },
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'edit',
-              child: ListTile(
-                leading: Icon(Icons.edit),
-                title: Text('Edit'),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-            const PopupMenuItem(
-              value: 'archive',
-              child: ListTile(
-                leading: Icon(Icons.archive),
-                title: Text('Archive'),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-            const PopupMenuItem(
-              value: 'delete',
-              child: ListTile(
-                leading: Icon(Icons.delete),
-                title: Text('Delete'),
-                contentPadding: EdgeInsets.zero,
-              ),
+              },
             ),
           ],
         ),
