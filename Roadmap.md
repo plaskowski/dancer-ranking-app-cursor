@@ -2,6 +2,7 @@
 
 ## Near-term Features (next few weeks)
 
+- dancers pool category - see feature_DancersPoolCategory.md
 - Tags on persons
   - ability to add tags to a person
   - ability to search by tag where we already search by person name
