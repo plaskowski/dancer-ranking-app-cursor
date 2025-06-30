@@ -270,28 +270,12 @@ class _TagsScreenState extends State<TagsScreen> {
             itemCount: tags.length,
             itemBuilder: (context, index) {
               final tag = tags[index];
-              return ListTile(
-                title: Text(tag.name),
-                leading: const Icon(Icons.label_outline),
-                trailing: PopupMenuButton<String>(
-                  onSelected: (value) {
-                    switch (value) {
-                      case 'edit':
-                        _showEditTagDialog(tag);
-                        break;
-                    }
-                  },
-                  itemBuilder: (context) => [
-                    const PopupMenuItem(
-                      value: 'edit',
-                      child: ListTile(
-                        leading: Icon(Icons.edit),
-                        title: Text('Edit'),
-                        dense: true,
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                    ),
-                  ],
+              return Card(
+                margin: const EdgeInsets.only(bottom: 8),
+                child: ListTile(
+                  title: Text(tag.name),
+                  leading: const Icon(Icons.label_outline),
+                  onTap: () => _showTagContextMenu(context, tag),
                 ),
               );
             },
@@ -302,6 +286,52 @@ class _TagsScreenState extends State<TagsScreen> {
         onPressed: _showAddTagDialog,
         tooltip: 'Add Tag',
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  void _showTagContextMenu(BuildContext context, Tag tag) {
+    ActionLogger.logAction('UI_TagsScreen', 'tag_context_menu_opened', {
+      'tagId': tag.id,
+      'tagName': tag.name,
+    });
+
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                tag.name,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              ListTile(
+                leading: Icon(
+                  Icons.edit,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                title: const Text('Edit'),
+                onTap: () {
+                  ActionLogger.logAction(
+                      'UI_TagsScreen', 'context_edit_tapped', {
+                    'tagId': tag.id,
+                    'tagName': tag.name,
+                  });
+
+                  Navigator.pop(context);
+                  _showEditTagDialog(tag);
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

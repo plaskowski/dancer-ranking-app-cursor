@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### User Requests
 - "take the first task" - referring to "add a way to edit tag name" from Next steps.md
+- "It works but should use 'tap for context actions' pattern"
 
 ### Added
 - **Tag Editing**: Added ability to edit tag names in Tags screen
@@ -16,11 +17,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Edit dialog similar to other editing patterns in the app
   - Proper error handling and user feedback with snackbars
 
+### Improved
+- **Consistent UI Pattern**: Updated Tags screen to use "tap for context actions" pattern
+  - Replaced PopupMenuButton with direct tap handler on tag items
+  - Modal bottom sheet context menu following app-wide conventions
+  - Card-based design consistent with RankEditorScreen and other screens
+  - Streamlined interaction: single tap opens context menu instead of two-step process
+
 ### Technical
 - Enhanced TagService with `updateTag(id, name)` method following same pattern as RankingService
-- Updated Tags screen UI with PopupMenuButton for context actions
+- Updated Tags screen UI with modal bottom sheet context actions
 - Added comprehensive logging for tag editing operations
 - Validates against duplicate tag names when editing
+- Consistent interaction patterns across all management screens
 
 ## [v0.41.0] - 2025-01-11
 
