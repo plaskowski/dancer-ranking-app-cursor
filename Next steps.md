@@ -6,16 +6,9 @@
   - Provide agent with an example to understand the structure.
 
 ## Little later
-- event date change does not work (regression)
 - AppBar title and subtitle should be centered (regression)
 - tap tag pill to filter the list by that tag
 - try out different models
-
-### Bug Fixes
-- **Event Date Change**: Context menu date picker shows but changes don't persist to database
-  - Location: `lib/screens/home_screen.dart` - `_performDateChange` method
-  - Issue: Date update operation completes but data doesn't save properly
-  - Priority: Medium
 
 ### Data Management
 - **Data Export**: Add ability to export event data and dancer rankings

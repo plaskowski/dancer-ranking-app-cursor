@@ -4,6 +4,21 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.50.0] - 2025-01-13
+
+### User Requests
+- "do "event date change does not work (regression)""
+
+### Fixed
+- **Event Date Persistence**: Fixed regression where event date changes were not persisting to the database
+  - Root cause: Generated Drift database code was out of sync with table definitions
+  - Solution: Regenerated database code using `flutter pub run build_runner build --delete-conflicting-outputs`
+  - Event date updates now properly persist and are reflected in the UI
+
+### Technical
+- **Database Code Generation**: Regenerated all Drift database code to ensure sync with table definitions
+- **Build Process**: Updated 98 generated files to fix database operation inconsistencies
+
 ## [v0.49.0] - 2025-01-13
 
 ### User Requests
