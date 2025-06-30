@@ -2,6 +2,10 @@
 
 ## Immediate Priorities (take one at a time)
 - establish JSON format for event import
+  - I don't want to import event ranking, only dancer presence details
+- refine it
+  - event date without time part
+  - I don't have the marked_at and danced_at info, check with the implementation if they can be null
 - parse events from the diary
   - provide agent an example so they understand the structure
 
