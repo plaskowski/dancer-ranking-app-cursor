@@ -4,6 +4,30 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.37.0] - 2025-01-11
+
+### User Requests
+- "use FAB instead of AppBar for Add action in Ranks screen"
+- "I dont want long press, it is too slow to use"
+
+### Improved
+- **Faster Interaction**: Replaced long press with popup menu button for quicker access to rank actions
+- **Better Accessibility**: FloatingActionButton for adding ranks provides clearer call-to-action
+- **Modern UI Pattern**: FAB follows Material Design standards for primary actions
+- **Instant Context Menu**: Popup menu provides immediate access to Edit/Archive/Delete actions
+
+### Changed
+- **Add Rank Action**: Moved from AppBar action to FloatingActionButton
+- **Rank Context Menu**: Replaced long press gesture with trailing popup menu button
+- **Instructions Text**: Updated to "Tap to edit, use menu for more options" removing long press reference
+- **User Experience**: Eliminated slow long press interaction in favor of instant popup menu
+
+### Technical
+- **RankEditorScreen**: Removed AppBar actions array, added FloatingActionButton
+- **_RankCard**: Replaced GestureDetector with PopupMenuButton in trailing position
+- **Context Menu**: Changed from modal bottom sheet to popup menu for faster access
+- **UI Consistency**: Maintained all existing functionality with improved interaction speed
+
 ## [v0.36.0] - 2025-01-11
 
 ### User Requests

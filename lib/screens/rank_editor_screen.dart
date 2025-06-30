@@ -27,13 +27,11 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Manage Ranks'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            tooltip: 'Add New Rank',
-            onPressed: () => _showAddRankDialog(context),
-          ),
-        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showAddRankDialog(context),
+        tooltip: 'Add New Rank',
+        child: const Icon(Icons.add),
       ),
       body: FutureBuilder<List<Rank>>(
         future: rankingService.getAllRanks(),
@@ -100,7 +98,7 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Drag to reorder priority. Tap to edit, long press for options.',
+                        'Drag to reorder priority. Tap to edit, use menu for more options.',
                         style: TextStyle(
                           fontSize: 12,
                           color:
@@ -582,58 +580,59 @@ class _RankCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
-      child: GestureDetector(
-        onLongPress: () => _showContextMenu(context),
-        child: ListTile(
-          title: Text(
-            rank.name,
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
-          subtitle: rank.isArchived
-              ? Text(
-                  'Archived',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                )
-              : null,
-          onTap: onEdit,
+      child: ListTile(
+        title: Text(
+          rank.name,
+          style: const TextStyle(fontWeight: FontWeight.w600),
         ),
-      ),
-    );
-  }
-
-  void _showContextMenu(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text('Edit'),
-              onTap: () {
-                Navigator.pop(context);
+        subtitle: rank.isArchived
+            ? Text(
+                'Archived',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              )
+            : null,
+        onTap: onEdit,
+        trailing: PopupMenuButton<String>(
+          onSelected: (value) {
+            switch (value) {
+              case 'edit':
                 onEdit();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.archive),
-              title: const Text('Archive'),
-              onTap: () {
-                Navigator.pop(context);
+                break;
+              case 'archive':
                 onArchive();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.delete),
-              title: const Text('Delete'),
-              onTap: () {
-                Navigator.pop(context);
+                break;
+              case 'delete':
                 onDelete();
-              },
+                break;
+            }
+          },
+          itemBuilder: (context) => [
+            const PopupMenuItem(
+              value: 'edit',
+              child: ListTile(
+                leading: Icon(Icons.edit),
+                title: Text('Edit'),
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'archive',
+              child: ListTile(
+                leading: Icon(Icons.archive),
+                title: Text('Archive'),
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'delete',
+              child: ListTile(
+                leading: Icon(Icons.delete),
+                title: Text('Delete'),
+                contentPadding: EdgeInsets.zero,
+              ),
             ),
           ],
         ),
