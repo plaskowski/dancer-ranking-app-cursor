@@ -1,11 +1,6 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
-- support an edge case
-  - have a rank A
-  - set a person rank in an event to A
-  - make rank A archived
-  - edit person rank in an event to B  <-- currently this fails
 
 ### Bug Fixes
 - **Event Date Change**: Context menu date picker shows but changes don't persist to database

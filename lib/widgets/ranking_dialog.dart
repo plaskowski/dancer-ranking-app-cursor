@@ -59,14 +59,27 @@ class _RankingDialogState extends State<RankingDialog> {
     final dancerService = Provider.of<DancerService>(context, listen: false);
 
     try {
-      // Load ranks
-      final ranks = await rankingService.getActiveRanks();
+      // Load active ranks
+      final List<Rank> ranks = await rankingService.getActiveRanks();
 
       // Load dancer name
       final dancer = await dancerService.getDancer(widget.dancerId);
 
       // Load existing ranking if any
-      final existingRanking = await rankingService.getRanking(widget.eventId, widget.dancerId);
+      final existingRanking =
+          await rankingService.getRanking(widget.eventId, widget.dancerId);
+
+      // Check if current rank is archived and include it if needed
+      Rank? currentRank;
+      if (existingRanking != null) {
+        currentRank = await rankingService.getRank(existingRanking.rankId);
+        if (currentRank != null && currentRank.isArchived) {
+          // Add the archived rank to the list so user can see their current ranking
+          ranks.add(currentRank);
+          // Sort by ordinal to maintain proper order
+          ranks.sort((a, b) => a.ordinal.compareTo(b.ordinal));
+        }
+      }
 
       if (mounted) {
         ActionLogger.logUserAction('RankingDialog', 'data_loaded', {
@@ -76,6 +89,7 @@ class _RankingDialogState extends State<RankingDialog> {
           'ranksCount': ranks.length,
           'hasExistingRanking': existingRanking != null,
           'existingRankId': existingRanking?.rankId,
+          'existingRankIsArchived': currentRank?.isArchived ?? false,
         });
 
         setState(() {
@@ -83,12 +97,14 @@ class _RankingDialogState extends State<RankingDialog> {
           _dancerName = dancer?.name ?? 'Unknown';
 
           if (existingRanking != null) {
-            _selectedRank = ranks.firstWhere((r) => r.id == existingRanking.rankId);
+            _selectedRank =
+                ranks.firstWhere((r) => r.id == existingRanking.rankId);
             _reasonController.text = existingRanking.reason ?? '';
             _lastUpdated = existingRanking.lastUpdated;
           } else {
             // Default to neutral rank
-            _selectedRank = ranks.firstWhere((r) => r.ordinal == 3, orElse: () => ranks.first);
+            _selectedRank = ranks.firstWhere((r) => r.ordinal == 3,
+                orElse: () => ranks.first);
           }
         });
       }
@@ -128,13 +144,16 @@ class _RankingDialogState extends State<RankingDialog> {
     });
 
     try {
-      final rankingService = Provider.of<RankingService>(context, listen: false);
+      final rankingService =
+          Provider.of<RankingService>(context, listen: false);
 
       await rankingService.setRanking(
         eventId: widget.eventId,
         dancerId: widget.dancerId,
         rankId: _selectedRank!.id,
-        reason: _reasonController.text.trim().isNotEmpty ? _reasonController.text.trim() : null,
+        reason: _reasonController.text.trim().isNotEmpty
+            ? _reasonController.text.trim()
+            : null,
       );
 
       if (mounted) {
@@ -193,16 +212,52 @@ class _RankingDialogState extends State<RankingDialog> {
 
             // Rank options
             ..._ranks.map((rank) => RadioListTile<Rank>(
-                  title: Text(rank.name),
+                  title: Row(
+                    children: [
+                      Expanded(child: Text(rank.name)),
+                      if (rank.isArchived)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .outline
+                                .withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            'ARCHIVED',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                  subtitle: rank.isArchived
+                      ? Text(
+                          'This rank is archived but shown because it\'s your current ranking',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Theme.of(context).colorScheme.outline,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        )
+                      : null,
                   value: rank,
                   groupValue: _selectedRank,
                   onChanged: (Rank? value) {
-                    ActionLogger.logUserAction('RankingDialog', 'rank_selected', {
+                    ActionLogger.logUserAction(
+                        'RankingDialog', 'rank_selected', {
                       'dancerId': widget.dancerId,
                       'eventId': widget.eventId,
                       'oldRankId': _selectedRank?.id,
                       'newRankId': value?.id,
                       'newRankName': value?.name,
+                      'isArchived': value?.isArchived ?? false,
                     });
 
                     setState(() {
@@ -246,7 +301,8 @@ class _RankingDialogState extends State<RankingDialog> {
           onPressed: _isLoading
               ? null
               : () {
-                  ActionLogger.logUserAction('RankingDialog', 'dialog_cancelled', {
+                  ActionLogger.logUserAction(
+                      'RankingDialog', 'dialog_cancelled', {
                     'dancerId': widget.dancerId,
                     'eventId': widget.eventId,
                   });
