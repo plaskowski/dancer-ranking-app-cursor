@@ -23,9 +23,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **User Experience**: Simplified interaction with single tap for all rank actions
 
 ### Fixed
-- **Delete Rank Bug**: Fixed FlutterError "Looking up a deactivated widget's ancestor is unsafe"
-  - Moved Provider.of calls before async operations to prevent context usage after widget disposal
-  - Added proper mounted checks after async operations
+- **Context Disposal Error**: Completely resolved FlutterError "Looking up a deactivated widget's ancestor is unsafe"
+  - Fixed all rank operations (Edit, Archive/Unarchive, Delete) to use main widget context
+  - Eliminated dialog context passing that caused widget disposal issues
+  - Restructured async operations to close dialogs before performing actions
   - Enhanced error handling for widget lifecycle management
 
 ### Improved  

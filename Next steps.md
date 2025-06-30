@@ -1,6 +1,7 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
+- run the app on my Samsung phone
 
 ### Bug Fixes
 - **Event Date Change**: Context menu date picker shows but changes don't persist to database

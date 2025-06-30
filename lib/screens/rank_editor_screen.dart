@@ -277,7 +277,10 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
             hintText: 'Enter rank name',
           ),
           autofocus: true,
-          onSubmitted: (_) => _performEditRank(context, rank, controller),
+          onSubmitted: (_) {
+            Navigator.pop(context);
+            _performEditRank(rank, controller);
+          },
         ),
         actions: [
           TextButton(
@@ -285,7 +288,10 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => _performEditRank(context, rank, controller),
+            onPressed: () {
+              Navigator.pop(context);
+              _performEditRank(rank, controller);
+            },
             child: const Text('Save'),
           ),
         ],
@@ -293,8 +299,7 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
     );
   }
 
-  void _performEditRank(
-      BuildContext context, Rank rank, TextEditingController controller) async {
+  void _performEditRank(Rank rank, TextEditingController controller) async {
     final name = controller.text.trim();
     if (name.isEmpty) return;
 
@@ -303,8 +308,6 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
       'oldName': rank.name,
       'newName': name,
     });
-
-    Navigator.pop(context);
 
     try {
       final rankingService =
@@ -372,7 +375,10 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => _performArchiveRank(context, rank),
+            onPressed: () {
+              Navigator.pop(context); // Close dialog first
+              _performArchiveRank(rank); // Don't pass context
+            },
             style: TextButton.styleFrom(
               foregroundColor: isArchiving
                   ? context.danceTheme.warning
@@ -385,7 +391,7 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
     );
   }
 
-  void _performArchiveRank(BuildContext context, Rank rank) async {
+  void _performArchiveRank(Rank rank) async {
     final isArchiving = !rank.isArchived;
     final action = isArchiving ? 'archive' : 'unarchive';
 
@@ -394,8 +400,6 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
       'rankName': rank.name,
       'currentArchivedState': rank.isArchived,
     });
-
-    Navigator.pop(context);
 
     try {
       final rankingService =
@@ -464,7 +468,10 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () => _performDeleteRank(context, rank),
+            onPressed: () {
+              Navigator.pop(context); // Close dialog first
+              _performDeleteRank(rank); // Don't pass context
+            },
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
@@ -475,16 +482,14 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
     );
   }
 
-  void _performDeleteRank(BuildContext context, Rank rank) async {
+  void _performDeleteRank(Rank rank) async {
     ActionLogger.logUserAction('RankEditorScreen', 'delete_rank_started', {
       'rankId': rank.id,
       'rankName': rank.name,
     });
 
-    // Get service reference before any async operations
+    // Get service reference before any async operations using main widget context
     final rankingService = Provider.of<RankingService>(context, listen: false);
-
-    Navigator.pop(context);
 
     try {
       final ranks = await rankingService.getAllRanks();
@@ -502,7 +507,7 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
         return;
       }
 
-      // Show replacement rank selection dialog
+      // Show replacement rank selection dialog using main widget context
       final replacementRank =
           await _showReplacementRankDialog(context, rank, otherRanks);
       if (replacementRank == null) return;
