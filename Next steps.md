@@ -1,7 +1,6 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
-- run the app on my Samsung phone
 - make the toast notification disapear quicker by themselfes and right away when tapped by user
 - support an edge case
   - have a rank A

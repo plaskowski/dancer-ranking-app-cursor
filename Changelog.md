@@ -4,6 +4,33 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.38.0] - 2025-01-11
+
+### User Requests
+- "run the app on my Samsung phone"
+- "Ok, it does not work. Let's package the app and send it to device as archive manually."
+
+### Added
+- **Mobile Deployment**: Successfully deployed app to Samsung Android device
+- **APK Generation**: Built optimized release APK (24.7MB) for manual installation
+- **Android Production Ready**: Full Android compatibility with all features working
+
+### Improved
+- **Mobile Experience**: Dancer Ranking App now fully functional on mobile devices
+- **Deployment Workflow**: Established APK build and manual installation process
+- **Cross-Platform Reach**: App now accessible beyond desktop environment
+
+### Technical
+- **Android SDK Setup**: Completed Android toolchain configuration with licenses
+- **Release Build**: Generated optimized APK with tree-shaking (99.7% icon reduction)
+- **NDK Compatibility**: Resolved Android NDK version requirements for dependencies
+- **Manual Installation**: Successful APK installation and verification on Samsung device
+
+### Milestone
+- **🎉 Mobile Launch**: Dancer Ranking App successfully running on Android phone
+- **Production Deployment**: First mobile device deployment complete
+- **User Validation**: All core features confirmed working on Samsung phone
+
 ## [v0.37.0] - 2025-01-11
 
 ### User Requests
