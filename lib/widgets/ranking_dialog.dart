@@ -245,7 +245,7 @@ class _RankingDialogState extends State<RankingDialog> {
                   ),
                   subtitle: rank.isArchived
                       ? Text(
-                          'This rank is archived but shown because it\'s used in this event',
+                          'Archived (in use)',
                           style: TextStyle(
                             fontSize: 11,
                             color: Theme.of(context).colorScheme.outline,
