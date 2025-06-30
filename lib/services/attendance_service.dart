@@ -263,70 +263,82 @@ class AttendanceService {
   // Get present dancers with their info
   Future<List<AttendanceWithDancerInfo>> getPresentDancersWithInfo(
       int eventId) async {
-    const query = '''
-      SELECT 
-        a.*,
-        d.name as dancer_name,
-        d.notes as dancer_notes
-      FROM attendances a
-      JOIN dancers d ON a.dancer_id = d.id
-      WHERE a.event_id = ?
-      ORDER BY a.marked_at DESC
-    ''';
+    final query = _database.select(_database.attendances).join([
+      innerJoin(_database.dancers,
+          _database.dancers.id.equalsExp(_database.attendances.dancerId)),
+    ])
+      ..where(_database.attendances.eventId.equals(eventId))
+      ..orderBy([OrderingTerm.desc(_database.attendances.markedAt)]);
 
-    final result = await _database.customSelect(
-      query,
-      variables: [Variable<int>(eventId)],
-      readsFrom: {_database.attendances, _database.dancers},
-    ).get();
+    final results = await query.get();
 
-    return result
-        .map((row) => AttendanceWithDancerInfo.fromRow(row.data))
-        .toList();
+    return results.map((row) {
+      final attendance = row.readTable(_database.attendances);
+      final dancer = row.readTable(_database.dancers);
+
+      return AttendanceWithDancerInfo(
+        id: attendance.id,
+        eventId: attendance.eventId,
+        dancerId: attendance.dancerId,
+        markedAt: attendance.markedAt,
+        status: attendance.status,
+        dancedAt: attendance.dancedAt,
+        impression: attendance.impression,
+        dancerName: dancer.name,
+        dancerNotes: dancer.notes,
+      );
+    }).toList();
   }
 
   // Get danced dancers for an event
   Future<List<AttendanceWithDancerInfo>> getDancedDancers(int eventId) async {
-    const query = '''
-      SELECT 
-        a.*,
-        d.name as dancer_name,
-        d.notes as dancer_notes
-      FROM attendances a
-      JOIN dancers d ON a.dancer_id = d.id
-      WHERE a.event_id = ? AND a.status = 'served'
-      ORDER BY a.danced_at DESC
-    ''';
+    final query = _database.select(_database.attendances).join([
+      innerJoin(_database.dancers,
+          _database.dancers.id.equalsExp(_database.attendances.dancerId)),
+    ])
+      ..where(_database.attendances.eventId.equals(eventId) &
+          _database.attendances.status.equals('served'))
+      ..orderBy([OrderingTerm.desc(_database.attendances.dancedAt)]);
 
-    final result = await _database.customSelect(
-      query,
-      variables: [Variable<int>(eventId)],
-      readsFrom: {_database.attendances, _database.dancers},
-    ).get();
+    final results = await query.get();
 
-    return result
-        .map((row) => AttendanceWithDancerInfo.fromRow(row.data))
-        .toList();
+    return results.map((row) {
+      final attendance = row.readTable(_database.attendances);
+      final dancer = row.readTable(_database.dancers);
+
+      return AttendanceWithDancerInfo(
+        id: attendance.id,
+        eventId: attendance.eventId,
+        dancerId: attendance.dancerId,
+        markedAt: attendance.markedAt,
+        status: attendance.status,
+        dancedAt: attendance.dancedAt,
+        impression: attendance.impression,
+        dancerName: dancer.name,
+        dancerNotes: dancer.notes,
+      );
+    }).toList();
   }
 
   // Get present count for an event
   Future<int> getPresentCount(int eventId) async {
-    final result = await _database.customSelect(
-      'SELECT COUNT(*) as count FROM attendances WHERE event_id = ?',
-      variables: [Variable<int>(eventId)],
-      readsFrom: {_database.attendances},
-    ).getSingle();
-    return result.data['count'] as int;
+    final query = _database.selectOnly(_database.attendances)
+      ..addColumns([_database.attendances.id.count()])
+      ..where(_database.attendances.eventId.equals(eventId));
+
+    final result = await query.getSingle();
+    return result.read(_database.attendances.id.count()) ?? 0;
   }
 
   // Get danced count for an event
   Future<int> getDancedCount(int eventId) async {
-    final result = await _database.customSelect(
-      'SELECT COUNT(*) as count FROM attendances WHERE event_id = ? AND status = \'served\'',
-      variables: [Variable<int>(eventId)],
-      readsFrom: {_database.attendances},
-    ).getSingle();
-    return result.data['count'] as int;
+    final query = _database.selectOnly(_database.attendances)
+      ..addColumns([_database.attendances.id.count()])
+      ..where(_database.attendances.eventId.equals(eventId) &
+          _database.attendances.status.equals('served'));
+
+    final result = await query.getSingle();
+    return result.read(_database.attendances.id.count()) ?? 0;
   }
 
   // Create attendance with dance completion (for "already danced" option)

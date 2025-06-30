@@ -611,3 +611,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Technical
 - **AddExistingDancerScreen**: Removed `
+
+## [v0.9.0] - 2025-06-30
+
+### User Requests
+- "Do next task" - Complete the immediate priority to rewrite all raw SQL queries to avoid similar problems
+
+### Technical
+- **Raw SQL Query Elimination**: Replaced all raw SQL queries with drift ORM type-safe query builder methods
+  - Replaced `customUpdate` in RankingService.deleteRank() with proper drift update/replace operations
+  - Replaced `customSelect` count queries with drift's `selectOnly` and `count()` aggregation
+  - Replaced complex JOIN queries in AttendanceService with drift's `join()` syntax
+  - Improved type safety and reduced SQL injection risks
+  - Maintained identical functionality while using drift's native query methods
+  - Database migration `customStatement` calls intentionally preserved (appropriate for schema changes)
+
+### Improved
+- **Database Query Type Safety**: All service layer queries now use drift's type-safe query builder
+- **Code Maintainability**: Eliminated string-based SQL queries in favor of compiletime-checked methods

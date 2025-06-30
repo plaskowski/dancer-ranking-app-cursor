@@ -154,12 +154,11 @@ class EventService {
     ActionLogger.logServiceCall('EventService', 'getEventsCount');
 
     try {
-      final result = await _database.customSelect(
-        'SELECT COUNT(*) as count FROM events',
-        readsFrom: {_database.events},
-      ).getSingle();
+      final query = _database.selectOnly(_database.events)
+        ..addColumns([_database.events.id.count()]);
 
-      final count = result.data['count'] as int;
+      final result = await query.getSingle();
+      final count = result.read(_database.events.id.count()) ?? 0;
 
       ActionLogger.logAction('EventService.getEventsCount', 'count_retrieved', {
         'count': count,

@@ -149,15 +149,22 @@ class RankingService {
 
     try {
       await _database.transaction(() async {
-        // First, reassign all existing rankings to the replacement rank
-        final updateResult = await _database.customUpdate(
-          'UPDATE rankings SET rank_id = ? WHERE rank_id = ?',
-          variables: [
-            Variable<int>(replacementRankId),
-            Variable<int>(id),
-          ],
-          updates: {_database.rankings},
-        );
+        // First, get all rankings that need to be reassigned
+        final rankingsToUpdate = await (_database.select(_database.rankings)
+              ..where((r) => r.rankId.equals(id)))
+            .get();
+
+        // Reassign all existing rankings to the replacement rank
+        int updateResult = 0;
+        for (final ranking in rankingsToUpdate) {
+          await _database.update(_database.rankings).replace(
+                ranking.copyWith(
+                  rankId: replacementRankId,
+                  lastUpdated: DateTime.now(),
+                ),
+              );
+          updateResult++;
+        }
 
         ActionLogger.logDbOperation('UPDATE', 'rankings', {
           'reassigned_from_rank': id,
@@ -425,12 +432,12 @@ class RankingService {
 
   // Get rankings count for an event
   Future<int> getRankingsCountForEvent(int eventId) async {
-    final result = await _database.customSelect(
-      'SELECT COUNT(*) as count FROM rankings WHERE event_id = ?',
-      variables: [Variable<int>(eventId)],
-      readsFrom: {_database.rankings},
-    ).getSingle();
-    return result.data['count'] as int;
+    final query = _database.selectOnly(_database.rankings)
+      ..addColumns([_database.rankings.id.count()])
+      ..where(_database.rankings.eventId.equals(eventId));
+
+    final result = await query.getSingle();
+    return result.read(_database.rankings.id.count()) ?? 0;
   }
 
   // Quick rank assignment methods
