@@ -1,6 +1,7 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
+- **Test Event Import UI**: Manually test the full-screen Event Import UI and verify the "new dancer" count is accurate.
 - **Past Events UI**: Past events should display only present tab as I won't do the planing on them anymore
 - **Event Diary Parser**: Parse events from the diary
   - Provide agent an example so they understand the structure
