@@ -9,7 +9,8 @@ import 'tables.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [Events, Dancers, Ranks, Rankings, Attendances])
+@DriftDatabase(
+    tables: [Events, Dancers, Ranks, Rankings, Attendances, Tags, DancerTags])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
@@ -17,7 +18,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -26,6 +27,9 @@ class AppDatabase extends _$AppDatabase {
 
           // Insert default ranks
           await _insertDefaultRanks();
+
+          // Insert default tags
+          await _insertDefaultTags();
         },
         onUpgrade: (Migrator m, int from, int to) async {
           if (from < 2) {
@@ -35,6 +39,10 @@ class AppDatabase extends _$AppDatabase {
           if (from < 3) {
             // Migration from v2 to v3: Add new fields to Ranks table
             await _migrateRanksTable(m);
+          }
+          if (from < 4) {
+            // Migration from v3 to v4: Add Tags and DancerTags tables
+            await _addTagsTables(m);
           }
         },
       );
@@ -109,6 +117,31 @@ class AppDatabase extends _$AppDatabase {
           name: 'Not really interested',
           ordinal: 5,
         ),
+      ]);
+    });
+  }
+
+  // Migration helper to add Tags and DancerTags tables
+  Future<void> _addTagsTables(Migrator m) async {
+    await m.createTable(tags);
+    await m.createTable(dancerTags);
+
+    // Insert default tags
+    await _insertDefaultTags();
+  }
+
+  // Insert the predefined tags
+  Future<void> _insertDefaultTags() async {
+    await batch((batch) {
+      batch.insertAll(tags, [
+        TagsCompanion.insert(name: 'regular'),
+        TagsCompanion.insert(name: 'occasional'),
+        TagsCompanion.insert(name: 'rare'),
+        TagsCompanion.insert(name: 'new'),
+        TagsCompanion.insert(name: 'dance-class'),
+        TagsCompanion.insert(name: 'dance-school'),
+        TagsCompanion.insert(name: 'workshop'),
+        TagsCompanion.insert(name: 'social'),
       ]);
     });
   }

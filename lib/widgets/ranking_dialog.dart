@@ -66,15 +66,19 @@ class _RankingDialogState extends State<RankingDialog> {
       final dancer = await dancerService.getDancer(widget.dancerId);
 
       // Load existing ranking if any
-      final existingRanking = await rankingService.getRanking(widget.eventId, widget.dancerId);
+      final existingRanking =
+          await rankingService.getRanking(widget.eventId, widget.dancerId);
 
       // Get all rankings for this event to find archived ranks in use
-      final eventRankings = await rankingService.getRankingsForEvent(widget.eventId);
+      final eventRankings =
+          await rankingService.getRankingsForEvent(widget.eventId);
       final usedRankIds = eventRankings.map((r) => r.rankId).toSet();
 
       // Include any archived ranks that are currently used in this event
       final allRanks = await rankingService.getAllRanks();
-      final archivedRanksInUse = allRanks.where((rank) => rank.isArchived && usedRankIds.contains(rank.id)).toList();
+      final archivedRanksInUse = allRanks
+          .where((rank) => rank.isArchived && usedRankIds.contains(rank.id))
+          .toList();
 
       if (archivedRanksInUse.isNotEmpty) {
         ranks.addAll(archivedRanksInUse);
@@ -99,12 +103,14 @@ class _RankingDialogState extends State<RankingDialog> {
           _dancerName = dancer?.name ?? 'Unknown';
 
           if (existingRanking != null) {
-            _selectedRank = ranks.firstWhere((r) => r.id == existingRanking.rankId);
+            _selectedRank =
+                ranks.firstWhere((r) => r.id == existingRanking.rankId);
             _reasonController.text = existingRanking.reason ?? '';
             _lastUpdated = existingRanking.lastUpdated;
           } else {
             // Default to neutral rank
-            _selectedRank = ranks.firstWhere((r) => r.ordinal == 3, orElse: () => ranks.first);
+            _selectedRank = ranks.firstWhere((r) => r.ordinal == 3,
+                orElse: () => ranks.first);
           }
         });
       }
@@ -144,13 +150,16 @@ class _RankingDialogState extends State<RankingDialog> {
     });
 
     try {
-      final rankingService = Provider.of<RankingService>(context, listen: false);
+      final rankingService =
+          Provider.of<RankingService>(context, listen: false);
 
       await rankingService.setRanking(
         eventId: widget.eventId,
         dancerId: widget.dancerId,
         rankId: _selectedRank!.id,
-        reason: _reasonController.text.trim().isNotEmpty ? _reasonController.text.trim() : null,
+        reason: _reasonController.text.trim().isNotEmpty
+            ? _reasonController.text.trim()
+            : null,
       );
 
       if (mounted) {
@@ -214,9 +223,13 @@ class _RankingDialogState extends State<RankingDialog> {
                       Expanded(child: Text(rank.name)),
                       if (rank.isArchived)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .outline
+                                .withOpacity(0.2),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
@@ -243,7 +256,8 @@ class _RankingDialogState extends State<RankingDialog> {
                   value: rank,
                   groupValue: _selectedRank,
                   onChanged: (Rank? value) {
-                    ActionLogger.logUserAction('RankingDialog', 'rank_selected', {
+                    ActionLogger.logUserAction(
+                        'RankingDialog', 'rank_selected', {
                       'dancerId': widget.dancerId,
                       'eventId': widget.eventId,
                       'oldRankId': _selectedRank?.id,
@@ -293,7 +307,8 @@ class _RankingDialogState extends State<RankingDialog> {
           onPressed: _isLoading
               ? null
               : () {
-                  ActionLogger.logUserAction('RankingDialog', 'dialog_cancelled', {
+                  ActionLogger.logUserAction(
+                      'RankingDialog', 'dialog_cancelled', {
                     'dancerId': widget.dancerId,
                     'eventId': widget.eventId,
                   });

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../database/database.dart';
+import '../models/dancer_with_tags.dart';
 import '../services/dancer_service.dart';
 import '../theme/theme_extensions.dart';
 import '../widgets/add_dancer_dialog.dart';
+import '../widgets/dancer_card_with_tags.dart';
 
 class DancersScreen extends StatefulWidget {
   const DancersScreen({super.key});
@@ -27,6 +29,25 @@ class _DancersScreenState extends State<DancersScreen> {
     setState(() {
       _searchQuery = query;
     });
+  }
+
+  List<DancerWithTags> _filterDancers(List<DancerWithTags> dancers) {
+    if (_searchQuery.isEmpty) {
+      return dancers;
+    }
+
+    final query = _searchQuery.toLowerCase();
+    return dancers.where((dancer) {
+      // Search in dancer name
+      if (dancer.name.toLowerCase().contains(query)) {
+        return true;
+      }
+      // Search in notes
+      if (dancer.notes != null && dancer.notes!.toLowerCase().contains(query)) {
+        return true;
+      }
+      return false;
+    }).toList();
   }
 
   @override
@@ -55,8 +76,8 @@ class _DancersScreenState extends State<DancersScreen> {
 
           // Dancers list
           Expanded(
-            child: StreamBuilder<List<Dancer>>(
-              stream: dancerService.searchDancers(_searchQuery),
+            child: StreamBuilder<List<DancerWithTags>>(
+              stream: dancerService.watchDancersWithTags(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -68,7 +89,8 @@ class _DancersScreenState extends State<DancersScreen> {
                   );
                 }
 
-                final dancers = snapshot.data ?? [];
+                final allDancers = snapshot.data ?? [];
+                final dancers = _filterDancers(allDancers);
 
                 if (dancers.isEmpty) {
                   return Center(
@@ -110,11 +132,11 @@ class _DancersScreenState extends State<DancersScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   itemCount: dancers.length,
                   itemBuilder: (context, index) {
-                    final dancer = dancers[index];
-                    return _DancerCard(
-                      dancer: dancer,
-                      onEdit: () => _editDancer(dancer),
-                      onDelete: () => _deleteDancer(dancer),
+                    final dancerWithTags = dancers[index];
+                    return DancerCardWithTags(
+                      dancerWithTags: dancerWithTags,
+                      onEdit: () => _editDancer(dancerWithTags.dancer),
+                      onDelete: () => _deleteDancer(dancerWithTags.dancer),
                     );
                   },
                 );
@@ -189,75 +211,6 @@ class _DancersScreenState extends State<DancersScreen> {
             child: const Text('Delete'),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _DancerCard extends StatelessWidget {
-  final Dancer dancer;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
-
-  const _DancerCard({
-    required this.dancer,
-    required this.onEdit,
-    required this.onDelete,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: GestureDetector(
-        onLongPress: () => _showContextMenu(context),
-        child: ListTile(
-          title: Text(
-            dancer.name,
-            style: const TextStyle(fontWeight: FontWeight.w600),
-          ),
-          subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
-              ? Text(
-                  dancer.notes!,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                )
-              : Text(
-                  'No notes yet',
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
-                ),
-          onTap: onEdit,
-        ),
-      ),
-    );
-  }
-
-  void _showContextMenu(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text('Edit'),
-              onTap: () {
-                Navigator.pop(context);
-                onEdit();
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.delete),
-              title: const Text('Delete'),
-              onTap: () {
-                Navigator.pop(context);
-                onDelete();
-              },
-            ),
-          ],
-        ),
       ),
     );
   }

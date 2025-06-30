@@ -1631,6 +1631,457 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
   }
 }
 
+class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TagsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 50),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns => [id, name, createdAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'tags';
+  @override
+  VerificationContext validateIntegrity(Insertable<Tag> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Tag map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Tag(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+    );
+  }
+
+  @override
+  $TagsTable createAlias(String alias) {
+    return $TagsTable(attachedDatabase, alias);
+  }
+}
+
+class Tag extends DataClass implements Insertable<Tag> {
+  final int id;
+  final String name;
+  final DateTime createdAt;
+  const Tag({required this.id, required this.name, required this.createdAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  TagsCompanion toCompanion(bool nullToAbsent) {
+    return TagsCompanion(
+      id: Value(id),
+      name: Value(name),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory Tag.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Tag(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  Tag copyWith({int? id, String? name, DateTime? createdAt}) => Tag(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  Tag copyWithCompanion(TagsCompanion data) {
+    return Tag(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Tag(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Tag &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.createdAt == this.createdAt);
+}
+
+class TagsCompanion extends UpdateCompanion<Tag> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<DateTime> createdAt;
+  const TagsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  TagsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    this.createdAt = const Value.absent(),
+  }) : name = Value(name);
+  static Insertable<Tag> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  TagsCompanion copyWith(
+      {Value<int>? id, Value<String>? name, Value<DateTime>? createdAt}) {
+    return TagsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TagsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DancerTagsTable extends DancerTags
+    with TableInfo<$DancerTagsTable, DancerTag> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DancerTagsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _dancerIdMeta =
+      const VerificationMeta('dancerId');
+  @override
+  late final GeneratedColumn<int> dancerId = GeneratedColumn<int>(
+      'dancer_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES dancers (id) ON DELETE CASCADE'));
+  static const VerificationMeta _tagIdMeta = const VerificationMeta('tagId');
+  @override
+  late final GeneratedColumn<int> tagId = GeneratedColumn<int>(
+      'tag_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES tags (id) ON DELETE CASCADE'));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns => [dancerId, tagId, createdAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'dancer_tags';
+  @override
+  VerificationContext validateIntegrity(Insertable<DancerTag> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('dancer_id')) {
+      context.handle(_dancerIdMeta,
+          dancerId.isAcceptableOrUnknown(data['dancer_id']!, _dancerIdMeta));
+    } else if (isInserting) {
+      context.missing(_dancerIdMeta);
+    }
+    if (data.containsKey('tag_id')) {
+      context.handle(
+          _tagIdMeta, tagId.isAcceptableOrUnknown(data['tag_id']!, _tagIdMeta));
+    } else if (isInserting) {
+      context.missing(_tagIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {dancerId, tagId};
+  @override
+  DancerTag map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DancerTag(
+      dancerId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}dancer_id'])!,
+      tagId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tag_id'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+    );
+  }
+
+  @override
+  $DancerTagsTable createAlias(String alias) {
+    return $DancerTagsTable(attachedDatabase, alias);
+  }
+}
+
+class DancerTag extends DataClass implements Insertable<DancerTag> {
+  final int dancerId;
+  final int tagId;
+  final DateTime createdAt;
+  const DancerTag(
+      {required this.dancerId, required this.tagId, required this.createdAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['dancer_id'] = Variable<int>(dancerId);
+    map['tag_id'] = Variable<int>(tagId);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  DancerTagsCompanion toCompanion(bool nullToAbsent) {
+    return DancerTagsCompanion(
+      dancerId: Value(dancerId),
+      tagId: Value(tagId),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory DancerTag.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DancerTag(
+      dancerId: serializer.fromJson<int>(json['dancerId']),
+      tagId: serializer.fromJson<int>(json['tagId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'dancerId': serializer.toJson<int>(dancerId),
+      'tagId': serializer.toJson<int>(tagId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  DancerTag copyWith({int? dancerId, int? tagId, DateTime? createdAt}) =>
+      DancerTag(
+        dancerId: dancerId ?? this.dancerId,
+        tagId: tagId ?? this.tagId,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  DancerTag copyWithCompanion(DancerTagsCompanion data) {
+    return DancerTag(
+      dancerId: data.dancerId.present ? data.dancerId.value : this.dancerId,
+      tagId: data.tagId.present ? data.tagId.value : this.tagId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DancerTag(')
+          ..write('dancerId: $dancerId, ')
+          ..write('tagId: $tagId, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(dancerId, tagId, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DancerTag &&
+          other.dancerId == this.dancerId &&
+          other.tagId == this.tagId &&
+          other.createdAt == this.createdAt);
+}
+
+class DancerTagsCompanion extends UpdateCompanion<DancerTag> {
+  final Value<int> dancerId;
+  final Value<int> tagId;
+  final Value<DateTime> createdAt;
+  final Value<int> rowid;
+  const DancerTagsCompanion({
+    this.dancerId = const Value.absent(),
+    this.tagId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  DancerTagsCompanion.insert({
+    required int dancerId,
+    required int tagId,
+    this.createdAt = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : dancerId = Value(dancerId),
+        tagId = Value(tagId);
+  static Insertable<DancerTag> custom({
+    Expression<int>? dancerId,
+    Expression<int>? tagId,
+    Expression<DateTime>? createdAt,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (dancerId != null) 'dancer_id': dancerId,
+      if (tagId != null) 'tag_id': tagId,
+      if (createdAt != null) 'created_at': createdAt,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  DancerTagsCompanion copyWith(
+      {Value<int>? dancerId,
+      Value<int>? tagId,
+      Value<DateTime>? createdAt,
+      Value<int>? rowid}) {
+    return DancerTagsCompanion(
+      dancerId: dancerId ?? this.dancerId,
+      tagId: tagId ?? this.tagId,
+      createdAt: createdAt ?? this.createdAt,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (dancerId.present) {
+      map['dancer_id'] = Variable<int>(dancerId.value);
+    }
+    if (tagId.present) {
+      map['tag_id'] = Variable<int>(tagId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DancerTagsCompanion(')
+          ..write('dancerId: $dancerId, ')
+          ..write('tagId: $tagId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -1639,12 +2090,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $RanksTable ranks = $RanksTable(this);
   late final $RankingsTable rankings = $RankingsTable(this);
   late final $AttendancesTable attendances = $AttendancesTable(this);
+  late final $TagsTable tags = $TagsTable(this);
+  late final $DancerTagsTable dancerTags = $DancerTagsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [events, dancers, ranks, rankings, attendances];
+      [events, dancers, ranks, rankings, attendances, tags, dancerTags];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
         [
@@ -1674,6 +2127,20 @@ abstract class _$AppDatabase extends GeneratedDatabase {
                 limitUpdateKind: UpdateKind.delete),
             result: [
               TableUpdate('attendances', kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('dancers',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('dancer_tags', kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('tags',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('dancer_tags', kind: UpdateKind.delete),
             ],
           ),
         ],
@@ -2025,6 +2492,21 @@ final class $$DancersTableReferences
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: cache));
   }
+
+  static MultiTypedResultKey<$DancerTagsTable, List<DancerTag>>
+      _dancerTagsRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.dancerTags,
+              aliasName:
+                  $_aliasNameGenerator(db.dancers.id, db.dancerTags.dancerId));
+
+  $$DancerTagsTableProcessedTableManager get dancerTagsRefs {
+    final manager = $$DancerTagsTableTableManager($_db, $_db.dancerTags)
+        .filter((f) => f.dancerId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_dancerTagsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
 }
 
 class $$DancersTableFilterComposer
@@ -2082,6 +2564,27 @@ class $$DancersTableFilterComposer
             $$AttendancesTableFilterComposer(
               $db: $db,
               $table: $db.attendances,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<bool> dancerTagsRefs(
+      Expression<bool> Function($$DancerTagsTableFilterComposer f) f) {
+    final $$DancerTagsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.dancerTags,
+        getReferencedColumn: (t) => t.dancerId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$DancerTagsTableFilterComposer(
+              $db: $db,
+              $table: $db.dancerTags,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -2175,6 +2678,27 @@ class $$DancersTableAnnotationComposer
             ));
     return f(composer);
   }
+
+  Expression<T> dancerTagsRefs<T extends Object>(
+      Expression<T> Function($$DancerTagsTableAnnotationComposer a) f) {
+    final $$DancerTagsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.dancerTags,
+        getReferencedColumn: (t) => t.dancerId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$DancerTagsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.dancerTags,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$DancersTableTableManager extends RootTableManager<
@@ -2188,7 +2712,8 @@ class $$DancersTableTableManager extends RootTableManager<
     $$DancersTableUpdateCompanionBuilder,
     (Dancer, $$DancersTableReferences),
     Dancer,
-    PrefetchHooks Function({bool rankingsRefs, bool attendancesRefs})> {
+    PrefetchHooks Function(
+        {bool rankingsRefs, bool attendancesRefs, bool dancerTagsRefs})> {
   $$DancersTableTableManager(_$AppDatabase db, $DancersTable table)
       : super(TableManagerState(
           db: db,
@@ -2228,12 +2753,15 @@ class $$DancersTableTableManager extends RootTableManager<
                   (e.readTable(table), $$DancersTableReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: (
-              {rankingsRefs = false, attendancesRefs = false}) {
+              {rankingsRefs = false,
+              attendancesRefs = false,
+              dancerTagsRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
                 if (rankingsRefs) db.rankings,
-                if (attendancesRefs) db.attendances
+                if (attendancesRefs) db.attendances,
+                if (dancerTagsRefs) db.dancerTags
               ],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
@@ -2262,6 +2790,18 @@ class $$DancersTableTableManager extends RootTableManager<
                         referencedItemsForCurrentItem: (item,
                                 referencedItems) =>
                             referencedItems.where((e) => e.dancerId == item.id),
+                        typedResults: items),
+                  if (dancerTagsRefs)
+                    await $_getPrefetchedData<Dancer, $DancersTable, DancerTag>(
+                        currentTable: table,
+                        referencedTable:
+                            $$DancersTableReferences._dancerTagsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$DancersTableReferences(db, table, p0)
+                                .dancerTagsRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.dancerId == item.id),
                         typedResults: items)
                 ];
               },
@@ -2281,7 +2821,8 @@ typedef $$DancersTableProcessedTableManager = ProcessedTableManager<
     $$DancersTableUpdateCompanionBuilder,
     (Dancer, $$DancersTableReferences),
     Dancer,
-    PrefetchHooks Function({bool rankingsRefs, bool attendancesRefs})>;
+    PrefetchHooks Function(
+        {bool rankingsRefs, bool attendancesRefs, bool dancerTagsRefs})>;
 typedef $$RanksTableCreateCompanionBuilder = RanksCompanion Function({
   Value<int> id,
   required String name,
@@ -3356,6 +3897,533 @@ typedef $$AttendancesTableProcessedTableManager = ProcessedTableManager<
     (Attendance, $$AttendancesTableReferences),
     Attendance,
     PrefetchHooks Function({bool eventId, bool dancerId})>;
+typedef $$TagsTableCreateCompanionBuilder = TagsCompanion Function({
+  Value<int> id,
+  required String name,
+  Value<DateTime> createdAt,
+});
+typedef $$TagsTableUpdateCompanionBuilder = TagsCompanion Function({
+  Value<int> id,
+  Value<String> name,
+  Value<DateTime> createdAt,
+});
+
+final class $$TagsTableReferences
+    extends BaseReferences<_$AppDatabase, $TagsTable, Tag> {
+  $$TagsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$DancerTagsTable, List<DancerTag>>
+      _dancerTagsRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.dancerTags,
+              aliasName: $_aliasNameGenerator(db.tags.id, db.dancerTags.tagId));
+
+  $$DancerTagsTableProcessedTableManager get dancerTagsRefs {
+    final manager = $$DancerTagsTableTableManager($_db, $_db.dancerTags)
+        .filter((f) => f.tagId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_dancerTagsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
+
+class $$TagsTableFilterComposer extends Composer<_$AppDatabase, $TagsTable> {
+  $$TagsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  Expression<bool> dancerTagsRefs(
+      Expression<bool> Function($$DancerTagsTableFilterComposer f) f) {
+    final $$DancerTagsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.dancerTags,
+        getReferencedColumn: (t) => t.tagId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$DancerTagsTableFilterComposer(
+              $db: $db,
+              $table: $db.dancerTags,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$TagsTableOrderingComposer extends Composer<_$AppDatabase, $TagsTable> {
+  $$TagsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+}
+
+class $$TagsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TagsTable> {
+  $$TagsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  Expression<T> dancerTagsRefs<T extends Object>(
+      Expression<T> Function($$DancerTagsTableAnnotationComposer a) f) {
+    final $$DancerTagsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.dancerTags,
+        getReferencedColumn: (t) => t.tagId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$DancerTagsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.dancerTags,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$TagsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $TagsTable,
+    Tag,
+    $$TagsTableFilterComposer,
+    $$TagsTableOrderingComposer,
+    $$TagsTableAnnotationComposer,
+    $$TagsTableCreateCompanionBuilder,
+    $$TagsTableUpdateCompanionBuilder,
+    (Tag, $$TagsTableReferences),
+    Tag,
+    PrefetchHooks Function({bool dancerTagsRefs})> {
+  $$TagsTableTableManager(_$AppDatabase db, $TagsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TagsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TagsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TagsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+          }) =>
+              TagsCompanion(
+            id: id,
+            name: name,
+            createdAt: createdAt,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+            Value<DateTime> createdAt = const Value.absent(),
+          }) =>
+              TagsCompanion.insert(
+            id: id,
+            name: name,
+            createdAt: createdAt,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $$TagsTableReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: ({dancerTagsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (dancerTagsRefs) db.dancerTags],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (dancerTagsRefs)
+                    await $_getPrefetchedData<Tag, $TagsTable, DancerTag>(
+                        currentTable: table,
+                        referencedTable:
+                            $$TagsTableReferences._dancerTagsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$TagsTableReferences(db, table, p0).dancerTagsRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.tagId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$TagsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $TagsTable,
+    Tag,
+    $$TagsTableFilterComposer,
+    $$TagsTableOrderingComposer,
+    $$TagsTableAnnotationComposer,
+    $$TagsTableCreateCompanionBuilder,
+    $$TagsTableUpdateCompanionBuilder,
+    (Tag, $$TagsTableReferences),
+    Tag,
+    PrefetchHooks Function({bool dancerTagsRefs})>;
+typedef $$DancerTagsTableCreateCompanionBuilder = DancerTagsCompanion Function({
+  required int dancerId,
+  required int tagId,
+  Value<DateTime> createdAt,
+  Value<int> rowid,
+});
+typedef $$DancerTagsTableUpdateCompanionBuilder = DancerTagsCompanion Function({
+  Value<int> dancerId,
+  Value<int> tagId,
+  Value<DateTime> createdAt,
+  Value<int> rowid,
+});
+
+final class $$DancerTagsTableReferences
+    extends BaseReferences<_$AppDatabase, $DancerTagsTable, DancerTag> {
+  $$DancerTagsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $DancersTable _dancerIdTable(_$AppDatabase db) => db.dancers
+      .createAlias($_aliasNameGenerator(db.dancerTags.dancerId, db.dancers.id));
+
+  $$DancersTableProcessedTableManager get dancerId {
+    final $_column = $_itemColumn<int>('dancer_id')!;
+
+    final manager = $$DancersTableTableManager($_db, $_db.dancers)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_dancerIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $TagsTable _tagIdTable(_$AppDatabase db) => db.tags
+      .createAlias($_aliasNameGenerator(db.dancerTags.tagId, db.tags.id));
+
+  $$TagsTableProcessedTableManager get tagId {
+    final $_column = $_itemColumn<int>('tag_id')!;
+
+    final manager = $$TagsTableTableManager($_db, $_db.tags)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_tagIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$DancerTagsTableFilterComposer
+    extends Composer<_$AppDatabase, $DancerTagsTable> {
+  $$DancerTagsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  $$DancersTableFilterComposer get dancerId {
+    final $$DancersTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.dancerId,
+        referencedTable: $db.dancers,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$DancersTableFilterComposer(
+              $db: $db,
+              $table: $db.dancers,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$TagsTableFilterComposer get tagId {
+    final $$TagsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.tagId,
+        referencedTable: $db.tags,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$TagsTableFilterComposer(
+              $db: $db,
+              $table: $db.tags,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$DancerTagsTableOrderingComposer
+    extends Composer<_$AppDatabase, $DancerTagsTable> {
+  $$DancerTagsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  $$DancersTableOrderingComposer get dancerId {
+    final $$DancersTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.dancerId,
+        referencedTable: $db.dancers,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$DancersTableOrderingComposer(
+              $db: $db,
+              $table: $db.dancers,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$TagsTableOrderingComposer get tagId {
+    final $$TagsTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.tagId,
+        referencedTable: $db.tags,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$TagsTableOrderingComposer(
+              $db: $db,
+              $table: $db.tags,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$DancerTagsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $DancerTagsTable> {
+  $$DancerTagsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$DancersTableAnnotationComposer get dancerId {
+    final $$DancersTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.dancerId,
+        referencedTable: $db.dancers,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$DancersTableAnnotationComposer(
+              $db: $db,
+              $table: $db.dancers,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$TagsTableAnnotationComposer get tagId {
+    final $$TagsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.tagId,
+        referencedTable: $db.tags,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$TagsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.tags,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$DancerTagsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $DancerTagsTable,
+    DancerTag,
+    $$DancerTagsTableFilterComposer,
+    $$DancerTagsTableOrderingComposer,
+    $$DancerTagsTableAnnotationComposer,
+    $$DancerTagsTableCreateCompanionBuilder,
+    $$DancerTagsTableUpdateCompanionBuilder,
+    (DancerTag, $$DancerTagsTableReferences),
+    DancerTag,
+    PrefetchHooks Function({bool dancerId, bool tagId})> {
+  $$DancerTagsTableTableManager(_$AppDatabase db, $DancerTagsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DancerTagsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DancerTagsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DancerTagsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> dancerId = const Value.absent(),
+            Value<int> tagId = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DancerTagsCompanion(
+            dancerId: dancerId,
+            tagId: tagId,
+            createdAt: createdAt,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int dancerId,
+            required int tagId,
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              DancerTagsCompanion.insert(
+            dancerId: dancerId,
+            tagId: tagId,
+            createdAt: createdAt,
+            rowid: rowid,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$DancerTagsTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({dancerId = false, tagId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (dancerId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.dancerId,
+                    referencedTable:
+                        $$DancerTagsTableReferences._dancerIdTable(db),
+                    referencedColumn:
+                        $$DancerTagsTableReferences._dancerIdTable(db).id,
+                  ) as T;
+                }
+                if (tagId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.tagId,
+                    referencedTable:
+                        $$DancerTagsTableReferences._tagIdTable(db),
+                    referencedColumn:
+                        $$DancerTagsTableReferences._tagIdTable(db).id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$DancerTagsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $DancerTagsTable,
+    DancerTag,
+    $$DancerTagsTableFilterComposer,
+    $$DancerTagsTableOrderingComposer,
+    $$DancerTagsTableAnnotationComposer,
+    $$DancerTagsTableCreateCompanionBuilder,
+    $$DancerTagsTableUpdateCompanionBuilder,
+    (DancerTag, $$DancerTagsTableReferences),
+    DancerTag,
+    PrefetchHooks Function({bool dancerId, bool tagId})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -3370,4 +4438,7 @@ class $AppDatabaseManager {
       $$RankingsTableTableManager(_db, _db.rankings);
   $$AttendancesTableTableManager get attendances =>
       $$AttendancesTableTableManager(_db, _db.attendances);
+  $$TagsTableTableManager get tags => $$TagsTableTableManager(_db, _db.tags);
+  $$DancerTagsTableTableManager get dancerTags =>
+      $$DancerTagsTableTableManager(_db, _db.dancerTags);
 }

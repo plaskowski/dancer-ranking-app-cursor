@@ -107,7 +107,9 @@ class _EventScreenState extends State<EventScreen> {
               style: const TextStyle(fontSize: 16),
             ),
             Text(
-              _currentPage == 0 ? '[Planning] • Present' : 'Planning • [Present]',
+              _currentPage == 0
+                  ? '[Planning] • Present'
+                  : 'Planning • [Present]',
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.normal,

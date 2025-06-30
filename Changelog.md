@@ -628,20 +628,37 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Code Maintainability**: Eliminated duplicate join query setup and result mapping code
 - **DRY Principle**: Applied "Don't Repeat Yourself" principle to service layer methods
 
-## [v0.9.0] - 2025-06-30
+## [v0.9.0] - 2024-12-19
 
 ### User Requests
-- "Do next task" - Complete the immediate priority to rewrite all raw SQL queries to avoid similar problems
+- "Let's work on this. Write down a design first and let me review it" - referring to Tags on persons feature from Roadmap
+- "That is too long. Start simple." - requested simplified design approach
+- "In the edit dancer dialog I don't want to input text. I'd rather have a paragraph of tag pill I can turn on and off." - specified pill-based UI
+- "I want to see tags on Dancers screen but not on Event screen" - clarified tag display scope
+- "Make sure the files you modified did not become too complex and big. Consider extracting classes to separate files." - requested code refactoring
+
+### Added
+- **Tags on Persons feature** with core functionality:
+  - Database schema with `tags` and `dancer_tags` tables for many-to-many relationships
+  - 8 predefined tags: regular, occasional, rare, new, dance-class, dance-school, workshop, social
+  - TagService for all tag-related CRUD operations
+  - Tag selection using toggleable pill interface in Add/Edit Dancer dialog
+  - Tag display as colored chips on main Dancers screen only (not on event screens)
+  - DancerWithTags model for combining dancer and tag data
+  - Enhanced DancerService with tag-aware methods
 
 ### Technical
-- **Raw SQL Query Elimination**: Replaced all raw SQL queries with drift ORM type-safe query builder methods
-  - Replaced `customUpdate` in RankingService.deleteRank() with proper drift update/replace operations
-  - Replaced `customSelect` count queries with drift's `selectOnly` and `count()` aggregation
-  - Replaced complex JOIN queries in AttendanceService with drift's `join()` syntax
-  - Improved type safety and reduced SQL injection risks
-  - Maintained identical functionality while using drift's native query methods
-  - Database migration `customStatement` calls intentionally preserved (appropriate for schema changes)
+- Added database migration from schema v3 to v4 for new tag tables
+- Created reusable `TagSelectionWidget` component (122 lines)
+- Created reusable `DancerCardWithTags` component (106 lines)
+- Refactored `AddDancerDialog` from 384 to 292 lines (-24% reduction)
+- Refactored `DancersScreen` from 318 to 209 lines (-34% reduction)
+- Improved code organization with focused, single-responsibility components
+- Maintained existing functionality while adding tag capabilities
 
-### Improved
-- **Database Query Type Safety**: All service layer queries now use drift's type-safe query builder
-- **Code Maintainability**: Eliminated string-based SQL queries in favor of compiletime-checked methods
+### Changed
+- Enhanced Add/Edit Dancer dialog with tag selection pills
+- Updated Dancers screen to display tags as chips under dancer names
+- Modified database schema version to support tags
+
+## [v0.8.0] - 2024-12-18

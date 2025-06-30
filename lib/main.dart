@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'database/database.dart';
-import 'services/event_service.dart';
-import 'services/dancer_service.dart';
-import 'services/ranking_service.dart';
-import 'services/attendance_service.dart';
 import 'screens/home_screen.dart';
+import 'services/attendance_service.dart';
+import 'services/dancer_service.dart';
+import 'services/event_service.dart';
+import 'services/ranking_service.dart';
+import 'services/tag_service.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -39,12 +40,14 @@ class DancerRankingApp extends StatelessWidget {
         ProxyProvider<AppDatabase, AttendanceService>(
           update: (_, db, __) => AttendanceService(db),
         ),
+        ProxyProvider<AppDatabase, TagService>(
+          update: (_, db, __) => TagService(db),
+        ),
       ],
       child: MaterialApp(
         title: 'Dancer Ranking',
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
         home: const HomeScreen(),
         debugShowCheckedModeBanner: false,
       ),

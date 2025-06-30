@@ -4,8 +4,10 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../services/attendance_service.dart';
 import '../services/dancer_service.dart';
+import '../services/tag_service.dart';
 import '../utils/action_logger.dart';
 import '../utils/toast_helper.dart';
+import 'tag_selection_widget.dart';
 
 class AddDancerDialog extends StatefulWidget {
   final Dancer? dancer; // If provided, we're editing
@@ -29,6 +31,9 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
   bool _alreadyDanced = false;
   bool _isLoading = false;
+
+  // Tag-related state
+  Set<int> _selectedTagIds = {};
 
   @override
   void initState() {
@@ -56,6 +61,12 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
     super.dispose();
   }
 
+  void _onTagsChanged(Set<int> newTags) {
+    setState(() {
+      _selectedTagIds = newTags;
+    });
+  }
+
   Future<void> _saveDancer() async {
     ActionLogger.logUserAction('AddDancerDialog', 'save_started', {
       'isEditing': widget.dancer != null,
@@ -65,6 +76,7 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
       'hasNotes': _notesController.text.trim().isNotEmpty,
       'alreadyDanced': _alreadyDanced,
       'hasImpression': _impressionController.text.trim().isNotEmpty,
+      'selectedTagsCount': _selectedTagIds.length,
     });
 
     if (!_formKey.currentState!.validate()) {
@@ -80,6 +92,7 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
     try {
       final dancerService = Provider.of<DancerService>(context, listen: false);
+      final tagService = Provider.of<TagService>(context, listen: false);
 
       int dancerId;
 
@@ -114,6 +127,9 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
         );
       }
 
+      // Save tags
+      await tagService.setDancerTags(dancerId, _selectedTagIds.toList());
+
       // If we're adding during an event and "already danced" is checked
       if (widget.eventId != null && _alreadyDanced && widget.dancer == null) {
         ActionLogger.logUserAction(
@@ -139,6 +155,7 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
           'isEditing': widget.dancer != null,
           'dancerId': dancerId,
           'eventId': widget.eventId,
+          'savedTagsCount': _selectedTagIds.length,
         });
 
         Navigator.pop(context, true); // Return true to indicate success
@@ -179,6 +196,7 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
                 controller: _nameController,
@@ -206,6 +224,15 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                 ),
                 maxLines: 2,
                 textCapitalization: TextCapitalization.sentences,
+              ),
+
+              const SizedBox(height: 16),
+
+              // Tag selection
+              TagSelectionWidget(
+                selectedTagIds: _selectedTagIds,
+                onTagsChanged: _onTagsChanged,
+                dancerId: widget.dancer?.id,
               ),
 
               // Show "already danced" option only when adding during an event
