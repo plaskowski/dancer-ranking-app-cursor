@@ -1,14 +1,16 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
-- establish JSON format for event import
-  - I don't want to import event ranking, only dancer presence details
+- X establish JSON format for event import
+  - X I don't want to import event ranking, only dancer presence details
 - refine it
-  - event date without time part
-  - I don't have the marked_at and danced_at info, check with the implementation if they can be null
+  - X event date without time part
+  - X I don't have the marked_at and danced_at info, check with the implementation if they can be null
   - in the import preview indicate which tags will be created
+  - ImportEventDialog should be in a form of a full screen for more space
 - parse events from the diary
   - provide agent an example so they understand the structure
+  - decide where to put the overall impression (Bardzo udane, udane, ...) - in future I may want to have separate summary tab
 
 ## Little later
 - tap tag pill to filter the list by that tag
