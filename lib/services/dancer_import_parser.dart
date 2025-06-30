@@ -140,7 +140,7 @@ class DancerImportParser {
         final tagsData = dancerData['tags'];
         if (tagsData is List) {
           tags = tagsData
-              .map((tag) => tag.toString().toLowerCase().trim())
+              .map((tag) => tag.toString().trim())
               .where((tag) => tag.isNotEmpty)
               .toSet() // Remove duplicates
               .toList();

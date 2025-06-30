@@ -16,7 +16,7 @@ class ImportableDancer {
       tags: json['tags'] != null
           ? (json['tags'] as List)
               .cast<String>()
-              .map((tag) => tag.toLowerCase().trim())
+              .map((tag) => tag.trim())
               .where((tag) => tag.isNotEmpty)
               .toList()
           : [],

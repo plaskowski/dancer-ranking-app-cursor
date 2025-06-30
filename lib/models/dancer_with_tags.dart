@@ -17,7 +17,7 @@ class DancerWithTags {
 
   // Check if dancer has a specific tag
   bool hasTag(String tagName) {
-    return tags.any((tag) => tag.name.toLowerCase() == tagName.toLowerCase());
+    return tags.any((tag) => tag.name == tagName);
   }
 
   // Get tag names as a list

@@ -144,7 +144,7 @@ class DancerImportValidator {
   ) async {
     final allTags = <String>{};
     for (final dancer in dancers) {
-      allTags.addAll(dancer.tags.map((tag) => tag.toLowerCase()));
+      allTags.addAll(dancer.tags);
     }
 
     if (allTags.isEmpty) {
@@ -156,15 +156,14 @@ class DancerImportValidator {
           ..where((t) => t.name.isIn(allTags.toList())))
         .get();
 
-    final existingTagNames =
-        existingTags.map((t) => t.name.toLowerCase()).toSet();
+    final existingTagNames = existingTags.map((t) => t.name).toSet();
     final missingTags = allTags.difference(existingTagNames);
 
     final conflicts = <DancerImportConflict>[];
     for (final missingTag in missingTags) {
       // Find dancers that use this missing tag
       final dancersWithMissingTag = dancers
-          .where((d) => d.tags.any((tag) => tag.toLowerCase() == missingTag))
+          .where((d) => d.tags.any((tag) => tag == missingTag))
           .map((d) => d.name)
           .toList();
 

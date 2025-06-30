@@ -154,7 +154,7 @@ class DancerImportService {
     // Collect all unique tags from import data
     final allTags = <String>{};
     for (final dancer in dancers) {
-      allTags.addAll(dancer.tags.map((tag) => tag.toLowerCase()));
+      allTags.addAll(dancer.tags);
     }
 
     try {

@@ -30,7 +30,7 @@ class TagService {
     ActionLogger.logServiceCall('TagService', 'getTagByName', {'name': name});
 
     return (_database.select(_database.tags)
-          ..where((t) => t.name.equals(name.toLowerCase())))
+          ..where((t) => t.name.equals(name.trim())))
         .getSingleOrNull();
   }
 
@@ -39,13 +39,13 @@ class TagService {
     ActionLogger.logServiceCall('TagService', 'createTag', {'name': name});
 
     try {
-      final normalizedName = name.toLowerCase().trim();
+      final trimmedName = name.trim();
 
       // Check if tag already exists
-      final existingTag = await getTagByName(normalizedName);
+      final existingTag = await getTagByName(trimmedName);
       if (existingTag != null) {
         ActionLogger.logAction('TagService.createTag', 'tag_already_exists', {
-          'name': normalizedName,
+          'name': trimmedName,
           'existingId': existingTag.id,
         });
         return existingTag.id;
@@ -53,13 +53,13 @@ class TagService {
 
       final id = await _database.into(_database.tags).insert(
             TagsCompanion.insert(
-              name: normalizedName,
+              name: trimmedName,
             ),
           );
 
       ActionLogger.logDbOperation('INSERT', 'tags', {
         'id': id,
-        'name': normalizedName,
+        'name': trimmedName,
       });
 
       return id;
@@ -82,18 +82,18 @@ class TagService {
     });
 
     try {
-      final normalizedName = name.toLowerCase().trim();
+      final trimmedName = name.trim();
 
       // Check if another tag already exists with this name
-      final existingTag = await getTagByName(normalizedName);
+      final existingTag = await getTagByName(trimmedName);
       if (existingTag != null && existingTag.id != id) {
         ActionLogger.logError(
             'TagService.updateTag', 'tag_name_already_exists', {
           'id': id,
-          'name': normalizedName,
+          'name': trimmedName,
           'existingId': existingTag.id,
         });
-        throw Exception('Tag with name "$normalizedName" already exists');
+        throw Exception('Tag with name "$trimmedName" already exists');
       }
 
       final existing = await getTag(id);
@@ -106,13 +106,13 @@ class TagService {
 
       final result = await _database.update(_database.tags).replace(
             existing.copyWith(
-              name: normalizedName,
+              name: trimmedName,
             ),
           );
 
       ActionLogger.logDbOperation('UPDATE', 'tags', {
         'id': id,
-        'name': normalizedName,
+        'name': trimmedName,
         'success': result,
       });
 

@@ -4,6 +4,35 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.46.0] - 2025-01-11
+
+### User Requests
+- "Seems to be working but I don't like that tags gets normalized to lower case. Please keep the casing (and update the specs)."
+- "option 2" - referring to making tags fully case-sensitive throughout the entire app
+
+### Changed
+- **Tag Case Sensitivity**: Made tags fully case-sensitive throughout the entire application
+  - Tags now preserve their original casing during import from JSON files
+  - Database storage maintains exact case instead of normalizing to lowercase
+  - Tag matching and lookups are now case-sensitive everywhere
+  - Import conflict detection respects case differences between tags
+
+### Technical
+- **TagService Updates**: Removed `toLowerCase()` normalization from `createTag()`, `updateTag()`, and `getTagByName()` methods
+- **DancerWithTags Model**: Updated `hasTag()` method to use exact case matching instead of case-insensitive comparison
+- **Import System**: Removed case normalization from import parser, validator, and service components
+- **Consistency**: All tag operations now use exact string matching with trimming only (no case conversion)
+
+### Updated Specifications
+- **Feature Documentation**: Updated ImportableDancerFormat.md to specify "Fully case-sensitive" tag behavior
+- **Validation Rules**: Tags are now documented as case-sensitive with duplicates removed per dancer
+
+### Files Modified
+- **lib/services/tag_service.dart**: Removed toLowerCase() from tag operations, using trim() only
+- **lib/models/dancer_with_tags.dart**: Made hasTag() method case-sensitive
+- **lib/services/dancer_import_validator.dart**: Removed case normalization from tag validation
+- **feature_ImportableDancerFormat.md**: Updated validation rules documentation
+
 ## [v0.45.0] - 2025-01-11
 
 ### User Requests

@@ -47,7 +47,7 @@ Enable bulk import of dancers from JSON files with support for names, tags, and 
 
 ### Validation Rules
 1. **Names**: Must be unique within import file, trimmed, non-empty
-2. **Tags**: Automatically normalized to lowercase, duplicates removed per dancer
+2. **Tags**: Fully case-sensitive, duplicates removed per dancer, trimmed
 3. **Notes**: Optional, trimmed if provided
 4. **File Size**: Reasonable limits (max 1000 dancers per import)
 

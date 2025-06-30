@@ -94,7 +94,7 @@ Extend existing `searchDancers()` method:
 3. Advanced filtering options (multiple tags, exclude tags)
 
 ## Technical Notes
-- Tags are case-insensitive (stored lowercase)
+- Tags are fully case-sensitive (preserve original casing)
 - Many-to-many relationship allows multiple tags per dancer
 - Cascade delete ensures cleanup when dancers are removed
 

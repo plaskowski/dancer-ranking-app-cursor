@@ -575,7 +575,7 @@ Example logs:
 
 **Validation Rules**:
 - Names: Required, 1-100 characters, unique within import
-- Tags: Optional, 1-50 characters each, automatically normalized to lowercase
+- Tags: Optional, 1-50 characters each, fully case-sensitive with trimming only
 - Notes: Optional, up to 500 characters
 - File size: Maximum 1000 dancers per import
 
