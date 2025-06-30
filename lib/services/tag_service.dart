@@ -12,21 +12,26 @@ class TagService {
   Stream<List<Tag>> watchAllTags() {
     ActionLogger.logServiceCall('TagService', 'watchAllTags');
 
-    return (_database.select(_database.tags)..orderBy([(t) => OrderingTerm.asc(t.name)])).watch();
+    return (_database.select(_database.tags)
+          ..orderBy([(t) => OrderingTerm.asc(t.name)]))
+        .watch();
   }
 
   // Get a specific tag by ID
   Future<Tag?> getTag(int id) {
     ActionLogger.logServiceCall('TagService', 'getTag', {'tagId': id});
 
-    return (_database.select(_database.tags)..where((t) => t.id.equals(id))).getSingleOrNull();
+    return (_database.select(_database.tags)..where((t) => t.id.equals(id)))
+        .getSingleOrNull();
   }
 
   // Get tag by name
   Future<Tag?> getTagByName(String name) {
     ActionLogger.logServiceCall('TagService', 'getTagByName', {'name': name});
 
-    return (_database.select(_database.tags)..where((t) => t.name.equals(name.toLowerCase()))).getSingleOrNull();
+    return (_database.select(_database.tags)
+          ..where((t) => t.name.equals(name.toLowerCase())))
+        .getSingleOrNull();
   }
 
   // Create a new tag
@@ -60,6 +65,61 @@ class TagService {
       return id;
     } catch (e) {
       ActionLogger.logError('TagService.createTag', e.toString(), {
+        'name': name,
+      });
+      rethrow;
+    }
+  }
+
+  // Update an existing tag
+  Future<bool> updateTag({
+    required int id,
+    required String name,
+  }) async {
+    ActionLogger.logServiceCall('TagService', 'updateTag', {
+      'id': id,
+      'name': name,
+    });
+
+    try {
+      final normalizedName = name.toLowerCase().trim();
+
+      // Check if another tag already exists with this name
+      final existingTag = await getTagByName(normalizedName);
+      if (existingTag != null && existingTag.id != id) {
+        ActionLogger.logError(
+            'TagService.updateTag', 'tag_name_already_exists', {
+          'id': id,
+          'name': normalizedName,
+          'existingId': existingTag.id,
+        });
+        throw Exception('Tag with name "$normalizedName" already exists');
+      }
+
+      final existing = await getTag(id);
+      if (existing == null) {
+        ActionLogger.logError('TagService.updateTag', 'tag_not_found', {
+          'id': id,
+        });
+        return false;
+      }
+
+      final result = await _database.update(_database.tags).replace(
+            existing.copyWith(
+              name: normalizedName,
+            ),
+          );
+
+      ActionLogger.logDbOperation('UPDATE', 'tags', {
+        'id': id,
+        'name': normalizedName,
+        'success': result,
+      });
+
+      return result;
+    } catch (e) {
+      ActionLogger.logError('TagService.updateTag', e.toString(), {
+        'id': id,
         'name': name,
       });
       rethrow;
@@ -130,7 +190,8 @@ class TagService {
 
     try {
       final result = await (_database.delete(_database.dancerTags)
-            ..where((dt) => dt.dancerId.equals(dancerId) & dt.tagId.equals(tagId)))
+            ..where(
+                (dt) => dt.dancerId.equals(dancerId) & dt.tagId.equals(tagId)))
           .go();
 
       ActionLogger.logDbOperation('DELETE', 'dancer_tags', {
@@ -157,7 +218,9 @@ class TagService {
     try {
       await _database.transaction(() async {
         // Remove all existing tags for this dancer
-        await (_database.delete(_database.dancerTags)..where((dt) => dt.dancerId.equals(dancerId))).go();
+        await (_database.delete(_database.dancerTags)
+              ..where((dt) => dt.dancerId.equals(dancerId)))
+            .go();
 
         // Add the new tags
         if (tagIds.isNotEmpty) {
@@ -241,7 +304,8 @@ class TagService {
         );
       }).toList();
     } catch (e) {
-      ActionLogger.logError('TagService.getAllTagsWithUsageCount', e.toString());
+      ActionLogger.logError(
+          'TagService.getAllTagsWithUsageCount', e.toString());
       rethrow;
     }
   }

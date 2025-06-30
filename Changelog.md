@@ -4,6 +4,24 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.42.0] - 2025-01-11
+
+### User Requests
+- "take the first task" - referring to "add a way to edit tag name" from Next steps.md
+
+### Added
+- **Tag Editing**: Added ability to edit tag names in Tags screen
+  - New `updateTag` method in TagService with proper validation and duplicate checking
+  - Context menu on each tag with Edit option in Tags screen
+  - Edit dialog similar to other editing patterns in the app
+  - Proper error handling and user feedback with snackbars
+
+### Technical
+- Enhanced TagService with `updateTag(id, name)` method following same pattern as RankingService
+- Updated Tags screen UI with PopupMenuButton for context actions
+- Added comprehensive logging for tag editing operations
+- Validates against duplicate tag names when editing
+
 ## [v0.41.0] - 2025-01-11
 
 ### User Requests

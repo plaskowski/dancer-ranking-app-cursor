@@ -416,6 +416,14 @@ Home Screen
 - **Dancers Screen only**: Tags displayed as colored chips under dancer names
 - **Event screens clean**: Tags not shown on event screens to avoid clutter
 - **Chip styling**: Small rounded containers with subtle primary container coloring
+
+**Tag Management Screen**:
+- **Tags Screen Navigation**: Accessible from Home screen app bar with label icon button
+- **Tag Editing**: Context menu on each tag with Edit option for renaming
+- **Edit Dialog**: Simple text field with validation and duplicate checking
+- **Add New Tags**: FloatingActionButton with dialog to create custom tags
+- **Real-time Updates**: StreamBuilder automatically refreshes when tags are modified
+- **User Feedback**: Success/error notifications via SnackBar for all operations
 - **Responsive layout**: Tags wrap to multiple lines when needed
 
 **Data Architecture**:
