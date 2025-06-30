@@ -1,6 +1,9 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
+- tags on persons
+- importable format (person, tags, notes)
+- predefined impressions
 
 ### Bug Fixes
 - **Event Date Change**: Context menu date picker shows but changes don't persist to database
