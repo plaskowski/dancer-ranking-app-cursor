@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - **Archived Rank Edit Bug**: Fixed critical bug where editing rankings failed when the current rank was archived
 - **Ranking Dialog Crash**: Resolved `firstWhere()` exception when trying to edit rankings assigned to archived ranks
+- **Type Casting Error**: Fixed "type 'int' is not a subtype of type 'String'" error by converting raw SQL to Drift expressions
 - **Data Integrity**: Ensured users can always view and modify their existing rankings, even when ranks are later archived
 
 ### Improved
@@ -21,12 +22,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Complete Flexibility**: Users can assign any rank that's already in use for the event, including archived ones
 - **Visual Feedback**: Added "ARCHIVED" badge to distinguish archived ranks in ranking dialogs
 - **Enhanced Logging**: Improved action logging with detailed counts of active vs archived ranks available
+- **Query Performance**: Optimized database queries using proper Drift joins instead of raw SQL
 
 ### Technical
 - **Smart Rank Loading**: `RankingDialog` now queries all event rankings to find archived ranks in use
 - **Optimized Performance**: Single query to get all used rank IDs, then filter archived ranks efficiently
 - **Better Context**: Updated subtitle text to explain why archived ranks are shown (event usage vs personal usage)
 - **Future-Proof**: Solution handles multiple people having different archived ranks in the same event
+- **Drift Migration**: Converted `getRankingsForEvent` from raw SQL to proper Drift expressions with inner joins
+- **Type Safety**: Eliminated type casting issues by using Drift's built-in type system
 
 ## [v0.39.0] - 2025-01-11
 

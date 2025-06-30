@@ -324,26 +324,57 @@ class RankingService {
 
   // Get all rankings for an event with dancer and rank info
   Future<List<RankingWithInfo>> getRankingsForEvent(int eventId) async {
-    const query = '''
-      SELECT 
-        rk.*,
-        d.name as dancer_name,
-        r.name as rank_name,
-        r.ordinal as rank_ordinal
-      FROM rankings rk
-      JOIN dancers d ON rk.dancer_id = d.id
-      JOIN ranks r ON rk.rank_id = r.id
-      WHERE rk.event_id = ?
-      ORDER BY r.ordinal, d.name
-    ''';
+    ActionLogger.logServiceCall('RankingService', 'getRankingsForEvent', {
+      'eventId': eventId,
+    });
 
-    final result = await _database.customSelect(
-      query,
-      variables: [Variable<int>(eventId)],
-      readsFrom: {_database.rankings, _database.dancers, _database.ranks},
-    ).get();
+    try {
+      final query = _database.select(_database.rankings).join([
+        innerJoin(_database.dancers,
+            _database.dancers.id.equalsExp(_database.rankings.dancerId)),
+        innerJoin(_database.ranks,
+            _database.ranks.id.equalsExp(_database.rankings.rankId)),
+      ])
+        ..where(_database.rankings.eventId.equals(eventId))
+        ..orderBy([
+          OrderingTerm(expression: _database.ranks.ordinal),
+          OrderingTerm(expression: _database.dancers.name),
+        ]);
 
-    return result.map((row) => RankingWithInfo.fromRow(row.data)).toList();
+      final results = await query.get();
+
+      final rankingsWithInfo = results.map((row) {
+        final ranking = row.readTable(_database.rankings);
+        final dancer = row.readTable(_database.dancers);
+        final rank = row.readTable(_database.ranks);
+
+        return RankingWithInfo(
+          id: ranking.id,
+          eventId: ranking.eventId,
+          dancerId: ranking.dancerId,
+          rankId: ranking.rankId,
+          reason: ranking.reason,
+          createdAt: ranking.createdAt,
+          lastUpdated: ranking.lastUpdated,
+          dancerName: dancer.name,
+          rankName: rank.name,
+          rankOrdinal: rank.ordinal,
+        );
+      }).toList();
+
+      ActionLogger.logDbOperation('SELECT', 'rankings_with_info', {
+        'eventId': eventId,
+        'resultCount': rankingsWithInfo.length,
+      });
+
+      return rankingsWithInfo;
+    } catch (e) {
+      ActionLogger.logError(
+          'RankingService.getRankingsForEvent', e.toString(), {
+        'eventId': eventId,
+      });
+      rethrow;
+    }
   }
 
   // Get rankings grouped by rank for an event
