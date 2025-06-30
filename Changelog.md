@@ -1021,3 +1021,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **lib/models/import_models.dart**: Enhanced `EventImportResult` to carry summary data
 - **lib/widgets/import/event_data_preview_step.dart**: Added new statistics card for "New Dancers"
 - **lib/widgets/import_events_dialog.dart**: Updated to call the new service method with analysis
+
+## [v0.48.0] - 2025-01-14
+
+### User Requests
+- "Past events should display only present tab as I won't do the planing on them anymore"
+
+### Improved
+- **Past Event View**: Simplified the `EventScreen` for events that have already occurred.
+  - **Single Tab Display**: For past events, the screen now only shows the "Present" tab, removing the irrelevant "Planning" tab.
+  - **No Swiping**: Swipe navigation is disabled for past events to create a static, focused view.
+  - **Cleaner AppBar**: The AppBar for past events no longer shows the `[Planning] • Present` indicator, instead displaying a simple "Event Concluded" subtitle.
+
+### Technical
+- **Conditional UI Logic**: The `EventScreen` now uses an `isPastEvent` getter to conditionally render its UI.
+- **Dynamic PageView**: The `PageView`'s children and physics are adjusted at runtime based on the event's date.
+- **Simplified FAB**: The Floating Action Button's actions are now directly tied to the `PresentTab` for past events, removing unnecessary state checking.
+
+### Files Modified
+- **lib/screens/event_screen.dart**: Implemented the conditional logic to show a simplified view for past events.

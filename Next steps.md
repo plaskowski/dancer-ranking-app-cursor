@@ -2,10 +2,8 @@
 
 ## Immediate Priorities (take one at a time)
 - **Test Event Import UI**: Manually test the full-screen Event Import UI and verify the "new dancer" count is accurate.
-- **Past Events UI**: Past events should display only present tab as I won't do the planing on them anymore
-- **Event Diary Parser**: Parse events from the diary
-  - Provide agent an example so they understand the structure
-- **Event Diary Parser**: Decide where to put the overall impression (Bardzo udane, udane, ...) - in future I may want to have separate summary tab
+- **Event Diary Parser**: Parse events from the diary, deciding where to put the overall impression (e.g., "Bardzo udane").
+  - Provide agent with an example to understand the structure.
 
 ## Little later
 - tap tag pill to filter the list by that tag

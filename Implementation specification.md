@@ -157,13 +157,18 @@ Users can adjust rankings during events for various reasons:
 
 ### 3. Event Screen (`EventScreen`)
 **Purpose**: Main event management with swipe-based navigation
-**AppBar Design**: 
+**AppBar Design**:
 - **Title**: Event name with bullet separator and compact date format (e.g., "Salsa Night • Dec 15")
-- **Subtitle**: Dynamic tab indicator showing both tabs with active one in brackets (e.g., "[Planning] • Present")
-- **Navigation**: Pure swipe-based using PageController - no visible tab header for maximum vertical space efficiency
+- **Subtitle**: 
+  - For current/future events: Dynamic tab indicator showing both tabs with active one in brackets (e.g., "[Planning] • Present")
+  - For past events: Static text "Event Concluded"
+- **Navigation**: Pure swipe-based using PageController for current/future events. Swiping is disabled for past events.
+**Conditional View**:
+- **Current/Future Events**: Shows a two-tab view with "Planning" and "Present" tabs.
+- **Past Events**: Shows a simplified single-page view containing only the "Present" tab to review attendance.
 **Pages**:
 
-**Planning Tab**:
+**Planning Tab** (Only for current/future events):
 - View only ranked dancers who are NOT present yet (focused on marking presence)
 - Set/edit rank selection (using predefined ranks)
 - Add reasons for rankings (pre-event planning)

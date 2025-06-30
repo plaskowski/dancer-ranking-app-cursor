@@ -24,6 +24,10 @@ class _EventScreenState extends State<EventScreen> {
   Event? _event;
   late List<EventTabActions> _tabActions;
 
+  bool get _isPastEvent =>
+      _event != null &&
+      _event!.date.isBefore(DateUtils.dateOnly(DateTime.now()));
+
   @override
   void initState() {
     super.initState();
@@ -95,37 +99,54 @@ class _EventScreenState extends State<EventScreen> {
       );
     }
 
-    final currentTabActions = _tabActions[_currentPage];
+    final pages = _isPastEvent
+        ? [PresentTab(eventId: widget.eventId)]
+        : [
+            PlanningTab(eventId: widget.eventId),
+            PresentTab(eventId: widget.eventId)
+          ];
+
+    final currentTabActions =
+        _isPastEvent ? _tabActions[1] : _tabActions[_currentPage];
 
     return Scaffold(
       appBar: AppBar(
         title: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               '${_event!.name} • ${DateFormat('MMM d').format(_event!.date)}',
               style: const TextStyle(fontSize: 16),
             ),
-            Text(
-              _currentPage == 0
-                  ? '[Planning] • Present'
-                  : 'Planning • [Present]',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.normal,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+            if (!_isPastEvent)
+              Text(
+                _currentPage == 0
+                    ? '[Planning] • Present'
+                    : 'Planning • [Present]',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
-            ),
+            if (_isPastEvent)
+              Text(
+                'Event Concluded',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              )
           ],
         ),
       ),
       body: PageView(
         controller: _pageController,
         onPageChanged: _onPageChanged,
-        children: [
-          PlanningTab(eventId: widget.eventId),
-          PresentTab(eventId: widget.eventId),
-        ],
+        physics: _isPastEvent ? const NeverScrollableScrollPhysics() : null,
+        children: pages,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => currentTabActions.onFabPressed(context, () {
