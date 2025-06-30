@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/dancer_with_tags.dart';
+import '../utils/action_logger.dart';
 
 class DancerCardWithTags extends StatelessWidget {
   final DancerWithTags dancerWithTags;
@@ -68,37 +69,71 @@ class DancerCardWithTags extends StatelessWidget {
             ],
           ],
         ),
-        trailing: PopupMenuButton<String>(
-          onSelected: (value) {
-            switch (value) {
-              case 'edit':
-                onEdit();
-                break;
-              case 'delete':
-                onDelete();
-                break;
-            }
-          },
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'edit',
-              child: ListTile(
-                leading: Icon(Icons.edit),
-                title: Text('Edit'),
-                dense: true,
-                contentPadding: EdgeInsets.zero,
+        onTap: () => _showDancerContextMenu(context),
+      ),
+    );
+  }
+
+  void _showDancerContextMenu(BuildContext context) {
+    final dancer = dancerWithTags.dancer;
+
+    ActionLogger.logAction('UI_DancerCard', 'dancer_context_menu_opened', {
+      'dancerId': dancer.id,
+      'dancerName': dancer.name,
+    });
+
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                dancer.name,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            const PopupMenuItem(
-              value: 'delete',
-              child: ListTile(
-                leading: Icon(Icons.delete),
-                title: Text('Delete'),
-                dense: true,
-                contentPadding: EdgeInsets.zero,
+              const SizedBox(height: 16),
+              ListTile(
+                leading: Icon(
+                  Icons.edit,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                title: const Text('Edit'),
+                onTap: () {
+                  ActionLogger.logAction(
+                      'UI_DancerCard', 'context_edit_tapped', {
+                    'dancerId': dancer.id,
+                    'dancerName': dancer.name,
+                  });
+
+                  Navigator.pop(context);
+                  onEdit();
+                },
               ),
-            ),
-          ],
+              ListTile(
+                leading: Icon(
+                  Icons.delete,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                title: const Text('Delete'),
+                onTap: () {
+                  ActionLogger.logAction(
+                      'UI_DancerCard', 'context_delete_tapped', {
+                    'dancerId': dancer.id,
+                    'dancerName': dancer.name,
+                  });
+
+                  Navigator.pop(context);
+                  onDelete();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

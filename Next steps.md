@@ -1,7 +1,6 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
-- why in Dancers screen rows have context actions button? they should follow "tap for context actions" pattern
 - need both impressionTag and impression text
 - importable format (person, tags, notes)
 - predefined impressions

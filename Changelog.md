@@ -4,6 +4,30 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.44.0] - 2025-01-11
+
+### User Requests
+- "Let's do that" - referring to updating Dancers screen to use "tap for context actions" pattern
+
+### Improved
+- **Consistent UI Pattern**: Updated Dancers screen to use "tap for context actions" pattern
+  - Replaced PopupMenuButton with direct tap handler on dancer cards
+  - Modal bottom sheet context menu following app-wide conventions
+  - Streamlined interaction: single tap opens context menu instead of searching for menu button
+  - Enhanced action logging for dancer interactions
+  - Improved notification system using ToastHelper for consistent styling
+
+### Changed
+- **DancerCardWithTags**: Removed trailing PopupMenuButton, added tap handler with modal bottom sheet
+- **User Experience**: All management screens now use identical interaction patterns
+- **Visual Consistency**: Clean card design without UI clutter across entire app
+
+### Technical
+- Updated DancerCardWithTags component to follow established tap context pattern
+- Enhanced action logging for dancer card interactions
+- Consistent toast notifications across all dancer management operations
+- Unified interaction model across Tags, Ranks, Events, and Dancers screens
+
 ## [v0.43.0] - 2025-01-11
 
 ### User Requests

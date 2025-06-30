@@ -243,14 +243,15 @@ Users can adjust rankings during events for various reasons:
 - View list of all dancers with their tags
 - Search dancers by name or notes
 - Add new dancer (FAB)
-- Edit existing dancer (tap)
-- Delete dancer (popup menu, with confirmation)
+- Edit existing dancer (tap → context menu)
+- Delete dancer (tap → context menu, with confirmation)
 **UI Design**:
 - **Enhanced Card Layout**: Name with notes and tags displayed below
 - **Tag Display**: Colored chip badges under dancer name showing assigned tags
 - **Clean Organization**: Tags appear only on main Dancers screen, not on event screens
-- **Popup Menu Interaction**: Right-side menu icon with edit/delete options
-- **Tap to Edit**: Primary interaction opens edit dialog with tag selection
+- **Tap for Context Actions**: Single tap on any dancer card opens modal bottom sheet with Edit and Delete options
+- **Consistent Interaction**: Follows same pattern as Tags, Ranks, and Events screens
+- **Clean Design**: No visual clutter with hidden context menus
 - **Tag Chips Styling**: Small rounded containers with primary container color
 **Navigation**:
 - ← Back to previous screen

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../models/dancer_with_tags.dart';
 import '../services/dancer_service.dart';
-import '../theme/theme_extensions.dart';
+import '../utils/toast_helper.dart';
 import '../widgets/add_dancer_dialog.dart';
 import '../widgets/dancer_card_with_tags.dart';
 
@@ -187,22 +187,12 @@ class _DancersScreenState extends State<DancersScreen> {
 
                 if (mounted) {
                   Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('${dancer.name} deleted'),
-                      backgroundColor: context.danceTheme.success,
-                    ),
-                  );
+                  ToastHelper.showSuccess(context, '${dancer.name} deleted');
                 }
               } catch (e) {
                 if (mounted) {
                   Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Error deleting dancer: $e'),
-                      backgroundColor: Theme.of(context).colorScheme.error,
-                    ),
-                  );
+                  ToastHelper.showError(context, 'Error deleting dancer: $e');
                 }
               }
             },
