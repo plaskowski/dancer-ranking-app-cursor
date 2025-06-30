@@ -6,6 +6,8 @@
 - Tags on persons
   - ability to add tags to a person
   - ability to search by tag where we already search by person name
+  - use-case: tag can express where I know the person from (dance class, dance school, regular party)
+  - use-case: use tags to implement the "dancers pool category"
 - CSV export for events and dancer data
 - Data backup and restore functionality
 - Statistical insights and trends
@@ -18,13 +20,6 @@
 - People archival
   - they should stay in the past events but don't suggest them to be added
 - Switch for filtering off dancers that 'left' in Present Tab
-- Ranks editor
-  - motivation: the rank set may evolve over time
-  - change name
-  - change order
-  - add new
-  - archive a rank - it should stay in past events but should not be suggested in new events
-  - remove a rank - pick a different rank that the existing records should get assigned to
 - rank emoji (so to present it alinged to right)
 
 ### Rejected ideas
