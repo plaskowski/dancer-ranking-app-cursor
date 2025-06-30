@@ -322,14 +322,14 @@ Users can adjust rankings during events for various reasons:
 - Save/cancel actions
 
 **Event Import Dialog (`ImportEventsDialog`)**:
-- **3-step stepper interface** for importing historical event data from JSON files
-- **Step 1: File Selection** 
+- **Full-screen 3-step stepper interface** for importing historical event data from JSON files
+- **Step 1: File Selection**
   - Drag-and-drop file picker with JSON validation
   - 5MB file size limit with clear error messages
   - Format requirements display with JSON structure example
   - File validation with immediate feedback
 - **Step 2: Data Preview**
-  - Rich preview with statistics cards showing events, attendances, and unique dancers counts
+  - Rich preview with statistics cards showing events, attendances, unique dancers, and **new dancers to be created**
   - Expandable event cards with comprehensive details
   - Color-coded attendance status icons (present/served/left) for visual clarity
   - Automatic behavior information about duplicate skipping and missing dancer creation
@@ -338,10 +338,11 @@ Users can adjust rankings during events for various reasons:
   - Skipped events display with reasons (duplicates)
   - Error reporting with specific failure details
   - Action buttons for closing dialog or starting new import
-- **Integration**: Accessible from Home screen overflow menu
+- **Integration**: Accessible from Home screen overflow menu as a full-screen dialog
 - **Automatic Processing**: Phase 1 implementation with full automation - skips duplicates and creates missing dancers
 - **Progress Tracking**: Step progression with enabled/disabled state management
 - **Error Handling**: Comprehensive validation and user-friendly error messages
+- **Pre-import Analysis**: Service performs a dry run to calculate statistics (like new dancers) before the import begins
 
 ### Navigation Flow
 ```

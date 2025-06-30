@@ -217,9 +217,10 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
         'fileSize': await _selectedFile!.length(),
       });
 
-      final content = await _selectedFile!.readAsString();
-      final service = context.read<EventImportService>();
-      final result = await service.validateImportFile(content);
+      final jsonContent = await _selectedFile!.readAsString();
+      final result = await context
+          .read<EventImportService>()
+          .parseAndValidateFile(jsonContent);
 
       setState(() {
         _parseResult = result;
@@ -266,7 +267,7 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
         'eventsCount': _parseResult!.events.length,
       });
 
-      final content = await _selectedFile!.readAsString();
+      final jsonContent = await _selectedFile!.readAsString();
       final service = context.read<EventImportService>();
 
       // Simulate progress updates
@@ -277,7 +278,7 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
       await Future.delayed(const Duration(milliseconds: 200));
 
       final summary = await service.importEventsFromJson(
-        content,
+        jsonContent,
         const EventImportOptions(),
       );
 

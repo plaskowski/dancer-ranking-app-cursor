@@ -345,23 +345,27 @@ class EventImportResult {
   final List<String> errors;
   final ImportMetadata? metadata;
   final bool isValid;
+  final EventImportSummary? summary; // Analysis from a dry run
 
   const EventImportResult({
     required this.events,
     required this.errors,
     this.metadata,
     required this.isValid,
+    this.summary,
   });
 
   factory EventImportResult.success({
     required List<ImportableEvent> events,
     ImportMetadata? metadata,
+    EventImportSummary? summary,
   }) {
     return EventImportResult(
       events: events,
       errors: [],
       metadata: metadata,
       isValid: true,
+      summary: summary,
     );
   }
 
@@ -375,6 +379,22 @@ class EventImportResult {
       errors: errors,
       metadata: metadata,
       isValid: false,
+    );
+  }
+
+  EventImportResult copyWith({
+    List<ImportableEvent>? events,
+    List<String>? errors,
+    ImportMetadata? metadata,
+    bool? isValid,
+    EventImportSummary? summary,
+  }) {
+    return EventImportResult(
+      events: events ?? this.events,
+      errors: errors ?? this.errors,
+      metadata: metadata ?? this.metadata,
+      isValid: isValid ?? this.isValid,
+      summary: summary ?? this.summary,
     );
   }
 

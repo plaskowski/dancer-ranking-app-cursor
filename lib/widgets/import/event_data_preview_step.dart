@@ -100,6 +100,15 @@ class EventDataPreviewStep extends StatelessWidget {
                   Icons.person,
                   Theme.of(context).colorScheme.secondary,
                 ),
+                if (parseResult!.summary != null &&
+                    parseResult!.summary!.dancersCreated > 0)
+                  _buildStatItem(
+                    context,
+                    'New Dancers',
+                    '${parseResult!.summary!.dancersCreated}',
+                    Icons.person_add,
+                    Theme.of(context).colorScheme.tertiary,
+                  ),
               ],
             ),
           ),

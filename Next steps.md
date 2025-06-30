@@ -2,9 +2,7 @@
 
 ## Immediate Priorities (take one at a time)
 - **Event Import UI Refinements**:
-  - In the import preview indicate which tags will be created
-  - ImportEventDialog should be in a form of a full screen for more space
-  - The import preview summary should say how many new dancers will get created
+  - In the import preview indicate which new tags will be created
 - **Past Events UI**: Past events should display only present tab as I won't do the planing on them anymore
 - **Event Diary Parser**: Parse events from the diary
   - Provide agent an example so they understand the structure

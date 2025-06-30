@@ -998,3 +998,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Expandable event cards with attendance status icons and color coding
 - Progress indicators during import with operation status updates
 - Success/warning/error cards with appropriate styling and messaging
+
+## [v0.49.0] - 2025-01-13
+
+### User Requests
+- "Let's take selected task" - referring to the Event Import UI Refinements task
+
+### Improved
+- **Event Import UI**: Refined the event import dialog for a better user experience
+  - **Full-Screen Dialog**: Changed the import dialog to a full-screen view, providing more space for data preview and results
+  - **New Dancer Preview**: The data preview step now includes a statistics card showing how many new dancers will be created, giving users more insight before importing
+
+### Technical
+- **Dry Run Analysis**: Implemented a dry run analysis in `EventImportService` to calculate the number of new dancers without committing to the database
+- **Enhanced Data Models**: Updated `EventImportResult` to include the `EventImportSummary` from the dry run, making analysis data available to the UI
+- **UI Logic Update**: Modified `EventDataPreviewStep` to consume and display the new dancer count from the summary
+- **Dialog Presentation**: Switched from `showDialog` to `showGeneralDialog` with `Dialog.fullscreen` for a seamless full-screen experience
+
+### Files Modified
+- **lib/screens/home_screen.dart**: Updated to use `showGeneralDialog` for a full-screen import experience
+- **lib/services/event_import_service.dart**: Added dry-run analysis to provide pre-import statistics
+- **lib/models/import_models.dart**: Enhanced `EventImportResult` to carry summary data
+- **lib/widgets/import/event_data_preview_step.dart**: Added new statistics card for "New Dancers"
+- **lib/widgets/import_events_dialog.dart**: Updated to call the new service method with analysis

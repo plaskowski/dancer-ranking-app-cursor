@@ -84,9 +84,75 @@ class EventImportService {
   }
 
   // Validate import file without importing
-  Future<EventImportResult> validateImportFile(String jsonContent) async {
-    ActionLogger.logServiceCall('EventImportService', 'validateImportFile');
-    return await _parser.parseJsonContent(jsonContent);
+  Future<EventImportResult> parseAndValidateFile(String jsonContent) async {
+    ActionLogger.logServiceCall('EventImportService', 'parseAndValidateFile');
+    final result = await _parser.parseJsonContent(jsonContent);
+
+    if (result.isValid) {
+      // Perform a dry run to get the summary
+      final conflicts = await _validator.validateImport(
+          result.events, const EventImportOptions());
+      final summary = await _getImportSummary(result.events, conflicts);
+
+      ActionLogger.logAction('EventImportService', 'dry_run_complete', {
+        'events': summary.eventsProcessed,
+        'dancers': summary.dancersCreated,
+      });
+
+      return result.copyWith(summary: summary);
+    }
+
+    return result;
+  }
+
+  Future<EventImportSummary> _getImportSummary(
+      List<ImportableEvent> events, List<EventImportConflict> conflicts) async {
+    int eventsToCreate = 0;
+    int eventsToSkip = 0;
+    int attendancesToCreate = 0;
+    int dancersToCreate = 0;
+
+    final duplicateEventNames = conflicts
+        .where((c) => c.type == EventImportConflictType.duplicateEvent)
+        .map((c) => c.eventName)
+        .where((name) => name != null)
+        .cast<String>()
+        .toSet();
+
+    final allDancerNames =
+        events.expand((e) => e.attendances.map((a) => a.dancerName)).toSet();
+    final existingDancers =
+        await _validator.getExistingDancersByNames(allDancerNames);
+
+    for (final event in events) {
+      if (duplicateEventNames.contains(event.name)) {
+        eventsToSkip++;
+        continue;
+      }
+      eventsToCreate++;
+      attendancesToCreate += event.attendances.length;
+
+      for (final attendance in event.attendances) {
+        if (!existingDancers.containsKey(attendance.dancerName)) {
+          // Avoid double-counting dancers that appear in multiple events
+          if (allDancerNames.contains(attendance.dancerName)) {
+            dancersToCreate++;
+            allDancerNames.remove(attendance.dancerName);
+          }
+        }
+      }
+    }
+
+    return EventImportSummary(
+      eventsProcessed: events.length,
+      eventsCreated: eventsToCreate,
+      eventsSkipped: eventsToSkip,
+      attendancesCreated: attendancesToCreate,
+      dancersCreated: dancersToCreate,
+      errors: 0,
+      errorMessages: [],
+      skippedEvents: duplicateEventNames.toList(),
+    );
   }
 
   // Get import preview information

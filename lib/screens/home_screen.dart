@@ -174,14 +174,27 @@ class HomeScreen extends StatelessWidget {
   void _showImportEventsDialog(BuildContext context) {
     ActionLogger.logUserAction('HomeScreen', 'import_events_dialog_opened', {});
 
-    showDialog(
+    showGeneralDialog(
       context: context,
-      builder: (context) => Provider(
+      barrierDismissible: true,
+      barrierLabel: 'Close',
+      pageBuilder: (context, animation, secondaryAnimation) => Provider(
         create: (context) => EventImportService(
           Provider.of<AppDatabase>(context, listen: false),
         ),
-        child: const ImportEventsDialog(),
+        child: const Dialog.fullscreen(
+          child: ImportEventsDialog(),
+        ),
       ),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: animation.drive(Tween(begin: 0.9, end: 1.0)),
+            child: child,
+          ),
+        );
+      },
     ).then((result) {
       if (result == true) {
         ActionLogger.logUserAction('HomeScreen', 'import_events_completed', {});
