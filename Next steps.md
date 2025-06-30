@@ -1,12 +1,10 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
-- **Event Import UI Refinements**:
-  - In the import preview indicate which new tags will be created
 - **Past Events UI**: Past events should display only present tab as I won't do the planing on them anymore
 - **Event Diary Parser**: Parse events from the diary
   - Provide agent an example so they understand the structure
-  - Decide where to put the overall impression (Bardzo udane, udane, ...) - in future I may want to have separate summary tab
+- **Event Diary Parser**: Decide where to put the overall impression (Bardzo udane, udane, ...) - in future I may want to have separate summary tab
 
 ## Little later
 - tap tag pill to filter the list by that tag
