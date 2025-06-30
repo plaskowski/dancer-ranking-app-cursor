@@ -1,7 +1,6 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
-- tags on persons
 - need both impressionTag and impression text
 - importable format (person, tags, notes)
 - predefined impressions

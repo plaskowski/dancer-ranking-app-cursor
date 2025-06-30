@@ -12,26 +12,21 @@ class TagService {
   Stream<List<Tag>> watchAllTags() {
     ActionLogger.logServiceCall('TagService', 'watchAllTags');
 
-    return (_database.select(_database.tags)
-          ..orderBy([(t) => OrderingTerm.asc(t.name)]))
-        .watch();
+    return (_database.select(_database.tags)..orderBy([(t) => OrderingTerm.asc(t.name)])).watch();
   }
 
   // Get a specific tag by ID
   Future<Tag?> getTag(int id) {
     ActionLogger.logServiceCall('TagService', 'getTag', {'tagId': id});
 
-    return (_database.select(_database.tags)..where((t) => t.id.equals(id)))
-        .getSingleOrNull();
+    return (_database.select(_database.tags)..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
   // Get tag by name
   Future<Tag?> getTagByName(String name) {
     ActionLogger.logServiceCall('TagService', 'getTagByName', {'name': name});
 
-    return (_database.select(_database.tags)
-          ..where((t) => t.name.equals(name.toLowerCase())))
-        .getSingleOrNull();
+    return (_database.select(_database.tags)..where((t) => t.name.equals(name.toLowerCase()))).getSingleOrNull();
   }
 
   // Create a new tag
@@ -135,8 +130,7 @@ class TagService {
 
     try {
       final result = await (_database.delete(_database.dancerTags)
-            ..where(
-                (dt) => dt.dancerId.equals(dancerId) & dt.tagId.equals(tagId)))
+            ..where((dt) => dt.dancerId.equals(dancerId) & dt.tagId.equals(tagId)))
           .go();
 
       ActionLogger.logDbOperation('DELETE', 'dancer_tags', {
@@ -163,9 +157,7 @@ class TagService {
     try {
       await _database.transaction(() async {
         // Remove all existing tags for this dancer
-        await (_database.delete(_database.dancerTags)
-              ..where((dt) => dt.dancerId.equals(dancerId)))
-            .go();
+        await (_database.delete(_database.dancerTags)..where((dt) => dt.dancerId.equals(dancerId))).go();
 
         // Add the new tags
         if (tagIds.isNotEmpty) {
@@ -222,4 +214,46 @@ class TagService {
       rethrow;
     }
   }
+
+  // Get all tags with usage count
+  Future<List<TagWithUsageCount>> getAllTagsWithUsageCount() async {
+    ActionLogger.logServiceCall('TagService', 'getAllTagsWithUsageCount');
+
+    try {
+      const query = '''
+        SELECT t.id, t.name, t.created_at, COUNT(dt.dancer_id) as usage_count
+        FROM tags t
+        LEFT JOIN dancer_tags dt ON t.id = dt.tag_id
+        GROUP BY t.id, t.name, t.created_at
+        ORDER BY t.name
+      ''';
+
+      final results = await _database.customSelect(query).get();
+
+      return results.map((row) {
+        return TagWithUsageCount(
+          tag: Tag(
+            id: row.read<int>('id'),
+            name: row.read<String>('name'),
+            createdAt: row.read<DateTime>('created_at'),
+          ),
+          usageCount: row.read<int>('usage_count'),
+        );
+      }).toList();
+    } catch (e) {
+      ActionLogger.logError('TagService.getAllTagsWithUsageCount', e.toString());
+      rethrow;
+    }
+  }
+}
+
+// Helper class for tag with usage count
+class TagWithUsageCount {
+  final Tag tag;
+  final int usageCount;
+
+  TagWithUsageCount({
+    required this.tag,
+    required this.usageCount,
+  });
 }

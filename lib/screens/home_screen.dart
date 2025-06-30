@@ -4,12 +4,14 @@ import 'package:provider/provider.dart';
 
 import '../database/database.dart';
 import '../services/event_service.dart';
+import '../services/tag_service.dart';
 import '../utils/action_logger.dart';
 import '../utils/toast_helper.dart';
 import 'create_event_screen.dart';
 import 'dancers_screen.dart';
 import 'event_screen.dart';
 import 'rank_editor_screen.dart';
+import 'tags_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -17,6 +19,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final eventService = Provider.of<EventService>(context);
+    final tagService = Provider.of<TagService>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -50,6 +53,22 @@ class HomeScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const RankEditorScreen(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.label),
+            tooltip: 'Manage Tags',
+            onPressed: () {
+              ActionLogger.logUserAction('HomeScreen', 'navigate_to_tags', {
+                'destination': 'TagsScreen',
+              });
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TagsScreen(tagService: tagService),
                 ),
               );
             },

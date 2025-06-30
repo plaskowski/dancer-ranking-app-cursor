@@ -4,6 +4,44 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.41.0] - 2025-01-11
+
+### User Requests
+- "I realized that there is no way to navigate to tags screen. Update the spec and impl."
+- "The tags screen is too complex. The rows should be just tags names. Also there is no way to add new tag."
+- "Great, finish this step"
+
+### Added
+- **Tags Screen Navigation**: Added label icon button in Home screen app bar to access Tags management
+- **Tag Creation Functionality**: FloatingActionButton with dialog to create new custom tags
+- **Comprehensive Tags Management**: Complete interface for viewing and managing all tags in the system
+
+### Improved
+- **Simplified Tags UI**: Clean ListTile design showing just tag names with label icons
+- **Immediate Tag Creation**: Simple dialog with auto-focus text input for quick tag entry
+- **Real-time Updates**: StreamBuilder automatically refreshes tag list when new tags created
+- **User Feedback**: Success/error messages via SnackBar for tag creation operations
+- **Duplicate Prevention**: TagService handles duplicate tag creation gracefully
+
+### Changed
+- **Tag System**: Now supports both predefined (8 tags) and custom user-created tags
+- **Navigation Flow**: Direct access to Tags screen from main Home screen app bar
+- **UI Complexity**: Removed usage statistics and creation dates for cleaner interface
+
+### Technical
+- **TagsScreen Implementation**: Complete screen with add tag dialog and StreamBuilder
+- **Home Screen Integration**: Added TagService dependency injection and navigation button
+- **Specification Updates**: Updated Implementation specification.md with complete Tags screen documentation
+- **Action Logging**: Comprehensive logging for tag creation, navigation, and screen lifecycle
+- **Database Integration**: Full CRUD operations through TagService with immediate UI updates
+
+### Files Added
+- **lib/screens/tags_screen.dart**: New Tags management screen with creation functionality
+
+### Files Updated
+- **lib/screens/home_screen.dart**: Added Tags navigation button and TagService dependency
+- **Implementation specification.md**: Complete documentation of Tags screen and navigation flow
+
 ## [v0.40.0] - 2025-01-11
 
 ### User Requests

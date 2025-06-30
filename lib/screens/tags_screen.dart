@@ -1,0 +1,182 @@
+import 'package:flutter/material.dart';
+
+import '../database/database.dart';
+import '../services/tag_service.dart';
+import '../utils/action_logger.dart';
+
+class TagsScreen extends StatefulWidget {
+  final TagService tagService;
+
+  const TagsScreen({super.key, required this.tagService});
+
+  @override
+  State<TagsScreen> createState() => _TagsScreenState();
+}
+
+class _TagsScreenState extends State<TagsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    ActionLogger.logAction('UI_TagsScreen', 'screen_initialized');
+  }
+
+  @override
+  void dispose() {
+    ActionLogger.logAction('UI_TagsScreen', 'screen_disposed');
+    super.dispose();
+  }
+
+  Future<void> _showAddTagDialog() async {
+    final controller = TextEditingController();
+
+    ActionLogger.logAction('UI_TagsScreen', 'add_tag_dialog_opened');
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add New Tag'),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            labelText: 'Tag name',
+            hintText: 'Enter tag name',
+          ),
+          autofocus: true,
+          onSubmitted: (_) => Navigator.of(context).pop(true),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              ActionLogger.logAction(
+                  'UI_TagsScreen', 'add_tag_dialog_cancelled');
+              Navigator.of(context).pop(false);
+            },
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              ActionLogger.logAction(
+                  'UI_TagsScreen', 'add_tag_dialog_confirmed', {
+                'tagName': controller.text.trim(),
+              });
+              Navigator.of(context).pop(true);
+            },
+            child: const Text('Add'),
+          ),
+        ],
+      ),
+    );
+
+    if (result == true && controller.text.trim().isNotEmpty) {
+      await _createTag(controller.text.trim());
+    }
+  }
+
+  Future<void> _createTag(String tagName) async {
+    try {
+      ActionLogger.logAction('UI_TagsScreen', 'creating_tag', {
+        'tagName': tagName,
+      });
+
+      await widget.tagService.createTag(tagName);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Tag "$tagName" created successfully'),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+        );
+
+        ActionLogger.logAction('UI_TagsScreen', 'tag_created_success', {
+          'tagName': tagName,
+        });
+      }
+    } catch (e) {
+      ActionLogger.logError('UI_TagsScreen', 'create_tag_failed', {
+        'tagName': tagName,
+        'error': e.toString(),
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to create tag: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tags'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      ),
+      body: StreamBuilder<List<Tag>>(
+        stream: widget.tagService.watchAllTags(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            ActionLogger.logError('UI_TagsScreen', snapshot.error.toString());
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 48),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Failed to load tags',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    snapshot.error.toString(),
+                    style: Theme.of(context).textTheme.bodySmall,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            );
+          }
+
+          final tags = snapshot.data ?? [];
+
+          ActionLogger.logListRendering('UI_TagsScreen', 'tags',
+              tags.map((tag) => {'id': tag.id, 'name': tag.name}).toList());
+
+          if (tags.isEmpty) {
+            return const Center(
+              child: Text(
+                'No tags found',
+                style: TextStyle(fontSize: 16),
+              ),
+            );
+          }
+
+          return ListView.builder(
+            itemCount: tags.length,
+            itemBuilder: (context, index) {
+              final tag = tags[index];
+              return ListTile(
+                title: Text(tag.name),
+                leading: const Icon(Icons.label_outline),
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddTagDialog,
+        tooltip: 'Add Tag',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}

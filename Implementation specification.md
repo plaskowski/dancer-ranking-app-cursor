@@ -259,22 +259,22 @@ Users can adjust rankings during events for various reasons:
 ### 6. Tags Screen (`TagsScreen`)
 **Purpose**: Manage all tags in the system for dancer categorization
 **Actions**:
-- View list of all predefined tags
-- See usage count for each tag (how many dancers have this tag)
-- Add new custom tags (future enhancement)
-- Edit existing tag names (future enhancement)
-- Delete unused tags (future enhancement)
+- View list of all tags (predefined and custom)
+- Add new custom tags via dialog
+- Simple tag management interface
 **UI Design**:
-- **Simple List Layout**: Tag name with usage statistics
-- **Usage Counter**: Shows "X dancers" for each tag
-- **Clean Interface**: Focus on tag overview and statistics
-- **Consistent Styling**: Matches app-wide design patterns
-**Current Implementation**:
-- **Read-only view**: Display predefined tags with usage counts
-- **No editing**: Tags are predefined and cannot be modified yet
-- **Statistical insight**: Shows which tags are most commonly used
+- **Simple List Layout**: Clean ListTile showing just tag names
+- **Minimalist Interface**: Focus on tag names without clutter
+- **Icon Indicators**: Label outline icon for each tag
+- **Add Tag FAB**: Floating action button to create new tags
+**Add Tag Dialog**:
+- **Simple Text Input**: Enter tag name with validation
+- **Immediate Feedback**: Success/error messages via SnackBar
+- **Duplicate Prevention**: TagService handles duplicate tag creation
+- **Auto-focus**: Text field automatically focused for quick entry
 **Navigation**:
 - ← Back to Home Screen
+- → Add Tag Dialog (FAB)
 
   ### 7. Dialogs and Modals
 
@@ -340,7 +340,7 @@ Home Screen
 ├── Dancers Screen
 │   └── Add/Edit Dancer Dialog (modal) - Full dancer management with tag selection
 └── Tags Screen
-    └── Read-only tag overview with usage statistics
+    └── Add Tag Dialog (FAB) - Create new custom tags
 ```
 
 ### Event Workflow with Dynamic Rankings
@@ -399,11 +399,12 @@ Home Screen
 ### Tags on Persons Feature
 **Purpose**: Categorize dancers by context and frequency to enable better organization and future filtering
 
-**Predefined Tag System**:
+**Tag System**:
 - **8 predefined tags**: `regular`, `occasional`, `rare`, `new`, `dance-class`, `dance-school`, `workshop`, `social`
-- **No custom tags**: Maintains consistency and prevents tag proliferation
-- **Frequency categories**: regular, occasional, rare, new (attendance patterns)
+- **Custom tags**: Users can create additional tags as needed
+- **Frequency categories**: regular, occasional, rare, new (attendance patterns)  
 - **Context categories**: dance-class, dance-school, workshop, social (where you met them)
+- **Duplicate prevention**: TagService prevents duplicate tag creation
 
 **Tag Selection UI**:
 - **Pill-based interface**: FilterChip widgets that can be toggled on/off
