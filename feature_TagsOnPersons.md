@@ -1,10 +1,13 @@
 # Feature: Tags on Persons
 
 ## Overview
-Add simple tagging system to dancers to categorize them and enable tag-based search and filtering.
+Add simple tagging system to dancers to categorize them with visual pill-based selection and display.
 
 ## User Stories
 - As a user, I want to tag dancers with categories like "regular", "dance-class", "rare" so I can organize them
+- As a user, I want to see tags displayed on dancer cards so I know the context of each person
+
+### Future User Stories
 - As a user, I want to search by tags so I can quickly find dancers from specific contexts
 - As a user, I want to filter dancers by tags when selecting for events
 
@@ -58,13 +61,6 @@ Add a new section with **Tag Selection Pills**:
 - Keep visual design simple (no colors initially)
 - Format: Small text badges below name
 
-### Enhanced Search
-Extend existing `searchDancers()` method:
-- Current: searches dancer names only
-- Enhanced: also searches in tag names
-- Example: typing "dance-class" shows all dancers with that tag
-- Combined search: "john dance-class" finds Johns from dance class
-
 ## Implementation Steps
 
 ### Phase 1: Database Foundation
@@ -77,25 +73,40 @@ Extend existing `searchDancers()` method:
 2. Update DancerService to handle tag relationships
 3. Modify Add/Edit Dancer dialog with pill selection UI
 
-### Phase 3: Display & Search
+### Phase 3: Display
 1. Update dancer list to show tags
-2. Enhance search functionality to include tags
-3. Test tag-based filtering
+2. Test tag assignment and display
 
-### Phase 4: Integration
+## Future Enhancements (Later Implementation)
+
+### Enhanced Search & Filtering
+Extend existing `searchDancers()` method:
+- Current: searches dancer names only
+- Enhanced: also searches in tag names
+- Example: typing "dance-class" shows all dancers with that tag
+- Combined search: "john dance-class" finds Johns from dance class
+
+### Event Integration
 1. Add tag filtering to Select Dancers screen
 2. Use tags for "dancers pool category" functionality
-3. Test complete workflow
+3. Advanced filtering options (multiple tags, exclude tags)
 
 ## Technical Notes
 - Tags are case-insensitive (stored lowercase)
 - Many-to-many relationship allows multiple tags per dancer
 - Cascade delete ensures cleanup when dancers are removed
+
+### Future Technical Notes
 - Search should be efficient with proper indexing
+- Tag filtering queries will need optimization for large datasets
 
 ## Success Criteria
 - [ ] Can assign multiple tags to any dancer
 - [ ] Tags display clearly in dancers list
-- [ ] Search finds dancers by tag names
 - [ ] Tag selection is intuitive with pill interface
-- [ ] Tag data persists correctly in database 
+- [ ] Tag data persists correctly in database
+
+### Future Success Criteria
+- [ ] Search finds dancers by tag names
+- [ ] Can filter dancers by tags in event selection
+- [ ] Advanced filtering works with multiple tags 
