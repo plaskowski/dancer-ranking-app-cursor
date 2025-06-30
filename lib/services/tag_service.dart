@@ -126,6 +126,46 @@ class TagService {
     }
   }
 
+  // Delete a tag (with automatic cleanup of dancer-tag relationships)
+  Future<bool> deleteTag(int id) async {
+    ActionLogger.logServiceCall('TagService', 'deleteTag', {
+      'id': id,
+    });
+
+    try {
+      final existing = await getTag(id);
+      if (existing == null) {
+        ActionLogger.logError('TagService.deleteTag', 'tag_not_found', {
+          'id': id,
+        });
+        return false;
+      }
+
+      // Get usage count before deletion for logging
+      final usageCount =
+          await getDancersByTag(id).then((dancers) => dancers.length);
+
+      final result = await (_database.delete(_database.tags)
+            ..where((t) => t.id.equals(id)))
+          .go();
+
+      ActionLogger.logDbOperation('DELETE', 'tags', {
+        'id': id,
+        'name': existing.name,
+        'usageCount': usageCount,
+        'success': result > 0,
+        'affected_rows': result,
+      });
+
+      return result > 0;
+    } catch (e) {
+      ActionLogger.logError('TagService.deleteTag', e.toString(), {
+        'id': id,
+      });
+      rethrow;
+    }
+  }
+
   // Get tags for a specific dancer
   Future<List<Tag>> getDancerTags(int dancerId) async {
     ActionLogger.logServiceCall('TagService', 'getDancerTags', {

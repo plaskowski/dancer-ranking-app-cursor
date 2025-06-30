@@ -4,6 +4,30 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.43.0] - 2025-01-11
+
+### User Requests
+- "wrap it up and take first item" - referring to "add option to remove a tag" from Next steps.md
+
+### Added
+- **Tag Deletion**: Added ability to delete tags from Tags screen
+  - New `deleteTag` method in TagService with automatic cleanup of dancer-tag relationships
+  - Delete option in tag context menu with confirmation dialog
+  - Cascade deletion automatically removes tag from all dancers
+  - Comprehensive logging of deletion operations including usage counts
+
+### Improved
+- **Complete Tag Management**: Tags screen now supports full CRUD operations (Create, Read, Update, Delete)
+- **Safe Deletion Process**: Confirmation dialog warns users about permanent action and impact on dancers
+- **Visual Feedback**: Error-styled delete button and comprehensive user notifications
+- **Database Integrity**: Automatic cleanup of related records via cascade constraints
+
+### Technical
+- Enhanced TagService with `deleteTag(id)` method following established patterns
+- Database cascade delete ensures no orphaned dancer-tag relationships
+- Proper error handling and user feedback for all deletion scenarios
+- Comprehensive action logging for deletion operations and usage tracking
+
 ## [v0.42.0] - 2025-01-11
 
 ### User Requests

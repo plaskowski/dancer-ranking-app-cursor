@@ -329,10 +329,122 @@ class _TagsScreenState extends State<TagsScreen> {
                   _showEditTagDialog(tag);
                 },
               ),
+              ListTile(
+                leading: Icon(
+                  Icons.delete,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                title: const Text('Delete'),
+                onTap: () {
+                  ActionLogger.logAction(
+                      'UI_TagsScreen', 'context_delete_tapped', {
+                    'tagId': tag.id,
+                    'tagName': tag.name,
+                  });
+
+                  Navigator.pop(context);
+                  _showDeleteTagDialog(tag);
+                },
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _showDeleteTagDialog(Tag tag) async {
+    ActionLogger.logAction('UI_TagsScreen', 'delete_tag_dialog_opened', {
+      'tagId': tag.id,
+      'tagName': tag.name,
+    });
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Tag'),
+        content: Text(
+          'Delete "${tag.name}"?\n\nThis will remove the tag from all dancers who have it. This action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              ActionLogger.logAction(
+                  'UI_TagsScreen', 'delete_tag_dialog_cancelled');
+              Navigator.of(context).pop(false);
+            },
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              ActionLogger.logAction(
+                  'UI_TagsScreen', 'delete_tag_dialog_confirmed', {
+                'tagId': tag.id,
+                'tagName': tag.name,
+              });
+              Navigator.of(context).pop(true);
+            },
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              foregroundColor: Theme.of(context).colorScheme.onError,
+            ),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (result == true) {
+      await _deleteTag(tag);
+    }
+  }
+
+  Future<void> _deleteTag(Tag tag) async {
+    try {
+      ActionLogger.logAction('UI_TagsScreen', 'deleting_tag', {
+        'tagId': tag.id,
+        'tagName': tag.name,
+      });
+
+      final success = await widget.tagService.deleteTag(tag.id);
+
+      if (mounted) {
+        if (success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Tag "${tag.name}" deleted'),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+            ),
+          );
+
+          ActionLogger.logAction('UI_TagsScreen', 'tag_deleted_success', {
+            'tagId': tag.id,
+            'tagName': tag.name,
+          });
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Failed to delete tag'),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      ActionLogger.logError('UI_TagsScreen', 'delete_tag_failed', {
+        'tagId': tag.id,
+        'tagName': tag.name,
+        'error': e.toString(),
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to delete tag: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
   }
 }

@@ -1,7 +1,6 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
-- add option to remove a tag
 - why in Dancers screen rows have context actions button? they should follow "tap for context actions" pattern
 - need both impressionTag and impression text
 - importable format (person, tags, notes)

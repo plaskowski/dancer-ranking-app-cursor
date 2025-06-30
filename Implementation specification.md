@@ -419,11 +419,14 @@ Home Screen
 
 **Tag Management Screen**:
 - **Tags Screen Navigation**: Accessible from Home screen app bar with label icon button
-- **Tag Editing**: Context menu on each tag with Edit option for renaming
-- **Edit Dialog**: Simple text field with validation and duplicate checking
-- **Add New Tags**: FloatingActionButton with dialog to create custom tags
+- **Complete CRUD Operations**: Full Create, Read, Update, Delete functionality for tags
+- **Context Menu Actions**: Tap any tag to access Edit and Delete options via modal bottom sheet
+- **Tag Creation**: FloatingActionButton with dialog to create custom tags
+- **Tag Editing**: Simple text field with validation and duplicate checking
+- **Tag Deletion**: Confirmation dialog with warning about permanent action and dancer impact
 - **Real-time Updates**: StreamBuilder automatically refreshes when tags are modified
 - **User Feedback**: Success/error notifications via SnackBar for all operations
+- **Database Integrity**: Cascade delete automatically removes tag from all associated dancers
 - **Responsive layout**: Tags wrap to multiple lines when needed
 
 **Data Architecture**:
