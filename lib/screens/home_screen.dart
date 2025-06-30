@@ -550,12 +550,6 @@ class _EventCard extends StatelessWidget {
                   : Theme.of(context).colorScheme.primary,
             ),
           ),
-          trailing: Icon(
-            isPast ? Icons.history : Icons.arrow_forward_ios,
-            color: isPast
-                ? Theme.of(context).colorScheme.onSurfaceVariant
-                : Theme.of(context).colorScheme.primary,
-          ),
         ),
       ),
     );

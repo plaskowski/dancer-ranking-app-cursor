@@ -4,6 +4,17 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.49.0] - 2025-01-13
+
+### User Requests
+- "Do "remove icon from event row (regression)""
+
+### Fixed
+- **Event Row UI**: Removed the trailing icon from the event rows on the Home screen to simplify the UI and address a visual regression.
+
+### Files Modified
+- **lib/screens/home_screen.dart**: Removed the `trailing` `Icon` from the `ListTile` in the `_EventCard` widget.
+
 ## [v0.48.0] - 2025-01-13
 
 ### User Requests

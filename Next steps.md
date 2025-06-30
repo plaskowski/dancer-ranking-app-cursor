@@ -6,7 +6,6 @@
   - Provide agent with an example to understand the structure.
 
 ## Little later
-- remove icon from event row (regression)
 - event date change does not work (regression)
 - AppBar title and subtitle should be centered (regression)
 - tap tag pill to filter the list by that tag
