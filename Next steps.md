@@ -1,12 +1,17 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
+- add a way to edit tag name
+- why in Dancers screen rows have context actions button? they should follow "tap for context actions" pattern
 - need both impressionTag and impression text
 - importable format (person, tags, notes)
 - predefined impressions
 - ...
 - parse events
   - provide agent an example so they understand the structure
+
+## Little later
+- tap tag pill to filter the list by that tag
 
 ### Bug Fixes
 - **Event Date Change**: Context menu date picker shows but changes don't persist to database
