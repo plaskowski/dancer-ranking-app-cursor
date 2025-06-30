@@ -1,6 +1,8 @@
 # Next Steps
 
 ## Immediate Priorities
+- use FAB instead of AppBar for Add action in Ranks screen
+- I dont want long press, it is too slow to use
 
 ### Bug Fixes
 - **Event Date Change**: Context menu date picker shows but changes don't persist to database
