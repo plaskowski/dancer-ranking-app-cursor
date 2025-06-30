@@ -5,7 +5,7 @@ Add simple tagging system to dancers to categorize them with visual pill-based s
 
 ## User Stories
 - As a user, I want to tag dancers with categories like "regular", "dance-class", "rare" so I can organize them
-- As a user, I want to see tags displayed on dancer cards so I know the context of each person
+- As a user, I want to see tags displayed on the main Dancers screen so I know the context of each person
 
 ### Future User Stories
 - As a user, I want to search by tags so I can quickly find dancers from specific contexts
@@ -57,9 +57,10 @@ Add a new section with **Tag Selection Pills**:
   ```
 
 ### Dancers List Display
-- Show active tags as small chips/badges under dancer name
+- Show active tags as small chips/badges under dancer name on **Dancers screen only**
 - Keep visual design simple (no colors initially)
 - Format: Small text badges below name
+- **Note**: Tags are NOT displayed on event-related screens (Select Dancers, etc.) to avoid visual clutter
 
 ## Implementation Steps
 
@@ -74,8 +75,9 @@ Add a new section with **Tag Selection Pills**:
 3. Modify Add/Edit Dancer dialog with pill selection UI
 
 ### Phase 3: Display
-1. Update dancer list to show tags
-2. Test tag assignment and display
+1. Update main Dancers screen to show tags (dancers_screen.dart)
+2. Ensure tags are NOT displayed on event-related screens
+3. Test tag assignment and display
 
 ## Future Enhancements (Later Implementation)
 
@@ -102,7 +104,8 @@ Extend existing `searchDancers()` method:
 
 ## Success Criteria
 - [ ] Can assign multiple tags to any dancer
-- [ ] Tags display clearly in dancers list
+- [ ] Tags display clearly on main Dancers screen only
+- [ ] Tags are NOT shown on event screens (Select Dancers, etc.)
 - [ ] Tag selection is intuitive with pill interface
 - [ ] Tag data persists correctly in database
 
