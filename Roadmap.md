@@ -94,6 +94,13 @@
 
 ## Nice to Have Ideas
 
+- migrate historical data from Diary
+- export the party summary to the Diary
+- Use emojis in Rank names
+- Filter people by tags. Eg. tag about where I know them from in case I don't know or remember the name or #longTimeNoSee or #comesRarely
+- Odfiltrowanie dawno niewidzianych/rzadko spotykanych
+- People archival
+- Rank add/edit and archival
 - Dancers avatars/photos
 - Switch for filtering off dancers that 'left' in Present Tab
 - Custom themes and personalization

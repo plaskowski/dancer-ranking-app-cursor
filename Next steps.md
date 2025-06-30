@@ -1,6 +1,7 @@
 # Next Steps
 
 ## Immediate Priorities
+- check that on all dancers list they are sorted by name ascending (ofc first sort by rank if the list groups them by it)
 
 ### Bug Fixes
 - **Event Date Change**: Context menu date picker shows but changes don't persist to database
