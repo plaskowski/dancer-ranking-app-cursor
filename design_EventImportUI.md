@@ -83,7 +83,6 @@ This document outlines the user interface design for the Event Import feature, e
 │ │   • ... 2 more                      │ │
 │ └─────────────────────────────────────┘ │
 │                                         │
-│ ⚠️  2 potential conflicts detected      │
 │                                         │
 │      [Back]      [Cancel]      [Next]   │
 └─────────────────────────────────────────┘
@@ -93,41 +92,10 @@ This document outlines the user interface design for the Event Import feature, e
 - Import statistics summary at top
 - Scrollable list of events to be imported
 - Expandable event cards showing attendance details
-- Conflict indicator if issues detected
-- Data validation status display
+- Clean preview of import data
+- Automatic handling of duplicates and missing dancers
 
-### Step 3: Import Information
-```
-┌─────────────────────────────────────────┐
-│ Import Events                       [X] │
-├─────────────────────────────────────────┤
-│ Step 3 of 4: Review Import             │
-│                                         │
-│ ⚙️ Import Options                       │
-│ ☐ Validation only (don't import)       │
-│                                         │
-│ ℹ️ Import Information                   │
-│ ┌─────────────────────────────────────┐ │
-│ │ 🔄 1 duplicate event detected       │ │
-│ │    "Friday Salsa" (Jan 12)          │ │
-│ │    Will be skipped automatically    │ │
-│ └─────────────────────────────────────┘ │
-│ ┌─────────────────────────────────────┐ │
-│ │ 👤 2 missing dancers detected       │ │
-│ │    Will be created automatically    │ │
-│ └─────────────────────────────────────┘ │
-│                                         │
-│      [Back]      [Cancel]      [Import] │
-└─────────────────────────────────────────┘
-```
 
-**Functionality:**
-- Single checkbox for validation-only mode
-- Informational display of what will happen during import
-- Duplicate events are automatically skipped (always)
-- Missing dancers are automatically created (always)
-- Clear indication of automatic actions
-- Import button always enabled when no critical errors exist
 
 
 ```
@@ -171,9 +139,7 @@ This document outlines the user interface design for the Event Import feature, e
 - **Action**: Opens ImportEventsDialog
 
 ### Event Screen Integration
-- **Refresh trigger**: Refresh event list after successful import
-- **Navigation**: Option to navigate to newly imported events
-- **Status indication**: Show recent import status if applicable
+- **Automatic refresh**: Event list will automatically update after successful import via watch() streams
 
 ## UI Components Specification
 
@@ -227,9 +193,9 @@ class EventPreviewCard extends StatelessWidget {
 - **Example**: "Invalid JSON format. Please check your file and try again."
 
 ### Validation Errors
-- **Display**: Warning cards in conflicts section
+- **Display**: Error messages during parsing or import
 - **Message**: Specific field validation issues
-- **Action**: User can choose to continue or fix issues
+- **Action**: Import fails with clear error message
 - **Example**: "Event name too long (max 100 characters)"
 
 ### Import Errors
@@ -292,7 +258,7 @@ class EventPreviewCard extends StatelessWidget {
 - Component rendering tests
 - File parsing validation
 - Error handling scenarios
-- Option configuration tests
+- Automatic import behavior tests
 
 ### Integration Testing
 - Complete import workflow
@@ -303,7 +269,7 @@ class EventPreviewCard extends StatelessWidget {
 ### User Testing
 - File selection usability
 - Preview clarity and completeness
-- Option configuration understanding
+- Import flow simplicity
 - Results interpretation
 
 ## Implementation Priority
@@ -315,10 +281,10 @@ class EventPreviewCard extends StatelessWidget {
 4. Basic import execution
 
 ### Phase 2: Enhanced UX
-1. Conflict detection and resolution
-2. Import options configuration
-3. Detailed progress indication
-4. Comprehensive error handling
+1. Detailed progress indication
+2. Comprehensive error handling
+3. Enhanced preview information
+4. Mobile optimizations
 
 ### Phase 3: Polish & Optimization
 1. Performance optimizations
