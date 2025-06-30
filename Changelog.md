@@ -811,3 +811,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 1. **Planning Tab Optimization**: Converted from showing all ranked dancers to only showing absent ranked dancers, making it perfect for event attendance tracking
 2. **Smart Filtering Enhancement**: Add Existing Dancer dialog now intelligently excludes present dancers, preventing duplicate attendance records
 3. **Documentation Sync**: All specifications updated to match implementation changes 
+
+## [v0.34.0] - 2024-12-22
+
+### User Requests
+- "do next step" - Fix dancer name sorting within rank groups
+
+### Fixed
+- **Dancer Sorting**: Fixed dancers not being sorted alphabetically by name within rank groups in Planning and Present tabs
+  - Added name sorting within each rank group after grouping by rank
+  - Ensures consistent alphabetical ordering: first by rank (best first), then by name within each rank
+  - Affects Planning tab and Present tab dancer displays
+
+### Technical
+- Modified `lib/screens/tabs/planning_tab.dart` to sort dancers by name within rank groups
+- Modified `lib/screens/tabs/present_tab.dart` to sort dancers by name within rank groups
+- Other dancer lists (main Dancers screen, selection screens) already had proper name sorting via service layer 

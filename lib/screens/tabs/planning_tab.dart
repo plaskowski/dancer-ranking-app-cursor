@@ -145,6 +145,11 @@ class _PlanningTabState extends State<PlanningTab> {
           groupedDancers[rankName]!.add(dancer);
         }
 
+        // Sort dancers within each rank group by name
+        for (final rankName in groupedDancers.keys) {
+          groupedDancers[rankName]!.sort((a, b) => a.name.compareTo(b.name));
+        }
+
         // Sort groups by rank ordinal
         final sortedKeys = groupedDancers.keys.toList()
           ..sort((a, b) {

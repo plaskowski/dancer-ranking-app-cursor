@@ -96,6 +96,11 @@ class PresentTab extends StatelessWidget {
           groupedDancers[rankName]!.add(dancer);
         }
 
+        // Sort dancers within each rank group by name
+        for (final rankName in groupedDancers.keys) {
+          groupedDancers[rankName]!.sort((a, b) => a.name.compareTo(b.name));
+        }
+
         // Sort ranks by ordinal (best first)
         final sortedKeys = groupedDancers.keys.toList()
           ..sort((a, b) {
