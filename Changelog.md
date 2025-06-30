@@ -11,13 +11,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - **Event Date Persistence**: Fixed regression where event date changes were not persisting to the database
-  - Root cause: Generated Drift database code was out of sync with table definitions
-  - Solution: Regenerated database code using `flutter pub run build_runner build --delete-conflicting-outputs`
-  - Event date updates now properly persist and are reflected in the UI
+  - Root cause: Context deactivation after date picker dialog caused Provider access errors
+  - Solution: Get EventService reference before showing dialog and pass it directly to update method
+  - **Verified**: Date changes now properly persist and are reflected in the UI (tested: 2025-06-29 → 2025-07-03)
+  - Eliminated "Looking up a deactivated widget's ancestor is unsafe" error
 
 ### Technical
+- **Context Management**: Fixed Provider.of() access after dialog dismissal by pre-fetching service reference
 - **Database Code Generation**: Regenerated all Drift database code to ensure sync with table definitions
-- **Build Process**: Updated 98 generated files to fix database operation inconsistencies
+- **Method Signature**: Updated `_performDateChange` to accept EventService parameter directly
+
+### Files Modified
+- **lib/screens/home_screen.dart**: Fixed context issue in `_showChangeDateDialog` and `_performDateChange` methods
 
 ## [v0.49.0] - 2025-01-13
 

@@ -332,6 +332,9 @@ class _EventCard extends StatelessWidget {
       'currentDate': event.date.toIso8601String(),
     });
 
+    // Get EventService reference before showing dialog to avoid context issues
+    final eventService = Provider.of<EventService>(context, listen: false);
+
     final selectedDate = await showDatePicker(
       context: context,
       initialDate: event.date,
@@ -347,7 +350,7 @@ class _EventCard extends StatelessWidget {
         'oldDate': event.date.toIso8601String(),
       });
 
-      _performDateChange(context, selectedDate);
+      _performDateChange(context, selectedDate, eventService);
     } else {
       ActionLogger.logUserAction('EventCard', 'date_change_cancelled', {
         'eventId': event.id,
@@ -355,7 +358,8 @@ class _EventCard extends StatelessWidget {
     }
   }
 
-  void _performDateChange(BuildContext context, DateTime newDate) async {
+  void _performDateChange(
+      BuildContext context, DateTime newDate, EventService eventService) async {
     ActionLogger.logUserAction('EventCard', 'date_change_started', {
       'eventId': event.id,
       'newDate': newDate.toIso8601String(),
@@ -363,7 +367,6 @@ class _EventCard extends StatelessWidget {
     });
 
     try {
-      final eventService = Provider.of<EventService>(context, listen: false);
       final success = await eventService.updateEvent(event.id, date: newDate);
 
       if (context.mounted) {
