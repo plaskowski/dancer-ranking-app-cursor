@@ -46,6 +46,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Import Management**: Proper error handling and event name fetching
 - **UI Consistency**: Maintains same dialog behavior with improved placement
 
+## [v0.33.2] - 2025-01-11
+
+### User Requests
+- "Nice, but this 'imported from another event' is not needed"
+
+### Improved
+- **Cleaner Import Reasons**: Removed automatic "Imported from another event:" prefix from ranking reasons
+- **Original Context Preserved**: Import process now preserves original ranking reasons exactly as they were
+- **Less Clutter**: Ranking reasons remain clean and focused on the actual reasoning
+
+### Changed
+- **Ranking Import**: No longer adds import prefix to ranking reasons
+- **Data Preservation**: Original reasons from source event are copied verbatim
+
+### Technical
+- **RankingService.importRankingsFromEvent()**: Removed reason prefix logic
+- **Data Integrity**: Direct copying of reason field without modification
+
 ## [v0.32.0] - 2025-01-11
 
 ### User Requests

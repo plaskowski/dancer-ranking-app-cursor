@@ -302,9 +302,7 @@ class RankingService {
               eventId: targetEventId,
               dancerId: dancerId,
               rankId: sourceRanking.rankId,
-              reason:
-                  'Imported from another event: ${sourceRanking.reason ?? ''}'
-                      .trim(),
+              reason: sourceRanking.reason,
             );
             overwritten++;
             ActionLogger.logAction('RankingService.importRankingsFromEvent',
@@ -331,8 +329,7 @@ class RankingService {
             eventId: targetEventId,
             dancerId: dancerId,
             rankId: sourceRanking.rankId,
-            reason: 'Imported from another event: ${sourceRanking.reason ?? ''}'
-                .trim(),
+            reason: sourceRanking.reason,
           );
           imported++;
           ActionLogger.logAction(
