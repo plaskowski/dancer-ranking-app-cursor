@@ -100,7 +100,7 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        'Ranks are ordered by priority. Drag to reorder, tap to edit.',
+                        'Drag to reorder priority. Tap to edit, long press for options.',
                         style: TextStyle(
                           fontSize: 12,
                           color:
@@ -582,88 +582,61 @@ class _RankCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        leading: Row(
+      child: GestureDetector(
+        onLongPress: () => _showContextMenu(context),
+        child: ListTile(
+          title: Text(
+            rank.name,
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
+          subtitle: rank.isArchived
+              ? Text(
+                  'Archived',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                )
+              : null,
+          onTap: onEdit,
+        ),
+      ),
+    );
+  }
+
+  void _showContextMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              Icons.drag_handle,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-            const SizedBox(width: 8),
-            CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-              radius: 12,
-              child: Text(
-                '${index + 1}',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                ),
-              ),
-            ),
-          ],
-        ),
-        title: Text(
-          rank.name,
-          style: const TextStyle(fontWeight: FontWeight.w600),
-        ),
-        subtitle: Text(
-          'Priority: ${rank.ordinal}',
-          style: TextStyle(
-            fontSize: 12,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
-        ),
-        trailing: PopupMenuButton<String>(
-          onSelected: (value) {
-            switch (value) {
-              case 'edit':
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('Edit'),
+              onTap: () {
+                Navigator.pop(context);
                 onEdit();
-                break;
-              case 'archive':
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.archive),
+              title: const Text('Archive'),
+              onTap: () {
+                Navigator.pop(context);
                 onArchive();
-                break;
-              case 'delete':
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.delete),
+              title: const Text('Delete'),
+              onTap: () {
+                Navigator.pop(context);
                 onDelete();
-                break;
-            }
-          },
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'edit',
-              child: Row(
-                children: [
-                  Icon(Icons.edit),
-                  SizedBox(width: 8),
-                  Text('Edit'),
-                ],
-              ),
-            ),
-            const PopupMenuItem(
-              value: 'archive',
-              child: Row(
-                children: [
-                  Icon(Icons.archive),
-                  SizedBox(width: 8),
-                  Text('Archive'),
-                ],
-              ),
-            ),
-            const PopupMenuItem(
-              value: 'delete',
-              child: Row(
-                children: [
-                  Icon(Icons.delete),
-                  SizedBox(width: 8),
-                  Text('Delete'),
-                ],
-              ),
+              },
             ),
           ],
         ),
-        onTap: onEdit,
       ),
     );
   }

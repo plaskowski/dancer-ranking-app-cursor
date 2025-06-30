@@ -17,7 +17,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -31,6 +31,10 @@ class AppDatabase extends _$AppDatabase {
           if (from < 2) {
             // Migration from v1 to v2: Replace hasDanced boolean with status text field
             await _migrateToStatusField(m);
+          }
+          if (from < 3) {
+            // Migration from v2 to v3: Add new fields to Ranks table
+            await _migrateRanksTable(m);
           }
         },
       );
@@ -62,6 +66,23 @@ class AppDatabase extends _$AppDatabase {
 
     // Drop the temporary table
     await customStatement('DROP TABLE attendances_temp');
+  }
+
+  // Migration helper to add new fields to Ranks table
+  Future<void> _migrateRanksTable(Migrator m) async {
+    final now = DateTime.now().millisecondsSinceEpoch;
+
+    // Add new columns to existing ranks table
+    await customStatement(
+        'ALTER TABLE ranks ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0');
+    await customStatement(
+        'ALTER TABLE ranks ADD COLUMN created_at INTEGER NOT NULL DEFAULT $now');
+    await customStatement(
+        'ALTER TABLE ranks ADD COLUMN updated_at INTEGER NOT NULL DEFAULT $now');
+
+    // Update existing ranks to have proper timestamps
+    await customStatement(
+        'UPDATE ranks SET created_at = $now, updated_at = $now WHERE created_at = $now');
   }
 
   // Insert the predefined rank options

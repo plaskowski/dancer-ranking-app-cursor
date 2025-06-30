@@ -220,8 +220,13 @@ Users can adjust rankings during events for various reasons:
 - View list of all dancers
 - Search dancers by name or notes
 - Add new dancer (FAB)
-- Edit existing dancer (tap menu)
-- Delete dancer (tap menu, with confirmation)
+- Edit existing dancer (tap)
+- Delete dancer (long press → modal menu, with confirmation)
+**UI Design**:
+- **Clean Card Layout**: Simple title and subtitle display without visual clutter
+- **Long Press Interaction**: Context menu via long press gesture showing modal bottom sheet
+- **Tap to Edit**: Primary interaction opens edit dialog
+- **Consistent Pattern**: Matches app-wide interaction patterns (long press → modal menu)
 **Navigation**:
 - ← Back to previous screen
 - → Add/Edit Dancer Dialog (modal)
@@ -395,20 +400,28 @@ Example logs:
 ```
 
 ### 5. Rank Editor Screen (`RankEditorScreen`)
-**Purpose**: Comprehensive rank management system
+**Purpose**: Comprehensive rank management system with clean, modern interface
 **Actions**:
-- View all ranks ordered by priority (ordinal)
+- View all ranks ordered by priority (visual position indicates priority)
 - Drag-to-reorder ranks to change priority
 - Add new rank (app bar + button)
-- Edit rank name (tap rank or popup menu)
-- Archive rank (hide from new events, popup menu)
-- Delete rank with reassignment (popup menu)
+- Edit rank name (tap rank)
+- Archive rank (long press → modal menu)
+- Delete rank with reassignment (long press → modal menu)
 - Visual feedback for all operations
+**UI Design**:
+- **Minimalist Cards**: Clean rank name display without visual clutter
+- **Long Press Interaction**: Context menu via long press gesture showing modal bottom sheet
+- **Visual Priority**: Position in list clearly indicates priority order (no numbers needed)
+- **Tap to Edit**: Primary interaction opens rename dialog
+- **Consistent Pattern**: Matches app-wide interaction patterns (long press → modal menu)
+- **Archived Status**: Shows "Archived" subtitle only when relevant
 **Features**:
 - **Smart Filtering**: Only active (non-archived) ranks shown in ranking dialogs
 - **Safe Deletion**: Requires replacement rank selection for existing rankings
 - **Real-time Updates**: Immediate UI refresh after operations
 - **Error Handling**: Comprehensive validation and user feedback
+- **Database Migration**: Proper schema versioning for backward compatibility
 **Navigation**:
 - ← Back to Home Screen
 - No sub-navigation (self-contained management)

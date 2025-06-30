@@ -209,48 +209,52 @@ class _DancerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-          child: Text(
-            dancer.name.isNotEmpty ? dancer.name[0].toUpperCase() : '?',
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-              fontWeight: FontWeight.bold,
-            ),
+      child: GestureDetector(
+        onLongPress: () => _showContextMenu(context),
+        child: ListTile(
+          title: Text(
+            dancer.name,
+            style: const TextStyle(fontWeight: FontWeight.w600),
           ),
+          subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
+              ? Text(
+                  dancer.notes!,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                )
+              : Text(
+                  'No notes yet',
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                ),
+          onTap: onEdit,
         ),
-        title: Text(
-          dancer.name,
-          style: const TextStyle(fontWeight: FontWeight.w600),
-        ),
-        subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
-            ? Text(
-                dancer.notes!,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              )
-            : Text(
-                'No notes yet',
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant),
-              ),
-        trailing: PopupMenuButton<String>(
-          onSelected: (value) {
-            if (value == 'edit') {
-              onEdit();
-            } else if (value == 'delete') {
-              onDelete();
-            }
-          },
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'edit',
-              child: Text('Edit'),
+      ),
+    );
+  }
+
+  void _showContextMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('Edit'),
+              onTap: () {
+                Navigator.pop(context);
+                onEdit();
+              },
             ),
-            const PopupMenuItem(
-              value: 'delete',
-              child: Text('Delete'),
+            ListTile(
+              leading: const Icon(Icons.delete),
+              title: const Text('Delete'),
+              onTap: () {
+                Navigator.pop(context);
+                onDelete();
+              },
             ),
           ],
         ),

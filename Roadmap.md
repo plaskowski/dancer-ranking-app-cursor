@@ -41,3 +41,4 @@
 - Automated testing before marking tasks as done
 - User acceptance testing protocols
 - Performance benchmarking tools
+- Add a rule for the workflow to write down the mistakes that were made by cursor and add a cursor rule that will prevent it in the future

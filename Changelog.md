@@ -4,6 +4,38 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.36.0] - 2025-01-11
+
+### User Requests
+- "When I open the ranks screen I get 'nullcheck operator used on null value'"
+- "Nice. Next - there is no point in displaying the priority value, the order of the rows is enough."
+- "Good, remove also the blue circle with the ordinal number from the rows"
+- "Great. Let's keep the UI patterns aligned between screen. Double check the new screen with existing screens."
+- "great progress, let's finish this step"
+
+### Fixed
+- **Database Migration Issue**: Fixed "nullcheck operator used on null value" error in rank editor
+- **Schema Migration**: Added proper v2 to v3 database migration for new Ranks table fields
+- **Null Safety**: Enhanced null handling for isArchived, createdAt, updatedAt fields
+
+### Improved
+- **Cleaner Rank Editor UI**: Removed redundant priority numbers from rank display
+- **Minimalist Design**: Removed circular ordinal number indicators for streamlined appearance
+- **Visual Hierarchy**: Position order now clearly communicated through visual sequence alone
+- **Consistent UI Patterns**: Standardized interaction patterns across all screens
+
+### Changed
+- **Dancers Screen**: Replaced PopupMenuButton with long press gesture and modal bottom sheet
+- **Context Menu Consistency**: All screens now use long press → modal bottom sheet pattern
+- **Card Design**: Unified clean card design without visual clutter across app
+- **Instructions**: Simplified to "Drag to reorder priority. Tap to edit, long press for options."
+
+### Technical
+- **Database Schema**: Updated to version 3 with proper migration for Ranks table
+- **Migration Handler**: Added _migrateRanksTable method with default values for existing data
+- **UI Consistency**: Aligned all card components to use GestureDetector with onLongPress
+- **Modal Bottom Sheets**: Standardized context menu implementation across screens
+
 ## [v0.33.0] - 2025-01-11
 
 ### User Requests
