@@ -1,11 +1,12 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
-- parse events
+- establish JSON format for event import
+- parse events from the diary
   - provide agent an example so they understand the structure
 
 ## Little later
-- tag tag pill to filter the list by that tag
+- tap tag pill to filter the list by that tag
 - try out different models
 
 ### Bug Fixes

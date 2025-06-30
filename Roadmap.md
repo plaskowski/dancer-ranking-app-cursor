@@ -2,16 +2,12 @@
 
 ## Near-term Features (next few weeks)
 
+- migrate historical data from Diary
+- Tags on persons, part 2 - see feature_TagsOnPersons.md
 - dancers pool category - see feature_DancersPoolCategory.md
-- Tags on persons
-  - ability to add tags to a person
-  - ability to search by tag where we already search by person name
-  - use-case: tag can express where I know the person from (dance class, dance school, regular party)
-  - use-case: use tags to implement the "dancers pool category"
 - CSV export for events and dancer data
 - Data backup and restore functionality
 - Statistical insights and trends
-- migrate historical data from Diary
 - export the party summary to the Diary
 - Use emojis in Rank names
 - Filter people by tags. Eg. tag about where I know them from in case I don't know or remember the name or #longTimeNoSee or #comesRarely
