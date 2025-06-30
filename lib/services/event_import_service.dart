@@ -30,7 +30,6 @@ class EventImportService {
     ActionLogger.logServiceCall('EventImportService', 'importEventsFromJson', {
       'jsonLength': jsonContent.length,
       'options': {
-        'createMissingDancers': options.createMissingDancers,
         'validateOnly': options.validateOnly,
       },
     });
@@ -182,9 +181,9 @@ class EventImportService {
             // Process attendances
             for (final attendance in event.attendances) {
               try {
-                // Get or create dancer
+                // Get or create dancer (always create missing dancers)
                 Dancer? dancer = existingDancers[attendance.dancerName];
-                if (dancer == null && options.createMissingDancers) {
+                if (dancer == null) {
                   final dancerId = await _dancerService.createDancer(
                       name: attendance.dancerName);
                   dancer = await _dancerService.getDancer(dancerId);

@@ -30,7 +30,7 @@ This document outlines the user interface design for the Event Import feature, e
 ### Supporting Components
 - **EventPreviewCard**: Display individual event information
 - **AttendancePreviewList**: Show attendance records for events
-- **ImportInfoWidget**: Display information about duplicates and missing dancers
+- **ImportInfoWidget**: Display information about duplicates and missing dancers (automatic handling)
 - **ImportProgressIndicator**: Show import progress during execution
 
 ## Dialog Flow Design
@@ -97,15 +97,14 @@ This document outlines the user interface design for the Event Import feature, e
 - Conflict indicator if issues detected
 - Data validation status display
 
-### Step 3: Import Options & Information
+### Step 3: Import Information
 ```
 ┌─────────────────────────────────────────┐
 │ Import Events                       [X] │
 ├─────────────────────────────────────────┤
-│ Step 3 of 4: Configure Import          │
+│ Step 3 of 4: Review Import             │
 │                                         │
 │ ⚙️ Import Options                       │
-│ ☑️ Create missing dancers automatically │
 │ ☐ Validation only (don't import)       │
 │                                         │
 │ ℹ️ Import Information                   │
@@ -124,10 +123,11 @@ This document outlines the user interface design for the Event Import feature, e
 ```
 
 **Functionality:**
-- Simple checkboxes for import configuration options
+- Single checkbox for validation-only mode
 - Informational display of what will happen during import
-- Duplicate events are automatically skipped (no user choice needed)
-- Clear indication of actions that will be taken
+- Duplicate events are automatically skipped (always)
+- Missing dancers are automatically created (always)
+- Clear indication of automatic actions
 - Import button always enabled when no critical errors exist
 
 ### Step 4: Import Results
@@ -221,12 +221,10 @@ class EventPreviewCard extends StatelessWidget {
 ```dart
 class ImportInfoWidget extends StatelessWidget {
   final List<EventImportConflict> conflicts;
-  final EventImportOptions options;
   
   const ImportInfoWidget({
     super.key,
     required this.conflicts,
-    required this.options,
   });
 }
 ```
@@ -234,8 +232,8 @@ class ImportInfoWidget extends StatelessWidget {
 **Visual Design:**
 - Informational cards with blue/neutral background
 - Icons for different information types (duplicate, missing dancer)
-- Clear explanatory text about what will happen
-- No action buttons needed - behavior is automatic
+- Clear explanatory text about automatic behavior
+- No action buttons or options needed - all behavior is automatic
 
 ## Error Handling
 

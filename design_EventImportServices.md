@@ -240,15 +240,14 @@ class EventImportSummary {
 }
 
 class EventImportOptions {
-  final bool createMissingDancers;
   final bool validateOnly;
 
   const EventImportOptions({
-    this.createMissingDancers = true,
     this.validateOnly = false,
   });
 
   // Note: Duplicate events are always automatically skipped
+  // Note: Missing dancers are always automatically created
 }
 ```
 

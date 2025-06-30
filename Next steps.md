@@ -6,6 +6,7 @@
 - refine it
   - event date without time part
   - I don't have the marked_at and danced_at info, check with the implementation if they can be null
+  - in the import preview indicate which tags will be created
 - parse events from the diary
   - provide agent an example so they understand the structure
 

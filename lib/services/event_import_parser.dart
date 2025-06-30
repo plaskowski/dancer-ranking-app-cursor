@@ -15,9 +15,11 @@ class EventImportParser {
       ImportMetadata? metadata;
       if (json.containsKey('metadata')) {
         try {
-          metadata = ImportMetadata.fromJson(json['metadata'] as Map<String, dynamic>);
+          metadata =
+              ImportMetadata.fromJson(json['metadata'] as Map<String, dynamic>);
         } catch (e) {
-          ActionLogger.logAction('EventImportParser.parseJsonContent', 'metadata_parse_warning', {
+          ActionLogger.logAction(
+              'EventImportParser.parseJsonContent', 'metadata_parse_warning', {
             'error': e.toString(),
           });
           // Continue without metadata if parsing fails
@@ -43,7 +45,8 @@ class EventImportParser {
           events.add(event);
         } catch (e) {
           errors.add('Event ${i + 1}: ${e.toString()}');
-          ActionLogger.logAction('EventImportParser.parseJsonContent', 'event_parse_error', {
+          ActionLogger.logAction(
+              'EventImportParser.parseJsonContent', 'event_parse_error', {
             'eventIndex': i,
             'error': e.toString(),
           });
@@ -52,7 +55,8 @@ class EventImportParser {
 
       final isValid = errors.isEmpty;
 
-      ActionLogger.logAction('EventImportParser.parseJsonContent', 'parsing_completed', {
+      ActionLogger.logAction(
+          'EventImportParser.parseJsonContent', 'parsing_completed', {
         'eventsCount': events.length,
         'errorsCount': errors.length,
         'isValid': isValid,
@@ -82,13 +86,15 @@ class EventImportParser {
 
       // Check required top-level structure
       if (!json.containsKey('events')) {
-        ActionLogger.logAction('EventImportParser.validateJsonStructure', 'missing_events_array');
+        ActionLogger.logAction(
+            'EventImportParser.validateJsonStructure', 'missing_events_array');
         return false;
       }
 
       final eventsJson = json['events'];
       if (eventsJson is! List) {
-        ActionLogger.logAction('EventImportParser.validateJsonStructure', 'events_not_array');
+        ActionLogger.logAction(
+            'EventImportParser.validateJsonStructure', 'events_not_array');
         return false;
       }
 
@@ -96,7 +102,8 @@ class EventImportParser {
       for (int i = 0; i < eventsJson.length; i++) {
         final eventJson = eventsJson[i];
         if (eventJson is! Map<String, dynamic>) {
-          ActionLogger.logAction('EventImportParser.validateJsonStructure', 'event_not_object', {
+          ActionLogger.logAction(
+              'EventImportParser.validateJsonStructure', 'event_not_object', {
             'eventIndex': i,
           });
           return false;
@@ -104,7 +111,8 @@ class EventImportParser {
 
         // Check required event fields
         if (!eventJson.containsKey('name') || !eventJson.containsKey('date')) {
-          ActionLogger.logAction('EventImportParser.validateJsonStructure', 'missing_required_fields', {
+          ActionLogger.logAction('EventImportParser.validateJsonStructure',
+              'missing_required_fields', {
             'eventIndex': i,
             'hasName': eventJson.containsKey('name'),
             'hasDate': eventJson.containsKey('date'),
@@ -116,7 +124,8 @@ class EventImportParser {
         if (eventJson.containsKey('attendances')) {
           final attendancesJson = eventJson['attendances'];
           if (attendancesJson is! List) {
-            ActionLogger.logAction('EventImportParser.validateJsonStructure', 'attendances_not_array', {
+            ActionLogger.logAction('EventImportParser.validateJsonStructure',
+                'attendances_not_array', {
               'eventIndex': i,
             });
             return false;
@@ -125,7 +134,8 @@ class EventImportParser {
           for (int j = 0; j < attendancesJson.length; j++) {
             final attendanceJson = attendancesJson[j];
             if (attendanceJson is! Map<String, dynamic>) {
-              ActionLogger.logAction('EventImportParser.validateJsonStructure', 'attendance_not_object', {
+              ActionLogger.logAction('EventImportParser.validateJsonStructure',
+                  'attendance_not_object', {
                 'eventIndex': i,
                 'attendanceIndex': j,
               });
@@ -133,8 +143,10 @@ class EventImportParser {
             }
 
             // Check required attendance fields
-            if (!attendanceJson.containsKey('dancer_name') || !attendanceJson.containsKey('status')) {
-              ActionLogger.logAction('EventImportParser.validateJsonStructure', 'attendance_missing_fields', {
+            if (!attendanceJson.containsKey('dancer_name') ||
+                !attendanceJson.containsKey('status')) {
+              ActionLogger.logAction('EventImportParser.validateJsonStructure',
+                  'attendance_missing_fields', {
                 'eventIndex': i,
                 'attendanceIndex': j,
                 'hasDancerName': attendanceJson.containsKey('dancer_name'),
@@ -146,13 +158,15 @@ class EventImportParser {
         }
       }
 
-      ActionLogger.logAction('EventImportParser.validateJsonStructure', 'validation_passed', {
+      ActionLogger.logAction(
+          'EventImportParser.validateJsonStructure', 'validation_passed', {
         'eventsCount': eventsJson.length,
       });
 
       return true;
     } catch (e) {
-      ActionLogger.logError('EventImportParser.validateJsonStructure', e.toString());
+      ActionLogger.logError(
+          'EventImportParser.validateJsonStructure', e.toString());
       return false;
     }
   }
@@ -205,7 +219,8 @@ class EventImportParser {
         preview['metadata'] = json['metadata'];
       }
 
-      ActionLogger.logAction('EventImportParser.getImportPreview', 'preview_generated', preview);
+      ActionLogger.logAction(
+          'EventImportParser.getImportPreview', 'preview_generated', preview);
 
       return preview;
     } catch (e) {

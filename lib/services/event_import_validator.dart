@@ -17,7 +17,6 @@ class EventImportValidator {
     ActionLogger.logServiceCall('EventImportValidator', 'validateImport', {
       'eventsCount': events.length,
       'options': {
-        'createMissingDancers': options.createMissingDancers,
         'validateOnly': options.validateOnly,
       },
     });
@@ -29,11 +28,7 @@ class EventImportValidator {
       final duplicateConflicts = await _checkDuplicateEvents(events, options);
       conflicts.addAll(duplicateConflicts);
 
-      // Check for missing dancers if not auto-creating them
-      if (!options.createMissingDancers) {
-        final missingDancerConflicts = await _checkMissingDancers(events);
-        conflicts.addAll(missingDancerConflicts);
-      }
+      // Note: Missing dancers are always auto-created, no conflicts needed
 
       // Validate business rules
       final businessRuleConflicts = _validateBusinessRules(events);
@@ -90,18 +85,7 @@ class EventImportValidator {
 
     // Note: Duplicate events are always skipped automatically - no blocking needed
 
-    // Cannot proceed with missing dancers if not configured to create them
-    final missingDancerConflicts = conflicts
-        .where((c) => c.type == EventImportConflictType.missingDancer)
-        .toList();
-    if (missingDancerConflicts.isNotEmpty && !options.createMissingDancers) {
-      ActionLogger.logAction('EventImportValidator.canProceedWithImport',
-          'cannot_proceed_missing_dancers', {
-        'missingDancersCount': missingDancerConflicts.length,
-        'createMissingDancers': options.createMissingDancers,
-      });
-      return false;
-    }
+    // Note: Missing dancers are always created automatically - no blocking needed
 
     ActionLogger.logAction(
         'EventImportValidator.canProceedWithImport', 'can_proceed', {
@@ -144,50 +128,6 @@ class EventImportValidator {
           type: EventImportConflictType.invalidData,
           eventName: event.name,
           message: 'Failed to check for duplicate event: ${e.toString()}',
-        ));
-      }
-    }
-
-    return conflicts;
-  }
-
-  // Check for missing dancers in database
-  Future<List<EventImportConflict>> _checkMissingDancers(
-    List<ImportableEvent> events,
-  ) async {
-    final conflicts = <EventImportConflict>[];
-    final allDancerNames = <String>{};
-
-    // Collect all unique dancer names from all events
-    for (final event in events) {
-      for (final attendance in event.attendances) {
-        allDancerNames.add(attendance.dancerName);
-      }
-    }
-
-    // Check which dancers exist in database
-    for (final dancerName in allDancerNames) {
-      try {
-        final existingDancer = await (_database.select(_database.dancers)
-              ..where((d) => d.name.equals(dancerName)))
-            .getSingleOrNull();
-
-        if (existingDancer == null) {
-          conflicts.add(EventImportConflict(
-            type: EventImportConflictType.missingDancer,
-            dancerName: dancerName,
-            message: 'Dancer "$dancerName" does not exist in database',
-          ));
-        }
-      } catch (e) {
-        ActionLogger.logError(
-            'EventImportValidator._checkMissingDancers', e.toString(), {
-          'dancerName': dancerName,
-        });
-        conflicts.add(EventImportConflict(
-          type: EventImportConflictType.invalidData,
-          dancerName: dancerName,
-          message: 'Failed to check dancer existence: ${e.toString()}',
         ));
       }
     }

@@ -876,3 +876,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Modified database schema version to support tags
 
 ## [v0.8.0] - 2024-12-18
+
+## [v0.48.0] - 2024-12-28
+
+### User Requests
+- Simplify Event Import further by always creating missing dancers automatically
+
+### Changed
+- **Event Import Options**: Removed `createMissingDancers` option - missing dancers are now always created automatically
+- **UI Design**: Simplified import options step to only show validation-only checkbox
+- **Documentation**: Updated design documents to reflect fully automatic behavior
+
+### Technical
+- Removed `createMissingDancers` field from `EventImportOptions` model
+- Updated validator to always create missing dancers without user intervention
+- Removed unused `_checkMissingDancers` method from validator
+- Updated service layer to always create missing dancers during import
+- Updated UI design specification for simplified options flow
+
+### Improved
+- **User Experience**: Zero decision points for missing dancers - fully automatic handling
+- **Import Flow**: Streamlined import process with fewer configuration options
+- **Code Quality**: Removed unused code and simplified validation logic
