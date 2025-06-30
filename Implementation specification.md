@@ -77,12 +77,26 @@ Material 3 theme implementation with custom dance-specific color extensions.
   - `'absent'`: Not present at event (used for untracked dancers)
 - **Special case**: When adding new dancer with "already danced" option, creates record with status='served'
 
+**Tags Table** (Categorization System)
+- `id` (Primary Key, Auto Increment)
+- `name` (Text, Required, Unique) - Tag name (e.g., "regular", "dance-class")
+- `created_at` (DateTime, Auto) - Creation timestamp
+
+**DancerTags Table** (Many-to-Many Relationship)
+- `dancer_id` (Foreign Key → Dancers.id) - Which dancer
+- `tag_id` (Foreign Key → Tags.id) - Which tag
+- `created_at` (DateTime, Auto) - When tag was assigned
+- **Primary Key**: (dancer_id, tag_id)
+- **Cascade Delete**: Tags removed when dancer deleted
+
 ### Key Relationships
 - One Event has many Rankings and Attendances
 - One Dancer has many Rankings and Attendances  
 - One Rank has many Rankings (many-to-one)
+- Many Dancers have many Tags (many-to-many via DancerTags)
 - Rankings track pre-event planning (rank selection + reasons)
 - Attendances track actual presence (record creation), dance completion, and impressions
+- Tags provide categorization for dancers (context, frequency, skill level)
 
 ### Default Rank Data
 The Ranks table should be pre-populated with:
@@ -91,6 +105,13 @@ The Ranks table should be pre-populated with:
 3. Ordinal 3: "Neutral / Default" 
 4. Ordinal 4: "Maybe later"
 5. Ordinal 5: "Not really interested" (lowest rank)
+
+### Default Tag Data
+The Tags table should be pre-populated with:
+- **Frequency tags**: `regular`, `occasional`, `rare`, `new`
+- **Context tags**: `dance-class`, `dance-school`, `workshop`, `social`
+
+These tags help categorize dancers by how often they attend and where you met them.
 
 ### Dynamic Ranking Use Cases
 Users can adjust rankings during events for various reasons:
@@ -113,11 +134,13 @@ Users can adjust rankings during events for various reasons:
 - Create new event (FAB)
 - Navigate to dancers management (app bar icon)
 - Navigate to ranks management (app bar icon)
+- Navigate to tags management (app bar icon)
 **Navigation**:
 - → Create Event Screen (FAB)
 - → Event Screen (tap event)
 - → Dancers Screen (app bar action)
 - → Rank Editor Screen (app bar action)
+- → Tags Screen (app bar action)
 
 ### 2. Create Event Screen (`CreateEventScreen`)
 **Purpose**: Form to create new dance events
@@ -215,23 +238,45 @@ Users can adjust rankings during events for various reasons:
 - ← Back to Event Screen
 
 ### 5. Dancers Screen (`DancersScreen`)
-**Purpose**: Manage all dancers in the database
+**Purpose**: Manage all dancers in the database with comprehensive tag display
 **Actions**:
-- View list of all dancers
+- View list of all dancers with their tags
 - Search dancers by name or notes
 - Add new dancer (FAB)
 - Edit existing dancer (tap)
-- Delete dancer (long press → modal menu, with confirmation)
+- Delete dancer (popup menu, with confirmation)
 **UI Design**:
-- **Clean Card Layout**: Simple title and subtitle display without visual clutter
-- **Long Press Interaction**: Context menu via long press gesture showing modal bottom sheet
-- **Tap to Edit**: Primary interaction opens edit dialog
-- **Consistent Pattern**: Matches app-wide interaction patterns (long press → modal menu)
+- **Enhanced Card Layout**: Name with notes and tags displayed below
+- **Tag Display**: Colored chip badges under dancer name showing assigned tags
+- **Clean Organization**: Tags appear only on main Dancers screen, not on event screens
+- **Popup Menu Interaction**: Right-side menu icon with edit/delete options
+- **Tap to Edit**: Primary interaction opens edit dialog with tag selection
+- **Tag Chips Styling**: Small rounded containers with primary container color
 **Navigation**:
 - ← Back to previous screen
-- → Add/Edit Dancer Dialog (modal)
+- → Add/Edit Dancer Dialog (modal) with tag selection
 
-### 6. Dialogs and Modals
+### 6. Tags Screen (`TagsScreen`)
+**Purpose**: Manage all tags in the system for dancer categorization
+**Actions**:
+- View list of all predefined tags
+- See usage count for each tag (how many dancers have this tag)
+- Add new custom tags (future enhancement)
+- Edit existing tag names (future enhancement)
+- Delete unused tags (future enhancement)
+**UI Design**:
+- **Simple List Layout**: Tag name with usage statistics
+- **Usage Counter**: Shows "X dancers" for each tag
+- **Clean Interface**: Focus on tag overview and statistics
+- **Consistent Styling**: Matches app-wide design patterns
+**Current Implementation**:
+- **Read-only view**: Display predefined tags with usage counts
+- **No editing**: Tags are predefined and cannot be modified yet
+- **Statistical insight**: Shows which tags are most commonly used
+**Navigation**:
+- ← Back to Home Screen
+
+  ### 7. Dialogs and Modals
 
 **Ranking Dialog (`RankingDialog`)**:
 - Interactive rank selection from predefined options
@@ -253,13 +298,18 @@ Users can adjust rankings during events for various reasons:
 **Add/Edit Dancer Dialog**:
 - Name input (required)
 - Notes input (optional)
+- **Tag Selection**: Interactive pill-based interface for selecting predefined tags
+  - Shows all available tags as toggleable filter chips
+  - Selected tags highlighted with primary container color
+  - Supports multiple tag selection per dancer
+  - Tags load automatically for existing dancers
 - Save/cancel actions
 - **Accessible from Event Screen**: Create new dancers during events without navigation
   - **Special Event Context Features**:
     - "Already danced with this person" checkbox
     - Optional impression field (if already danced checked)
     - Automatically adds to current event and marks dance completion
-- **Accessible from Dancers Screen**: Full dancer management
+- **Accessible from Dancers Screen**: Full dancer management with tag selection
 
 **Dance Recording Dialog**:
 - Confirmation of dance partner
@@ -287,8 +337,10 @@ Home Screen
 │   │       ├── → Dance Recording Dialog
 │   │       └── → Attendance management
 │   └── Swipe Left/Right → Switch between Planning and Present pages
-└── Dancers Screen
-    └── Add/Edit Dancer Dialog (modal) - Full dancer management
+├── Dancers Screen
+│   └── Add/Edit Dancer Dialog (modal) - Full dancer management with tag selection
+└── Tags Screen
+    └── Read-only tag overview with usage statistics
 ```
 
 ### Event Workflow with Dynamic Rankings
@@ -343,6 +395,39 @@ Home Screen
   - **Dance status with impressions**: "Danced!" text followed by italicized impression text when available
   - **Context-aware display**: Pre-event information (notes, ranking reasons) hidden after dancing in Present tab to focus on post-dance impressions
   - **Responsive design**: Uses RichText with TextSpan elements for flexible text styling within single line
+
+### Tags on Persons Feature
+**Purpose**: Categorize dancers by context and frequency to enable better organization and future filtering
+
+**Predefined Tag System**:
+- **8 predefined tags**: `regular`, `occasional`, `rare`, `new`, `dance-class`, `dance-school`, `workshop`, `social`
+- **No custom tags**: Maintains consistency and prevents tag proliferation
+- **Frequency categories**: regular, occasional, rare, new (attendance patterns)
+- **Context categories**: dance-class, dance-school, workshop, social (where you met them)
+
+**Tag Selection UI**:
+- **Pill-based interface**: FilterChip widgets that can be toggled on/off
+- **Visual feedback**: Selected tags show primary container background color
+- **Multi-selection**: Dancers can have multiple tags (many-to-many relationship)
+- **Integrated into Add/Edit Dancer Dialog**: Tags appear below notes field
+
+**Tag Display**:
+- **Dancers Screen only**: Tags displayed as colored chips under dancer names
+- **Event screens clean**: Tags not shown on event screens to avoid clutter
+- **Chip styling**: Small rounded containers with subtle primary container coloring
+- **Responsive layout**: Tags wrap to multiple lines when needed
+
+**Data Architecture**:
+- **Database migration**: Seamless upgrade from version 3 to 4 with automatic tag insertion
+- **Many-to-many relationship**: DancerTags table links dancers to tags
+- **Cascade deletion**: Tags automatically removed when dancers are deleted
+- **Backward compatibility**: Existing data remains intact during migration
+
+**Implementation Components**:
+- **TagService**: Full CRUD operations for tag management
+- **TagSelectionWidget**: Reusable component for tag selection interface
+- **DancerCardWithTags**: Enhanced dancer display with tag chips
+- **DancerWithTags**: Model combining dancer data with associated tags
 
 ### Code Architecture
 - **Reactive Data Layer**: Drift database streams with automatic UI updates via StreamBuilder
