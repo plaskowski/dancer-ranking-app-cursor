@@ -7,6 +7,7 @@ import '../services/dancer_service.dart';
 import '../utils/toast_helper.dart';
 import '../widgets/add_dancer_dialog.dart';
 import '../widgets/dancer_card_with_tags.dart';
+import '../widgets/import/import_dancers_dialog.dart';
 
 class DancersScreen extends StatefulWidget {
   const DancersScreen({super.key});
@@ -57,6 +58,13 @@ class _DancersScreenState extends State<DancersScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dancers'),
+        actions: [
+          IconButton(
+            onPressed: _showImportDialog,
+            icon: const Icon(Icons.file_upload),
+            tooltip: 'Import dancers from JSON file',
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -203,5 +211,18 @@ class _DancersScreenState extends State<DancersScreen> {
         ],
       ),
     );
+  }
+
+  void _showImportDialog() async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => const ImportDancersDialog(),
+    );
+
+    // If import was successful, refresh is automatic via streams
+    // But show a confirmation if needed
+    if (result == true && mounted) {
+      ToastHelper.showSuccess(context, 'Dancers imported successfully!');
+    }
   }
 }
