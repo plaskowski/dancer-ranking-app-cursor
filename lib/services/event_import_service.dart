@@ -31,7 +31,6 @@ class EventImportService {
       'jsonLength': jsonContent.length,
       'options': {
         'createMissingDancers': options.createMissingDancers,
-        'skipDuplicateEvents': options.skipDuplicateEvents,
         'validateOnly': options.validateOnly,
       },
     });
@@ -154,9 +153,8 @@ class EventImportService {
         // Process each event
         for (final event in events) {
           try {
-            // Skip duplicate events if configured
-            if (duplicateEventNames.contains(event.name) &&
-                options.skipDuplicateEvents) {
+            // Skip duplicate events (always done automatically)
+            if (duplicateEventNames.contains(event.name)) {
               skippedEvents.add(event.name);
               eventsSkipped++;
               ActionLogger.logAction(

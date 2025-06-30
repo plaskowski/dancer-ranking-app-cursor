@@ -241,14 +241,14 @@ class EventImportSummary {
 
 class EventImportOptions {
   final bool createMissingDancers;
-  final bool skipDuplicateEvents;
   final bool validateOnly;
 
   const EventImportOptions({
     this.createMissingDancers = true,
-    this.skipDuplicateEvents = true,
     this.validateOnly = false,
   });
+
+  // Note: Duplicate events are always automatically skipped
 }
 ```
 

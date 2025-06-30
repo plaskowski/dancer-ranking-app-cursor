@@ -18,7 +18,7 @@ class EventImportValidator {
       'eventsCount': events.length,
       'options': {
         'createMissingDancers': options.createMissingDancers,
-        'skipDuplicateEvents': options.skipDuplicateEvents,
+        'validateOnly': options.validateOnly,
       },
     });
 
@@ -88,18 +88,7 @@ class EventImportValidator {
       return false;
     }
 
-    // Cannot proceed with duplicate events if not configured to skip them
-    final duplicateEventConflicts = conflicts
-        .where((c) => c.type == EventImportConflictType.duplicateEvent)
-        .toList();
-    if (duplicateEventConflicts.isNotEmpty && !options.skipDuplicateEvents) {
-      ActionLogger.logAction('EventImportValidator.canProceedWithImport',
-          'cannot_proceed_duplicates', {
-        'duplicateEventsCount': duplicateEventConflicts.length,
-        'skipDuplicateEvents': options.skipDuplicateEvents,
-      });
-      return false;
-    }
+    // Note: Duplicate events are always skipped automatically - no blocking needed
 
     // Cannot proceed with missing dancers if not configured to create them
     final missingDancerConflicts = conflicts

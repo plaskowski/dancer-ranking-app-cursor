@@ -30,7 +30,7 @@ This document outlines the user interface design for the Event Import feature, e
 ### Supporting Components
 - **EventPreviewCard**: Display individual event information
 - **AttendancePreviewList**: Show attendance records for events
-- **ConflictResolutionWidget**: Handle duplicate events and missing dancers
+- **ImportInfoWidget**: Display information about duplicates and missing dancers
 - **ImportProgressIndicator**: Show import progress during execution
 
 ## Dialog Flow Design
@@ -97,7 +97,7 @@ This document outlines the user interface design for the Event Import feature, e
 - Conflict indicator if issues detected
 - Data validation status display
 
-### Step 3: Import Options & Conflicts
+### Step 3: Import Options & Information
 ```
 ┌─────────────────────────────────────────┐
 │ Import Events                       [X] │
@@ -106,17 +106,16 @@ This document outlines the user interface design for the Event Import feature, e
 │                                         │
 │ ⚙️ Import Options                       │
 │ ☑️ Create missing dancers automatically │
-│ ☑️ Skip duplicate events                │
 │ ☐ Validation only (don't import)       │
 │                                         │
-│ ⚠️ Conflicts Found                      │
+│ ℹ️ Import Information                   │
 │ ┌─────────────────────────────────────┐ │
-│ │ 🔄 Event "Friday Salsa" (Jan 12)    │ │
-│ │    Already exists in database       │ │
-│ │    Action: Skip (due to settings)   │ │
+│ │ 🔄 1 duplicate event detected       │ │
+│ │    "Friday Salsa" (Jan 12)          │ │
+│ │    Will be skipped automatically    │ │
 │ └─────────────────────────────────────┘ │
 │ ┌─────────────────────────────────────┐ │
-│ │ 👤 Missing dancer: "Alex Unknown"   │ │
+│ │ 👤 2 missing dancers detected       │ │
 │ │    Will be created automatically    │ │
 │ └─────────────────────────────────────┘ │
 │                                         │
@@ -125,11 +124,11 @@ This document outlines the user interface design for the Event Import feature, e
 ```
 
 **Functionality:**
-- Checkboxes for import configuration options
-- List of detected conflicts with resolution strategies
-- Real-time conflict update based on option changes
-- Clear indication of what will happen during import
-- Import button enabled only when conflicts are resolved
+- Simple checkboxes for import configuration options
+- Informational display of what will happen during import
+- Duplicate events are automatically skipped (no user choice needed)
+- Clear indication of actions that will be taken
+- Import button always enabled when no critical errors exist
 
 ### Step 4: Import Results
 ```
@@ -218,13 +217,13 @@ class EventPreviewCard extends StatelessWidget {
 - Expandable attendance list with status icons
 - Status color coding (present: blue, served: green, left: orange)
 
-### ConflictIndicator
+### ImportInfoWidget
 ```dart
-class ConflictIndicator extends StatelessWidget {
+class ImportInfoWidget extends StatelessWidget {
   final List<EventImportConflict> conflicts;
   final EventImportOptions options;
   
-  const ConflictIndicator({
+  const ImportInfoWidget({
     super.key,
     required this.conflicts,
     required this.options,
@@ -233,10 +232,10 @@ class ConflictIndicator extends StatelessWidget {
 ```
 
 **Visual Design:**
-- Warning card with amber background
-- Conflict type icons (duplicate, missing dancer, invalid data)
-- Resolution strategy display
-- Action buttons for conflict resolution
+- Informational cards with blue/neutral background
+- Icons for different information types (duplicate, missing dancer)
+- Clear explanatory text about what will happen
+- No action buttons needed - behavior is automatic
 
 ## Error Handling
 

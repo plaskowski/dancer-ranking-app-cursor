@@ -417,26 +417,24 @@ class EventImportSummary {
 
 class EventImportOptions {
   final bool createMissingDancers;
-  final bool skipDuplicateEvents;
   final bool validateOnly;
 
   const EventImportOptions({
     this.createMissingDancers = true,
-    this.skipDuplicateEvents = true,
     this.validateOnly = false,
   });
 
   EventImportOptions copyWith({
     bool? createMissingDancers,
-    bool? skipDuplicateEvents,
     bool? validateOnly,
   }) {
     return EventImportOptions(
       createMissingDancers: createMissingDancers ?? this.createMissingDancers,
-      skipDuplicateEvents: skipDuplicateEvents ?? this.skipDuplicateEvents,
       validateOnly: validateOnly ?? this.validateOnly,
     );
   }
+
+  // Note: Duplicate events are always automatically skipped
 }
 
 enum EventImportConflictType {
