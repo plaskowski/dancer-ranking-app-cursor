@@ -129,6 +129,7 @@ Enable bulk import of historical event data with attendance information from JSO
 
 - **Duplicate Events**: Automatically skip events that already exist (same name + date)
 - **Missing Dancers**: Automatically create new dancers
+- **Immediate Import**: No validation-only mode - all imports are performed directly
 - **Fully Automatic**: Zero user intervention needed - all conflicts handled automatically
 
 ## Service Architecture

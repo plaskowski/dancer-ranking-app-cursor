@@ -30,7 +30,6 @@ This document outlines the user interface design for the Event Import feature, e
 ### Supporting Components
 - **EventPreviewCard**: Display individual event information
 - **AttendancePreviewList**: Show attendance records for events
-- **ImportInfoWidget**: Display information about duplicates and missing dancers (automatic handling)
 - **ImportProgressIndicator**: Show import progress during execution
 
 ## Dialog Flow Design
@@ -130,12 +129,12 @@ This document outlines the user interface design for the Event Import feature, e
 - Clear indication of automatic actions
 - Import button always enabled when no critical errors exist
 
-### Step 4: Import Results
+
 ```
 ┌─────────────────────────────────────────┐
 │ Import Events                       [X] │
 ├─────────────────────────────────────────┤
-│ Step 4 of 4: Import Complete           │
+│ Step 3 of 3: Import Complete           │
 │                                         │
 │ ✅ Import Successful!                   │
 │                                         │
@@ -217,23 +216,7 @@ class EventPreviewCard extends StatelessWidget {
 - Expandable attendance list with status icons
 - Status color coding (present: blue, served: green, left: orange)
 
-### ImportInfoWidget
-```dart
-class ImportInfoWidget extends StatelessWidget {
-  final List<EventImportConflict> conflicts;
-  
-  const ImportInfoWidget({
-    super.key,
-    required this.conflicts,
-  });
-}
-```
 
-**Visual Design:**
-- Informational cards with blue/neutral background
-- Icons for different information types (duplicate, missing dancer)
-- Clear explanatory text about automatic behavior
-- No action buttons or options needed - all behavior is automatic
 
 ## Error Handling
 

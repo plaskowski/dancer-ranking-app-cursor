@@ -29,9 +29,7 @@ class EventImportService {
   ) async {
     ActionLogger.logServiceCall('EventImportService', 'importEventsFromJson', {
       'jsonLength': jsonContent.length,
-      'options': {
-        'validateOnly': options.validateOnly,
-      },
+      'options': {},
     });
 
     try {
@@ -67,26 +65,7 @@ class EventImportService {
         );
       }
 
-      // Step 3: If validate only, return summary without importing
-      if (options.validateOnly) {
-        final skippedDuplicates = conflicts
-            .where((c) => c.type == EventImportConflictType.duplicateEvent)
-            .map((c) => c.eventName ?? 'Unknown event')
-            .toList();
-
-        return EventImportSummary(
-          eventsProcessed: parseResult.events.length,
-          eventsCreated: parseResult.events.length - skippedDuplicates.length,
-          eventsSkipped: skippedDuplicates.length,
-          attendancesCreated: _countTotalAttendances(parseResult.events),
-          dancersCreated: await _countMissingDancers(parseResult.events),
-          errors: 0,
-          errorMessages: [],
-          skippedEvents: skippedDuplicates,
-        );
-      }
-
-      // Step 4: Perform actual import
+      // Step 3: Perform import
       return await _performImport(parseResult.events, options, conflicts);
     } catch (e) {
       ActionLogger.logError(

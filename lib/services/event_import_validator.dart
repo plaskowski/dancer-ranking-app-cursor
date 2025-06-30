@@ -16,9 +16,7 @@ class EventImportValidator {
   ) async {
     ActionLogger.logServiceCall('EventImportValidator', 'validateImport', {
       'eventsCount': events.length,
-      'options': {
-        'validateOnly': options.validateOnly,
-      },
+      'options': {},
     });
 
     final conflicts = <EventImportConflict>[];

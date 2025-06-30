@@ -416,22 +416,11 @@ class EventImportSummary {
 }
 
 class EventImportOptions {
-  final bool validateOnly;
-
-  const EventImportOptions({
-    this.validateOnly = false,
-  });
-
-  EventImportOptions copyWith({
-    bool? validateOnly,
-  }) {
-    return EventImportOptions(
-      validateOnly: validateOnly ?? this.validateOnly,
-    );
-  }
+  const EventImportOptions();
 
   // Note: Duplicate events are always automatically skipped
   // Note: Missing dancers are always automatically created
+  // Note: All imports are performed immediately - no validation-only mode
 }
 
 enum EventImportConflictType {

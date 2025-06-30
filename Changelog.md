@@ -898,3 +898,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **User Experience**: Zero decision points for missing dancers - fully automatic handling
 - **Import Flow**: Streamlined import process with fewer configuration options
 - **Code Quality**: Removed unused code and simplified validation logic
+
+## [v0.49.0] - 2024-12-28
+
+### User Requests
+- Remove "Validation only" option to further simplify Event Import
+
+### Changed
+- **Event Import Flow**: Simplified from 4-step to 3-step process (File Selection → Preview → Results)
+- **Import Options**: Removed `validateOnly` option - all imports are performed immediately
+- **UI Design**: Eliminated options step entirely, no configuration needed
+
+### Technical
+- Removed `validateOnly` field from `EventImportOptions` model
+- Simplified service layer by removing validation-only mode logic
+- Updated UI design specification to reflect 3-step flow
+- Removed `ImportInfoWidget` component specification (no longer needed)
+
+### Improved
+- **User Experience**: Maximum simplification - zero configuration options needed
+- **Import Flow**: Streamlined to essential steps only
+- **Code Quality**: Removed unnecessary validation-only complexity
