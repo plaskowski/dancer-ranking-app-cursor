@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../services/dancer_service.dart';
 import '../services/ranking_service.dart';
-import '../theme/theme_extensions.dart';
 import '../utils/action_logger.dart';
+import '../utils/toast_helper.dart';
 
 class RankingDialog extends StatefulWidget {
   final int dancerId;
@@ -102,12 +102,7 @@ class _RankingDialogState extends State<RankingDialog> {
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error loading data: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ToastHelper.showError(context, 'Error loading data: $e');
       }
     }
   }
@@ -158,12 +153,7 @@ class _RankingDialogState extends State<RankingDialog> {
         });
 
         Navigator.pop(context, true); // Return true to indicate success
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Ranking updated for $_dancerName'),
-            backgroundColor: context.danceTheme.success,
-          ),
-        );
+        ToastHelper.showSuccess(context, 'Ranking updated for $_dancerName');
       }
     } catch (e) {
       ActionLogger.logError('RankingDialog._saveRanking', e.toString(), {
@@ -173,12 +163,7 @@ class _RankingDialogState extends State<RankingDialog> {
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error saving ranking: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ToastHelper.showError(context, 'Error saving ranking: $e');
       }
     } finally {
       if (mounted) {

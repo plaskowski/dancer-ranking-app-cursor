@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../services/attendance_service.dart';
 import '../services/dancer_service.dart';
-import '../theme/theme_extensions.dart';
 import '../utils/action_logger.dart';
+import '../utils/toast_helper.dart';
 
 class AddDancerDialog extends StatefulWidget {
   final Dancer? dancer; // If provided, we're editing
@@ -142,14 +142,11 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
         });
 
         Navigator.pop(context, true); // Return true to indicate success
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(widget.dancer != null
+        ToastHelper.showSuccess(
+            context,
+            widget.dancer != null
                 ? 'Dancer updated successfully!'
-                : 'Dancer added successfully!'),
-            backgroundColor: context.danceTheme.success,
-          ),
-        );
+                : 'Dancer added successfully!');
       }
     } catch (e) {
       ActionLogger.logError('AddDancerDialog._saveDancer', e.toString(), {
@@ -159,12 +156,7 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error saving dancer: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ToastHelper.showError(context, 'Error saving dancer: $e');
       }
     } finally {
       if (mounted) {

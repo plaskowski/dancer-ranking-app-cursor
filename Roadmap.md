@@ -47,3 +47,4 @@
 - if I can make it use automated user stories validation it could run on its own for long time
   - it would be great to make it record the screens (as screenshots or video) when running these tests so I can review them
   - they also will be useful for project documentation
+- increase the 25 tool calls limit

@@ -4,6 +4,42 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.39.0] - 2025-01-11
+
+### User Requests
+- "make the toast notification disapear quicker by themselfes and right away when tapped by user"
+
+### Added
+- **Improved Toast Notifications**: Complete redesign of notification system with enhanced user experience
+- **Tap-to-Dismiss**: Toast notifications now disappear immediately when tapped anywhere on the message
+- **Close Button**: Added ✕ button for explicit dismissal option
+- **Floating Design**: Modern floating toast style with rounded corners and margins
+- **Swipe Dismissal**: Horizontal swipe gesture support for quick dismissal
+
+### Improved
+- **Faster Auto-Dismiss**: Reduced duration from 4 seconds to 2 seconds for quicker experience
+- **Better Visual Feedback**: Consistent color coding (success/error/warning/info) across all notifications
+- **Enhanced Accessibility**: Multiple dismissal methods (tap, swipe, button, automatic)
+- **User-Friendly Interface**: Clear visual cues and immediate response to user interactions
+
+### Changed
+- **Toast Duration**: Notifications now auto-dismiss in 2 seconds instead of default 4 seconds
+- **Interaction Model**: Single tap anywhere on notification dismisses it immediately
+- **Visual Style**: Floating notifications with rounded corners and proper spacing
+- **Consistent API**: Unified ToastHelper with showSuccess(), showError(), showWarning(), showInfo() methods
+
+### Technical
+- **ToastHelper Utility**: New centralized toast notification system replacing scattered SnackBar usage
+- **Performance**: Automatic clearing of existing notifications prevents stacking issues
+- **Code Consistency**: Updated all screens and dialogs to use standardized toast system
+- **Maintainability**: Single source of truth for notification styling and behavior
+
+### Files Updated
+- **Core Screens**: HomeScreen, RankEditorScreen, DancersScreen notification improvements
+- **Dialog Components**: AddDancerDialog, RankingDialog, DancerActionsDialog enhanced notifications
+- **Service Integrations**: All service layer notifications use improved toast system
+- **Comprehensive Coverage**: 50+ notification points updated across entire application
+
 ## [v0.38.0] - 2025-01-11
 
 ### User Requests

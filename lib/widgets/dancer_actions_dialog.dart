@@ -7,6 +7,7 @@ import '../services/dancer_service.dart';
 import '../services/ranking_service.dart';
 import '../theme/theme_extensions.dart';
 import '../utils/action_logger.dart';
+import '../utils/toast_helper.dart';
 import 'add_dancer_dialog.dart';
 import 'dance_recording_dialog.dart';
 import 'ranking_dialog.dart';
@@ -199,12 +200,7 @@ class DancerActionsDialog extends StatelessWidget {
           });
 
           Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${dancer.name} marked as absent'),
-              backgroundColor: context.danceTheme.warning,
-            ),
-          );
+          ToastHelper.showSuccess(context, '${dancer.name} marked as absent');
         }
       } else {
         // Mark as present
@@ -217,12 +213,7 @@ class DancerActionsDialog extends StatelessWidget {
           });
 
           Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${dancer.name} marked as present'),
-              backgroundColor: context.danceTheme.success,
-            ),
-          );
+          ToastHelper.showSuccess(context, '${dancer.name} marked as present');
         }
       }
     } catch (e) {
@@ -235,12 +226,7 @@ class DancerActionsDialog extends StatelessWidget {
 
       if (context.mounted) {
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error updating presence: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ToastHelper.showError(context, 'Error updating presence: $e');
       }
     }
   }
@@ -270,12 +256,8 @@ class DancerActionsDialog extends StatelessWidget {
         });
 
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${dancer.name} marked present and dance recorded'),
-            backgroundColor: context.danceTheme.success,
-          ),
-        );
+        ToastHelper.showSuccess(
+            context, '${dancer.name} marked present and dance recorded');
       }
     } catch (e) {
       ActionLogger.logError(
@@ -286,12 +268,7 @@ class DancerActionsDialog extends StatelessWidget {
 
       if (context.mounted) {
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error recording dance: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ToastHelper.showError(context, 'Error recording dance: $e');
       }
     }
   }
@@ -319,12 +296,7 @@ class DancerActionsDialog extends StatelessWidget {
         });
 
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${dancer.name} removed from event'),
-            backgroundColor: context.danceTheme.warning,
-          ),
-        );
+        ToastHelper.showSuccess(context, '${dancer.name} removed from event');
       }
     } catch (e) {
       ActionLogger.logError(
@@ -335,12 +307,7 @@ class DancerActionsDialog extends StatelessWidget {
 
       if (context.mounted) {
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error removing from planning: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ToastHelper.showError(context, 'Error removing from planning: $e');
       }
     }
   }
@@ -367,12 +334,7 @@ class DancerActionsDialog extends StatelessWidget {
         });
 
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${dancer.name} marked as left'),
-            backgroundColor: context.danceTheme.warning,
-          ),
-        );
+        ToastHelper.showSuccess(context, '${dancer.name} marked as left');
       }
     } catch (e) {
       ActionLogger.logError('DancerActionsDialog._markAsLeft', e.toString(), {
@@ -382,12 +344,7 @@ class DancerActionsDialog extends StatelessWidget {
 
       if (context.mounted) {
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error marking as left: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ToastHelper.showError(context, 'Error marking as left: $e');
       }
     }
   }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../services/event_service.dart';
 import '../utils/action_logger.dart';
+import '../utils/toast_helper.dart';
 import 'create_event_screen.dart';
 import 'dancers_screen.dart';
 import 'event_screen.dart';
@@ -164,7 +165,8 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Rename'),
                 onTap: () {
-                  ActionLogger.logUserAction('EventCard', 'context_rename_tapped', {
+                  ActionLogger.logUserAction(
+                      'EventCard', 'context_rename_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                   });
@@ -180,7 +182,8 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Change Date'),
                 onTap: () {
-                  ActionLogger.logUserAction('EventCard', 'context_change_date_tapped', {
+                  ActionLogger.logUserAction(
+                      'EventCard', 'context_change_date_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                     'currentDate': event.date.toIso8601String(),
@@ -197,7 +200,8 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Delete'),
                 onTap: () {
-                  ActionLogger.logUserAction('EventCard', 'context_delete_tapped', {
+                  ActionLogger.logUserAction(
+                      'EventCard', 'context_delete_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                   });
@@ -296,20 +300,15 @@ class _EventCard extends StatelessWidget {
           });
 
           final formattedDate = DateFormat('MMM d, y').format(newDate);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Event date changed to $formattedDate')),
-          );
+          ToastHelper.showSuccess(
+              context, 'Event date changed to $formattedDate');
         } else {
-          ActionLogger.logError('EventCard.performDateChange', 'update_failed', {
+          ActionLogger.logError(
+              'EventCard.performDateChange', 'update_failed', {
             'eventId': event.id,
             'newDate': newDate.toIso8601String(),
           });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to change event date'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          ToastHelper.showError(context, 'Failed to change event date');
         }
       }
     } catch (e) {
@@ -318,17 +317,13 @@ class _EventCard extends StatelessWidget {
         'newDate': newDate.toIso8601String(),
       });
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error changing event date: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ToastHelper.showError(context, 'Error changing event date: $e');
       }
     }
   }
 
-  void _performRename(BuildContext context, TextEditingController controller) async {
+  void _performRename(
+      BuildContext context, TextEditingController controller) async {
     final newName = controller.text.trim();
     if (newName.isEmpty) {
       ActionLogger.logUserAction('EventCard', 'rename_validation_failed', {
@@ -355,20 +350,13 @@ class _EventCard extends StatelessWidget {
             'eventId': event.id,
             'newName': newName,
           });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Event renamed to "$newName"')),
-          );
+          ToastHelper.showSuccess(context, 'Event renamed to "$newName"');
         } else {
           ActionLogger.logError('EventCard.performRename', 'update_failed', {
             'eventId': event.id,
             'newName': newName,
           });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to rename event'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          ToastHelper.showError(context, 'Failed to rename event');
         }
       }
     } catch (e) {
@@ -378,12 +366,7 @@ class _EventCard extends StatelessWidget {
       });
       if (context.mounted) {
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error renaming event: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ToastHelper.showError(context, 'Error renaming event: $e');
       }
     }
   }
@@ -435,16 +418,9 @@ class _EventCard extends StatelessWidget {
             'eventId': event.id,
             'eventName': event.name,
           });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Event "${event.name}" deleted')),
-          );
+          ToastHelper.showSuccess(context, 'Event "${event.name}" deleted');
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to delete event'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          ToastHelper.showError(context, 'Failed to delete event');
         }
       }
     } catch (e) {
@@ -454,12 +430,7 @@ class _EventCard extends StatelessWidget {
       });
       if (context.mounted) {
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error deleting event: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ToastHelper.showError(context, 'Error deleting event: $e');
       }
     }
   }
@@ -492,18 +463,24 @@ class _EventCard extends StatelessWidget {
             event.name,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: isPast ? Theme.of(context).colorScheme.onSurfaceVariant : null,
+              color: isPast
+                  ? Theme.of(context).colorScheme.onSurfaceVariant
+                  : null,
             ),
           ),
           subtitle: Text(
             formattedDate,
             style: TextStyle(
-              color: isPast ? Theme.of(context).colorScheme.onSurfaceVariant : Theme.of(context).colorScheme.primary,
+              color: isPast
+                  ? Theme.of(context).colorScheme.onSurfaceVariant
+                  : Theme.of(context).colorScheme.primary,
             ),
           ),
           trailing: Icon(
             isPast ? Icons.history : Icons.arrow_forward_ios,
-            color: isPast ? Theme.of(context).colorScheme.onSurfaceVariant : Theme.of(context).colorScheme.primary,
+            color: isPast
+                ? Theme.of(context).colorScheme.onSurfaceVariant
+                : Theme.of(context).colorScheme.primary,
           ),
         ),
       ),

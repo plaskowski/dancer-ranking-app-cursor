@@ -5,6 +5,7 @@ import '../database/database.dart';
 import '../services/ranking_service.dart';
 import '../theme/theme_extensions.dart';
 import '../utils/action_logger.dart';
+import '../utils/toast_helper.dart';
 
 class RankEditorScreen extends StatefulWidget {
   const RankEditorScreen({super.key});
@@ -101,7 +102,8 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
                         'Drag to reorder priority. Tap for options.',
                         style: TextStyle(
                           fontSize: 12,
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
                         ),
                       ),
                     ),
@@ -114,7 +116,8 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
                 child: ReorderableListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   itemCount: ranks.length,
-                  onReorder: (oldIndex, newIndex) => _reorderRanks(ranks, oldIndex, newIndex),
+                  onReorder: (oldIndex, newIndex) =>
+                      _reorderRanks(ranks, oldIndex, newIndex),
                   itemBuilder: (context, index) {
                     final rank = ranks[index];
                     return _RankCard(
@@ -156,24 +159,21 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
 
   Future<void> _updateRankOrdinals(List<Rank> ranks) async {
     try {
-      final rankingService = Provider.of<RankingService>(context, listen: false);
+      final rankingService =
+          Provider.of<RankingService>(context, listen: false);
       await rankingService.updateRankOrdinals(ranks);
 
       ActionLogger.logAction('RankEditorScreen', 'ordinals_updated', {
         'ranksCount': ranks.length,
       });
     } catch (e) {
-      ActionLogger.logError('RankEditorScreen._updateRankOrdinals', e.toString(), {
+      ActionLogger.logError(
+          'RankEditorScreen._updateRankOrdinals', e.toString(), {
         'ranksCount': ranks.length,
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error updating rank order: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ToastHelper.showError(context, 'Error updating rank order: $e');
       }
     }
   }
@@ -210,7 +210,8 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
     );
   }
 
-  void _performAddRank(BuildContext context, TextEditingController controller) async {
+  void _performAddRank(
+      BuildContext context, TextEditingController controller) async {
     final name = controller.text.trim();
     if (name.isEmpty) return;
 
@@ -221,7 +222,8 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
     Navigator.pop(context);
 
     try {
-      final rankingService = Provider.of<RankingService>(context, listen: false);
+      final rankingService =
+          Provider.of<RankingService>(context, listen: false);
       final ranks = await rankingService.getAllRanks();
       final nextOrdinal = ranks.isEmpty ? 1 : ranks.last.ordinal + 1;
 
@@ -229,12 +231,7 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
 
       if (mounted) {
         setState(() {}); // Refresh the list
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Rank "$name" created successfully'),
-            backgroundColor: context.danceTheme.success,
-          ),
-        );
+        ToastHelper.showSuccess(context, 'Rank "$name" created successfully');
       }
     } catch (e) {
       ActionLogger.logError('RankEditorScreen._performAddRank', e.toString(), {
@@ -242,12 +239,7 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error creating rank: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ToastHelper.showError(context, 'Error creating rank: $e');
       }
     }
   }
@@ -304,25 +296,16 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
     });
 
     try {
-      final rankingService = Provider.of<RankingService>(context, listen: false);
+      final rankingService =
+          Provider.of<RankingService>(context, listen: false);
       final success = await rankingService.updateRank(id: rank.id, name: name);
 
       if (mounted) {
         if (success) {
           setState(() {}); // Refresh the list
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Rank updated to "$name"'),
-              backgroundColor: context.danceTheme.success,
-            ),
-          );
+          ToastHelper.showSuccess(context, 'Rank updated to "$name"');
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to update rank'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          ToastHelper.showError(context, 'Failed to update rank');
         }
       }
     } catch (e) {
@@ -332,12 +315,7 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error updating rank: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ToastHelper.showError(context, 'Error updating rank: $e');
       }
     }
   }
@@ -346,7 +324,8 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
     final isArchiving = !rank.isArchived;
     final action = isArchiving ? 'archive' : 'unarchive';
 
-    ActionLogger.logUserAction('RankEditorScreen', '${action}_rank_dialog_opened', {
+    ActionLogger.logUserAction(
+        'RankEditorScreen', '${action}_rank_dialog_opened', {
       'rankId': rank.id,
       'rankName': rank.name,
       'currentArchivedState': rank.isArchived,
@@ -372,7 +351,9 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
               _performArchiveRank(rank); // Don't pass context
             },
             style: TextButton.styleFrom(
-              foregroundColor: isArchiving ? context.danceTheme.warning : context.danceTheme.success,
+              foregroundColor: isArchiving
+                  ? context.danceTheme.warning
+                  : context.danceTheme.success,
             ),
             child: Text(isArchiving ? 'Archive' : 'Un-archive'),
           ),
@@ -392,47 +373,37 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
     });
 
     try {
-      final rankingService = Provider.of<RankingService>(context, listen: false);
-      final success =
-          isArchiving ? await rankingService.archiveRank(rank.id) : await rankingService.unarchiveRank(rank.id);
+      final rankingService =
+          Provider.of<RankingService>(context, listen: false);
+      final success = isArchiving
+          ? await rankingService.archiveRank(rank.id)
+          : await rankingService.unarchiveRank(rank.id);
 
       if (mounted) {
         if (success) {
           setState(() {}); // Refresh the list
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Rank "${rank.name}" ${isArchiving ? 'archived' : 'un-archived'}'),
-              backgroundColor: isArchiving ? context.danceTheme.warning : context.danceTheme.success,
-            ),
-          );
+          ToastHelper.showSuccess(context,
+              'Rank "${rank.name}" ${isArchiving ? 'archived' : 'un-archived'}');
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Failed to $action rank'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          ToastHelper.showError(context, 'Failed to $action rank');
         }
       }
     } catch (e) {
-      ActionLogger.logError('RankEditorScreen._performArchiveRank', e.toString(), {
+      ActionLogger.logError(
+          'RankEditorScreen._performArchiveRank', e.toString(), {
         'rankId': rank.id,
         'action': action,
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error ${isArchiving ? 'archiving' : 'un-archiving'} rank: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ToastHelper.showError(context, 'Error ${action}ing rank: $e');
       }
     }
   }
 
   void _showDeleteRankDialog(BuildContext context, Rank rank) {
-    ActionLogger.logUserAction('RankEditorScreen', 'delete_rank_dialog_opened', {
+    ActionLogger.logUserAction(
+        'RankEditorScreen', 'delete_rank_dialog_opened', {
       'rankId': rank.id,
       'rankName': rank.name,
     });
@@ -480,17 +451,13 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
       if (!mounted) return; // Check if widget is still mounted
 
       if (otherRanks.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Cannot delete the last remaining rank'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ToastHelper.showError(context, 'Cannot delete the last remaining rank');
         return;
       }
 
       // Show replacement rank selection dialog using main widget context
-      final replacementRank = await _showReplacementRankDialog(context, rank, otherRanks);
+      final replacementRank =
+          await _showReplacementRankDialog(context, rank, otherRanks);
       if (replacementRank == null) return;
 
       if (!mounted) return; // Check again after dialog
@@ -503,38 +470,26 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
       if (mounted) {
         if (success) {
           setState(() {}); // Refresh the list
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Rank "${rank.name}" deleted, existing rankings moved to "${replacementRank.name}"'),
-              backgroundColor: context.danceTheme.success,
-            ),
-          );
+          ToastHelper.showSuccess(context,
+              'Rank "${rank.name}" deleted, existing rankings moved to "${replacementRank.name}"');
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to delete rank'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          ToastHelper.showError(context, 'Failed to delete rank');
         }
       }
     } catch (e) {
-      ActionLogger.logError('RankEditorScreen._performDeleteRank', e.toString(), {
+      ActionLogger.logError(
+          'RankEditorScreen._performDeleteRank', e.toString(), {
         'rankId': rank.id,
       });
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error deleting rank: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ToastHelper.showError(context, 'Error deleting rank: $e');
       }
     }
   }
 
-  Future<Rank?> _showReplacementRankDialog(BuildContext context, Rank rankToDelete, List<Rank> otherRanks) async {
+  Future<Rank?> _showReplacementRankDialog(
+      BuildContext context, Rank rankToDelete, List<Rank> otherRanks) async {
     return showDialog<Rank>(
       context: context,
       builder: (context) => AlertDialog(
@@ -543,7 +498,8 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Existing rankings using "${rankToDelete.name}" will be moved to:'),
+            Text(
+                'Existing rankings using "${rankToDelete.name}" will be moved to:'),
             const SizedBox(height: 16),
             ...otherRanks.map((rank) => RadioListTile<Rank>(
                   value: rank,
