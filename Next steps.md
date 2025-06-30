@@ -1,16 +1,12 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
-- importable format (person, tags, notes)
-- ...
-- import
-  - need both impressionTag and impression text
-  - predefined impressions
 - parse events
   - provide agent an example so they understand the structure
 
 ## Little later
 - tag tag pill to filter the list by that tag
+- try out different models
 
 ### Bug Fixes
 - **Event Date Change**: Context menu date picker shows but changes don't persist to database

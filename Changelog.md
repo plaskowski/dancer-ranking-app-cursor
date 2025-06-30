@@ -4,6 +4,39 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.45.0] - 2025-01-11
+
+### User Requests
+- "Let's implement this feature. Add new classes to lib/services/import. Split the ImportService into smalled SRP classes. Remember to include Dancer in the class names to indicate it is about dancers import."
+
+### Added
+- **Dancer Import System**: Complete bulk import functionality for dancers from JSON files
+  - JSON format support with dancers array and optional metadata section
+  - Three conflict resolution strategies: skip duplicates, update existing, import with suffix
+  - Automatic tag creation for missing tags during import
+  - Comprehensive validation with detailed error reporting
+  - Import preview and validation-only mode for safe testing
+  - Database transaction safety with automatic rollback on errors
+
+### Technical
+- **DancerImportParser**: Handles JSON parsing and data extraction with size limits (1000 dancers max)
+- **DancerImportValidator**: Validates import data and detects conflicts with existing dancers
+- **DancerImportService**: Main orchestrator for complete import workflow with atomic transactions
+- **ImportableDancer Models**: Complete data model set for import operations with proper validation
+
+### Architecture
+- **Single Responsibility Principle**: Four focused classes each handling specific import aspects
+- **Comprehensive Logging**: Action logging throughout all import operations
+- **Error Handling**: Graceful error handling with user-friendly messages
+- **Performance Optimized**: Batch operations and efficient database queries
+- **Integration Ready**: Compatible with existing DancerService and TagService patterns
+
+### Files Added
+- **lib/models/import_models.dart**: Data models for import operations (ImportableDancer, DancerImportResult, etc.)
+- **lib/services/dancer_import_parser.dart**: JSON parsing and validation service
+- **lib/services/dancer_import_validator.dart**: Conflict detection and validation service  
+- **lib/services/dancer_import_service.dart**: Main import orchestration service
+
 ## [v0.44.0] - 2025-01-11
 
 ### User Requests

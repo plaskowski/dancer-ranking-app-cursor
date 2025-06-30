@@ -495,7 +495,89 @@ Example logs:
 - **Error Debugging**: Full context for operation failures
 
 ## Database Schema
+
+## Services
+
+### Dancer Import Services
+
+#### DancerImportService (`lib/services/dancer_import_service.dart`)
+**Purpose**: Main orchestrator for dancer import operations
+**Key Methods**:
+- `importDancersFromJson(jsonContent, options)` - Complete import workflow with atomic transactions
+- `validateImportFile(jsonContent)` - Validation-only mode for preview
+- `getImportPreview(jsonContent)` - Quick preview information without full parsing
+
+**Features**:
+- **Atomic Transactions**: All imports wrapped in database transactions with rollback on errors
+- **Conflict Resolution**: Three strategies - skip duplicates, update existing, import with suffix
+- **Automatic Tag Creation**: Creates missing tags when enabled in options
+- **Comprehensive Logging**: Action logging throughout all import operations
+- **Error Handling**: Graceful error handling with user-friendly messages
+- **Performance Optimized**: Batch operations and efficient database queries
+
+#### DancerImportParser (`lib/services/dancer_import_parser.dart`)
+**Purpose**: JSON parsing and data extraction service
+**Key Methods**:
+- `parseJsonContent(jsonContent)` - Main JSON parsing with validation
+- `validateJsonStructure(jsonContent)` - Quick structure validation
+- `getImportPreview(jsonContent)` - Preview without full parsing
+
+**Features**:
+- **JSON Format Support**: Handles dancers array with optional metadata
+- **Size Limits**: Maximum 1000 dancers per import file
+- **Duplicate Detection**: Identifies duplicate names within import file
+- **Field Validation**: Validates all dancer fields (name, tags, notes) according to database constraints
+- **Error Aggregation**: Collects all parsing errors with detailed messages
+
+#### DancerImportValidator (`lib/services/dancer_import_validator.dart`)
+**Purpose**: Validation and conflict detection service
+**Key Methods**:
+- `validateImport(dancers, options)` - Main validation orchestrator
+- `isDancerNameTaken(name)` - Check existing dancer names
+- `generateUniqueName(baseName)` - Create unique names with suffixes
+- `canProceedWithImport(conflicts, options)` - Determine if import is safe
+
+**Features**:
+- **Conflict Detection**: Identifies duplicate names and validation errors
+- **Database Validation**: Checks against existing dancers and tags
+- **Unique Name Generation**: Creates unique names with numbered suffixes
+- **Missing Tag Detection**: Identifies tags that don't exist when auto-creation disabled
+- **Import Safety**: Validates all constraints before allowing import to proceed
+
+#### Import Data Models (`lib/models/import_models.dart`)
+**Purpose**: Complete data model set for import operations
+
+**Key Classes**:
+- `ImportableDancer` - Represents a dancer to be imported with name, tags, and notes
+- `DancerImportResult` - Parse results with validation status and error messages
+- `DancerImportSummary` - Import operation summary with counts and detailed results
+- `DancerImportOptions` - Configuration options for conflict resolution and tag creation
+- `DancerImportConflict` - Conflict detection results with suggestions for resolution
+
+**JSON Format Specification**:
+```json
+{
+  "dancers": [
+    {
+      "name": "Dancer Name",
+      "tags": ["tag1", "tag2"],
+      "notes": "Optional notes"
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "created_at": "2024-01-01T12:00:00Z",
+    "total_count": 100,
+    "source": "Manual export"
+  }
+}
 ```
+
+**Validation Rules**:
+- Names: Required, 1-100 characters, unique within import
+- Tags: Optional, 1-50 characters each, automatically normalized to lowercase
+- Notes: Optional, up to 500 characters
+- File size: Maximum 1000 dancers per import
 
 ### 5. Rank Editor Screen (`RankEditorScreen`)
 **Purpose**: Comprehensive rank management system with clean, modern interface
