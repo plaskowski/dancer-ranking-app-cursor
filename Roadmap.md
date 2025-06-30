@@ -44,3 +44,6 @@
 - Add a rule for the workflow to write down the mistakes that were made by cursor and add a cursor rule that will prevent it in the future
 - rule to always pick up only one task
 - how to keep the UX patterns consistent
+- if I can make it use automated user stories validation it could run on its own for long time
+  - it would be great to make it record the screens (as screenshots or video) when running these tests so I can review them
+  - they also will be useful for project documentation
