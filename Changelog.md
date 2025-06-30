@@ -4,6 +4,52 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.48.0] - 2025-01-13
+
+### User Requests
+- "implement Phase 1 Event Import UI feature" - referring to implementing the frontend UI for the Event Import functionality
+
+### Added
+- **Event Import UI**: Complete 3-step wizard interface for importing historical event data from JSON files
+  - **File Selection Step**: Drag-and-drop file picker with JSON validation, 5MB size limit, and clear format requirements
+  - **Data Preview Step**: Rich preview with statistics cards, expandable event cards, attendance details with color-coded status icons
+  - **Results Step**: Comprehensive import results with detailed statistics, skipped events display, and action buttons
+  - Integration into home screen overflow menu for easy access
+  - Automatic duplicate event skipping and missing dancer creation as documented in Phase 1 specification
+
+### Improved
+- **Import Experience**: Streamlined 3-step process with progress tracking and comprehensive error handling
+- **Visual Feedback**: Statistics cards showing events, attendances, and unique dancers counts during preview
+- **Status Visualization**: Color-coded icons for attendance statuses (present/served/left) with expandable event details
+- **Error Reporting**: Clear error messages for file validation, parsing issues, and import conflicts
+
+### Technical
+- **ImportEventsDialog**: Main stepper dialog with state management and navigation between steps
+- **EventFileSelectionStep**: File picker component with JSON validation and format requirement display
+- **EventDataPreviewStep**: Rich preview component with expandable event cards and attendance statistics
+- **EventResultsStep**: Results display with comprehensive statistics and action buttons
+- **Integration**: Proper provider setup and service integration following established app patterns
+- **Test Data**: Created comprehensive test file with 5 realistic events, 39 attendances, and mixed dancer statuses
+
+### UI/UX Features
+- **Responsive Design**: Proper height constraints and scrollable content for all screen sizes
+- **Progress Indicators**: Clear step progression with enabled/disabled state management
+- **Interactive Elements**: Expandable cards, action buttons, and intuitive navigation
+- **Accessibility**: Proper semantic labels and keyboard navigation support
+- **Consistent Styling**: Follows app theme and Material Design principles
+
+### Files Added
+- **lib/widgets/import_events_dialog.dart**: Main Event Import dialog with 3-step stepper interface
+- **lib/widgets/import/event_file_selection_step.dart**: File picker step with validation and requirements display
+- **lib/widgets/import/event_data_preview_step.dart**: Rich preview step with statistics and expandable event cards
+- **lib/widgets/import/event_results_step.dart**: Results step with comprehensive statistics and action buttons
+- **test_events_import.json**: Comprehensive test file with realistic dance events and attendance data
+
+### Files Modified
+- **lib/screens/home_screen.dart**: Added Event Import option to overflow menu with proper provider integration
+- **lib/models/import_models.dart**: Fixed JSON serialization to use consistent camelCase field naming
+- **lib/widgets/import/event_data_preview_step.dart**: Fixed UI layout constraints to prevent render box errors
+
 ## [v0.47.0] - 2025-01-12
 
 ### User Requests

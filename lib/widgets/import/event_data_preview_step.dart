@@ -155,7 +155,8 @@ class EventDataPreviewStep extends StatelessWidget {
         ),
         const SizedBox(height: 8),
 
-        Expanded(
+        SizedBox(
+          height: 300,
           child: ListView.builder(
             itemCount: parseResult!.events.length,
             itemBuilder: (context, index) {

@@ -135,12 +135,14 @@ Users can adjust rankings during events for various reasons:
 - Navigate to dancers management (app bar icon)
 - Navigate to ranks management (app bar icon)
 - Navigate to tags management (app bar icon)
+- Import events from JSON files (overflow menu)
 **Navigation**:
 - → Create Event Screen (FAB)
 - → Event Screen (tap event)
 - → Dancers Screen (app bar action)
 - → Rank Editor Screen (app bar action)
 - → Tags Screen (app bar action)
+- → Event Import Dialog (overflow menu action)
 
 ### 2. Create Event Screen (`CreateEventScreen`)
 **Purpose**: Form to create new dance events
@@ -319,10 +321,36 @@ Users can adjust rankings during events for various reasons:
 - Prevents duplicate dance records
 - Save/cancel actions
 
+**Event Import Dialog (`ImportEventsDialog`)**:
+- **3-step stepper interface** for importing historical event data from JSON files
+- **Step 1: File Selection** 
+  - Drag-and-drop file picker with JSON validation
+  - 5MB file size limit with clear error messages
+  - Format requirements display with JSON structure example
+  - File validation with immediate feedback
+- **Step 2: Data Preview**
+  - Rich preview with statistics cards showing events, attendances, and unique dancers counts
+  - Expandable event cards with comprehensive details
+  - Color-coded attendance status icons (present/served/left) for visual clarity
+  - Automatic behavior information about duplicate skipping and missing dancer creation
+- **Step 3: Results**
+  - Comprehensive import results with detailed statistics breakdown
+  - Skipped events display with reasons (duplicates)
+  - Error reporting with specific failure details
+  - Action buttons for closing dialog or starting new import
+- **Integration**: Accessible from Home screen overflow menu
+- **Automatic Processing**: Phase 1 implementation with full automation - skips duplicates and creates missing dancers
+- **Progress Tracking**: Step progression with enabled/disabled state management
+- **Error Handling**: Comprehensive validation and user-friendly error messages
+
 ### Navigation Flow
 ```
 Home Screen
 ├── Create Event Screen
+├── Event Import Dialog (overflow menu) - 3-step wizard for bulk event import
+│   ├── Step 1: File Selection (JSON file picker with validation)
+│   ├── Step 2: Data Preview (statistics and expandable event cards)
+│   └── Step 3: Results (import summary and action buttons)
 ├── Event Screen (Swipe-based Pages)
 │   ├── Planning Page (Page 0)
 │   │   ├── FAB → Select Dancers Screen (page-specific action)

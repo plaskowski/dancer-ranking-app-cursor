@@ -309,7 +309,7 @@ class ImportableAttendance {
     }
 
     return ImportableAttendance(
-      dancerName: (json['dancer_name'] as String).trim(),
+      dancerName: (json['dancerName'] as String).trim(),
       status: status,
       impression: json['impression'] as String?,
     );
@@ -317,7 +317,7 @@ class ImportableAttendance {
 
   Map<String, dynamic> toJson() {
     return {
-      'dancer_name': dancerName,
+      'dancerName': dancerName,
       'status': status,
       if (impression != null) 'impression': impression,
     };

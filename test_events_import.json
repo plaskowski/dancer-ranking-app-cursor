@@ -1,0 +1,212 @@
+{
+    "events": [
+        {
+            "name": "Friday Salsa Night",
+            "date": "2024-12-20",
+            "attendances": [
+                {
+                    "dancerName": "Agnieszka Borysewicz",
+                    "status": "served",
+                    "impression": "Excellent energy and technique"
+                },
+                {
+                    "dancerName": "Kasia Miguela",
+                    "status": "served",
+                    "impression": "Great leading skills"
+                },
+                {
+                    "dancerName": "Anna Kaliska",
+                    "status": "present"
+                },
+                {
+                    "dancerName": "Wiktoria Batsai",
+                    "status": "served",
+                    "impression": "Amazing connection and musicality"
+                },
+                {
+                    "dancerName": "Carlos Rodriguez",
+                    "status": "present"
+                },
+                {
+                    "dancerName": "Maria Santos",
+                    "status": "served",
+                    "impression": "Beautiful styling and flow"
+                },
+                {
+                    "dancerName": "Magdalena Kulej",
+                    "status": "left"
+                },
+                {
+                    "dancerName": "Diego Martinez",
+                    "status": "present"
+                }
+            ]
+        },
+        {
+            "name": "Bachata Social",
+            "date": "2024-12-21",
+            "attendances": [
+                {
+                    "dancerName": "Dagmara",
+                    "status": "served",
+                    "impression": "Perfect bachata connection"
+                },
+                {
+                    "dancerName": "Kasia Panterka",
+                    "status": "present"
+                },
+                {
+                    "dancerName": "Isabella Torres",
+                    "status": "served",
+                    "impression": "Sensual and smooth moves"
+                },
+                {
+                    "dancerName": "Lena 40tka",
+                    "status": "present"
+                },
+                {
+                    "dancerName": "Rafael Silva",
+                    "status": "left"
+                },
+                {
+                    "dancerName": "Paulina opalona",
+                    "status": "served",
+                    "impression": "Great energy and timing"
+                },
+                {
+                    "dancerName": "Carmen Delgado",
+                    "status": "present"
+                }
+            ]
+        },
+        {
+            "name": "Mambo Workshop",
+            "date": "2024-12-22",
+            "attendances": [
+                {
+                    "dancerName": "Liza",
+                    "status": "served",
+                    "impression": "Exceptional mambo technique"
+                },
+                {
+                    "dancerName": "Sonia z LP",
+                    "status": "present"
+                },
+                {
+                    "dancerName": "Natalia Peta",
+                    "status": "served",
+                    "impression": "Sharp and precise movements"
+                },
+                {
+                    "dancerName": "Eduardo Vega",
+                    "status": "present"
+                },
+                {
+                    "dancerName": "Anastasia",
+                    "status": "left"
+                },
+                {
+                    "dancerName": "Lucia Morales",
+                    "status": "served",
+                    "impression": "Outstanding partner work"
+                },
+                {
+                    "dancerName": "Roberto Jimenez",
+                    "status": "present"
+                }
+            ]
+        },
+        {
+            "name": "Sunday Practice",
+            "date": "2024-12-23",
+            "attendances": [
+                {
+                    "dancerName": "Wiktoria Warcholińska",
+                    "status": "present"
+                },
+                {
+                    "dancerName": "Kristina",
+                    "status": "served",
+                    "impression": "Consistent improvement shown"
+                },
+                {
+                    "dancerName": "Marianna Lis",
+                    "status": "present"
+                },
+                {
+                    "dancerName": "Alessandro Bruno",
+                    "status": "served",
+                    "impression": "Strong lead and musicality"
+                },
+                {
+                    "dancerName": "Olena",
+                    "status": "left"
+                },
+                {
+                    "dancerName": "Sofia Ramirez",
+                    "status": "present"
+                },
+                {
+                    "dancerName": "Lilia",
+                    "status": "served",
+                    "impression": "Graceful and elegant style"
+                },
+                {
+                    "dancerName": "Marco Fernandez",
+                    "status": "present"
+                }
+            ]
+        },
+        {
+            "name": "New Year's Eve Celebration",
+            "date": "2024-12-31",
+            "attendances": [
+                {
+                    "dancerName": "Agnieszka Borysewicz",
+                    "status": "served",
+                    "impression": "Party energy at its best!"
+                },
+                {
+                    "dancerName": "Anna Kaliska",
+                    "status": "served",
+                    "impression": "Fantastic celebration dance"
+                },
+                {
+                    "dancerName": "Kasia Preś",
+                    "status": "present"
+                },
+                {
+                    "dancerName": "Valentina Costa",
+                    "status": "served",
+                    "impression": "Brought amazing festive spirit"
+                },
+                {
+                    "dancerName": "Wiktoria Batsai",
+                    "status": "present"
+                },
+                {
+                    "dancerName": "Gabriel Herrera",
+                    "status": "served",
+                    "impression": "Celebrated with great style"
+                },
+                {
+                    "dancerName": "Milena",
+                    "status": "left"
+                },
+                {
+                    "dancerName": "Helena Vargas",
+                    "status": "present"
+                },
+                {
+                    "dancerName": "Zuzia z pon.",
+                    "status": "served",
+                    "impression": "Perfect way to end the year"
+                },
+                {
+                    "dancerName": "Antonio Reyes",
+                    "status": "present"
+                }
+            ]
+        }
+    ]
+}
