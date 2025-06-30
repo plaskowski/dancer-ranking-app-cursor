@@ -4,6 +4,20 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.51.0] - 2025-01-13
+
+### User Requests
+- "AppBar title and subtitle on Event Screen should be centered."
+
+### Fixed
+- **Event Screen AppBar**: Centered the title and subtitle text in the AppBar
+  - Changed `crossAxisAlignment` from `CrossAxisAlignment.start` to `CrossAxisAlignment.center`
+  - Affects both event title (name + date) and subtitle (tab indicators or "Event Concluded")
+  - Consistent centered alignment across all event states (current/future/past events)
+
+### Files Modified
+- **lib/screens/event_screen.dart**: Updated AppBar title Column alignment
+
 ## [v0.50.0] - 2025-01-13
 
 ### User Requests

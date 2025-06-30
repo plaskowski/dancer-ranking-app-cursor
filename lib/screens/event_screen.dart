@@ -113,7 +113,6 @@ class _EventScreenState extends State<EventScreen> {
       appBar: AppBar(
         title: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               '${_event!.name} • ${DateFormat('MMM d').format(_event!.date)}',
