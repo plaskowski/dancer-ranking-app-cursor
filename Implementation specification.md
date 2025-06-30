@@ -145,6 +145,7 @@ Users can adjust rankings during events for various reasons:
   - Bulk add with default "Neutral" ranking
   - Planning-only actions: rank editing, notes editing
 - **Smart empty state**: Shows different messages based on whether all ranked dancers are present
+- **Import Rankings** (when no dancers added yet): Copy rankings from another event
 
 **Present Tab**:
 - View only dancers who are currently at the event (status 'present' or 'served', excludes 'left' or 'absent')
@@ -159,6 +160,7 @@ Users can adjust rankings during events for various reasons:
 **Planning Tab Actions**:
 - **FAB**: Opens Select Dancers Screen → add multiple existing dancers to event ranking
 - **Tap dancer**: Opens Planning Actions Dialog → rank editing, notes editing, mark present
+- **Import Rankings Button**: Opens ImportRankingsDialog → copy rankings from another event (only when no dancers added yet)
 
 **Present Tab Actions**:
 - **FAB**: Shows modal menu with dual options
@@ -180,6 +182,7 @@ Users can adjust rankings during events for various reasons:
 - ← Back to Home Screen
 - → Dancers Screen (app bar action)
 - **Planning Tab FAB** → Select Dancers Screen (multi-select existing dancers)
+- **Planning Tab Import Rankings** → ImportRankingsDialog (when no dancers added yet)
 - **Present Tab FAB** → Modal Menu → Add Dancer Dialog OR Add Existing Dancer Screen
 - **Planning Tab Actions** → Ranking Dialog, Notes editing only
 - **Present Tab Actions** → Full Actions Dialog → Ranking, Dance Recording, Attendance
@@ -265,6 +268,7 @@ Home Screen
 ├── Event Screen (Swipe-based Pages)
 │   ├── Planning Page (Page 0)
 │   │   ├── FAB → Select Dancers Screen (page-specific action)
+│   │   ├── Import Rankings Button → ImportRankingsDialog (when no dancers added yet)
 │   │   ├── Tap dancer → Planning Actions Dialog (rank/notes editing only)
 │   │   └── Blue location icon → Instant "Mark Present" (context action)
 │   ├── Present Page (Page 1)
@@ -324,7 +328,7 @@ Home Screen
   - **Batch import processing**: Efficiently copy multiple rankings in a single operation
   - **Context preservation**: Imported rankings marked with source event context while preserving original reasons
   - **Detailed feedback**: Shows summary of imported, skipped, and overwritten rankings for transparency
-  - **Event context menu integration**: Accessible via long-press context menu on events for seamless workflow
+  - **Contextual placement**: Available in Planning tab when setting up event rankings (when no dancers added yet)
 - **Compact dancer cards**: Display all information inline for maximum vertical space efficiency
   - **Single-line layout**: Name followed by bullet-separated information: "Name • Notes • Ranking • Dance Status"
   - **Personal notes**: General dancer notes displayed inline (hidden for danced dancers in Present tab)

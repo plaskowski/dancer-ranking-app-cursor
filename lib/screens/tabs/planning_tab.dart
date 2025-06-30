@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/dancer_service.dart';
+import '../../services/event_service.dart';
 import '../../theme/theme_extensions.dart';
 import '../../utils/action_logger.dart';
 import '../../widgets/dancer_card.dart';
+import '../../widgets/import_rankings_dialog.dart';
 import '../event_tab_actions.dart';
 import '../select_dancers_screen.dart';
 
@@ -101,11 +103,31 @@ class _PlanningTabState extends State<PlanningTab> {
                 Text(
                   totalRankedDancers > 0
                       ? 'Switch to Present tab to manage attendance'
-                      : 'Tap + to add dancers to this event',
+                      : 'Add dancers to start planning',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                 ),
+                if (totalRankedDancers == 0) ...[
+                  const SizedBox(height: 24),
+                  ElevatedButton.icon(
+                    onPressed: () => _showImportRankingsDialog(context),
+                    icon: const Icon(Icons.file_download),
+                    label: const Text('Import Rankings'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 12),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Copy rankings from another event',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
               ],
             ),
           );
@@ -169,6 +191,53 @@ class _PlanningTabState extends State<PlanningTab> {
         );
       },
     );
+  }
+
+  void _showImportRankingsDialog(BuildContext context) async {
+    ActionLogger.logUserAction('PlanningTab', 'import_rankings_dialog_opened', {
+      'eventId': widget.eventId,
+    });
+
+    try {
+      // Get event details to pass event name to dialog
+      final eventService = Provider.of<EventService>(context, listen: false);
+      final event = await eventService.getEvent(widget.eventId);
+
+      if (event == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Event not found')),
+        );
+        return;
+      }
+
+      final result = await showDialog<bool>(
+        context: context,
+        builder: (context) => ImportRankingsDialog(
+          targetEventId: widget.eventId,
+          targetEventName: event.name,
+        ),
+      );
+
+      if (result == true) {
+        ActionLogger.logUserAction('PlanningTab', 'import_rankings_completed', {
+          'eventId': widget.eventId,
+        });
+        // The success message is already shown by the dialog
+        // The StreamBuilder will automatically update when rankings are imported
+      } else {
+        ActionLogger.logUserAction('PlanningTab', 'import_rankings_cancelled', {
+          'eventId': widget.eventId,
+        });
+      }
+    } catch (e) {
+      ActionLogger.logError(
+          'PlanningTab._showImportRankingsDialog', e.toString(), {
+        'eventId': widget.eventId,
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
   }
 }
 

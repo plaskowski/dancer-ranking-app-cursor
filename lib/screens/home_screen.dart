@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../services/event_service.dart';
 import '../utils/action_logger.dart';
-import '../widgets/import_rankings_dialog.dart';
 import 'create_event_screen.dart';
 import 'dancers_screen.dart';
 import 'event_screen.dart';
@@ -147,8 +146,7 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Rename'),
                 onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_rename_tapped', {
+                  ActionLogger.logUserAction('EventCard', 'context_rename_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                   });
@@ -164,8 +162,7 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Change Date'),
                 onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_change_date_tapped', {
+                  ActionLogger.logUserAction('EventCard', 'context_change_date_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                     'currentDate': event.date.toIso8601String(),
@@ -177,31 +174,12 @@ class _EventCard extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(
-                  Icons.file_download,
-                  color: Theme.of(context).colorScheme.tertiary,
-                ),
-                title: const Text('Import Rankings'),
-                subtitle: const Text('Copy rankings from another event'),
-                onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_import_rankings_tapped', {
-                    'eventId': event.id,
-                    'eventName': event.name,
-                  });
-
-                  Navigator.pop(context);
-                  _showImportRankingsDialog(context);
-                },
-              ),
-              ListTile(
-                leading: Icon(
                   Icons.delete,
                   color: Theme.of(context).colorScheme.error,
                 ),
                 title: const Text('Delete'),
                 onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_delete_tapped', {
+                  ActionLogger.logUserAction('EventCard', 'context_delete_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                   });
@@ -304,8 +282,7 @@ class _EventCard extends StatelessWidget {
             SnackBar(content: Text('Event date changed to $formattedDate')),
           );
         } else {
-          ActionLogger.logError(
-              'EventCard.performDateChange', 'update_failed', {
+          ActionLogger.logError('EventCard.performDateChange', 'update_failed', {
             'eventId': event.id,
             'newDate': newDate.toIso8601String(),
           });
@@ -333,8 +310,7 @@ class _EventCard extends StatelessWidget {
     }
   }
 
-  void _performRename(
-      BuildContext context, TextEditingController controller) async {
+  void _performRename(BuildContext context, TextEditingController controller) async {
     final newName = controller.text.trim();
     if (newName.isEmpty) {
       ActionLogger.logUserAction('EventCard', 'rename_validation_failed', {
@@ -470,34 +446,6 @@ class _EventCard extends StatelessWidget {
     }
   }
 
-  void _showImportRankingsDialog(BuildContext context) async {
-    ActionLogger.logUserAction('EventCard', 'import_rankings_dialog_opened', {
-      'eventId': event.id,
-      'eventName': event.name,
-    });
-
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => ImportRankingsDialog(
-        targetEventId: event.id,
-        targetEventName: event.name,
-      ),
-    );
-
-    if (result == true) {
-      ActionLogger.logUserAction('EventCard', 'import_rankings_completed', {
-        'eventId': event.id,
-        'eventName': event.name,
-      });
-      // The success message is already shown by the dialog
-    } else {
-      ActionLogger.logUserAction('EventCard', 'import_rankings_cancelled', {
-        'eventId': event.id,
-        'eventName': event.name,
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final formattedDate = DateFormat('MMM d, y').format(event.date);
@@ -526,24 +474,18 @@ class _EventCard extends StatelessWidget {
             event.name,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : null,
+              color: isPast ? Theme.of(context).colorScheme.onSurfaceVariant : null,
             ),
           ),
           subtitle: Text(
             formattedDate,
             style: TextStyle(
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : Theme.of(context).colorScheme.primary,
+              color: isPast ? Theme.of(context).colorScheme.onSurfaceVariant : Theme.of(context).colorScheme.primary,
             ),
           ),
           trailing: Icon(
             isPast ? Icons.history : Icons.arrow_forward_ios,
-            color: isPast
-                ? Theme.of(context).colorScheme.onSurfaceVariant
-                : Theme.of(context).colorScheme.primary,
+            color: isPast ? Theme.of(context).colorScheme.onSurfaceVariant : Theme.of(context).colorScheme.primary,
           ),
         ),
       ),

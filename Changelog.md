@@ -15,27 +15,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Event Context Menu Integration**: Added "Import Rankings" option to event long-press context menu
 - **Source Event Selection**: Dialog allowing users to select which event to import rankings from
 - **Conflict Handling**: Option to overwrite existing rankings or skip dancers who already have rankings
-- **Smart Filtering**: Only shows events that actually have rankings as source options
-- **Comprehensive Feedback**: Detailed success messages showing imported, skipped, and overwritten counts
-
-### Enhanced
-- **RankingService**: Added `importRankingsFromEvent()` method with full conflict resolution
-- **Event Management**: Extended event context menu with new import functionality
-- **User Experience**: Clear visual feedback with summary of import results
-- **Data Integrity**: Preserves original reasons while marking imported rankings appropriately
+- **Smart Filtering**: Only show events with existing rankings as source options
+- **Comprehensive Logging**: Full action tracking throughout import process
+- **User Feedback**: Success/warning messages with detailed import statistics
 
 ### Technical
-- **ImportRankingsResult Class**: Structured result object with detailed statistics and summary messaging
-- **Batch Operations**: Efficient bulk import processing with proper error handling and logging
-- **UI Components**: New `ImportRankingsDialog` with event selection and configuration options
-- **ActionLogger Integration**: Complete logging coverage for import operations and user interactions
-- **Conflict Resolution**: Configurable overwrite behavior with skip/overwrite options
+- **RankingService.importRankingsFromEvent()**: New method with conflict resolution
+- **ImportRankingsResult**: Helper class for structured import feedback
+- **ImportRankingsDialog**: Reusable dialog component for source event selection
+- **Automatic UI Updates**: StreamBuilder automatically refreshes when rankings imported
 
-### Data Flow
-- **Source Validation**: Filters events to only show those with existing rankings
-- **Target Protection**: Handles existing rankings based on user preference (skip vs overwrite)
-- **Reason Enhancement**: Automatically appends "Imported from another event" to preserve context
-- **Result Tracking**: Returns detailed statistics for user feedback and debugging
+## [v0.33.1] - 2025-01-11
+
+### User Requests
+- "Nice, but I would rather have it as an action on the Planning tab in the event screen when there are no dancers added to event ranking yet"
+
+### Improved
+- **Better UX Placement**: Moved "Import Rankings" from home screen context menu to Planning tab
+- **Contextual Availability**: Only shows when in event with no dancers added yet
+- **Cleaner Integration**: Appears as button in empty state rather than context menu option
+- **More Intuitive Flow**: Access import feature directly when setting up event rankings
+
+### Changed
+- **Removed**: "Import Rankings" option from event context menu in home screen
+- **Added**: "Import Rankings" button in Planning tab empty state
+- **Location**: Planning tab now shows import option when totalRankedDancers == 0
+
+### Technical
+- **Planning Tab Enhancement**: Added _showImportRankingsDialog method to PlanningTab
+- **Import Management**: Proper error handling and event name fetching
+- **UI Consistency**: Maintains same dialog behavior with improved placement
 
 ## [v0.32.0] - 2025-01-11
 
