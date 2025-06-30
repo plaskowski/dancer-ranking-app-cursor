@@ -612,6 +612,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Technical
 - **AddExistingDancerScreen**: Removed `
 
+## [v0.9.1] - 2025-06-30
+
+### User Requests
+- "Let's remove duplication from the newly added code in attendance_service.dart" - Refactor to eliminate code duplication
+
+### Technical
+- **Code Deduplication**: Refactored AttendanceService to eliminate duplicate code
+  - Created `_createAttendanceDancerJoinQuery()` helper method to centralize join query setup
+  - Created `_mapJoinResultsToAttendanceWithDancerInfo()` helper method to centralize result mapping
+  - Reduced code duplication between `getPresentDancersWithInfo()` and `getDancedDancers()` methods
+  - Improved maintainability by centralizing common join and mapping logic
+
+### Improved
+- **Code Maintainability**: Eliminated duplicate join query setup and result mapping code
+- **DRY Principle**: Applied "Don't Repeat Yourself" principle to service layer methods
+
 ## [v0.9.0] - 2025-06-30
 
 ### User Requests
