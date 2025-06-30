@@ -21,6 +21,10 @@ class Ranks extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 1, max: 50)();
   IntColumn get ordinal => integer()(); // 1 = best, 5 = worst
+  BoolColumn get isArchived =>
+      boolean().withDefault(const Constant(false))(); // Archived ranks are hidden from new events
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
 }
 
 // Rankings table (event-specific dancer rankings)

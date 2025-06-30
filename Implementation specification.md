@@ -111,11 +111,13 @@ Users can adjust rankings during events for various reasons:
 - View list of all events (past and upcoming) **sorted by date descending (newest first)**
 - Navigate to event details by tapping event
 - Create new event (FAB)
-- Navigate to dancers management
+- Navigate to dancers management (app bar icon)
+- Navigate to ranks management (app bar icon)
 **Navigation**:
 - → Create Event Screen (FAB)
 - → Event Screen (tap event)
 - → Dancers Screen (app bar action)
+- → Rank Editor Screen (app bar action)
 
 ### 2. Create Event Screen (`CreateEventScreen`)
 **Purpose**: Form to create new dance events
@@ -390,3 +392,23 @@ Example logs:
 - **Error Debugging**: Full context for operation failures
 
 ## Database Schema
+```
+
+### 5. Rank Editor Screen (`RankEditorScreen`)
+**Purpose**: Comprehensive rank management system
+**Actions**:
+- View all ranks ordered by priority (ordinal)
+- Drag-to-reorder ranks to change priority
+- Add new rank (app bar + button)
+- Edit rank name (tap rank or popup menu)
+- Archive rank (hide from new events, popup menu)
+- Delete rank with reassignment (popup menu)
+- Visual feedback for all operations
+**Features**:
+- **Smart Filtering**: Only active (non-archived) ranks shown in ranking dialogs
+- **Safe Deletion**: Requires replacement rank selection for existing rankings
+- **Real-time Updates**: Immediate UI refresh after operations
+- **Error Handling**: Comprehensive validation and user feedback
+**Navigation**:
+- ← Back to Home Screen
+- No sub-navigation (self-contained management)

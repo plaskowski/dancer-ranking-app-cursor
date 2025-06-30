@@ -8,6 +8,7 @@ import '../utils/action_logger.dart';
 import 'create_event_screen.dart';
 import 'dancers_screen.dart';
 import 'event_screen.dart';
+import 'rank_editor_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -22,6 +23,7 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.people),
+            tooltip: 'Manage Dancers',
             onPressed: () {
               ActionLogger.logUserAction('HomeScreen', 'navigate_to_dancers', {
                 'destination': 'DancersScreen',
@@ -31,6 +33,22 @@ class HomeScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const DancersScreen(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.star_border),
+            tooltip: 'Manage Ranks',
+            onPressed: () {
+              ActionLogger.logUserAction('HomeScreen', 'navigate_to_ranks', {
+                'destination': 'RankEditorScreen',
+              });
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RankEditorScreen(),
                 ),
               );
             },

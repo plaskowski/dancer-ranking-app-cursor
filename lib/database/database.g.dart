@@ -548,8 +548,35 @@ class $RanksTable extends Ranks with TableInfo<$RanksTable, Rank> {
   late final GeneratedColumn<int> ordinal = GeneratedColumn<int>(
       'ordinal', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _isArchivedMeta =
+      const VerificationMeta('isArchived');
   @override
-  List<GeneratedColumn> get $columns => [id, name, ordinal];
+  late final GeneratedColumn<bool> isArchived = GeneratedColumn<bool>(
+      'is_archived', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_archived" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, name, ordinal, isArchived, createdAt, updatedAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -575,6 +602,20 @@ class $RanksTable extends Ranks with TableInfo<$RanksTable, Rank> {
     } else if (isInserting) {
       context.missing(_ordinalMeta);
     }
+    if (data.containsKey('is_archived')) {
+      context.handle(
+          _isArchivedMeta,
+          isArchived.isAcceptableOrUnknown(
+              data['is_archived']!, _isArchivedMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
     return context;
   }
 
@@ -590,6 +631,12 @@ class $RanksTable extends Ranks with TableInfo<$RanksTable, Rank> {
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       ordinal: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}ordinal'])!,
+      isArchived: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_archived'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
     );
   }
 
@@ -603,13 +650,25 @@ class Rank extends DataClass implements Insertable<Rank> {
   final int id;
   final String name;
   final int ordinal;
-  const Rank({required this.id, required this.name, required this.ordinal});
+  final bool isArchived;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const Rank(
+      {required this.id,
+      required this.name,
+      required this.ordinal,
+      required this.isArchived,
+      required this.createdAt,
+      required this.updatedAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
     map['ordinal'] = Variable<int>(ordinal);
+    map['is_archived'] = Variable<bool>(isArchived);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
   }
 
@@ -618,6 +677,9 @@ class Rank extends DataClass implements Insertable<Rank> {
       id: Value(id),
       name: Value(name),
       ordinal: Value(ordinal),
+      isArchived: Value(isArchived),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
     );
   }
 
@@ -628,6 +690,9 @@ class Rank extends DataClass implements Insertable<Rank> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       ordinal: serializer.fromJson<int>(json['ordinal']),
+      isArchived: serializer.fromJson<bool>(json['isArchived']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
   }
   @override
@@ -637,19 +702,36 @@ class Rank extends DataClass implements Insertable<Rank> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'ordinal': serializer.toJson<int>(ordinal),
+      'isArchived': serializer.toJson<bool>(isArchived),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
   }
 
-  Rank copyWith({int? id, String? name, int? ordinal}) => Rank(
+  Rank copyWith(
+          {int? id,
+          String? name,
+          int? ordinal,
+          bool? isArchived,
+          DateTime? createdAt,
+          DateTime? updatedAt}) =>
+      Rank(
         id: id ?? this.id,
         name: name ?? this.name,
         ordinal: ordinal ?? this.ordinal,
+        isArchived: isArchived ?? this.isArchived,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
       );
   Rank copyWithCompanion(RanksCompanion data) {
     return Rank(
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       ordinal: data.ordinal.present ? data.ordinal.value : this.ordinal,
+      isArchived:
+          data.isArchived.present ? data.isArchived.value : this.isArchived,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
   }
 
@@ -658,55 +740,85 @@ class Rank extends DataClass implements Insertable<Rank> {
     return (StringBuffer('Rank(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('ordinal: $ordinal')
+          ..write('ordinal: $ordinal, ')
+          ..write('isArchived: $isArchived, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, ordinal);
+  int get hashCode =>
+      Object.hash(id, name, ordinal, isArchived, createdAt, updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Rank &&
           other.id == this.id &&
           other.name == this.name &&
-          other.ordinal == this.ordinal);
+          other.ordinal == this.ordinal &&
+          other.isArchived == this.isArchived &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
 }
 
 class RanksCompanion extends UpdateCompanion<Rank> {
   final Value<int> id;
   final Value<String> name;
   final Value<int> ordinal;
+  final Value<bool> isArchived;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
   const RanksCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.ordinal = const Value.absent(),
+    this.isArchived = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   });
   RanksCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     required int ordinal,
+    this.isArchived = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   })  : name = Value(name),
         ordinal = Value(ordinal);
   static Insertable<Rank> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<int>? ordinal,
+    Expression<bool>? isArchived,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (ordinal != null) 'ordinal': ordinal,
+      if (isArchived != null) 'is_archived': isArchived,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
     });
   }
 
   RanksCompanion copyWith(
-      {Value<int>? id, Value<String>? name, Value<int>? ordinal}) {
+      {Value<int>? id,
+      Value<String>? name,
+      Value<int>? ordinal,
+      Value<bool>? isArchived,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt}) {
     return RanksCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       ordinal: ordinal ?? this.ordinal,
+      isArchived: isArchived ?? this.isArchived,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -722,6 +834,15 @@ class RanksCompanion extends UpdateCompanion<Rank> {
     if (ordinal.present) {
       map['ordinal'] = Variable<int>(ordinal.value);
     }
+    if (isArchived.present) {
+      map['is_archived'] = Variable<bool>(isArchived.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
     return map;
   }
 
@@ -730,7 +851,10 @@ class RanksCompanion extends UpdateCompanion<Rank> {
     return (StringBuffer('RanksCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('ordinal: $ordinal')
+          ..write('ordinal: $ordinal, ')
+          ..write('isArchived: $isArchived, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
@@ -2162,11 +2286,17 @@ typedef $$RanksTableCreateCompanionBuilder = RanksCompanion Function({
   Value<int> id,
   required String name,
   required int ordinal,
+  Value<bool> isArchived,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
 });
 typedef $$RanksTableUpdateCompanionBuilder = RanksCompanion Function({
   Value<int> id,
   Value<String> name,
   Value<int> ordinal,
+  Value<bool> isArchived,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
 });
 
 final class $$RanksTableReferences
@@ -2204,6 +2334,15 @@ class $$RanksTableFilterComposer extends Composer<_$AppDatabase, $RanksTable> {
 
   ColumnFilters<int> get ordinal => $composableBuilder(
       column: $table.ordinal, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
 
   Expression<bool> rankingsRefs(
       Expression<bool> Function($$RankingsTableFilterComposer f) f) {
@@ -2244,6 +2383,15 @@ class $$RanksTableOrderingComposer
 
   ColumnOrderings<int> get ordinal => $composableBuilder(
       column: $table.ordinal, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
 }
 
 class $$RanksTableAnnotationComposer
@@ -2263,6 +2411,15 @@ class $$RanksTableAnnotationComposer
 
   GeneratedColumn<int> get ordinal =>
       $composableBuilder(column: $table.ordinal, builder: (column) => column);
+
+  GeneratedColumn<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
   Expression<T> rankingsRefs<T extends Object>(
       Expression<T> Function($$RankingsTableAnnotationComposer a) f) {
@@ -2312,21 +2469,33 @@ class $$RanksTableTableManager extends RootTableManager<
             Value<int> id = const Value.absent(),
             Value<String> name = const Value.absent(),
             Value<int> ordinal = const Value.absent(),
+            Value<bool> isArchived = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
           }) =>
               RanksCompanion(
             id: id,
             name: name,
             ordinal: ordinal,
+            isArchived: isArchived,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             required String name,
             required int ordinal,
+            Value<bool> isArchived = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
           }) =>
               RanksCompanion.insert(
             id: id,
             name: name,
             ordinal: ordinal,
+            isArchived: isArchived,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) =>

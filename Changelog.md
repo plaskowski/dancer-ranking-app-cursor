@@ -827,3 +827,44 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Modified `lib/screens/tabs/planning_tab.dart` to sort dancers by name within rank groups
 - Modified `lib/screens/tabs/present_tab.dart` to sort dancers by name within rank groups
 - Other dancer lists (main Dancers screen, selection screens) already had proper name sorting via service layer 
+
+## [v0.35.0] - 2024-12-22
+
+### User Requests
+- "let's do this step" - Implement the rank editor as described in Roadmap.md
+
+### Added
+- **Rank Editor Screen**: Complete rank management system accessible from home screen
+  - Added Ranks icon to home screen app bar (next to Dancers icon)
+  - Drag-to-reorder ranks by priority with visual feedback
+  - Add new ranks with automatic ordinal assignment
+  - Edit existing rank names
+  - Archive ranks (hidden from new events but preserved in past events)
+  - Delete ranks with smart reassignment of existing rankings
+  - Comprehensive error handling and user feedback
+
+### Database Changes
+- **Extended Ranks Table**: Added `isArchived`, `createdAt`, and `updatedAt` fields
+- **Database Migration**: Automatic schema upgrade with build_runner regeneration
+
+### Service Enhancements
+- **Extended RankingService**: Added complete CRUD operations for ranks
+  - `createRank()` - Create new ranks with validation
+  - `updateRank()` - Update rank properties (name, ordinal, archive status)
+  - `archiveRank()` / `unarchiveRank()` - Archive management
+  - `deleteRank()` - Safe deletion with ranking reassignment
+  - `updateRankOrdinals()` - Batch reordering support
+  - `getActiveRanks()` - Filter out archived ranks for new events
+
+### UX Improvements
+- **Smart Rank Filtering**: Ranking dialogs now show only active (non-archived) ranks
+- **Visual Hierarchy**: Rank cards show priority numbers and drag handles
+- **Contextual Actions**: Per-rank popup menus with edit/archive/delete options
+- **Replacement Selection**: Guided rank reassignment during deletion
+- **Real-time Updates**: Immediate UI refresh after rank operations
+
+### Technical
+- Transaction-based rank operations for data consistency
+- Comprehensive ActionLogger integration for debugging
+- Proper error handling with user-friendly messages
+- Material Design compliant UI with theme integration 

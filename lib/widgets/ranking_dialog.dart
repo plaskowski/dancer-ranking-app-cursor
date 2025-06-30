@@ -60,7 +60,7 @@ class _RankingDialogState extends State<RankingDialog> {
 
     try {
       // Load ranks
-      final ranks = await rankingService.getAllRanks();
+      final ranks = await rankingService.getActiveRanks();
 
       // Load dancer name
       final dancer = await dancerService.getDancer(widget.dancerId);
