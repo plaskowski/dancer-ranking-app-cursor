@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### User Requests
 - "support an edge case: have a rank A, set a person rank in an event to A, make rank A archived, edit person rank in an event to B -- currently this fails"
+- "Maybe let's do that in more generic way, in Edit Rank dialog include all archived ranks that are used by the current event."
 
 ### Fixed
 - **Archived Rank Edit Bug**: Fixed critical bug where editing rankings failed when the current rank was archived
@@ -15,22 +16,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Data Integrity**: Ensured users can always view and modify their existing rankings, even when ranks are later archived
 
 ### Improved
-- **Visual Feedback**: Added "ARCHIVED" badge to distinguish archived ranks in ranking dialog
-- **User Context**: Added explanatory subtitle for archived ranks showing why they're visible
-- **Better UX**: Users can now see their current archived ranking and change it to an active rank
-- **Comprehensive Logging**: Enhanced logging to track archived rank scenarios for debugging
+- **Generic Archived Rank Support**: Enhanced ranking dialog to include ALL archived ranks currently used by anyone in the event
+- **Consistent User Experience**: All users editing rankings in the same event now see the same available rank options
+- **Complete Flexibility**: Users can assign any rank that's already in use for the event, including archived ones
+- **Visual Feedback**: Added "ARCHIVED" badge to distinguish archived ranks in ranking dialogs
+- **Enhanced Logging**: Improved action logging with detailed counts of active vs archived ranks available
 
 ### Technical
-- **Smart Rank Loading**: Modified ranking dialog to include archived ranks when they're currently assigned
-- **Exception Prevention**: Eliminated runtime crashes from missing archived ranks in active ranks list
-- **UI Enhancement**: Added visual indicators and explanatory text for archived rank context
-- **Data Flow**: Ensured proper handling of edge cases in ranking assignment workflow
-
-### Edge Case Resolution
-- **Step 1**: Create rank A ✅
-- **Step 2**: Assign person to rank A ✅  
-- **Step 3**: Archive rank A ✅
-- **Step 4**: Edit person's rank to B ✅ **FIXED** - Now works correctly!
+- **Smart Rank Loading**: `RankingDialog` now queries all event rankings to find archived ranks in use
+- **Optimized Performance**: Single query to get all used rank IDs, then filter archived ranks efficiently
+- **Better Context**: Updated subtitle text to explain why archived ranks are shown (event usage vs personal usage)
+- **Future-Proof**: Solution handles multiple people having different archived ranks in the same event
 
 ## [v0.39.0] - 2025-01-11
 

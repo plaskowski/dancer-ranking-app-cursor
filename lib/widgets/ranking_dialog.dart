@@ -69,16 +69,21 @@ class _RankingDialogState extends State<RankingDialog> {
       final existingRanking =
           await rankingService.getRanking(widget.eventId, widget.dancerId);
 
-      // Check if current rank is archived and include it if needed
-      Rank? currentRank;
-      if (existingRanking != null) {
-        currentRank = await rankingService.getRank(existingRanking.rankId);
-        if (currentRank != null && currentRank.isArchived) {
-          // Add the archived rank to the list so user can see their current ranking
-          ranks.add(currentRank);
-          // Sort by ordinal to maintain proper order
-          ranks.sort((a, b) => a.ordinal.compareTo(b.ordinal));
-        }
+      // Get all rankings for this event to find archived ranks in use
+      final eventRankings =
+          await rankingService.getRankingsForEvent(widget.eventId);
+      final usedRankIds = eventRankings.map((r) => r.rankId).toSet();
+
+      // Include any archived ranks that are currently used in this event
+      final allRanks = await rankingService.getAllRanks();
+      final archivedRanksInUse = allRanks
+          .where((rank) => rank.isArchived && usedRankIds.contains(rank.id))
+          .toList();
+
+      if (archivedRanksInUse.isNotEmpty) {
+        ranks.addAll(archivedRanksInUse);
+        // Sort by ordinal to maintain proper order
+        ranks.sort((a, b) => a.ordinal.compareTo(b.ordinal));
       }
 
       if (mounted) {
@@ -86,10 +91,11 @@ class _RankingDialogState extends State<RankingDialog> {
           'dancerId': widget.dancerId,
           'eventId': widget.eventId,
           'dancerName': dancer?.name ?? 'Unknown',
-          'ranksCount': ranks.length,
+          'activeRanksCount': (await rankingService.getActiveRanks()).length,
+          'archivedRanksInUseCount': archivedRanksInUse.length,
+          'totalRanksAvailable': ranks.length,
           'hasExistingRanking': existingRanking != null,
           'existingRankId': existingRanking?.rankId,
-          'existingRankIsArchived': currentRank?.isArchived ?? false,
         });
 
         setState(() {
@@ -239,7 +245,7 @@ class _RankingDialogState extends State<RankingDialog> {
                   ),
                   subtitle: rank.isArchived
                       ? Text(
-                          'This rank is archived but shown because it\'s your current ranking',
+                          'This rank is archived but shown because it\'s used in this event',
                           style: TextStyle(
                             fontSize: 11,
                             color: Theme.of(context).colorScheme.outline,
