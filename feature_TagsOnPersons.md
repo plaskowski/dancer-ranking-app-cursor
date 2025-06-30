@@ -6,7 +6,6 @@ Add simple tagging system to dancers to categorize them and enable tag-based sea
 ## User Stories
 - As a user, I want to tag dancers with categories like "regular", "dance-class", "rare" so I can organize them
 - As a user, I want to search by tags so I can quickly find dancers from specific contexts
-- As a user, I want to see tags displayed on dancer cards so I know the context of each person
 - As a user, I want to filter dancers by tags when selecting for events
 
 ## Database Schema
@@ -42,9 +41,9 @@ Initial set of common tags to be created:
 ## UI Changes
 
 ### Edit Dancer Dialog
-Replace any text-based tag input with **Tag Selection Pills**:
+Add a new section with **Tag Selection Pills**:
 - Section header: "Tags"
-- Grid layout of toggleable pill buttons
+- paragraph with toggleable pill buttons
 - Active tags are highlighted/selected
 - Inactive tags are dim/unselected
 - Visual example:

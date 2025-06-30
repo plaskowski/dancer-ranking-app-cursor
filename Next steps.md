@@ -2,8 +2,12 @@
 
 ## Immediate Priorities (take one at a time)
 - tags on persons
+- need both impressionTag and impression text
 - importable format (person, tags, notes)
 - predefined impressions
+- ...
+- parse events
+  - provide agent an example so they understand the structure
 
 ### Bug Fixes
 - **Event Date Change**: Context menu date picker shows but changes don't persist to database
