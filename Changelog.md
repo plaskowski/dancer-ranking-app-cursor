@@ -22,11 +22,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Instructions Text**: Updated to "Tap for options" for clear single-action interface
 - **User Experience**: Simplified interaction with single tap for all rank actions
 
+### Fixed
+- **Delete Rank Bug**: Fixed FlutterError "Looking up a deactivated widget's ancestor is unsafe"
+  - Moved Provider.of calls before async operations to prevent context usage after widget disposal
+  - Added proper mounted checks after async operations
+  - Enhanced error handling for widget lifecycle management
+
+### Improved  
+- **Archive/Unarchive Logic**: Dynamic context menu shows "Archive" or "Un-archive" based on current state
+- **Smart Actions**: Archived ranks show "Un-archive" action, active ranks show "Archive" action
+- **Visual Feedback**: Different colors and messages for archive vs unarchive operations
+
 ### Technical
 - **RankEditorScreen**: Removed AppBar actions array, added FloatingActionButton
-- **_RankCard**: Uses GestureDetector with onLongPress showing modal bottom sheet
-- **Context Menu**: Modal bottom sheet pattern consistent with DancersScreen, HomeScreen, etc.
-- **UI Consistency**: Maintained all existing functionality with consistent app-wide patterns
+- **_RankCard**: Single tap opens context menu with all actions (Edit, Archive/Unarchive, Delete)
+- **Context Lifecycle**: Proper context management in async operations to prevent disposal errors
+- **Archive State Management**: Dynamic UI based on rank.isArchived state with appropriate service calls
 
 ## [v0.36.0] - 2025-01-11
 

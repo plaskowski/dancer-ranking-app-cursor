@@ -347,18 +347,24 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
   }
 
   void _showArchiveRankDialog(BuildContext context, Rank rank) {
+    final isArchiving = !rank.isArchived;
+    final action = isArchiving ? 'archive' : 'unarchive';
+
     ActionLogger.logUserAction(
-        'RankEditorScreen', 'archive_rank_dialog_opened', {
+        'RankEditorScreen', '${action}_rank_dialog_opened', {
       'rankId': rank.id,
       'rankName': rank.name,
+      'currentArchivedState': rank.isArchived,
     });
 
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Archive Rank'),
+        title: Text(isArchiving ? 'Archive Rank' : 'Un-archive Rank'),
         content: Text(
-          'Archive "${rank.name}"?\n\nArchived ranks will remain in past events but won\'t be suggested for new events.',
+          isArchiving
+              ? 'Archive "${rank.name}"?\n\nArchived ranks will remain in past events but won\'t be suggested for new events.'
+              : 'Un-archive "${rank.name}"?\n\nThis rank will be available for new events again.',
         ),
         actions: [
           TextButton(
@@ -368,9 +374,11 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
           TextButton(
             onPressed: () => _performArchiveRank(context, rank),
             style: TextButton.styleFrom(
-              foregroundColor: context.danceTheme.warning,
+              foregroundColor: isArchiving
+                  ? context.danceTheme.warning
+                  : context.danceTheme.success,
             ),
-            child: const Text('Archive'),
+            child: Text(isArchiving ? 'Archive' : 'Un-archive'),
           ),
         ],
       ),
@@ -378,9 +386,13 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
   }
 
   void _performArchiveRank(BuildContext context, Rank rank) async {
-    ActionLogger.logUserAction('RankEditorScreen', 'archive_rank_started', {
+    final isArchiving = !rank.isArchived;
+    final action = isArchiving ? 'archive' : 'unarchive';
+
+    ActionLogger.logUserAction('RankEditorScreen', '${action}_rank_started', {
       'rankId': rank.id,
       'rankName': rank.name,
+      'currentArchivedState': rank.isArchived,
     });
 
     Navigator.pop(context);
@@ -388,21 +400,26 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
     try {
       final rankingService =
           Provider.of<RankingService>(context, listen: false);
-      final success = await rankingService.archiveRank(rank.id);
+      final success = isArchiving
+          ? await rankingService.archiveRank(rank.id)
+          : await rankingService.unarchiveRank(rank.id);
 
       if (mounted) {
         if (success) {
           setState(() {}); // Refresh the list
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Rank "${rank.name}" archived'),
-              backgroundColor: context.danceTheme.warning,
+              content: Text(
+                  'Rank "${rank.name}" ${isArchiving ? 'archived' : 'un-archived'}'),
+              backgroundColor: isArchiving
+                  ? context.danceTheme.warning
+                  : context.danceTheme.success,
             ),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to archive rank'),
+            SnackBar(
+              content: Text('Failed to $action rank'),
               backgroundColor: Colors.red,
             ),
           );
@@ -412,12 +429,14 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
       ActionLogger.logError(
           'RankEditorScreen._performArchiveRank', e.toString(), {
         'rankId': rank.id,
+        'action': action,
       });
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error archiving rank: $e'),
+            content: Text(
+                'Error ${isArchiving ? 'archiving' : 'un-archiving'} rank: $e'),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -462,13 +481,16 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
       'rankName': rank.name,
     });
 
+    // Get service reference before any async operations
+    final rankingService = Provider.of<RankingService>(context, listen: false);
+
     Navigator.pop(context);
 
     try {
-      final rankingService =
-          Provider.of<RankingService>(context, listen: false);
       final ranks = await rankingService.getAllRanks();
       final otherRanks = ranks.where((r) => r.id != rank.id).toList();
+
+      if (!mounted) return; // Check if widget is still mounted
 
       if (otherRanks.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -484,6 +506,8 @@ class _RankEditorScreenState extends State<RankEditorScreen> {
       final replacementRank =
           await _showReplacementRankDialog(context, rank, otherRanks);
       if (replacementRank == null) return;
+
+      if (!mounted) return; // Check again after dialog
 
       final success = await rankingService.deleteRank(
         id: rank.id,
@@ -615,8 +639,8 @@ class _RankCard extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.archive),
-              title: const Text('Archive'),
+              leading: Icon(rank.isArchived ? Icons.unarchive : Icons.archive),
+              title: Text(rank.isArchived ? 'Un-archive' : 'Archive'),
               onTap: () {
                 Navigator.pop(context);
                 onArchive();
