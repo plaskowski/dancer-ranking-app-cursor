@@ -228,3 +228,236 @@ class DancerImportConflict {
     return 'DancerImportConflict(type: $type, dancer: $dancerName, message: $message)';
   }
 }
+
+// Event Import Models
+
+class ImportableEvent {
+  final String name;
+  final DateTime date;
+  final List<ImportableAttendance> attendances;
+
+  const ImportableEvent({
+    required this.name,
+    required this.date,
+    this.attendances = const [],
+  });
+
+  factory ImportableEvent.fromJson(Map<String, dynamic> json) {
+    final dateStr = json['date'] as String;
+    final date = DateTime.tryParse(dateStr);
+    if (date == null) {
+      throw FormatException('Invalid date format: $dateStr');
+    }
+
+    final attendancesJson = json['attendances'] as List? ?? [];
+    final attendances = attendancesJson
+        .map((a) => ImportableAttendance.fromJson(a as Map<String, dynamic>))
+        .toList();
+
+    return ImportableEvent(
+      name: (json['name'] as String).trim(),
+      date: DateTime(date.year, date.month,
+          date.day), // Date only, time set to start of day
+      attendances: attendances,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'date':
+          '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}',
+      'attendances': attendances.map((a) => a.toJson()).toList(),
+    };
+  }
+
+  @override
+  String toString() =>
+      'ImportableEvent(name: $name, date: $date, attendances: ${attendances.length})';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ImportableEvent &&
+        other.name == name &&
+        other.date == date &&
+        other.attendances.length == attendances.length &&
+        other.attendances.every((a) => attendances.contains(a));
+  }
+
+  @override
+  int get hashCode => Object.hash(name, date, attendances);
+}
+
+class ImportableAttendance {
+  final String dancerName;
+  final String status; // 'present', 'served', 'left'
+  final String? impression;
+
+  const ImportableAttendance({
+    required this.dancerName,
+    required this.status,
+    this.impression,
+  });
+
+  factory ImportableAttendance.fromJson(Map<String, dynamic> json) {
+    final status = json['status'] as String;
+    const validStatuses = ['present', 'served', 'left'];
+    if (!validStatuses.contains(status)) {
+      throw FormatException(
+          'Invalid status: $status. Must be one of: ${validStatuses.join(', ')}');
+    }
+
+    return ImportableAttendance(
+      dancerName: (json['dancer_name'] as String).trim(),
+      status: status,
+      impression: json['impression'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'dancer_name': dancerName,
+      'status': status,
+      if (impression != null) 'impression': impression,
+    };
+  }
+
+  @override
+  String toString() =>
+      'ImportableAttendance(dancerName: $dancerName, status: $status)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is ImportableAttendance &&
+        other.dancerName == dancerName &&
+        other.status == status &&
+        other.impression == impression;
+  }
+
+  @override
+  int get hashCode => Object.hash(dancerName, status, impression);
+}
+
+class EventImportResult {
+  final List<ImportableEvent> events;
+  final List<String> errors;
+  final ImportMetadata? metadata;
+  final bool isValid;
+
+  const EventImportResult({
+    required this.events,
+    required this.errors,
+    this.metadata,
+    required this.isValid,
+  });
+
+  factory EventImportResult.success({
+    required List<ImportableEvent> events,
+    ImportMetadata? metadata,
+  }) {
+    return EventImportResult(
+      events: events,
+      errors: [],
+      metadata: metadata,
+      isValid: true,
+    );
+  }
+
+  factory EventImportResult.failure({
+    required List<String> errors,
+    List<ImportableEvent> events = const [],
+    ImportMetadata? metadata,
+  }) {
+    return EventImportResult(
+      events: events,
+      errors: errors,
+      metadata: metadata,
+      isValid: false,
+    );
+  }
+
+  bool get hasErrors => errors.isNotEmpty;
+  bool get hasWarnings => isValid && errors.isNotEmpty;
+}
+
+class EventImportSummary {
+  final int eventsProcessed;
+  final int eventsCreated;
+  final int eventsSkipped;
+  final int attendancesCreated;
+  final int dancersCreated;
+  final int errors;
+  final List<String> errorMessages;
+  final List<String> skippedEvents;
+
+  const EventImportSummary({
+    required this.eventsProcessed,
+    required this.eventsCreated,
+    required this.eventsSkipped,
+    required this.attendancesCreated,
+    required this.dancersCreated,
+    required this.errors,
+    required this.errorMessages,
+    required this.skippedEvents,
+  });
+
+  int get totalSuccessful =>
+      eventsCreated + attendancesCreated + dancersCreated;
+  bool get hasErrors => errors > 0;
+  bool get hasSkipped => eventsSkipped > 0;
+  bool get isSuccessful => errors == 0;
+
+  @override
+  String toString() {
+    return 'EventImportSummary(processed: $eventsProcessed, created: $eventsCreated, skipped: $eventsSkipped, errors: $errors)';
+  }
+}
+
+class EventImportOptions {
+  final bool createMissingDancers;
+  final bool skipDuplicateEvents;
+  final bool validateOnly;
+
+  const EventImportOptions({
+    this.createMissingDancers = true,
+    this.skipDuplicateEvents = true,
+    this.validateOnly = false,
+  });
+
+  EventImportOptions copyWith({
+    bool? createMissingDancers,
+    bool? skipDuplicateEvents,
+    bool? validateOnly,
+  }) {
+    return EventImportOptions(
+      createMissingDancers: createMissingDancers ?? this.createMissingDancers,
+      skipDuplicateEvents: skipDuplicateEvents ?? this.skipDuplicateEvents,
+      validateOnly: validateOnly ?? this.validateOnly,
+    );
+  }
+}
+
+enum EventImportConflictType {
+  duplicateEvent,
+  invalidData,
+  missingDancer,
+}
+
+class EventImportConflict {
+  final EventImportConflictType type;
+  final String? eventName;
+  final String? dancerName;
+  final String message;
+
+  const EventImportConflict({
+    required this.type,
+    this.eventName,
+    this.dancerName,
+    required this.message,
+  });
+
+  @override
+  String toString() => 'EventImportConflict($type: $message)';
+}

@@ -4,6 +4,45 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.47.0] - 2025-01-12
+
+### User Requests
+- "Let's implement the service part" - referring to Event Import feature service layer implementation
+
+### Added
+- **Event Import Service Layer**: Complete backend infrastructure for bulk importing historical event data from JSON files
+  - JSON format support for events with attendance records and dancer statuses
+  - Three attendance statuses: `present` (was there), `served` (danced with), `left` (left before dance)
+  - Optional impression/notes for served status with post-dance feedback
+  - Automatic missing dancer creation during import process
+  - Duplicate event detection and skip functionality
+  - Complete transaction safety with automatic rollback on errors
+
+### Technical
+- **EventImportParser**: Handles JSON parsing, structure validation, and data extraction with comprehensive error reporting
+- **EventImportValidator**: Validates import data against business rules and database constraints with conflict detection
+- **EventImportService**: Main orchestrator for complete import workflow with atomic database transactions
+- **Extended Import Models**: Complete data model set for event import operations (ImportableEvent, ImportableAttendance, etc.)
+
+### Architecture
+- **Service Integration**: Seamlessly integrates with existing EventService, DancerService, and AttendanceService
+- **Comprehensive Logging**: Action logging throughout all import operations following established patterns
+- **Validation Options**: Support for validation-only mode, duplicate handling, and missing dancer creation preferences
+- **Error Handling**: Graceful error handling with detailed user-friendly messages and import summaries
+- **Performance Optimized**: Batch operations, pre-fetching, and efficient database queries for large imports
+
+### JSON Format Support
+- **Event Structure**: Events with name, date (YYYY-MM-DD), and attendances array
+- **Attendance Records**: Dancer name, status, and optional impression fields
+- **Metadata Support**: Optional metadata section for import tracking and source information
+- **Validation Rules**: Field length limits, valid status values, and date format enforcement
+
+### Files Added
+- **lib/services/event_import_parser.dart**: JSON parsing and validation service for event imports
+- **lib/services/event_import_validator.dart**: Business rule validation and conflict detection service
+- **lib/services/event_import_service.dart**: Main import orchestration service with transaction management
+- **Extended lib/models/import_models.dart**: Added event-specific import models and result types
+
 ## [v0.46.0] - 2025-01-11
 
 ### User Requests
