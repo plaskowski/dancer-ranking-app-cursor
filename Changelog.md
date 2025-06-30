@@ -919,3 +919,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **User Experience**: Maximum simplification - zero configuration options needed
 - **Import Flow**: Streamlined to essential steps only
 - **Code Quality**: Removed unnecessary validation-only complexity
+
+## [v0.50.0] - 2024-12-28
+
+### User Requests
+- Implement Phase 1 of Event Import UI feature
+
+### Added
+- **Event Import Dialog**: Complete 3-step import process (File Selection → Preview → Results)
+- **Event File Selection Step**: JSON file picker with event-specific validation and requirements
+- **Event Data Preview Step**: Rich preview with statistics, expandable event cards, and attendance details
+- **Event Results Step**: Comprehensive import summary with statistics, skipped events, and error reporting
+- **Home Screen Integration**: Added "Import Events" option to overflow menu in events list
+
+### Technical
+- Created `ImportEventsDialog` widget with stepper navigation and progress tracking
+- Implemented `EventFileSelectionStep` component with 5MB file size limit and JSON validation
+- Built `EventDataPreviewStep` with expandable event cards showing attendances and color-coded statuses
+- Developed `EventResultsStep` with detailed statistics, automatic behavior notifications, and action buttons
+- Integrated Event Import into home screen with proper provider setup and error handling
+- Added comprehensive logging and toast notifications for user feedback
+
+### Improved
+- **User Experience**: Streamlined 3-step import process with no configuration needed
+- **Data Visibility**: Rich preview showing events, attendances, and unique dancers before import
+- **Error Handling**: Clear error messages and validation feedback throughout import process
+- **Automatic Behavior**: Visual indicators showing duplicate skipping and missing dancer creation
+
+### UI Components
+- File selection with drag-and-drop style interface and clear requirements
+- Statistics cards showing import counts and affected data
+- Expandable event cards with attendance status icons and color coding
+- Progress indicators during import with operation status updates
+- Success/warning/error cards with appropriate styling and messaging

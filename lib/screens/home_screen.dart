@@ -3,10 +3,12 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../database/database.dart';
+import '../services/event_import_service.dart';
 import '../services/event_service.dart';
 import '../services/tag_service.dart';
 import '../utils/action_logger.dart';
 import '../utils/toast_helper.dart';
+import '../widgets/import_events_dialog.dart';
 import 'create_event_screen.dart';
 import 'dancers_screen.dart';
 import 'event_screen.dart';
@@ -72,6 +74,27 @@ class HomeScreen extends StatelessWidget {
                 ),
               );
             },
+          ),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            tooltip: 'More options',
+            onSelected: (value) {
+              switch (value) {
+                case 'import_events':
+                  _showImportEventsDialog(context);
+                  break;
+              }
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 'import_events',
+                child: ListTile(
+                  leading: Icon(Icons.file_download),
+                  title: Text('Import Events'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -146,6 +169,25 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  void _showImportEventsDialog(BuildContext context) {
+    ActionLogger.logUserAction('HomeScreen', 'import_events_dialog_opened', {});
+
+    showDialog(
+      context: context,
+      builder: (context) => Provider(
+        create: (context) => EventImportService(
+          Provider.of<AppDatabase>(context, listen: false),
+        ),
+        child: const ImportEventsDialog(),
+      ),
+    ).then((result) {
+      if (result == true) {
+        ActionLogger.logUserAction('HomeScreen', 'import_events_completed', {});
+        ToastHelper.showSuccess(context, 'Events imported successfully');
+      }
+    });
   }
 }
 
