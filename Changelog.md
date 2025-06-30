@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Consistent User Experience**: All users editing rankings in the same event now see the same available rank options
 - **Complete Flexibility**: Users can assign any rank that's already in use for the event, including archived ones
 - **Visual Feedback**: Added "ARCHIVED" badge to distinguish archived ranks in ranking dialogs
+- **Concise UI Text**: Shortened archived rank subtitle to "Archived (in use)" for better readability
 - **Enhanced Logging**: Improved action logging with detailed counts of active vs archived ranks available
 - **Query Performance**: Optimized database queries using proper Drift joins instead of raw SQL
 
