@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.57.8] - 2025-01-15
+
+### User Requests
+- "Remove 'Score' prefix from that dialog title"
+
+### Changed
+- **Score Dialog Title**: Removed "Score" prefix from dialog title
+  - **Cleaner Title**: Dialog now shows just the dancer's name instead of "Score [dancer name]"
+  - **Context Clear**: Score context is evident from the dialog content with score options
+  - **Simplified UI**: Less redundant text in dialog header
+  - **Better Focus**: Title focuses on the dancer rather than the action
+
+### Technical
+- Updated ScoreDialog title from `'Score $_dancerName'` to just `_dancerName`
+- Simplified dialog header text while maintaining clear user context
+
 ## [v0.57.7] - 2025-01-15
 
 ### User Requests
