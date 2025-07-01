@@ -78,7 +78,6 @@ Material 3 theme implementation with custom dance-specific color extensions.
 - `danced_at` (DateTime, Optional) - When dance occurred
 - `impression` (Text, Optional) - Post-dance impression/notes
 - `score_id` (Foreign Key → Scores.id, Optional) - Post-dance rating assignment
-- `first_met` (Boolean, Default: false) - First meeting flag for this attendance
 - **Unique constraint**: (event_id, dancer_id)
 - **Note**: Record existence indicates presence at event
 - **Status Values**:
