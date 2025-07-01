@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../services/attendance_service.dart';
 import '../services/dancer_service.dart';
-import '../services/ranking_service.dart';
 import '../theme/theme_extensions.dart';
 import '../utils/action_logger.dart';
 import '../utils/toast_helper.dart';
@@ -81,8 +80,6 @@ class DancerActionsDialog extends StatelessWidget {
                 color: context.danceTheme.danceAccent,
               ),
               title: Text(dancer.hasScore ? 'Edit Score' : 'Assign Score'),
-              subtitle:
-                  dancer.hasScore ? Text('Current: ${dancer.scoreName}') : null,
               onTap: () {
                 ActionLogger.logUserAction(
                     'DancerActionsDialog', 'score_action_tapped', {
@@ -174,6 +171,7 @@ class DancerActionsDialog extends StatelessWidget {
                 name: dancer.name,
                 notes: dancer.notes,
                 createdAt: dancer.createdAt,
+                firstMetDate: dancer.firstMetDate,
               );
               showDialog(
                 context: context,
@@ -187,17 +185,9 @@ class DancerActionsDialog extends StatelessWidget {
             ListTile(
               leading:
                   Icon(Icons.exit_to_app, color: context.danceTheme.warning),
-              title: const Text('Mark as left'),
+              title: const Text('Mark as Left'),
+              subtitle: const Text('They left before dancing'),
               onTap: () => _markAsLeft(context),
-            ),
-
-          // Remove from Event - only show for ranked dancers in Planning mode
-          if (dancer.hasRanking && isPlanningMode)
-            ListTile(
-              leading: Icon(Icons.remove_circle_outline,
-                  color: context.danceTheme.warning),
-              title: const Text('Remove from event'),
-              onTap: () => _removeFromPlanning(context),
             ),
         ],
       ),
@@ -211,7 +201,7 @@ class DancerActionsDialog extends StatelessWidget {
             });
             Navigator.pop(context);
           },
-          child: const Text('Cancel'),
+          child: const Text('Close'),
         ),
       ],
     );
@@ -310,45 +300,6 @@ class DancerActionsDialog extends StatelessWidget {
       if (context.mounted) {
         Navigator.pop(context);
         ToastHelper.showError(context, 'Error recording dance: $e');
-      }
-    }
-  }
-
-  Future<void> _removeFromPlanning(BuildContext context) async {
-    ActionLogger.logUserAction(
-        'DancerActionsDialog', 'remove_from_planning_started', {
-      'dancerId': dancer.id,
-      'eventId': eventId,
-      'currentRank': dancer.rankName,
-    });
-
-    try {
-      final rankingService =
-          Provider.of<RankingService>(context, listen: false);
-
-      // Remove the ranking for this dancer from this event
-      await rankingService.deleteRanking(eventId, dancer.id);
-
-      if (context.mounted) {
-        ActionLogger.logUserAction(
-            'DancerActionsDialog', 'remove_from_planning_completed', {
-          'dancerId': dancer.id,
-          'eventId': eventId,
-        });
-
-        Navigator.pop(context);
-        ToastHelper.showSuccess(context, '${dancer.name} removed from event');
-      }
-    } catch (e) {
-      ActionLogger.logError(
-          'DancerActionsDialog._removeFromPlanning', e.toString(), {
-        'dancerId': dancer.id,
-        'eventId': eventId,
-      });
-
-      if (context.mounted) {
-        Navigator.pop(context);
-        ToastHelper.showError(context, 'Error removing from planning: $e');
       }
     }
   }

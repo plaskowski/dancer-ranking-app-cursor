@@ -208,7 +208,7 @@ class DancerService {
     }
   }
 
-  // Watch dancers for a specific event (with rankings and attendance) - reactive stream
+  // Watch all dancers for a specific event (for event screen tabs)
   Stream<List<DancerWithEventInfo>> watchDancersForEvent(int eventId) {
     ActionLogger.logServiceCall('DancerService', 'watchDancersForEvent', {
       'eventId': eventId,
@@ -240,15 +240,33 @@ class DancerService {
     ])
       ..orderBy([OrderingTerm.asc(_database.dancers.name)]);
 
-    return query.watch().map((result) {
-      return result.map((row) {
+    return query.watch().asyncMap((result) async {
+      // For each dancer, compute if this event is their first served attendance
+      final dancersWithFirstMet = <DancerWithEventInfo>[];
+
+      for (final row in result) {
         final dancer = row.readTable(_database.dancers);
         final ranking = row.readTableOrNull(_database.rankings);
         final rank = row.readTableOrNull(_database.ranks);
         final attendance = row.readTableOrNull(_database.attendances);
         final score = row.readTableOrNull(_database.scores);
 
-        return DancerWithEventInfo(
+        // Compute if this is the first served attendance for this dancer
+        bool isFirstMetHere = false;
+        if (attendance?.status == 'served') {
+          // Get earliest served attendance for this dancer across all events
+          final earliestServed = await (_database.select(_database.attendances)
+                ..where((a) =>
+                    a.dancerId.equals(dancer.id) & a.status.equals('served'))
+                ..orderBy([(a) => OrderingTerm.asc(a.markedAt)])
+                ..limit(1))
+              .getSingleOrNull();
+
+          // This is first met if this attendance is the earliest served attendance
+          isFirstMetHere = earliestServed?.eventId == eventId;
+        }
+
+        dancersWithFirstMet.add(DancerWithEventInfo(
           id: dancer.id,
           name: dancer.name,
           notes: dancer.notes,
@@ -265,9 +283,11 @@ class DancerService {
           scoreName: score?.name,
           scoreOrdinal: score?.ordinal,
           scoreId: score?.id,
-          firstMet: attendance?.firstMet ?? false,
-        );
-      }).toList();
+          isFirstMetHere: isFirstMetHere,
+        ));
+      }
+
+      return dancersWithFirstMet;
     });
   }
 
@@ -334,6 +354,7 @@ class DancerService {
           notes: dancer.notes,
           createdAt: dancer.createdAt,
           status: 'absent',
+          isFirstMetHere: false, // Absent dancers are not first met here
         );
       }).toList();
     } catch (e) {
@@ -413,7 +434,7 @@ class DancerWithEventInfo {
   final String? scoreName;
   final int? scoreOrdinal;
   final int? scoreId;
-  final bool firstMet;
+  final bool isFirstMetHere;
 
   DancerWithEventInfo({
     required this.id,
@@ -432,7 +453,7 @@ class DancerWithEventInfo {
     this.scoreName,
     this.scoreOrdinal,
     this.scoreId,
-    this.firstMet = false,
+    required this.isFirstMetHere,
   });
 
   // Helper getters
@@ -440,7 +461,6 @@ class DancerWithEventInfo {
   bool get hasRanking => rankName != null;
   bool get isRanked => hasRanking;
   bool get hasScore => scoreName != null;
-  bool get isFirstMetHere => firstMet && hasDanced;
 
   // Status-based convenience getters for backward compatibility
   bool get hasDanced => status == 'served';

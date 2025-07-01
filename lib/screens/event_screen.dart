@@ -158,7 +158,6 @@ class _EventScreenState extends State<EventScreen> {
       body: PageView(
         controller: _pageController,
         onPageChanged: _onPageChanged,
-        physics: _isPastEvent ? const NeverScrollableScrollPhysics() : null,
         children: pages,
       ),
       floatingActionButton: FloatingActionButton(

@@ -76,8 +76,6 @@ class Attendances extends Table {
   IntColumn get scoreId => integer()
       .references(Scores, #id)
       .nullable()(); // Post-dance score assignment
-  BoolColumn get firstMet =>
-      boolean().withDefault(const Constant(false))(); // First met flag
 
   @override
   List<Set<Column>> get uniqueKeys => [

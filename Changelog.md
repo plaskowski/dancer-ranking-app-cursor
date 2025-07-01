@@ -5,37 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v0.54.0] - 2024-12-20
+## [v0.54.0] - 2025-01-07
 
 ### User Requests
-- User requested to proceed with Phase 2: UI Components implementation
-- Enhance UI to display score information and first met indicators
-- Create Summary tab for post-dance analysis
-
-### Added
-- **Score Dialog**: New score assignment/editing dialog following RankingDialog pattern
-- **Summary Tab**: New event tab showing dances grouped by scores with summary statistics
-- **Enhanced Dancer Actions Dialog**: Added score management actions for dancers who have danced
-- **Enhanced DancerCard**: Added score display and ⭐ first met indicators
-- **Enhanced DancerWithEventInfo Model**: Added score and first met fields with proper joins
-
-### Changed
-- **Event Screen**: Updated to support three-tab system (Planning • Present • Summary)
-- **Present Tab**: Enhanced logging to include score and first met information
-- **DancerService**: Enhanced watchDancersForEvent query to include scores table join
-- **Navigation**: Updated tab indicators and logging to support Summary tab
+- Move score pill in dancer rows to the right side for better visual scanning
+- Move "Edit first met date" option from event context to dancer edit dialog for better UX
 
 ### Improved
-- **Score Display**: Shows current score next to "Danced!" status with proper theming
-- **First Met Tracking**: Visual ⭐ indicator for dancers met for the first time
-- **Post-Event Analysis**: Summary tab provides comprehensive dance statistics and grouping
-- **User Experience**: Consistent score management workflow matching ranking pattern
+- **Score Pills**: Repositioned score pills from inline text to right side of dancer rows for better visual clarity and easier scanning
+- **First Met Date Editing**: Moved first met date editing from DancerActionsDialog to AddDancerDialog for more contextually appropriate placement
+
+### Changed
+- Enhanced DancerCard layout with score pills positioned on the right side with improved styling
+- Removed "Edit first met date" option from event-specific dancer actions dialog
+- Added comprehensive first met date picker to dancer edit dialog with date selection, clear functionality, and explanatory text
 
 ### Technical
-- Enhanced DancerWithEventInfo with scoreName, scoreOrdinal, scoreId, firstMet, isFirstMetHere properties
-- Added LEFT JOIN with scores table in watchDancersForEvent query
-- Updated event screen to handle three-tab navigation for both active and past events
-- Improved tab action handling with proper fab icon/tooltip for Summary tab
+- Updated DancerCard component with restructured Row layout for better score pill positioning
+- Enhanced AddDancerDialog with first met date management functionality
+- Improved code formatting and consistency across modified components
 
 ## [v0.53.0] - 2024-12-20
 

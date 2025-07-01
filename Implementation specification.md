@@ -527,7 +527,7 @@ Home Screen
 # Implementation Specification
 
 ## Overview
-A Flutter application for managing dancers at salsa events, with ranking, attendance tracking, and dance recording capabilities.
+This document serves as the technical specification for implementing the Dancer Ranking App features. It describes the database schema, services, UI components, and workflows needed to support the core functionality.
 
 ## Debugging and Development Features
 

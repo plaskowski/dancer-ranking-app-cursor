@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../database/database.dart';
@@ -31,6 +32,7 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
   bool _alreadyDanced = false;
   bool _isLoading = false;
+  DateTime? _firstMetDate;
 
   // Tag-related state
   Set<int> _selectedTagIds = {};
@@ -50,6 +52,7 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
     if (widget.dancer != null) {
       _nameController.text = widget.dancer!.name;
       _notesController.text = widget.dancer!.notes ?? '';
+      _firstMetDate = widget.dancer!.firstMetDate;
     }
   }
 
@@ -67,6 +70,28 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
     });
   }
 
+  Future<void> _selectFirstMetDate() async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _firstMetDate ?? DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+      helpText: 'Select first met date',
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _firstMetDate = pickedDate;
+      });
+    }
+  }
+
+  void _clearFirstMetDate() {
+    setState(() {
+      _firstMetDate = null;
+    });
+  }
+
   Future<void> _saveDancer() async {
     ActionLogger.logUserAction('AddDancerDialog', 'save_started', {
       'isEditing': widget.dancer != null,
@@ -77,6 +102,7 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
       'alreadyDanced': _alreadyDanced,
       'hasImpression': _impressionController.text.trim().isNotEmpty,
       'selectedTagsCount': _selectedTagIds.length,
+      'hasFirstMetDate': _firstMetDate != null,
     });
 
     if (!_formKey.currentState!.validate()) {
@@ -102,6 +128,7 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
           'dancerId': widget.dancer!.id,
           'oldName': widget.dancer!.name,
           'newName': _nameController.text.trim(),
+          'firstMetDateChanged': _firstMetDate != widget.dancer!.firstMetDate,
         });
 
         await dancerService.updateDancer(
@@ -111,6 +138,13 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
               ? _notesController.text.trim()
               : null,
         );
+
+        // Update first met date if it changed
+        if (_firstMetDate != widget.dancer!.firstMetDate) {
+          await dancerService.updateFirstMetDate(
+              widget.dancer!.id, _firstMetDate);
+        }
+
         dancerId = widget.dancer!.id;
       } else {
         // Creating new dancer
@@ -234,6 +268,63 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                 onTagsChanged: _onTagsChanged,
                 dancerId: widget.dancer?.id,
               ),
+
+              // First met date picker (only when editing existing dancers)
+              if (isEditing) ...[
+                const SizedBox(height: 16),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_today,
+                              size: 20,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              'First Met Date',
+                              style: Theme.of(context).textTheme.titleSmall,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Set explicit date for when you first met (if before event tracking)',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: OutlinedButton.icon(
+                                onPressed: _selectFirstMetDate,
+                                icon: const Icon(Icons.edit_calendar),
+                                label: Text(_firstMetDate != null
+                                    ? DateFormat('MMM d, yyyy')
+                                        .format(_firstMetDate!)
+                                    : 'Select Date'),
+                              ),
+                            ),
+                            if (_firstMetDate != null) ...[
+                              const SizedBox(width: 8),
+                              IconButton(
+                                onPressed: _clearFirstMetDate,
+                                icon: const Icon(Icons.clear),
+                                tooltip: 'Clear date',
+                              ),
+                            ],
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
 
               // Show "already danced" option only when adding during an event
               if (isEventContext && !isEditing) ...[

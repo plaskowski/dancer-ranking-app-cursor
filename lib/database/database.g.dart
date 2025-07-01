@@ -1699,28 +1699,9 @@ class $AttendancesTable extends Attendances
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('REFERENCES scores (id)'));
-  static const VerificationMeta _firstMetMeta =
-      const VerificationMeta('firstMet');
   @override
-  late final GeneratedColumn<bool> firstMet = GeneratedColumn<bool>(
-      'first_met', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("first_met" IN (0, 1))'),
-      defaultValue: const Constant(false));
-  @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        eventId,
-        dancerId,
-        markedAt,
-        status,
-        dancedAt,
-        impression,
-        scoreId,
-        firstMet
-      ];
+  List<GeneratedColumn> get $columns =>
+      [id, eventId, dancerId, markedAt, status, dancedAt, impression, scoreId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1768,10 +1749,6 @@ class $AttendancesTable extends Attendances
       context.handle(_scoreIdMeta,
           scoreId.isAcceptableOrUnknown(data['score_id']!, _scoreIdMeta));
     }
-    if (data.containsKey('first_met')) {
-      context.handle(_firstMetMeta,
-          firstMet.isAcceptableOrUnknown(data['first_met']!, _firstMetMeta));
-    }
     return context;
   }
 
@@ -1801,8 +1778,6 @@ class $AttendancesTable extends Attendances
           .read(DriftSqlType.string, data['${effectivePrefix}impression']),
       scoreId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}score_id']),
-      firstMet: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}first_met'])!,
     );
   }
 
@@ -1821,7 +1796,6 @@ class Attendance extends DataClass implements Insertable<Attendance> {
   final DateTime? dancedAt;
   final String? impression;
   final int? scoreId;
-  final bool firstMet;
   const Attendance(
       {required this.id,
       required this.eventId,
@@ -1830,8 +1804,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       required this.status,
       this.dancedAt,
       this.impression,
-      this.scoreId,
-      required this.firstMet});
+      this.scoreId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1849,7 +1822,6 @@ class Attendance extends DataClass implements Insertable<Attendance> {
     if (!nullToAbsent || scoreId != null) {
       map['score_id'] = Variable<int>(scoreId);
     }
-    map['first_met'] = Variable<bool>(firstMet);
     return map;
   }
 
@@ -1869,7 +1841,6 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       scoreId: scoreId == null && nullToAbsent
           ? const Value.absent()
           : Value(scoreId),
-      firstMet: Value(firstMet),
     );
   }
 
@@ -1885,7 +1856,6 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       dancedAt: serializer.fromJson<DateTime?>(json['dancedAt']),
       impression: serializer.fromJson<String?>(json['impression']),
       scoreId: serializer.fromJson<int?>(json['scoreId']),
-      firstMet: serializer.fromJson<bool>(json['firstMet']),
     );
   }
   @override
@@ -1900,7 +1870,6 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       'dancedAt': serializer.toJson<DateTime?>(dancedAt),
       'impression': serializer.toJson<String?>(impression),
       'scoreId': serializer.toJson<int?>(scoreId),
-      'firstMet': serializer.toJson<bool>(firstMet),
     };
   }
 
@@ -1912,8 +1881,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
           String? status,
           Value<DateTime?> dancedAt = const Value.absent(),
           Value<String?> impression = const Value.absent(),
-          Value<int?> scoreId = const Value.absent(),
-          bool? firstMet}) =>
+          Value<int?> scoreId = const Value.absent()}) =>
       Attendance(
         id: id ?? this.id,
         eventId: eventId ?? this.eventId,
@@ -1923,7 +1891,6 @@ class Attendance extends DataClass implements Insertable<Attendance> {
         dancedAt: dancedAt.present ? dancedAt.value : this.dancedAt,
         impression: impression.present ? impression.value : this.impression,
         scoreId: scoreId.present ? scoreId.value : this.scoreId,
-        firstMet: firstMet ?? this.firstMet,
       );
   Attendance copyWithCompanion(AttendancesCompanion data) {
     return Attendance(
@@ -1936,7 +1903,6 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       impression:
           data.impression.present ? data.impression.value : this.impression,
       scoreId: data.scoreId.present ? data.scoreId.value : this.scoreId,
-      firstMet: data.firstMet.present ? data.firstMet.value : this.firstMet,
     );
   }
 
@@ -1950,15 +1916,14 @@ class Attendance extends DataClass implements Insertable<Attendance> {
           ..write('status: $status, ')
           ..write('dancedAt: $dancedAt, ')
           ..write('impression: $impression, ')
-          ..write('scoreId: $scoreId, ')
-          ..write('firstMet: $firstMet')
+          ..write('scoreId: $scoreId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, eventId, dancerId, markedAt, status,
-      dancedAt, impression, scoreId, firstMet);
+  int get hashCode => Object.hash(
+      id, eventId, dancerId, markedAt, status, dancedAt, impression, scoreId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1970,8 +1935,7 @@ class Attendance extends DataClass implements Insertable<Attendance> {
           other.status == this.status &&
           other.dancedAt == this.dancedAt &&
           other.impression == this.impression &&
-          other.scoreId == this.scoreId &&
-          other.firstMet == this.firstMet);
+          other.scoreId == this.scoreId);
 }
 
 class AttendancesCompanion extends UpdateCompanion<Attendance> {
@@ -1983,7 +1947,6 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
   final Value<DateTime?> dancedAt;
   final Value<String?> impression;
   final Value<int?> scoreId;
-  final Value<bool> firstMet;
   const AttendancesCompanion({
     this.id = const Value.absent(),
     this.eventId = const Value.absent(),
@@ -1993,7 +1956,6 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
     this.dancedAt = const Value.absent(),
     this.impression = const Value.absent(),
     this.scoreId = const Value.absent(),
-    this.firstMet = const Value.absent(),
   });
   AttendancesCompanion.insert({
     this.id = const Value.absent(),
@@ -2004,7 +1966,6 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
     this.dancedAt = const Value.absent(),
     this.impression = const Value.absent(),
     this.scoreId = const Value.absent(),
-    this.firstMet = const Value.absent(),
   })  : eventId = Value(eventId),
         dancerId = Value(dancerId);
   static Insertable<Attendance> custom({
@@ -2016,7 +1977,6 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
     Expression<DateTime>? dancedAt,
     Expression<String>? impression,
     Expression<int>? scoreId,
-    Expression<bool>? firstMet,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2027,7 +1987,6 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
       if (dancedAt != null) 'danced_at': dancedAt,
       if (impression != null) 'impression': impression,
       if (scoreId != null) 'score_id': scoreId,
-      if (firstMet != null) 'first_met': firstMet,
     });
   }
 
@@ -2039,8 +1998,7 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
       Value<String>? status,
       Value<DateTime?>? dancedAt,
       Value<String?>? impression,
-      Value<int?>? scoreId,
-      Value<bool>? firstMet}) {
+      Value<int?>? scoreId}) {
     return AttendancesCompanion(
       id: id ?? this.id,
       eventId: eventId ?? this.eventId,
@@ -2050,7 +2008,6 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
       dancedAt: dancedAt ?? this.dancedAt,
       impression: impression ?? this.impression,
       scoreId: scoreId ?? this.scoreId,
-      firstMet: firstMet ?? this.firstMet,
     );
   }
 
@@ -2081,9 +2038,6 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
     if (scoreId.present) {
       map['score_id'] = Variable<int>(scoreId.value);
     }
-    if (firstMet.present) {
-      map['first_met'] = Variable<bool>(firstMet.value);
-    }
     return map;
   }
 
@@ -2097,8 +2051,7 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
           ..write('status: $status, ')
           ..write('dancedAt: $dancedAt, ')
           ..write('impression: $impression, ')
-          ..write('scoreId: $scoreId, ')
-          ..write('firstMet: $firstMet')
+          ..write('scoreId: $scoreId')
           ..write(')'))
         .toString();
   }
@@ -4282,7 +4235,6 @@ typedef $$AttendancesTableCreateCompanionBuilder = AttendancesCompanion
   Value<DateTime?> dancedAt,
   Value<String?> impression,
   Value<int?> scoreId,
-  Value<bool> firstMet,
 });
 typedef $$AttendancesTableUpdateCompanionBuilder = AttendancesCompanion
     Function({
@@ -4294,7 +4246,6 @@ typedef $$AttendancesTableUpdateCompanionBuilder = AttendancesCompanion
   Value<DateTime?> dancedAt,
   Value<String?> impression,
   Value<int?> scoreId,
-  Value<bool> firstMet,
 });
 
 final class $$AttendancesTableReferences
@@ -4368,9 +4319,6 @@ class $$AttendancesTableFilterComposer
 
   ColumnFilters<String> get impression => $composableBuilder(
       column: $table.impression, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<bool> get firstMet => $composableBuilder(
-      column: $table.firstMet, builder: (column) => ColumnFilters(column));
 
   $$EventsTableFilterComposer get eventId {
     final $$EventsTableFilterComposer composer = $composerBuilder(
@@ -4457,9 +4405,6 @@ class $$AttendancesTableOrderingComposer
   ColumnOrderings<String> get impression => $composableBuilder(
       column: $table.impression, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<bool> get firstMet => $composableBuilder(
-      column: $table.firstMet, builder: (column) => ColumnOrderings(column));
-
   $$EventsTableOrderingComposer get eventId {
     final $$EventsTableOrderingComposer composer = $composerBuilder(
         composer: this,
@@ -4544,9 +4489,6 @@ class $$AttendancesTableAnnotationComposer
 
   GeneratedColumn<String> get impression => $composableBuilder(
       column: $table.impression, builder: (column) => column);
-
-  GeneratedColumn<bool> get firstMet =>
-      $composableBuilder(column: $table.firstMet, builder: (column) => column);
 
   $$EventsTableAnnotationComposer get eventId {
     final $$EventsTableAnnotationComposer composer = $composerBuilder(
@@ -4640,7 +4582,6 @@ class $$AttendancesTableTableManager extends RootTableManager<
             Value<DateTime?> dancedAt = const Value.absent(),
             Value<String?> impression = const Value.absent(),
             Value<int?> scoreId = const Value.absent(),
-            Value<bool> firstMet = const Value.absent(),
           }) =>
               AttendancesCompanion(
             id: id,
@@ -4651,7 +4592,6 @@ class $$AttendancesTableTableManager extends RootTableManager<
             dancedAt: dancedAt,
             impression: impression,
             scoreId: scoreId,
-            firstMet: firstMet,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -4662,7 +4602,6 @@ class $$AttendancesTableTableManager extends RootTableManager<
             Value<DateTime?> dancedAt = const Value.absent(),
             Value<String?> impression = const Value.absent(),
             Value<int?> scoreId = const Value.absent(),
-            Value<bool> firstMet = const Value.absent(),
           }) =>
               AttendancesCompanion.insert(
             id: id,
@@ -4673,7 +4612,6 @@ class $$AttendancesTableTableManager extends RootTableManager<
             dancedAt: dancedAt,
             impression: impression,
             scoreId: scoreId,
-            firstMet: firstMet,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (

@@ -50,7 +50,6 @@ class SummaryTab extends StatelessWidget {
                       'hasScore': d.hasScore,
                       'scoreName': d.scoreName,
                       'scoreOrdinal': d.scoreOrdinal,
-                      'firstMet': d.firstMet,
                       'isFirstMetHere': d.isFirstMetHere,
                     })
                 .toList());
@@ -135,13 +134,70 @@ class SummaryTab extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text('Total dances: ${dancedDancers.length}'),
-                    Text(
-                        'Scored: ${dancedDancers.where((d) => d.hasScore).length}'),
-                    Text(
-                        'Unscored: ${dancedDancers.where((d) => !d.hasScore).length}'),
-                    Text(
-                        'First meetings: ${dancedDancers.where((d) => d.isFirstMetHere).length}'),
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Recorded ',
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant),
+                          ),
+                          TextSpan(
+                            text: '${dancedDancers.length}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text: ' dances total, with ',
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant),
+                          ),
+                          TextSpan(
+                            text:
+                                '${dancedDancers.where((d) => d.hasScore).length}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text: ' scored and ',
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant),
+                          ),
+                          TextSpan(
+                            text:
+                                '${dancedDancers.where((d) => !d.hasScore).length}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text: ' unscored. Met ',
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant),
+                          ),
+                          TextSpan(
+                            text:
+                                '${dancedDancers.where((d) => d.isFirstMetHere).length}',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text: ' people for the first time.',
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -192,6 +248,7 @@ class SummaryTab extends StatelessWidget {
                         eventId: eventId,
                         showPresenceIndicator: false,
                         isPlanningMode: false,
+                        hideScorePill: true,
                       )),
                   const SizedBox(height: 16),
                 ],

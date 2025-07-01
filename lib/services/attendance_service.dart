@@ -467,51 +467,6 @@ class AttendanceService {
     final attendance = await getAttendance(eventId, dancerId);
     return attendance?.scoreId;
   }
-
-  // Update first met flag for an attendance record
-  Future<bool> updateFirstMet(
-      int eventId, int dancerId, bool isFirstMet) async {
-    ActionLogger.logServiceCall('AttendanceService', 'updateFirstMet', {
-      'eventId': eventId,
-      'dancerId': dancerId,
-      'isFirstMet': isFirstMet,
-    });
-
-    try {
-      final attendance = await getAttendance(eventId, dancerId);
-      if (attendance == null) {
-        ActionLogger.logError(
-            'AttendanceService.updateFirstMet', 'attendance_not_found', {
-          'eventId': eventId,
-          'dancerId': dancerId,
-        });
-        return false;
-      }
-
-      final result = await _database.update(_database.attendances).replace(
-            attendance.copyWith(
-              firstMet: isFirstMet,
-            ),
-          );
-
-      ActionLogger.logDbOperation('UPDATE', 'attendances', {
-        'id': attendance.id,
-        'eventId': eventId,
-        'dancerId': dancerId,
-        'firstMet': isFirstMet,
-        'success': result,
-      });
-
-      return result;
-    } catch (e) {
-      ActionLogger.logError('AttendanceService.updateFirstMet', e.toString(), {
-        'eventId': eventId,
-        'dancerId': dancerId,
-        'isFirstMet': isFirstMet,
-      });
-      return false;
-    }
-  }
 }
 
 // Helper class for attendance with dancer info

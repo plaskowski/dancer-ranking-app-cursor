@@ -167,7 +167,6 @@ class _ScoreDialogState extends State<ScoreDialog> {
                           isCurrentScore ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
-                  subtitle: Text('Rating: ${score.ordinal}'),
                   onTap: () => _selectScore(score),
                 );
               }).toList(),

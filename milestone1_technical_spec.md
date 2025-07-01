@@ -40,11 +40,9 @@ ALTER TABLE dancers ADD COLUMN first_met_date DATE NULL;
 Add support for score and firstMet flag in import data:
 ```json
 {
-  "dancer_name": "Alice",
-  "status": "served",
-  "impression": "Great dance!",
-  "score": "Amazing",           // NEW: Score name
-  "first_met": true             // NEW: Optional boolean - true if first met at this event
+  "dancer": "Jane Smith",
+  "impression": "Great conversation about travels",
+  "score": "Amazing"              // NEW: Optional score assignment
 }
 ```
 
@@ -133,52 +131,49 @@ Summary Tab
 ### 4.1 Enhanced EventImportParser (`lib/services/event_import_parser.dart`)
 **Changes**:
 - Parse optional `score` field in attendance records
-- Parse optional `first_met` boolean flag in attendance records
 
 ### 4.2 Enhanced EventImportValidator (`lib/services/event_import_validator.dart`)
 **Changes**:
-- Validate `first_met` field is boolean when present
 - Basic validation of score field format (missing scores will be auto-created)
 
 ### 4.3 Enhanced EventImportService (`lib/services/event_import_service.dart`)
 **Changes**:
 - Always create missing scores automatically
 - Assign scores to attendances during import (directly in attendances table)
-- Set firstMet flag on attendance records when `first_met: true` flag is encountered
 - Handle missing score creation
 
 ### 4.4 Import Models Updates (`lib/models/import_models.dart`)
 **Changes**:
-- Add `score` and `firstMet` fields to `ImportableAttendance`
+- Add `score` field to `ImportableAttendance`
 - Add score-related fields to import result summaries
 
 ## 5. First Met Date Implementation
 
 ### 5.1 Calculation Strategy
-**Priority Order**:
-1. **Explicit date** - If `first_met_date` set on dancer record (only used for dancers met before tracked events)
-2. **Calculated date** - Earliest attendance with `status = 'served'`
-3. **No date** - Return null if never danced
+**For `isFirstMetHere` computation (on-the-fly)**:
+- Check if current attendance is the earliest `status = 'served'` attendance for this dancer across all events
+- Computed dynamically in DancerService.watchDancersForEvent()
 
-**Note**: The explicit `first_met_date` value should only be used for dancers met before the events you have tracked. For all other cases, use the attendance data with `first_met = true` flags.
+**For explicit first met dates**:
+- `first_met_date` field on dancer record used only for dancers met before tracked events began
+- Manually set via Dancer Actions Dialog
 
 ### 5.2 UI Integration
 **Display Rules**:
-- Show "⭐" indicator when attendance record has `first_met = true`
+- Show "⭐" indicator when `isFirstMetHere` is true (computed on-the-fly)
 - Show on both Present tab and Summary tab
-- Only show for attendances with `status = 'served'` and `first_met = true`
+- Only show for attendances with `status = 'served'` and `isFirstMetHere = true`
 
 ### 5.3 Import Integration
 **For New Imports**:
-- When `first_met: true` flag is encountered in attendance record:
-  - Set `first_met = true` on the attendance record
-  - Set the dancer's `first_met_date` to the event's date (if not already set or if this event is earlier)
+- Score assignment handled automatically
+- No special first met flags needed in import format
+- `isFirstMetHere` computed based on attendance chronology
 
 ### 5.4 Migration Strategy
 **For Existing Data**:
-- Set `first_met = true` on the earliest served attendance for each dancer
-- Leave `first_met_date` column NULL for existing dancers (only used for pre-tracking meetings)
-- Future imports with `first_met: true` can add additional first met flags
+- No database flags to set - all computed on-the-fly
+- `first_met_date` column remains NULL for existing dancers (only used for pre-tracking meetings)
 
 ## 6. Integration Points
 
@@ -193,9 +188,8 @@ EventImportService ← ScoreService (for missing score creation)
 ### 6.2 Database Migration
 **Migration Steps**:
 1. Create `scores` table with default data
-2. Add `score_id` and `first_met` columns to `attendances` table
+2. Add `score_id` column to `attendances` table  
 3. Add `first_met_date` column to `dancers` table (defaults to NULL)
-4. Set `first_met = true` on earliest served attendance for each dancer
 
 ### 6.3 Provider Integration
 **New Providers Needed**:

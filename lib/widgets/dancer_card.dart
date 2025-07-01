@@ -11,6 +11,7 @@ class DancerCard extends StatelessWidget {
   final int eventId;
   final bool showPresenceIndicator;
   final bool isPlanningMode;
+  final bool hideScorePill;
 
   const DancerCard({
     super.key,
@@ -18,6 +19,7 @@ class DancerCard extends StatelessWidget {
     required this.eventId,
     required this.showPresenceIndicator,
     required this.isPlanningMode,
+    this.hideScorePill = false,
   });
 
   @override
@@ -56,7 +58,9 @@ class DancerCard extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.normal,
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -101,7 +105,8 @@ class DancerCard extends StatelessWidget {
                               color: context.danceTheme.danceAccent,
                             ),
                           ),
-                          if (dancer.impression != null && dancer.impression!.isNotEmpty) ...[
+                          if (dancer.impression != null &&
+                              dancer.impression!.isNotEmpty) ...[
                             TextSpan(
                               text: ' - ${dancer.impression!}',
                               style: TextStyle(
@@ -128,34 +133,39 @@ class DancerCard extends StatelessWidget {
                       ],
                     ),
                   ),
-
-                  // Score pill (separate from main text for better styling)
-                  if (dancer.hasDanced && dancer.hasScore) ...[
-                    const SizedBox(height: 4),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: context.danceTheme.rankingHigh.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: context.danceTheme.rankingHigh.withValues(alpha: 0.5),
-                        ),
-                      ),
-                      child: Text(
-                        dancer.scoreName!,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: context.danceTheme.rankingHigh,
-                        ),
-                      ),
-                    ),
-                  ],
                 ],
               ),
             ),
-            if (showPresenceIndicator && dancer.isPresent)
+
+            // Score pill on the right side
+            if (dancer.hasScore && !hideScorePill && dancer.hasDanced) ...[
+              const SizedBox(width: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: context.danceTheme.rankingHigh.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color:
+                        context.danceTheme.rankingHigh.withValues(alpha: 0.5),
+                  ),
+                ),
+                child: Text(
+                  dancer.scoreName!,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: context.danceTheme.rankingHigh,
+                  ),
+                ),
+              ),
+            ],
+
+            // Presence indicator
+            if (showPresenceIndicator && dancer.isPresent) ...[
+              const SizedBox(width: 8),
               Icon(Icons.check, color: context.danceTheme.present, size: 20),
+            ],
           ],
         ),
         onTap: () {

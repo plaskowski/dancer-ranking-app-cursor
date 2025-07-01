@@ -108,34 +108,6 @@ class AppDatabase extends _$AppDatabase {
         'UPDATE ranks SET created_at = $now, updated_at = $now WHERE created_at = $now');
   }
 
-  // Insert the predefined rank options
-  Future<void> _insertDefaultRanks() async {
-    await batch((batch) {
-      batch.insertAll(ranks, [
-        RanksCompanion.insert(
-          name: 'Really want to dance!',
-          ordinal: 1,
-        ),
-        RanksCompanion.insert(
-          name: 'Would like to dance',
-          ordinal: 2,
-        ),
-        RanksCompanion.insert(
-          name: 'Neutral / Default',
-          ordinal: 3,
-        ),
-        RanksCompanion.insert(
-          name: 'Maybe later',
-          ordinal: 4,
-        ),
-        RanksCompanion.insert(
-          name: 'Not really interested',
-          ordinal: 5,
-        ),
-      ]);
-    });
-  }
-
   // Migration helper to add Tags and DancerTags tables
   Future<void> _addTagsTables(Migrator m) async {
     await m.createTable(tags);
@@ -153,8 +125,6 @@ class AppDatabase extends _$AppDatabase {
     // Add new columns to attendances table
     await customStatement(
         'ALTER TABLE attendances ADD COLUMN score_id INTEGER REFERENCES scores(id)');
-    await customStatement(
-        'ALTER TABLE attendances ADD COLUMN first_met INTEGER NOT NULL DEFAULT 0');
 
     // Add new column to dancers table
     await customStatement(
@@ -162,9 +132,6 @@ class AppDatabase extends _$AppDatabase {
 
     // Insert default scores
     await _insertDefaultScores();
-
-    // Set first_met = true on earliest served attendance for each dancer
-    await _setFirstMetFlags();
   }
 
   // Insert the predefined tags
@@ -211,18 +178,32 @@ class AppDatabase extends _$AppDatabase {
     });
   }
 
-  // Set first_met = true on earliest served attendance for each dancer
-  Future<void> _setFirstMetFlags() async {
-    await customStatement('''
-      UPDATE attendances 
-      SET first_met = 1 
-      WHERE (dancer_id, marked_at) IN (
-        SELECT dancer_id, MIN(marked_at)
-        FROM attendances 
-        WHERE status = 'served' 
-        GROUP BY dancer_id
-      )
-    ''');
+  // Insert the predefined rank options
+  Future<void> _insertDefaultRanks() async {
+    await batch((batch) {
+      batch.insertAll(ranks, [
+        RanksCompanion.insert(
+          name: 'Really want to dance!',
+          ordinal: 1,
+        ),
+        RanksCompanion.insert(
+          name: 'Would like to dance',
+          ordinal: 2,
+        ),
+        RanksCompanion.insert(
+          name: 'Neutral / Default',
+          ordinal: 3,
+        ),
+        RanksCompanion.insert(
+          name: 'Maybe later',
+          ordinal: 4,
+        ),
+        RanksCompanion.insert(
+          name: 'Not really interested',
+          ordinal: 5,
+        ),
+      ]);
+    });
   }
 }
 
