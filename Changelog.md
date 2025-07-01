@@ -20,10 +20,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated DancerCard widget to display ⭐ indicator for any attendance status, not just danced dancers
 - Improved logic clarity with updated comments and variable names
 
+### Fixed
+- **Chronological Accuracy**: Fixed first met detection to use actual event dates instead of attendance import timestamps, ensuring correct chronological ordering when data was imported in bulk
+
 ### Technical
 - **DancerService**: Changed `watchDancersForEvent` to look for earliest attendance regardless of status rather than only 'served' status
 - **DancerCard**: Moved first met indicator outside the 'hasDanced' conditional block to display for all attendance statuses
 - **Query Enhancement**: Updated database queries to filter by 'not absent' rather than 'served' only
+- **Date Logic Fix**: Modified earliest attendance queries to join with events table and order by `events.date` instead of `attendances.markedAt` for accurate chronological detection
 
 ## [v0.55.0] - 2025-01-07
 
