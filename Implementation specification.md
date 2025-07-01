@@ -316,6 +316,15 @@ Users can adjust rankings during events for various reasons:
 - Shows when ranking was last updated
 - Save/cancel actions (updates `last_updated` timestamp)
 
+**Score Dialog (`ScoreDialog`)**:
+- Post-dance score assignment from predefined score options
+- Display score names with ordinal ratings (1=Amazing, 5=Meh)
+- Shows current score if already assigned
+- Remove score option for dancers with existing scores
+- Save/cancel/remove actions with confirmation for removal
+- **Context**: Only accessible for dancers who have completed a dance
+- **Integration**: Launched from Dancer Actions Dialog for scored dancers
+
 **Dancer Actions Dialog (`DancerActionsDialog`)**:
 - Context-aware actions based on dancer state and tab mode
 - **Auto-Closing Behavior**: All actions close the dialog after completion for focused workflows
@@ -380,21 +389,30 @@ Home Screen
 │   ├── Step 1: File Selection (JSON file picker with validation)
 │   ├── Step 2: Data Preview (statistics and expandable event cards)
 │   └── Step 3: Results (import summary and action buttons)
-├── Event Screen (Swipe-based Pages)
+├── Event Screen (Swipe-based Three-Tab Pages)
 │   ├── Planning Page (Page 0)
 │   │   ├── FAB → Select Dancers Screen (page-specific action)
 │   │   ├── Import Rankings Button → ImportRankingsDialog (when no dancers added yet)
 │   │   ├── Tap dancer → Planning Actions Dialog (rank/notes editing only)
 │   │   └── Blue location icon → Instant "Mark Present" (context action)
-│   ├── Present Page (Page 1)
+│   ├── Present Page (Page 1) - Enhanced with score display and first met indicators
 │   │   ├── FAB → Modal Menu
 │   │   │   ├── → Add Dancer Dialog (create new dancer)
 │   │   │   └── → Add Existing Dancer Screen (mark existing as present)
-│   │   └── Tap dancer → Full Actions Dialog (context-aware)
-│   │       ├── → Ranking Dialog
-│   │       ├── → Dance Recording Dialog
-│   │       └── → Attendance management
-│   └── Swipe Left/Right → Switch between Planning and Present pages
+│   │   ├── Tap dancer → Full Actions Dialog (context-aware with score management)
+│   │   │   ├── → Ranking Dialog
+│   │   │   ├── → Dance Recording Dialog
+│   │   │   ├── → Score Dialog (for dancers who have danced)
+│   │   │   └── → Attendance management
+│   │   ├── **Score Display**: Shows "Score: [ScoreName]" for dancers with assigned scores
+│   │   └── **First Met Indicators**: ⭐ emoji for dancers met for the first time at this event
+│   ├── Summary Page (Page 2) - New post-dance analysis tab
+│   │   ├── **Dance Summary Card**: Statistics showing total dances, scored/unscored counts, first meetings
+│   │   ├── **Score Groups**: Dancers grouped by score (Amazing, Great, Good, Okay, Meh, No score assigned)
+│   │   ├── **Count Badges**: Each score group shows dancer count in primary container styling
+│   │   ├── **Read-only Tab**: No FAB actions - purely for analysis and review
+│   │   └── Tap dancer → Full Actions Dialog (same as Present tab for score management)
+│   └── Swipe Left/Right → Switch between Planning, Present, and Summary pages
 ├── Dancers Screen
 │   └── Add/Edit Dancer Dialog (modal) - Full dancer management with tag selection
 └── Tags Screen

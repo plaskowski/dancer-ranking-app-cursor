@@ -4,44 +4,68 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [v0.53.0] - 2025-01-13
+## [v0.54.0] - 2024-12-20
 
 ### User Requests
-- "Let's implement the phases one by one, commiting and testing in between" - implementing Milestone 1 features phase by phase
+- User requested to proceed with Phase 2: UI Components implementation
+- Enhance UI to display score information and first met indicators
+- Create Summary tab for post-dance analysis
 
 ### Added
-- **Phase 1 Foundation**: Core infrastructure for scores system and first met tracking
-  - **Scores Table**: New post-dance rating system with ordinal ordering (1=best, 5=worst)
-  - **Enhanced Attendances**: Added `scoreId` and `firstMet` fields for comprehensive dance tracking
-  - **Enhanced Dancers**: Added `firstMetDate` field for pre-tracking meeting dates
-  - **Default Scores**: Pre-populated with "Amazing", "Great", "Good", "Okay", "Meh" ratings
-  - **Database Migration**: Automatic schema upgrade from v4 to v5 with first met flag initialization
+- **Score Dialog**: New score assignment/editing dialog following RankingDialog pattern
+- **Summary Tab**: New event tab showing dances grouped by scores with summary statistics
+- **Enhanced Dancer Actions Dialog**: Added score management actions for dancers who have danced
+- **Enhanced DancerCard**: Added score display and ⭐ first met indicators
+- **Enhanced DancerWithEventInfo Model**: Added score and first met fields with proper joins
+
+### Changed
+- **Event Screen**: Updated to support three-tab system (Planning • Present • Summary)
+- **Present Tab**: Enhanced logging to include score and first met information
+- **DancerService**: Enhanced watchDancersForEvent query to include scores table join
+- **Navigation**: Updated tab indicators and logging to support Summary tab
+
+### Improved
+- **Score Display**: Shows current score next to "Danced!" status with proper theming
+- **First Met Tracking**: Visual ⭐ indicator for dancers met for the first time
+- **Post-Event Analysis**: Summary tab provides comprehensive dance statistics and grouping
+- **User Experience**: Consistent score management workflow matching ranking pattern
 
 ### Technical
-- **ScoreService**: Complete CRUD operations for score management with archive support
-- **Enhanced AttendanceService**: Added `assignScore()`, `removeScore()`, `updateFirstMet()` methods
-- **Enhanced DancerService**: Added `updateFirstMetDate()` method for pre-tracking meetings
-- **Migration Strategy**: Intelligent first met flag setting on earliest served attendance per dancer
-- **Schema Version**: Upgraded database to v5 with backward-compatible migration
+- Enhanced DancerWithEventInfo with scoreName, scoreOrdinal, scoreId, firstMet, isFirstMetHere properties
+- Added LEFT JOIN with scores table in watchDancersForEvent query
+- Updated event screen to handle three-tab navigation for both active and past events
+- Improved tab action handling with proper fab icon/tooltip for Summary tab
 
-### Database Schema Changes
-- **Scores Table**: `id`, `name`, `ordinal`, `isArchived`, `createdAt`, `updatedAt`
-- **Attendances Table**: Added `scoreId` (nullable reference), `firstMet` (boolean with default false)
-- **Dancers Table**: Added `firstMetDate` (nullable datetime) for explicit pre-tracking dates
+## [v0.53.0] - 2024-12-20
 
-### Services Architecture
-- **ScoreService**: Full lifecycle management with default score handling and conflict resolution
-- **Consistent Patterns**: Following established service patterns with action logging and error handling
-- **Transaction Safety**: Proper database transaction handling for complex operations
+### User Requests
+- User requested implementing Milestone 1 phases one by one, starting with Phase 1: Foundation Layer
+- Create database schema for scores system and first met tracking
+- Implement services for score management and enhanced attendance tracking
 
-### Files Added
-- **lib/services/score_service.dart**: Complete score management service with CRUD operations
+### Added
+- **Scores System**: Complete CRUD operations with default scores (Amazing, Great, Good, Okay, Meh)
+- **First Met Tracking**: Boolean flags on attendance records for tracking first meetings
+- **Enhanced Database Schema**: New scores table, enhanced attendances and dancers tables
+- **ScoreService**: Full service implementation with score management methods
+- **Enhanced AttendanceService**: Score assignment, removal, and first met tracking methods
+- **Enhanced DancerService**: First met date management for pre-tracking meetings
 
-### Files Modified
-- **lib/database/tables.dart**: Added Scores table and enhanced Attendances/Dancers tables
-- **lib/database/database.dart**: Added migration logic and default score insertion
-- **lib/services/attendance_service.dart**: Enhanced with score assignment and first met tracking
-- **lib/services/dancer_service.dart**: Added first met date management functionality
+### Changed
+- **Database Version**: Upgraded from v4 to v5 with automatic migration
+- **Attendances Table**: Added scoreId (FK to scores) and firstMet (boolean) columns
+- **Dancers Table**: Added firstMetDate column for explicit pre-tracking dates
+
+### Improved
+- **Database Migration**: Intelligent first met flag setting on earliest served attendance per dancer
+- **Default Data**: Automatic population of score hierarchy during database upgrade
+- **Service Integration**: Proper error handling and action logging across all new services
+
+### Technical
+- Added scores table with fields: id, name, ordinal, isArchived, createdAt, updatedAt
+- Enhanced foreign key relationships between attendances and scores
+- Implemented safe score deletion with reassignment logic
+- Database schema migration with backward compatibility
 
 ## [v0.52.0] - 2025-01-13
 

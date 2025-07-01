@@ -11,6 +11,7 @@ import '../utils/toast_helper.dart';
 import 'add_dancer_dialog.dart';
 import 'dance_recording_dialog.dart';
 import 'ranking_dialog.dart';
+import 'score_dialog.dart';
 
 class DancerActionsDialog extends StatelessWidget {
   final DancerWithEventInfo dancer;
@@ -41,31 +42,71 @@ class DancerActionsDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Set/Edit Ranking
-          ListTile(
-            leading: Icon(Icons.star, color: context.danceTheme.rankingHigh),
-            title: Text(dancer.hasRanking ? 'Edit Ranking' : 'Set Ranking'),
-            onTap: () {
-              ActionLogger.logUserAction(
-                  'DancerActionsDialog', 'ranking_action_tapped', {
-                'dancerId': dancer.id,
-                'eventId': eventId,
-                'hasExistingRanking': dancer.hasRanking,
-                'currentRank': dancer.rankName,
-              });
+          // Ranking actions (only for planning mode)
+          if (isPlanningMode)
+            ListTile(
+              leading: Icon(
+                dancer.hasRanking ? Icons.edit : Icons.add,
+                color: context.danceTheme.rankingHigh,
+              ),
+              title: Text(dancer.hasRanking ? 'Edit Ranking' : 'Set Ranking'),
+              onTap: () {
+                ActionLogger.logUserAction(
+                    'DancerActionsDialog', 'ranking_action_tapped', {
+                  'dancerId': dancer.id,
+                  'eventId': eventId,
+                  'hasExistingRanking': dancer.hasRanking,
+                  'currentRank': dancer.rankName,
+                });
 
-              Navigator.pop(context);
-              showDialog(
-                context: context,
-                builder: (context) => RankingDialog(
-                  dancerId: dancer.id,
-                  eventId: eventId,
-                ),
-              );
-            },
-          ),
+                showDialog<bool>(
+                  context: context,
+                  builder: (context) => RankingDialog(
+                    dancerId: dancer.id,
+                    eventId: eventId,
+                  ),
+                ).then((updated) {
+                  if (updated == true && context.mounted) {
+                    Navigator.pop(context); // Close the action dialog
+                  }
+                });
+              },
+            ),
 
-          // Mark Present / Mark absent
+          // Score actions (only for present mode and dancers who have danced)
+          if (!isPlanningMode && dancer.hasDanced)
+            ListTile(
+              leading: Icon(
+                dancer.hasScore ? Icons.star : Icons.star_outline,
+                color: context.danceTheme.danceAccent,
+              ),
+              title: Text(dancer.hasScore ? 'Edit Score' : 'Assign Score'),
+              subtitle:
+                  dancer.hasScore ? Text('Current: ${dancer.scoreName}') : null,
+              onTap: () {
+                ActionLogger.logUserAction(
+                    'DancerActionsDialog', 'score_action_tapped', {
+                  'dancerId': dancer.id,
+                  'eventId': eventId,
+                  'hasExistingScore': dancer.hasScore,
+                  'currentScore': dancer.scoreName,
+                });
+
+                showDialog<bool>(
+                  context: context,
+                  builder: (context) => ScoreDialog(
+                    dancerId: dancer.id,
+                    eventId: eventId,
+                  ),
+                ).then((updated) {
+                  if (updated == true && context.mounted) {
+                    Navigator.pop(context); // Close the action dialog
+                  }
+                });
+              },
+            ),
+
+          // Presence toggle
           ListTile(
             leading: Icon(
               dancer.isPresent ? Icons.location_off : Icons.location_on,

@@ -232,6 +232,11 @@ class DancerService {
         _database.dancers.id.equalsExp(_database.attendances.dancerId) &
             _database.attendances.eventId.equals(eventId),
       ),
+      // LEFT JOIN scores ON attendances.score_id = scores.id
+      leftOuterJoin(
+        _database.scores,
+        _database.attendances.scoreId.equalsExp(_database.scores.id),
+      ),
     ])
       ..orderBy([OrderingTerm.asc(_database.dancers.name)]);
 
@@ -241,12 +246,14 @@ class DancerService {
         final ranking = row.readTableOrNull(_database.rankings);
         final rank = row.readTableOrNull(_database.ranks);
         final attendance = row.readTableOrNull(_database.attendances);
+        final score = row.readTableOrNull(_database.scores);
 
         return DancerWithEventInfo(
           id: dancer.id,
           name: dancer.name,
           notes: dancer.notes,
           createdAt: dancer.createdAt,
+          firstMetDate: dancer.firstMetDate,
           rankName: rank?.name,
           rankOrdinal: rank?.ordinal,
           rankingReason: ranking?.reason,
@@ -255,6 +262,10 @@ class DancerService {
           status: attendance?.status ?? 'absent',
           dancedAt: attendance?.dancedAt,
           impression: attendance?.impression,
+          scoreName: score?.name,
+          scoreOrdinal: score?.ordinal,
+          scoreId: score?.id,
+          firstMet: attendance?.firstMet ?? false,
         );
       }).toList();
     });
@@ -390,6 +401,7 @@ class DancerWithEventInfo {
   final String name;
   final String? notes;
   final DateTime createdAt;
+  final DateTime? firstMetDate;
   final String? rankName;
   final int? rankOrdinal;
   final String? rankingReason;
@@ -398,12 +410,17 @@ class DancerWithEventInfo {
   final String status; // present, served, left, absent
   final DateTime? dancedAt;
   final String? impression;
+  final String? scoreName;
+  final int? scoreOrdinal;
+  final int? scoreId;
+  final bool firstMet;
 
   DancerWithEventInfo({
     required this.id,
     required this.name,
     this.notes,
     required this.createdAt,
+    this.firstMetDate,
     this.rankName,
     this.rankOrdinal,
     this.rankingReason,
@@ -412,12 +429,18 @@ class DancerWithEventInfo {
     required this.status,
     this.dancedAt,
     this.impression,
+    this.scoreName,
+    this.scoreOrdinal,
+    this.scoreId,
+    this.firstMet = false,
   });
 
   // Helper getters
   bool get isPresent => attendanceMarkedAt != null;
   bool get hasRanking => rankName != null;
   bool get isRanked => hasRanking;
+  bool get hasScore => scoreName != null;
+  bool get isFirstMetHere => firstMet && hasDanced;
 
   // Status-based convenience getters for backward compatibility
   bool get hasDanced => status == 'served';

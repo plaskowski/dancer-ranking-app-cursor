@@ -56,6 +56,11 @@ class PresentTab extends StatelessWidget {
                       'rankName': d.rankName,
                       'rankOrdinal': d.rankOrdinal,
                       'hasDanced': d.hasDanced,
+                      'hasScore': d.hasScore,
+                      'scoreName': d.scoreName,
+                      'scoreOrdinal': d.scoreOrdinal,
+                      'firstMet': d.firstMet,
+                      'isFirstMetHere': d.isFirstMetHere,
                     })
                 .toList());
 

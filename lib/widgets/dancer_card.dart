@@ -109,6 +109,31 @@ class DancerCard extends StatelessWidget {
                           ),
                         ),
                       ],
+
+                      // Show score if assigned
+                      if (dancer.hasScore) ...[
+                        const TextSpan(text: ' • '),
+                        TextSpan(
+                          text: 'Score: ${dancer.scoreName}',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: context.danceTheme.rankingHigh,
+                          ),
+                        ),
+                      ],
+
+                      // Show first met indicator
+                      if (dancer.isFirstMetHere) ...[
+                        const TextSpan(text: ' '),
+                        TextSpan(
+                          text: '⭐',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: context.danceTheme.danceAccent,
+                          ),
+                        ),
+                      ],
                     ],
                   ],
                 ),

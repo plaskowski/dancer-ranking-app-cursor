@@ -8,6 +8,7 @@ import '../utils/action_logger.dart';
 import 'event_tab_actions.dart';
 import 'tabs/planning_tab.dart';
 import 'tabs/present_tab.dart';
+import 'tabs/summary_tab.dart';
 
 class EventScreen extends StatefulWidget {
   final int eventId;
@@ -42,9 +43,10 @@ class _EventScreenState extends State<EventScreen> {
 
   @override
   void dispose() {
+    final tabNames = ['planning', 'present', 'summary'];
     ActionLogger.logAction('UI_EventScreen', 'screen_disposed', {
       'eventId': widget.eventId,
-      'lastTab': _currentPage == 0 ? 'planning' : 'present',
+      'lastTab': tabNames[_currentPage],
     });
 
     _pageController.dispose();
@@ -67,6 +69,10 @@ class _EventScreenState extends State<EventScreen> {
             eventId: widget.eventId,
             eventName: _event!.name,
           ),
+          SummaryTabActions(
+            eventId: widget.eventId,
+            eventName: _event!.name,
+          ),
         ];
       });
     }
@@ -77,10 +83,14 @@ class _EventScreenState extends State<EventScreen> {
       _currentPage = index;
     });
 
+    final tabNames = ['planning', 'present', 'summary'];
+    final fromTab = tabNames[_currentPage];
+    final toTab = tabNames[index];
+
     ActionLogger.logAction('UI_EventScreen', 'tab_changed', {
       'eventId': widget.eventId,
-      'fromTab': _currentPage == 0 ? 'present' : 'planning',
-      'toTab': index == 0 ? 'planning' : 'present',
+      'fromTab': fromTab,
+      'toTab': toTab,
       'tabIndex': index,
       'changeMethod': 'swipe',
     });
@@ -88,9 +98,10 @@ class _EventScreenState extends State<EventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tabNames = ['planning', 'present', 'summary'];
     ActionLogger.logAction('UI_EventScreen', 'build_called', {
       'eventId': widget.eventId,
-      'currentTab': _currentPage == 0 ? 'planning' : 'present',
+      'currentTab': tabNames[_currentPage],
     });
 
     if (_event == null) {
@@ -100,14 +111,19 @@ class _EventScreenState extends State<EventScreen> {
     }
 
     final pages = _isPastEvent
-        ? [PresentTab(eventId: widget.eventId)]
+        ? [
+            PresentTab(eventId: widget.eventId),
+            SummaryTab(eventId: widget.eventId)
+          ]
         : [
             PlanningTab(eventId: widget.eventId),
-            PresentTab(eventId: widget.eventId)
+            PresentTab(eventId: widget.eventId),
+            SummaryTab(eventId: widget.eventId)
           ];
 
-    final currentTabActions =
-        _isPastEvent ? _tabActions[1] : _tabActions[_currentPage];
+    final currentTabActions = _isPastEvent
+        ? (_currentPage == 0 ? _tabActions[1] : _tabActions[2])
+        : _tabActions[_currentPage];
 
     return Scaffold(
       appBar: AppBar(
@@ -120,9 +136,7 @@ class _EventScreenState extends State<EventScreen> {
             ),
             if (!_isPastEvent)
               Text(
-                _currentPage == 0
-                    ? '[Planning] • Present'
-                    : 'Planning • [Present]',
+                _getTabIndicator(),
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.normal,
@@ -131,7 +145,7 @@ class _EventScreenState extends State<EventScreen> {
               ),
             if (_isPastEvent)
               Text(
-                'Event Concluded',
+                _getPastEventTabIndicator(),
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.normal,
@@ -157,5 +171,29 @@ class _EventScreenState extends State<EventScreen> {
         child: Icon(currentTabActions.fabIcon),
       ),
     );
+  }
+
+  String _getTabIndicator() {
+    switch (_currentPage) {
+      case 0:
+        return '[Planning] • Present • Summary';
+      case 1:
+        return 'Planning • [Present] • Summary';
+      case 2:
+        return 'Planning • Present • [Summary]';
+      default:
+        return 'Planning • Present • Summary';
+    }
+  }
+
+  String _getPastEventTabIndicator() {
+    switch (_currentPage) {
+      case 0:
+        return '[Present] • Summary';
+      case 1:
+        return 'Present • [Summary]';
+      default:
+        return 'Present • Summary';
+    }
   }
 }
