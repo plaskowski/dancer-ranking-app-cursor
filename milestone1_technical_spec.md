@@ -21,15 +21,10 @@ CREATE TABLE scores (
 );
 ```
 
-### 1.2 New AttendanceScores Table (Many-to-Many)
+### 1.2 Enhanced Attendances Table
 ```sql
-CREATE TABLE attendance_scores (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  attendance_id INTEGER NOT NULL REFERENCES attendances(id) ON DELETE CASCADE,
-  score_id INTEGER NOT NULL REFERENCES scores(id),
-  assigned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(attendance_id)  -- One score per attendance
-);
+-- Add new column to existing Attendances table
+ALTER TABLE attendances ADD COLUMN score_id INTEGER REFERENCES scores(id);
 ```
 
 ### 1.3 Enhanced Dancers Table
@@ -40,14 +35,14 @@ ALTER TABLE dancers ADD COLUMN first_met_date DATE NULL;
 ```
 
 ### 1.4 Enhanced ImportableAttendance Model
-Add support for score and first_met_date in import data:
+Add support for score and firstMet flag in import data:
 ```json
 {
   "dancer_name": "Alice",
   "status": "served",
   "impression": "Great dance!",
   "score": "Amazing",           // NEW: Score name
-  "first_met_date": "2024-01-15" // NEW: Optional explicit first met date
+  "first_met": true             // NEW: Optional boolean - true if first met at this event
 }
 ```
 
@@ -73,9 +68,8 @@ Pre-populate Scores table with standard scoring scale:
 - `deleteScore({required int id, required int replacementScoreId})` - Delete with reassignment
 - `getDefaultScore()` - Get middle score (ordinal 3, "Good")
 
-### 2.2 AttendanceScoreService (`lib/services/attendance_score_service.dart`)
-**Purpose**: Manage score assignments to attendances
-**Key Methods**:
+### 2.2 Enhanced AttendanceService (`lib/services/attendance_service.dart`)
+**New Methods for Score Management**:
 - `assignScore({required int attendanceId, required int scoreId})` - Assign score to attendance
 - `getAttendanceScore(int attendanceId)` - Get current score for attendance
 - `removeScore(int attendanceId)` - Remove score assignment
@@ -148,27 +142,27 @@ Summary Tab
 ### 4.1 Enhanced EventImportParser (`lib/services/event_import_parser.dart`)
 **Changes**:
 - Parse optional `score` field in attendance records
-- Parse optional `first_met_date` field in attendance records
-- Support both old format (without scores) and new format (with scores)
+- Parse optional `first_met` boolean flag in attendance records
+- Support both old format (without scores) and new format (with scores/firstMet)
 - Validate score names against known values
 
 ### 4.2 Enhanced EventImportValidator (`lib/services/event_import_validator.dart`)
 **Changes**:
 - Validate score names exist in database
 - Option to create missing scores during import
-- Validate first_met_date format (YYYY-MM-DD)
-- Check for conflicting first met dates (warn if different from existing)
+- Validate `first_met` field is boolean when present
+- Logic to handle multiple events claiming to be "first met" for same dancer
 
 ### 4.3 Enhanced EventImportService (`lib/services/event_import_service.dart`)
 **Changes**:
 - Create missing scores when auto-creation enabled
-- Assign scores to attendances during import
-- Set first_met_date on dancers (if provided and not already set)
+- Assign scores to attendances during import (directly in attendances table)
+- Set first_met_date on dancers when `first_met: true` flag is encountered
 - Handle score conflicts and missing score creation
 
 ### 4.4 Import Models Updates (`lib/models/import_models.dart`)
 **Changes**:
-- Add `score` and `firstMetDate` fields to `ImportableAttendance`
+- Add `score` and `firstMet` fields to `ImportableAttendance`
 - Add score-related fields to import result summaries
 - Support backwards compatibility with old format
 
@@ -186,18 +180,25 @@ Summary Tab
 - Show on both Present tab and Summary tab
 - Only show for attendances with `status = 'served'` (actually danced)
 
-### 5.3 Migration Strategy
+### 5.3 Import Integration
+**For New Imports**:
+- When `first_met: true` flag is encountered in attendance record:
+  - Set the dancer's `first_met_date` to the event's date (if not already set)
+  - Handle conflicts when multiple events claim to be "first met"
+  - Prioritize earlier dates when conflicts occur
+
+### 5.4 Migration Strategy
 **For Existing Data**:
 - Calculate first met dates for all existing dancers based on earliest served attendance
 - Store calculated dates in `first_met_date` column
-- Future imports can override with explicit dates
+- Future imports with `first_met: true` can override if they represent earlier dates
 
 ## 6. Integration Points
 
 ### 6.1 Service Dependencies
 ```
-ScoreService ← AttendanceScoreService
-AttendanceScoreService ← SummaryTab, PresentTab, DancerActionsDialog
+ScoreService ← AttendanceService (for score assignment)
+AttendanceService ← SummaryTab, PresentTab, DancerActionsDialog
 DancerService ← PresentTab, SummaryTab (for first met dates)
 EventImportService ← ScoreService (for missing score creation)
 ```
@@ -205,15 +206,14 @@ EventImportService ← ScoreService (for missing score creation)
 ### 6.2 Database Migration
 **Migration Steps**:
 1. Create `scores` table with default data
-2. Create `attendance_scores` table
+2. Add `score_id` column to `attendances` table
 3. Add `first_met_date` column to `dancers` table
 4. Calculate and populate first met dates for existing dancers
 
 ### 6.3 Provider Integration
 **New Providers Needed**:
 - `ScoreService` provider in main.dart
-- `AttendanceScoreService` provider in main.dart
-- Update existing screens to access new services
+- Update existing screens to access enhanced AttendanceService for score operations
 
 ## 7. Testing Considerations
 
@@ -223,10 +223,10 @@ EventImportService ← ScoreService (for missing score creation)
 - Verify first met dates are calculated correctly for existing data
 
 ### 7.2 Import Testing
-- Test backwards compatibility with old event import format
-- Test new format with scores and first met dates
+- Test backwards compatibility with old event import format (without scores/firstMet)
+- Test new format with scores and firstMet boolean flags
 - Test missing score creation during import
-- Test conflicting first met date handling
+- Test conflicting firstMet flag handling (multiple events claiming to be first)
 
 ### 7.3 UI Testing
 - Test Summary tab with various score distributions
@@ -239,7 +239,7 @@ EventImportService ← ScoreService (for missing score creation)
 ### Phase 1: Foundation
 1. Database schema changes and migration
 2. ScoreService implementation
-3. AttendanceScoreService implementation
+3. Enhanced AttendanceService with score management methods
 4. Enhanced DancerService with first met date logic
 
 ### Phase 2: UI Components
