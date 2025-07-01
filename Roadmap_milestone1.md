@@ -6,13 +6,14 @@ A working android app, where I can import dancers (with tags and notes) and hist
 and then use it to plan future events.
 
 What is needed:
-- support putting tags on persons (see feature_TagsOnPersons.md for spec)
+- ✅ support putting tags on persons (see feature_TagsOnPersons.md for spec)
 - support putting a score on a present person in the event
   - have a scores dictionary for that (they should have a global order)
   - one can assign score independently from their status
-- import dancers (with tags and notes)
-- import historical events (with attendances full data, including scores)
-  - create missing dancers
+- ✅ import dancers (with tags and notes)
+- import historical events (with attendances full data)
+  - ✅ create missing dancers
+  - import scores
   - create missing scores
 - new summary tab in event screen
   - it will contain a list of attendances, grouped by the score
