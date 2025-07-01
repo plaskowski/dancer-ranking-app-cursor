@@ -148,48 +148,45 @@ class _ScoreDialogState extends State<ScoreDialog> {
               height: 100,
               child: Center(child: CircularProgressIndicator()),
             )
-          : SizedBox(
-              width: double.maxFinite,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxHeight: 300, // Limit height to prevent overflow
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: _scores.map((score) {
-                          final isCurrentScore = score.id == _currentScoreId;
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxHeight: 300, // Limit height to prevent overflow
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: _scores.map((score) {
+                        final isCurrentScore = score.id == _currentScoreId;
 
-                          return ListTile(
-                            leading: Icon(
-                              isCurrentScore
-                                  ? Icons.check_circle
-                                  : Icons.circle_outlined,
-                              color: isCurrentScore
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
+                        return ListTile(
+                          leading: Icon(
+                            isCurrentScore
+                                ? Icons.check_circle
+                                : Icons.circle_outlined,
+                            color: isCurrentScore
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
+                          ),
+                          title: Text(
+                            score.name,
+                            style: TextStyle(
+                              fontWeight: isCurrentScore
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                             ),
-                            title: Text(
-                              score.name,
-                              style: TextStyle(
-                                fontWeight: isCurrentScore
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                              ),
-                            ),
-                            onTap: () => _selectScore(score),
-                          );
-                        }).toList(),
-                      ),
+                          ),
+                          onTap: () => _selectScore(score),
+                        );
+                      }).toList(),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
       actions: [
         TextButton(

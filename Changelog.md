@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.57.7] - 2025-01-15
+
+### User Requests
+- "Now it works, but why the dialog became so wide?"
+
+### Fixed
+- **Score Dialog Width**: Fixed dialog becoming unnecessarily wide
+  - **Natural Sizing**: Removed `width: double.maxFinite` constraint that made dialog too wide
+  - **Proper Proportions**: Dialog now sizes itself naturally based on content
+  - **Maintained Scrolling**: Kept the scrollable height constraint to prevent overflow
+  - **Better UX**: Dialog now has appropriate width while accommodating many score options
+
+### Technical
+- Removed unnecessary SizedBox with width: double.maxFinite from score dialog content
+- Dialog now uses natural content-based width sizing
+- Maintained ConstrainedBox with maxHeight for overflow prevention
+- Improved dialog layout proportions without affecting functionality
+
 ## [v0.57.6] - 2025-01-15
 
 ### User Requests
