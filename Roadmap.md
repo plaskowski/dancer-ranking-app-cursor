@@ -1,14 +1,13 @@
 # Dancer Ranking App - Roadmap
 
-## Near-term Features (next few weeks)
+## Plans
+- first milestone (see Roadmap_milestone1.md)
+- further plans (see section below)
 
-- migrate historical data from Diary
-- Tags on persons, part 2 - see feature_TagsOnPersons.md
+## Further plans
 - dancers pool category - see feature_DancersPoolCategory.md
-- CSV export for events and dancer data
-- Data backup and restore functionality
-- Statistical insights and trends
 - export the party summary to the Diary
+- Statistical insights and trends
 - Use emojis in Rank names
 - Filter people by tags. Eg. tag about where I know them from in case I don't know or remember the name or #longTimeNoSee or #comesRarely
 - in mass add in planning tab and add existing dancer dialog somehow filter out the dancers that come very rare or have not yet come for a long time
@@ -17,18 +16,15 @@
   - they should stay in the past events but don't suggest them to be added
 - Switch for filtering off dancers that 'left' in Present Tab
 - rank emoji (so to present it alinged to right)
+- Smart suggestions based on dancing history
 
 ### Rejected ideas
 - Event templates for recurring event types
   - I can just have an event with future date that serves as a template
 - Dancers avatars/photos
-
-## Long-term features (probably never)
 - Internationalization support
-- Smart suggestions based on dancing history
 
-## Development Workflow Ideas
-
+## Cursor based development improvements
 - Ability to run user stories for regression testing
 - Automated testing before marking tasks as done
 - User acceptance testing protocols
