@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - **Chronological Accuracy**: Fixed first met detection to use actual event dates instead of attendance import timestamps, ensuring correct chronological ordering when data was imported in bulk
+- **FirstMetDate Integration**: Enhanced first met logic to respect dancers' firstMetDate field - dancers with firstMetDate before an event will not show ⭐ indicator at that event
 
 ### Technical
 - **DancerService**: Changed `watchDancersForEvent` to look for earliest attendance regardless of status rather than only 'served' status

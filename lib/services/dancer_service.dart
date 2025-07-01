@@ -254,23 +254,42 @@ class DancerService {
         // Compute if this is the first attendance for this dancer (regardless of status)
         bool isFirstMetHere = false;
         if (attendance != null) {
-          // Get earliest attendance for this dancer across all events (exclude 'absent' status)
-          final earliestAttendance =
-              await (_database.select(_database.attendances).join([
-            innerJoin(_database.events,
-                _database.attendances.eventId.equalsExp(_database.events.id)),
-          ])
-                    ..where(_database.attendances.dancerId.equals(dancer.id) &
-                        _database.attendances.status.isNotValue('absent'))
-                    ..orderBy([OrderingTerm.asc(_database.events.date)])
-                    ..limit(1))
-                  .getSingleOrNull();
+          // Get current event date for comparison
+          final currentEvent = await (_database.select(_database.events)
+                ..where((e) => e.id.equals(eventId)))
+              .getSingleOrNull();
 
-          final earliestAttendanceRecord =
-              earliestAttendance?.readTable(_database.attendances);
+          if (currentEvent != null) {
+            // Check if firstMetDate is before current event date
+            final bool hasEarlierFirstMet = dancer.firstMetDate != null &&
+                dancer.firstMetDate!.isBefore(currentEvent.date);
 
-          // This is first met if this attendance is the earliest attendance
-          isFirstMetHere = earliestAttendanceRecord?.eventId == eventId;
+            if (hasEarlierFirstMet) {
+              // If firstMetDate is before this event, not first met here
+              isFirstMetHere = false;
+            } else {
+              // Get earliest attendance for this dancer across all events (exclude 'absent' status)
+              final earliestAttendance =
+                  await (_database.select(_database.attendances).join([
+                innerJoin(
+                    _database.events,
+                    _database.attendances.eventId
+                        .equalsExp(_database.events.id)),
+              ])
+                        ..where(_database.attendances.dancerId
+                                .equals(dancer.id) &
+                            _database.attendances.status.isNotValue('absent'))
+                        ..orderBy([OrderingTerm.asc(_database.events.date)])
+                        ..limit(1))
+                      .getSingleOrNull();
+
+              final earliestAttendanceRecord =
+                  earliestAttendance?.readTable(_database.attendances);
+
+              // This is first met if this attendance is the earliest attendance
+              isFirstMetHere = earliestAttendanceRecord?.eventId == eventId;
+            }
+          }
         }
 
         dancersWithFirstMet.add(DancerWithEventInfo(
