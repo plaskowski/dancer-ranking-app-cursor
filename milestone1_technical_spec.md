@@ -33,7 +33,7 @@ ALTER TABLE attendances ADD COLUMN first_met BOOLEAN DEFAULT FALSE;
 ```sql
 -- Add new column to existing Dancers table
 ALTER TABLE dancers ADD COLUMN first_met_date DATE NULL;
--- Will be populated during migration or calculated at runtime
+-- This column will be used for dancers I met before I tracked the events, don't auto-populate it from events
 ```
 
 ### 1.4 Enhanced ImportableAttendance Model
@@ -80,9 +80,8 @@ Pre-populate Scores table with standard scoring scale:
 
 ### 2.3 Enhanced DancerService
 **New Methods**:
-- `getFirstMetDate(int dancerId)` - Calculate or return stored first met date
+- `getFirstMetDate(int dancerId)` - Return stored first met date (explicit dates only)
 - `setFirstMetDate({required int dancerId, required DateTime date})` - Explicitly set first met date
-- `calculateFirstDanceDate(int dancerId)` - Calculate from earliest "served" attendance
 
 ## 3. UI Component Changes
 
@@ -177,9 +176,8 @@ Summary Tab
 
 ### 5.4 Migration Strategy
 **For Existing Data**:
-- Calculate first met dates for all existing dancers based on earliest served attendance
-- Store calculated dates in `first_met_date` column
 - Set `first_met = true` on the earliest served attendance for each dancer
+- Leave `first_met_date` column NULL for existing dancers (only used for pre-tracking meetings)
 - Future imports with `first_met: true` can add additional first met flags
 
 ## 6. Integration Points
@@ -196,9 +194,8 @@ EventImportService ← ScoreService (for missing score creation)
 **Migration Steps**:
 1. Create `scores` table with default data
 2. Add `score_id` and `first_met` columns to `attendances` table
-3. Add `first_met_date` column to `dancers` table
-4. Calculate and populate first met dates for existing dancers
-5. Set `first_met = true` on earliest served attendance for each dancer
+3. Add `first_met_date` column to `dancers` table (defaults to NULL)
+4. Set `first_met = true` on earliest served attendance for each dancer
 
 ### 6.3 Provider Integration
 **New Providers Needed**:
@@ -210,7 +207,7 @@ EventImportService ← ScoreService (for missing score creation)
 ### 7.1 Data Migration Testing
 - Test upgrade from current schema to new schema
 - Verify default scores are created correctly
-- Verify first met dates are calculated correctly for existing data
+- Verify `first_met` flags are set correctly on earliest served attendances
 
 ### 7.2 Import Testing
 - Test import format with scores and firstMet boolean flags
