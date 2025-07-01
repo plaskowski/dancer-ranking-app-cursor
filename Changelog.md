@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.57.4] - 2025-01-15
+
+### User Requests
+- "Nah, that is too much visuals. keep the status text only."
+
+### Changed
+- **Event Import Preview**: Simplified attendance display by removing status icons
+  - **Text-Only Status**: Removed star, circle, and exit icons in favor of simple text status
+  - **Cleaner Layout**: Streamlined attendance list with less visual clutter
+  - **Maintained Functionality**: Status information still clearly displayed with colored text
+  - **Improved Readability**: Focus on content over visual decoration
+
+### Technical
+- Removed status icon display from attendance records in import preview
+- Removed unused `_getStatusIcon` method
+- Kept `_getStatusColor` method for status text coloring
+- Simplified row layout by removing icon and spacing elements
+
 ## [v0.57.3] - 2025-01-15
 
 ### User Requests

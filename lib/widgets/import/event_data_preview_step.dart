@@ -214,13 +214,6 @@ class EventDataPreviewStep extends StatelessWidget {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(
-                                    _getStatusIcon(attendance.status),
-                                    size: 16,
-                                    color: _getStatusColor(
-                                        context, attendance.status),
-                                  ),
-                                  const SizedBox(width: 8),
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
@@ -354,19 +347,6 @@ class EventDataPreviewStep extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  IconData _getStatusIcon(String status) {
-    switch (status) {
-      case 'present':
-        return Icons.check_circle;
-      case 'served':
-        return Icons.star;
-      case 'left':
-        return Icons.exit_to_app;
-      default:
-        return Icons.help;
-    }
   }
 
   Color _getStatusColor(BuildContext context, String status) {

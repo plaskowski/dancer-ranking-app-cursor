@@ -373,9 +373,9 @@ Users can adjust rankings during events for various reasons:
     - **Duplicate Indication**: Events that already exist in the database are clearly marked and shown as "Skipped".
     - Users can expand each event to see the detailed list of attendees with all imported data.
     - **Comprehensive Attendance Display**: 
-      - **Compact Multi-line Format**: Main line shows dancer name (with "new" indicator), status with colored icon
+      - **Compact Multi-line Format**: Main line shows dancer name (with "new" indicator), status with colored text
       - **Rich Data Details**: Secondary line shows impression text in italics and score assignments with "Score:" prefix
-      - **Visual Styling**: Impressions in italic format, score names highlighted in secondary color
+      - **Clean Text Layout**: Simplified design focusing on text content without visual icons for better readability
       - **Combined Display**: Efficiently shows both impression and score data when both present
     - **Data Preservation Notice**: Automatic behavior section mentions preservation of impressions and score assignments
 4.  **Confirmation**: User confirms the import.
