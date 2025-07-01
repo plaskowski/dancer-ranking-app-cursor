@@ -10,17 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### User Requests
 - "Replace checkmark emoji with a pill-style indicator containing checkmark character, make the pill green, positioned to the right before the rating pill"
 - "The new pill is smaller than score pill, make it bigger to match"
+- "Make the new pill the same color as the impression text"
 
 ### Improved
-- **Dance Status Visual**: Replaced checkmark emoji with elegant green pill containing ✓ character
+- **Dance Status Visual**: Replaced checkmark emoji with elegant pill containing ✓ character
 - **Visual Layout**: Positioned dance indicator pill to the right side before score pill for better visual balance
 - **UI Consistency**: Enhanced visual consistency with pill-style indicators across the interface - both pills now have matching dimensions
 - **Size Parity**: Dance indicator pill now matches score pill size with identical padding, border radius, and font size
+- **Color Harmony**: Dance indicator pill now uses same color as impression text for cohesive visual theming
 
 ### Technical
 - Removed emoji-based checkmark from text spans in `DancerCard`
 - Implemented pill-style dance indicator with proper theming and positioning
-- Used theme's present color for consistent green styling throughout app
+- Changed from `present` color to `danceAccent` color to match impression text styling
 - Matched sizing: padding (8x4), border radius (12), and font size (12) to create visual consistency between pills
 
 ## [v0.56.0] - 2025-01-15
