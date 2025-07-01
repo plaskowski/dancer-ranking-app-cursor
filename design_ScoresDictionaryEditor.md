@@ -47,17 +47,15 @@ Scores Dictionary Editor
 │   └── Back Button
 ├── Scores List
 │   ├── Drag handles for reordering
-│   ├── Score name (tap for contextual menu)
-│   ├── Usage count (e.g., "Used in 23 dances")
-│   └── Long press for contextual actions (Rename, Delete, Merge into...)
-└── Actions Bar
-    ├── Add New Score button
-    └── Reset to Defaults button
+│   ├── Score name + usage count (e.g., "Excellent • Used in 23 dances")
+│   └── Tap anywhere on row to open contextual actions menu
+└── Floating Action Button (+ icon)
+    └── Add New Score
 ```
 
 ### Contextual Actions
 ```
-Long Press Score → Context Menu
+Tap Score Row → Context Menu
 ├── Rename Score
 │   └── Simple dialog with text input and confirm/cancel
 ├── Delete Score
@@ -67,7 +65,7 @@ Long Press Score → Context Menu
 ```
 
 ### Merge Scores Dialog
-**Navigation**: Context menu "Merge into..." → Select target score → Confirmation dialog
+**Navigation**: Tap score row → "Merge into..." → Select target score → Confirmation dialog
 ```
 Merge Score
 ├── Source: "[source score name]" (X dances)
@@ -102,17 +100,17 @@ Merge Score
 
 ### Primary Journey: Edit Score Name
 1. User opens Scores Dictionary from Settings
-2. User taps edit icon next to score name
-3. User modifies the name in inline editor
-4. System shows preview of affected records
+2. User taps on score row
+3. User selects "Rename Score" from context menu
+4. User modifies the name in dialog
 5. User confirms change
-6. System updates all references with loading indicator
-7. User sees success message with summary
+6. System updates score name in database
+7. User sees updated score in list
 
 ### Secondary Journey: Merge Duplicate Scores
 1. User identifies duplicate score in list
-2. User long presses on source score
-3. User taps "Merge into..." from context menu
+2. User taps on source score row
+3. User selects "Merge into..." from context menu
 4. User selects target score from list
 5. System shows confirmation dialog with impact preview
 6. User confirms merge
