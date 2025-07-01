@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.57.6] - 2025-01-15
+
+### User Requests
+- "Great, I imported successfully, but now the change score dialog show some error, most likely due to too big number of possible values"
+
+### Fixed
+- **Score Dialog Overflow**: Fixed RenderFlex overflow error when many scores are available
+  - **Scrollable Dialog**: Added SingleChildScrollView with 300px height constraint
+  - **Handles Many Scores**: Dialog now properly accommodates 10+ score options without overflow
+  - **Improved UX**: Users can scroll through all available scores including imported custom scores
+  - **Responsive Layout**: Dialog maintains proper sizing regardless of score count
+
+### Technical
+- Wrapped score options list in ConstrainedBox with maxHeight of 300px
+- Added SingleChildScrollView to enable scrolling through score options
+- Enhanced dialog layout structure to handle dynamic content sizing
+- Fixed layout overflow that occurred with 11+ scores from import operations
+
 ## [v0.57.5] - 2025-01-15
 
 ### User Requests
