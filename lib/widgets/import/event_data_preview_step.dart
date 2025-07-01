@@ -69,20 +69,6 @@ class EventDataPreviewStep extends StatelessWidget {
         .toSet()
         .length;
 
-    // Calculate additional statistics for rich data
-    final totalScoreAssignments = parseResult!.events
-        .expand((event) => event.attendances)
-        .where((attendance) =>
-            attendance.scoreName != null && attendance.scoreName!.isNotEmpty)
-        .length;
-    final uniqueScoreNames = parseResult!.events
-        .expand((event) => event.attendances)
-        .where((attendance) =>
-            attendance.scoreName != null && attendance.scoreName!.isNotEmpty)
-        .map((attendance) => attendance.scoreName!)
-        .toSet()
-        .length;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -90,76 +76,39 @@ class EventDataPreviewStep extends StatelessWidget {
         Card(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Column(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // Primary statistics row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildStatItem(
-                      context,
-                      'Events',
-                      '${parseResult!.events.length}',
-                      Icons.event,
-                      Theme.of(context).colorScheme.primary,
-                    ),
-                    _buildStatItem(
-                      context,
-                      'Attendances',
-                      '$totalAttendances',
-                      Icons.people,
-                      context.danceTheme.success,
-                    ),
-                    _buildStatItem(
-                      context,
-                      'Dancers',
-                      '$uniqueDancers',
-                      Icons.person,
-                      Theme.of(context).colorScheme.secondary,
-                    ),
-                    if (parseResult!.summary != null &&
-                        parseResult!.summary!.dancersCreated > 0)
-                      _buildStatItem(
-                        context,
-                        'New Dancers',
-                        '${parseResult!.summary!.dancersCreated}',
-                        Icons.person_add,
-                        Theme.of(context).colorScheme.tertiary,
-                      ),
-                  ],
+                _buildStatItem(
+                  context,
+                  'Events',
+                  '${parseResult!.events.length}',
+                  Icons.event,
+                  Theme.of(context).colorScheme.primary,
                 ),
-                // Additional data statistics row (if any rich data exists)
-                if (totalScoreAssignments > 0) ...[
-                  const SizedBox(height: 16),
-                  const Divider(),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildStatItem(
-                        context,
-                        'Score Assigns',
-                        '$totalScoreAssignments',
-                        Icons.star_rate,
-                        Theme.of(context).colorScheme.tertiary,
-                      ),
-                      if (uniqueScoreNames > 0)
-                        _buildStatItem(
-                          context,
-                          'Score Types',
-                          '$uniqueScoreNames',
-                          Icons.category,
-                          Theme.of(context)
-                              .colorScheme
-                              .tertiary
-                              .withOpacity(0.7),
-                        ),
-                      // Add spacers to center the items when we have less than 4
-                      const Spacer(),
-                      const Spacer(),
-                    ],
+                _buildStatItem(
+                  context,
+                  'Attendances',
+                  '$totalAttendances',
+                  Icons.people,
+                  context.danceTheme.success,
+                ),
+                _buildStatItem(
+                  context,
+                  'Dancers',
+                  '$uniqueDancers',
+                  Icons.person,
+                  Theme.of(context).colorScheme.secondary,
+                ),
+                if (parseResult!.summary != null &&
+                    parseResult!.summary!.dancersCreated > 0)
+                  _buildStatItem(
+                    context,
+                    'New Dancers',
+                    '${parseResult!.summary!.dancersCreated}',
+                    Icons.person_add,
+                    Theme.of(context).colorScheme.tertiary,
                   ),
-                ],
               ],
             ),
           ),

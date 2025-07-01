@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.57.3] - 2025-01-15
+
+### User Requests
+- "Remove the total score assigments and types count from the summary"
+
+### Changed
+- **Event Import Preview**: Removed score statistics from preview summary
+  - **Simplified Statistics**: Statistics now show only Events, Attendances, Dancers, and New Dancers counts
+  - **Cleaner Interface**: Removed secondary statistics row with score assignments and score types
+  - **Maintained Detail View**: Individual event details still show score assignments when expanded
+
+### Technical
+- Removed `totalScoreAssignments` and `uniqueScoreNames` calculations
+- Simplified statistics display back to single row layout
+- Removed conditional secondary statistics row display
+- Score information remains available in individual attendance records
+
 ## [v0.57.2] - 2025-01-15
 
 ### User Requests

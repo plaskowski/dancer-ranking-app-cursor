@@ -368,9 +368,7 @@ Users can adjust rankings during events for various reasons:
     - It checks for duplicate events and identifies new dancers that will be created.
     - Validates score names and identifies missing scores that will be auto-created.
 3.  **Data Preview**: The user is shown a comprehensive preview of the events to be imported with enhanced statistics and detailed attendance data.
-    - **Enhanced Statistics**: Primary row shows events, attendances, dancers, and new dancers count
-    - **Score Statistics**: Secondary row displays score assignment count and unique score types when present
-    - **Visual Hierarchy**: Clear separation between basic and advanced statistics with divider
+    - **Enhanced Statistics**: Shows events, attendances, dancers, and new dancers count
     - Each event in the list displays its name, date, and number of attendees. The new dancer count is appended to the attendance info (e.g., "15 attendances (3 new)").
     - **Duplicate Indication**: Events that already exist in the database are clearly marked and shown as "Skipped".
     - Users can expand each event to see the detailed list of attendees with all imported data.
