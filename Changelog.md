@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **UI Text**: Changed "Edit general note" to "Edit the dancer" for clearer action description in dancer context menu
 - **Dancer Notes Visibility**: Notes now always visible on all tabs instead of being hidden for danced dancers in Present tab
 - **Dance Status Display**: Replaced "Danced!" text with compact ✓ checkmark to save space while maintaining clarity
+- **First Met Indicator**: Changed from ⭐ star emoji to "just met" text in green with proper dot separator for better readability
 
 ### Changed
 - Modified DancerService to check earliest attendance of any status (except 'absent') when determining first met
