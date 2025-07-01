@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.57.9] - 2025-01-02
+
+### User Requests
+- "The choose file button does not work"
+
+### Fixed
+- **File Picker on macOS**: Fixed file picker button not working in event import dialog by adding necessary macOS entitlements for file access permissions
+- Added `com.apple.security.files.user-selected.read-only` entitlement for user-selected file access
+- Added `com.apple.security.files.downloads.read-only` entitlement for Downloads folder access
+
+### Technical
+- Updated `macos/Runner/DebugProfile.entitlements` with file access permissions
+- Updated `macos/Runner/Release.entitlements` with file access permissions
+- File picker functionality now properly authorized for macOS sandboxed environment
+
 ## [v0.57.8] - 2025-01-15
 
 ### User Requests
