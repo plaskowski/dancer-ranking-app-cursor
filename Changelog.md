@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.57.2] - 2025-01-15
+
+### User Requests
+- "score import did not work"
+
+### Fixed
+- **Score Import Functionality**: Fixed critical bugs preventing score data from being imported and displayed
+  - **AttendanceWithDancerInfo Enhancement**: Added missing `scoreId` field to enable score display in UI components
+  - **Remove Score Method**: Fixed `removeScore` method to properly clear scoreId field using `Value(null)`
+  - **Import Chain**: Ensured complete score import workflow from JSON parsing to UI display
+
+### Technical
+- Enhanced `AttendanceWithDancerInfo` class with `scoreId` field and updated `fromRow` factory method
+- Fixed `AttendanceService.removeScore` to use `copyWith(scoreId: const Value(null))` instead of empty `copyWith()`
+- Score import now properly flows from event import → score creation → score assignment → UI display
+- Maintained backward compatibility with existing score assignment functionality
+
 ## [v0.57.1] - 2025-01-15
 
 ### User Requests

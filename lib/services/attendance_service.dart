@@ -284,6 +284,7 @@ class AttendanceService {
         status: attendance.status,
         dancedAt: attendance.dancedAt,
         impression: attendance.impression,
+        scoreId: attendance.scoreId,
         dancerName: dancer.name,
         dancerNotes: dancer.notes,
       );
@@ -441,7 +442,9 @@ class AttendanceService {
       }
 
       final result = await _database.update(_database.attendances).replace(
-            attendance.copyWith(),
+            attendance.copyWith(
+              scoreId: const Value(null),
+            ),
           );
 
       ActionLogger.logDbOperation('UPDATE', 'attendances', {
@@ -478,6 +481,7 @@ class AttendanceWithDancerInfo {
   final String status;
   final DateTime? dancedAt;
   final String? impression;
+  final int? scoreId;
   final String dancerName;
   final String? dancerNotes;
 
@@ -489,6 +493,7 @@ class AttendanceWithDancerInfo {
     required this.status,
     this.dancedAt,
     this.impression,
+    this.scoreId,
     required this.dancerName,
     this.dancerNotes,
   });
@@ -507,6 +512,7 @@ class AttendanceWithDancerInfo {
           ? DateTime.parse(row['danced_at'] as String)
           : null,
       impression: row['impression'] as String?,
+      scoreId: row['score_id'] as int?,
       dancerName: row['dancer_name'] as String,
       dancerNotes: row['dancer_notes'] as String?,
     );

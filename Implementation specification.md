@@ -410,6 +410,7 @@ Users can adjust rankings during events for various reasons:
 - **Missing Scores**: Automatically created with default ordinal values
 - **Score Names**: Case-sensitive matching, trimmed whitespace
 - **Error Handling**: Invalid score assignments logged but don't block import
+- **Full Integration**: Imported scores are immediately available in UI with proper display and editing capabilities
 **Navigation**:
 - Opened from Home Screen's overflow menu.
 - Closes upon completion or cancellation.
