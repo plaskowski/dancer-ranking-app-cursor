@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../database/database.dart';
+import '../services/data_export_service.dart';
 import '../services/event_import_service.dart';
 import '../services/event_service.dart';
 import '../services/tag_service.dart';
@@ -83,6 +88,9 @@ class HomeScreen extends StatelessWidget {
                 case 'import_events':
                   _showImportEventsDialog(context);
                   break;
+                case 'export_data':
+                  _exportData(context);
+                  break;
               }
             },
             itemBuilder: (context) => [
@@ -91,6 +99,14 @@ class HomeScreen extends StatelessWidget {
                 child: ListTile(
                   leading: Icon(Icons.file_download),
                   title: Text('Import Events'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'export_data',
+                child: ListTile(
+                  leading: Icon(Icons.file_upload),
+                  title: Text('Export Data'),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
@@ -201,6 +217,48 @@ class HomeScreen extends StatelessWidget {
         ToastHelper.showSuccess(context, 'Events imported successfully');
       }
     });
+  }
+
+  void _exportData(BuildContext context) async {
+    ActionLogger.logUserAction('HomeScreen', 'export_data_started');
+    try {
+      final exportService =
+          DataExportService(Provider.of<AppDatabase>(context, listen: false));
+      final jsonString = await exportService.exportDataAsJson();
+
+      final directory = await getTemporaryDirectory();
+      final fileName =
+          'dancer_ranking_export_${DateFormat('yyyyMMdd_HHmmss').format(DateTime.now())}.json';
+      final file = File('${directory.path}/$fileName');
+      await file.writeAsString(jsonString);
+
+      ActionLogger.logAction('HomeScreen', 'export_file_created', {
+        'path': file.path,
+        'size': await file.length(),
+      });
+
+      final xFile = XFile(file.path, name: fileName);
+
+      final result = await Share.shareXFiles(
+        [xFile],
+        subject: 'Dancer Ranking App - Data Export',
+        text: 'Here is your exported data from the Dancer Ranking App.',
+      );
+
+      if (result.status == ShareResultStatus.success) {
+        ActionLogger.logUserAction('HomeScreen', 'export_data_success');
+        ToastHelper.showSuccess(context, 'Data exported successfully!');
+      } else {
+        ActionLogger.logUserAction('HomeScreen', 'export_data_dismissed',
+            {'status': result.status.toString()});
+      }
+    } catch (e, s) {
+      ActionLogger.logError(
+          'HomeScreen.exportData', e.toString(), {'stackTrace': s.toString()});
+      if (context.mounted) {
+        ToastHelper.showError(context, 'Error exporting data: $e');
+      }
+    }
   }
 }
 
