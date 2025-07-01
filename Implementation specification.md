@@ -42,12 +42,21 @@ Material 3 theme implementation with custom dance-specific color extensions.
 - `id` (Primary Key, Auto Increment)
 - `name` (Text, Required) - Dancer's name
 - `notes` (Text, Optional) - General notes about the dancer
+- `first_met_date` (DateTime, Optional) - For dancers met before tracked events
 - `created_at` (DateTime, Auto) - Creation timestamp
 
 **Ranks Table** (Dictionary/Lookup Table)
 - `id` (Primary Key, Auto Increment)
 - `name` (Text, Required) - Display name (e.g., "Really want to dance!")
-- `oridinal` (Integer, Required) - Sets the order from great to meh (the lower the better) 
+- `oridinal` (Integer, Required) - Sets the order from great to meh (the lower the better)
+
+**Scores Table** (Post-Dance Rating System)
+- `id` (Primary Key, Auto Increment)
+- `name` (Text, Required, Unique) - Display name (e.g., "Amazing", "Great")
+- `ordinal` (Integer, Required) - Rating order (1 = best, 5 = worst)
+- `is_archived` (Boolean, Default: false) - Hide from new events but keep in history
+- `created_at` (DateTime, Auto) - Creation timestamp
+- `updated_at` (DateTime, Auto) - Last modification timestamp 
 
 **Rankings Table**
 - `id` (Primary Key, Auto Increment)
@@ -68,6 +77,8 @@ Material 3 theme implementation with custom dance-specific color extensions.
 - `status` (Text, Default: 'present') - Dancer status: 'present', 'served', 'left', 'absent'
 - `danced_at` (DateTime, Optional) - When dance occurred
 - `impression` (Text, Optional) - Post-dance impression/notes
+- `score_id` (Foreign Key → Scores.id, Optional) - Post-dance rating assignment
+- `first_met` (Boolean, Default: false) - First meeting flag for this attendance
 - **Unique constraint**: (event_id, dancer_id)
 - **Note**: Record existence indicates presence at event
 - **Status Values**:
@@ -93,10 +104,12 @@ Material 3 theme implementation with custom dance-specific color extensions.
 - One Event has many Rankings and Attendances
 - One Dancer has many Rankings and Attendances  
 - One Rank has many Rankings (many-to-one)
+- One Score has many Attendances (many-to-one)
 - Many Dancers have many Tags (many-to-many via DancerTags)
 - Rankings track pre-event planning (rank selection + reasons)
-- Attendances track actual presence (record creation), dance completion, and impressions
+- Attendances track actual presence (record creation), dance completion, impressions, and post-dance scores
 - Tags provide categorization for dancers (context, frequency, skill level)
+- Scores provide post-dance rating system for tracking dance quality
 
 ### Default Rank Data
 The Ranks table should be pre-populated with:
@@ -105,6 +118,14 @@ The Ranks table should be pre-populated with:
 3. Ordinal 3: "Neutral / Default" 
 4. Ordinal 4: "Maybe later"
 5. Ordinal 5: "Not really interested" (lowest rank)
+
+### Default Score Data
+The Scores table should be pre-populated with:
+1. Ordinal 1: "Amazing" (best score)
+2. Ordinal 2: "Great"
+3. Ordinal 3: "Good" (default score)
+4. Ordinal 4: "Okay"
+5. Ordinal 5: "Meh" (lowest score)
 
 ### Default Tag Data
 The Tags table should be pre-populated with:
@@ -529,77 +550,6 @@ Example logs:
 - **Performance Monitoring**: Service call timing and database operation efficiency
 - **Data Visibility**: Real-time view of list contents and filtering results
 - **Error Debugging**: Full context for operation failures
-
-## Database Schema
-
-The application uses a Drift-based SQLite database with the following core tables:
-
-### Events Table
-- `id` (PK, auto-increment)
-- `name` (text, 1-100 chars)
-- `date` (datetime)
-- `createdAt` (datetime, auto)
-
-### Dancers Table
-- `id` (PK, auto-increment)
-- `name` (text, 1-100 chars)
-- `notes` (text, nullable)
-- `firstMetDate` (datetime, nullable) - For dancers met before tracked events
-- `createdAt` (datetime, auto)
-
-### Ranks Table (Planning Stage Ratings)
-- `id` (PK, auto-increment)
-- `name` (text, 1-50 chars)
-- `ordinal` (integer) - 1 = best, 5 = worst
-- `isArchived` (boolean, default false)
-- `createdAt` (datetime, auto)
-- `updatedAt` (datetime, auto)
-
-### Scores Table (Post-Dance Ratings)
-- `id` (PK, auto-increment)
-- `name` (text, 1-50 chars, unique)
-- `ordinal` (integer) - 1 = best, 5 = worst
-- `isArchived` (boolean, default false)
-- `createdAt` (datetime, auto)
-- `updatedAt` (datetime, auto)
-
-### Rankings Table (Planning Stage Assignments)
-- `id` (PK, auto-increment)
-- `eventId` (FK to Events)
-- `dancerId` (FK to Dancers)
-- `rankId` (FK to Ranks)
-- `reason` (text, nullable)
-- `createdAt` (datetime, auto)
-- `lastUpdated` (datetime, auto)
-- Unique key: (eventId, dancerId)
-
-### Attendances Table (Presence and Dance Tracking)
-- `id` (PK, auto-increment)
-- `eventId` (FK to Events)
-- `dancerId` (FK to Dancers)
-- `markedAt` (datetime, auto) - When spotted at event
-- `status` (text, default 'present') - present, served, left
-- `dancedAt` (datetime, nullable) - When dance occurred
-- `impression` (text, nullable) - Post-dance notes
-- `scoreId` (FK to Scores, nullable) - Post-dance rating
-- `firstMet` (boolean, default false) - First meeting flag
-- Unique key: (eventId, dancerId)
-
-### Tags Table
-- `id` (PK, auto-increment)
-- `name` (text, 1-50 chars, unique)
-- `createdAt` (datetime, auto)
-
-### DancerTags Table (Many-to-Many)
-- `dancerId` (FK to Dancers)
-- `tagId` (FK to Tags)
-- `createdAt` (datetime, auto)
-- Primary key: (dancerId, tagId)
-
-### Schema Versioning
-- **Current Version**: 5
-- **Migration Support**: Automatic upgrades from v1-v4
-- **Default Data**: Pre-populated ranks, scores, and tags on fresh install
 
 ## Services
 
