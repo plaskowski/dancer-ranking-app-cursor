@@ -431,7 +431,7 @@ Home Screen
    - No dialog needed - immediate action with visual feedback
    - Dancer disappears from Planning tab once marked present (focuses on remaining absent dancers)
    - Stay on Planning tab for efficient batch processing
-2. **Adjust rankings** → tap dancers for Planning Actions Dialog (rank/notes only)
+2. **Adjust rankings** → tap dancers for Actions Dialog (ranking and notes available in both Planning and Present tabs)
 3. **Switch to Present Tab** for live event management when needed
 4. **Meet new people** → **Present Tab FAB** → **Add Dancer Dialog**
    - Create new dancer in database

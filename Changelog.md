@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.56.2] - 2025-01-15
+
+### User Requests
+- "why I can't change the rank in a future event in present tab?"
+
+### Fixed
+- **Ranking Availability**: Fixed restriction that prevented ranking changes in Present tab - ranking actions now available in both Planning and Present tabs
+- **UI Consistency**: Removed artificial separation between planning and event execution phases for ranking management
+- **Workflow Flexibility**: Users can now adjust dancer rankings during events based on real-time circumstances (no-shows, priority changes, etc.)
+
+### Changed
+- Removed `isPlanningMode` condition from ranking actions in DancerActionsDialog
+- Updated ranking functionality to be available regardless of tab context
+
+### Technical
+- Modified `DancerActionsDialog` to show ranking options in both planning and present modes
+- Updated comment from "only for planning mode" to "available in both planning and present modes"
+
 ## [v0.56.1] - 2025-01-15
 
 ### User Requests

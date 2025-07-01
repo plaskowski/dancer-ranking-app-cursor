@@ -41,36 +41,35 @@ class DancerActionsDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Ranking actions (only for planning mode)
-          if (isPlanningMode)
-            ListTile(
-              leading: Icon(
-                dancer.hasRanking ? Icons.edit : Icons.add,
-                color: context.danceTheme.rankingHigh,
-              ),
-              title: Text(dancer.hasRanking ? 'Edit Ranking' : 'Set Ranking'),
-              onTap: () {
-                ActionLogger.logUserAction(
-                    'DancerActionsDialog', 'ranking_action_tapped', {
-                  'dancerId': dancer.id,
-                  'eventId': eventId,
-                  'hasExistingRanking': dancer.hasRanking,
-                  'currentRank': dancer.rankName,
-                });
-
-                showDialog<bool>(
-                  context: context,
-                  builder: (context) => RankingDialog(
-                    dancerId: dancer.id,
-                    eventId: eventId,
-                  ),
-                ).then((updated) {
-                  if (updated == true && context.mounted) {
-                    Navigator.pop(context); // Close the action dialog
-                  }
-                });
-              },
+          // Ranking actions (available in both planning and present modes)
+          ListTile(
+            leading: Icon(
+              dancer.hasRanking ? Icons.edit : Icons.add,
+              color: context.danceTheme.rankingHigh,
             ),
+            title: Text(dancer.hasRanking ? 'Edit Ranking' : 'Set Ranking'),
+            onTap: () {
+              ActionLogger.logUserAction(
+                  'DancerActionsDialog', 'ranking_action_tapped', {
+                'dancerId': dancer.id,
+                'eventId': eventId,
+                'hasExistingRanking': dancer.hasRanking,
+                'currentRank': dancer.rankName,
+              });
+
+              showDialog<bool>(
+                context: context,
+                builder: (context) => RankingDialog(
+                  dancerId: dancer.id,
+                  eventId: eventId,
+                ),
+              ).then((updated) {
+                if (updated == true && context.mounted) {
+                  Navigator.pop(context); // Close the action dialog
+                }
+              });
+            },
+          ),
 
           // Score actions (only for present mode and attendants)
           if (!isPlanningMode && dancer.isPresent)
