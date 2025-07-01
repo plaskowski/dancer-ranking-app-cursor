@@ -464,10 +464,10 @@ Home Screen
   - **Contextual placement**: Available in Planning tab when setting up event rankings (when no dancers added yet)
 - **Compact dancer cards**: Display all information inline for maximum vertical space efficiency
   - **Single-line layout**: Name followed by bullet-separated information: "Name • Notes • Ranking • Dance Status"
-  - **Personal notes**: General dancer notes displayed inline (hidden for danced dancers in Present tab)
-  - **Ranking reasons**: Italic event-specific reasoning in blue (hidden for danced dancers in Present tab)
-  - **Dance status with impressions**: "Danced!" text followed by italicized impression text when available
-  - **Context-aware display**: Pre-event information (notes, ranking reasons) hidden after dancing in Present tab to focus on post-dance impressions
+      - **Personal notes**: General dancer notes displayed inline on all tabs
+    - **Ranking reasons**: Italic event-specific reasoning in blue displayed on all tabs
+    - **Dance status with impressions**: ✓ checkmark followed by italicized impression text when available
+    - **Consistent display**: All dancer information (notes, ranking reasons, impressions) visible across all tabs for complete context
   - **Responsive design**: Uses RichText with TextSpan elements for flexible text styling within single line
 
 ### Tags on Persons Feature

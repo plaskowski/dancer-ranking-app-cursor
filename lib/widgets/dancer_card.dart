@@ -48,10 +48,9 @@ class DancerCard extends StatelessWidget {
                           ),
                         ),
 
-                        // Show dancer notes if they exist (hide for danced dancers in Present tab)
+                        // Show dancer notes if they exist
                         if (dancer.notes != null &&
-                            dancer.notes!.isNotEmpty &&
-                            (isPlanningMode || !dancer.hasDanced)) ...[
+                            dancer.notes!.isNotEmpty) ...[
                           const TextSpan(text: ' • '),
                           TextSpan(
                             text: dancer.notes!,
@@ -65,10 +64,9 @@ class DancerCard extends StatelessWidget {
                           ),
                         ],
 
-                        // Show ranking reason if it exists (hide for danced dancers in Present tab)
+                        // Show ranking reason if it exists
                         if (dancer.rankingReason != null &&
-                            dancer.rankingReason!.isNotEmpty &&
-                            (isPlanningMode || !dancer.hasDanced)) ...[
+                            dancer.rankingReason!.isNotEmpty) ...[
                           const TextSpan(text: ' • '),
                           TextSpan(
                             text: '"${dancer.rankingReason}"',
@@ -94,13 +92,13 @@ class DancerCard extends StatelessWidget {
                           ),
                         ],
 
-                        // Show "Danced!" indicator with impression if they have danced
+                        // Show checkmark indicator with impression if they have danced
                         if (dancer.hasDanced) ...[
                           const TextSpan(text: ' • '),
                           TextSpan(
-                            text: 'Danced!',
+                            text: '✓',
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: context.danceTheme.danceAccent,
                             ),
