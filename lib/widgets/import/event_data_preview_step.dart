@@ -226,19 +226,11 @@ class EventDataPreviewStep extends StatelessWidget {
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
-                                      attendance.dancerName,
+                                      '${attendance.dancerName}${isNew ? ' (new)' : ''}',
                                       style:
                                           Theme.of(context).textTheme.bodySmall,
                                     ),
                                   ),
-                                  if (isNew)
-                                    const Padding(
-                                      padding: EdgeInsets.only(right: 8.0),
-                                      child: Chip(
-                                        label: Text('New'),
-                                        padding: EdgeInsets.zero,
-                                      ),
-                                    ),
                                   Text(
                                     attendance.status,
                                     style: Theme.of(context)

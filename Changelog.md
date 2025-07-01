@@ -1121,6 +1121,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **New Dancer Highlighting**: New dancers are now marked with a "New" chip in the attendance list for each event.
 - **Duplicate Event Indication**: Events that already exist in the database are now marked as "Skipped" in the preview.
 
+### Improved
+- Replaced the "New" chip for new dancers in the import preview with a more subtle " (new)" text label for better readability.
+
 ### Fixed
 - Fixed a crash during event import caused by a JSON key mismatch (`dancerName` vs `dancer_name`) in the `ImportableAttendance` model.
 

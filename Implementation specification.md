@@ -653,7 +653,7 @@ Example logs:
     - **New Dancer Count**: A chip indicates how many new dancers will be created for that event.
     - **Duplicate Indication**: Events that already exist in the database are clearly marked and shown as "Skipped".
     - Users can expand each event to see the list of attendees.
-    - **New Dancer Highlighting**: Within the attendee list, dancers who do not yet exist in the database are marked with a "New" chip.
+    - **New Dancer Highlighting**: Within the attendee list, dancers who do not yet exist in the database are marked with a " (new)" text label next to their name.
 4.  **Confirmation**: User confirms the import.
 5.  **Import**: The app imports the valid events and attendees.
     - Duplicate events are automatically skipped.
