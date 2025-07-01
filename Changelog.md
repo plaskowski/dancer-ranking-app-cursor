@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.57.1] - 2025-01-15
+
+### User Requests
+- "Remove the impressions counter"
+
+### Changed
+- **Event Import Preview**: Removed impressions counter from statistics display
+  - **Simplified Statistics**: Secondary statistics row now shows only score assignments and score types
+  - **Cleaner Interface**: Focus on actionable score data rather than passive impression counts
+  - **Maintained Functionality**: Impression text still displayed in individual attendance records
+
+### Technical
+- Removed `totalImpressions` calculation from statistics
+- Updated conditional display logic to show secondary row only when score data exists
+- Simplified secondary statistics row to show score assignments and unique score types only
+
 ## [v0.57.0] - 2025-01-15
 
 ### User Requests

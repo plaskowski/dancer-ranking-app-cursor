@@ -70,11 +70,6 @@ class EventDataPreviewStep extends StatelessWidget {
         .length;
 
     // Calculate additional statistics for rich data
-    final totalImpressions = parseResult!.events
-        .expand((event) => event.attendances)
-        .where((attendance) =>
-            attendance.impression != null && attendance.impression!.isNotEmpty)
-        .length;
     final totalScoreAssignments = parseResult!.events
         .expand((event) => event.attendances)
         .where((attendance) =>
@@ -134,29 +129,20 @@ class EventDataPreviewStep extends StatelessWidget {
                   ],
                 ),
                 // Additional data statistics row (if any rich data exists)
-                if (totalImpressions > 0 || totalScoreAssignments > 0) ...[
+                if (totalScoreAssignments > 0) ...[
                   const SizedBox(height: 16),
                   const Divider(),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      if (totalImpressions > 0)
-                        _buildStatItem(
-                          context,
-                          'Impressions',
-                          '$totalImpressions',
-                          Icons.comment,
-                          context.danceTheme.danceAccent,
-                        ),
-                      if (totalScoreAssignments > 0)
-                        _buildStatItem(
-                          context,
-                          'Score Assigns',
-                          '$totalScoreAssignments',
-                          Icons.star_rate,
-                          Theme.of(context).colorScheme.tertiary,
-                        ),
+                      _buildStatItem(
+                        context,
+                        'Score Assigns',
+                        '$totalScoreAssignments',
+                        Icons.star_rate,
+                        Theme.of(context).colorScheme.tertiary,
+                      ),
                       if (uniqueScoreNames > 0)
                         _buildStatItem(
                           context,
@@ -168,11 +154,9 @@ class EventDataPreviewStep extends StatelessWidget {
                               .tertiary
                               .withOpacity(0.7),
                         ),
-                      // Add spacer if we don't have all 3 stats
-                      if (totalImpressions == 0 ||
-                          totalScoreAssignments == 0 ||
-                          uniqueScoreNames == 0)
-                        const Spacer(),
+                      // Add spacers to center the items when we have less than 4
+                      const Spacer(),
+                      const Spacer(),
                     ],
                   ),
                 ],
