@@ -167,19 +167,37 @@ class EventDataPreviewStep extends StatelessWidget {
         SizedBox(
           height: 300,
           child: ListView.builder(
-            itemCount: parseResult!.events.length,
+            itemCount: parseResult!.summary!.eventAnalyses.length,
             itemBuilder: (context, index) {
-              final event = parseResult!.events[index];
+              final analysis = parseResult!.summary!.eventAnalyses[index];
+              final event = analysis.event;
               return Card(
                 child: ExpansionTile(
                   leading: Icon(
-                    Icons.event,
-                    color: Theme.of(context).colorScheme.primary,
+                    analysis.willBeImported ? Icons.event : Icons.event_busy,
+                    color: analysis.willBeImported
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.5),
                   ),
                   title: Text(event.name),
                   subtitle: Text(
                     '${DateFormat.yMMMd().format(event.date)} • ${event.attendances.length} attendances',
                   ),
+                  trailing: analysis.isDuplicate
+                      ? const Tooltip(
+                          message:
+                              'This event already exists and will be skipped.',
+                          child: Chip(label: Text('Skipped')),
+                        )
+                      : (analysis.hasNewDancers
+                          ? Chip(
+                              label: Text('${analysis.newDancersCount} new'),
+                              avatar: const Icon(Icons.person_add, size: 16),
+                            )
+                          : null),
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -192,41 +210,50 @@ class EventDataPreviewStep extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
                           const SizedBox(height: 8),
-                          ...event.attendances.map((attendance) => Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 2),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      _getStatusIcon(attendance.status),
-                                      size: 16,
-                                      color: _getStatusColor(
-                                          context, attendance.status),
+                          ...event.attendances.map((attendance) {
+                            final isNew = analysis.newDancerNames
+                                .contains(attendance.dancerName);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    _getStatusIcon(attendance.status),
+                                    size: 16,
+                                    color: _getStatusColor(
+                                        context, attendance.status),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      attendance.dancerName,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
                                     ),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: Text(
-                                        attendance.dancerName,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall,
+                                  ),
+                                  if (isNew)
+                                    const Padding(
+                                      padding: EdgeInsets.only(right: 8.0),
+                                      child: Chip(
+                                        label: Text('New'),
+                                        padding: EdgeInsets.zero,
                                       ),
                                     ),
-                                    Text(
-                                      attendance.status,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                            color: _getStatusColor(
-                                                context, attendance.status),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              )),
-                          const SizedBox(height: 8),
+                                  Text(
+                                    attendance.status,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: _getStatusColor(
+                                              context, attendance.status),
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
                         ],
                       ),
                     ),

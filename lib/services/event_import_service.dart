@@ -110,7 +110,7 @@ class EventImportService {
     int eventsToCreate = 0;
     int eventsToSkip = 0;
     int attendancesToCreate = 0;
-    int dancersToCreate = 0;
+    final List<EventImportAnalysis> eventAnalyses = [];
 
     final duplicateEventNames = conflicts
         .where((c) => c.type == EventImportConflictType.duplicateEvent)
@@ -119,28 +119,35 @@ class EventImportService {
         .cast<String>()
         .toSet();
 
-    final allDancerNames =
+    final allDancerNamesInImport =
         events.expand((e) => e.attendances.map((a) => a.dancerName)).toSet();
     final existingDancers =
-        await _validator.getExistingDancersByNames(allDancerNames);
+        await _validator.getExistingDancersByNames(allDancerNamesInImport);
+    final allNewDancersInImport = allDancerNamesInImport
+        .where((name) => !existingDancers.containsKey(name))
+        .toSet();
 
     for (final event in events) {
-      if (duplicateEventNames.contains(event.name)) {
+      final isDuplicate = duplicateEventNames.contains(event.name);
+      final newDancerNamesInEvent = event.attendances
+          .map((a) => a.dancerName)
+          .where((name) => allNewDancersInImport.contains(name))
+          .toSet()
+          .toList();
+
+      eventAnalyses.add(EventImportAnalysis(
+        event: event,
+        isDuplicate: isDuplicate,
+        newDancersCount: newDancerNamesInEvent.length,
+        newDancerNames: newDancerNamesInEvent,
+      ));
+
+      if (isDuplicate) {
         eventsToSkip++;
         continue;
       }
       eventsToCreate++;
       attendancesToCreate += event.attendances.length;
-
-      for (final attendance in event.attendances) {
-        if (!existingDancers.containsKey(attendance.dancerName)) {
-          // Avoid double-counting dancers that appear in multiple events
-          if (allDancerNames.contains(attendance.dancerName)) {
-            dancersToCreate++;
-            allDancerNames.remove(attendance.dancerName);
-          }
-        }
-      }
     }
 
     return EventImportSummary(
@@ -148,10 +155,11 @@ class EventImportService {
       eventsCreated: eventsToCreate,
       eventsSkipped: eventsToSkip,
       attendancesCreated: attendancesToCreate,
-      dancersCreated: dancersToCreate,
+      dancersCreated: allNewDancersInImport.length,
       errors: 0,
       errorMessages: [],
       skippedEvents: duplicateEventNames.toList(),
+      eventAnalyses: eventAnalyses,
     );
   }
 

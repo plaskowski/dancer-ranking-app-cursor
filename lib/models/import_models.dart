@@ -309,7 +309,7 @@ class ImportableAttendance {
     }
 
     return ImportableAttendance(
-      dancerName: (json['dancerName'] as String).trim(),
+      dancerName: (json['dancer_name'] as String).trim(),
       status: status,
       impression: json['impression'] as String?,
     );
@@ -317,7 +317,7 @@ class ImportableAttendance {
 
   Map<String, dynamic> toJson() {
     return {
-      'dancerName': dancerName,
+      'dancer_name': dancerName,
       'status': status,
       if (impression != null) 'impression': impression,
     };
@@ -411,6 +411,7 @@ class EventImportSummary {
   final int errors;
   final List<String> errorMessages;
   final List<String> skippedEvents;
+  final List<EventImportAnalysis> eventAnalyses;
 
   const EventImportSummary({
     required this.eventsProcessed,
@@ -421,6 +422,7 @@ class EventImportSummary {
     required this.errors,
     required this.errorMessages,
     required this.skippedEvents,
+    this.eventAnalyses = const [],
   });
 
   int get totalSuccessful =>
@@ -464,4 +466,21 @@ class EventImportConflict {
 
   @override
   String toString() => 'EventImportConflict($type: $message)';
+}
+
+class EventImportAnalysis {
+  final ImportableEvent event;
+  final bool isDuplicate;
+  final int newDancersCount;
+  final List<String> newDancerNames;
+
+  const EventImportAnalysis({
+    required this.event,
+    this.isDuplicate = false,
+    this.newDancersCount = 0,
+    this.newDancerNames = const [],
+  });
+
+  bool get willBeImported => !isDuplicate;
+  bool get hasNewDancers => newDancersCount > 0;
 }

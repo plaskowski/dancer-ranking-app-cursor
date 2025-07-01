@@ -1108,3 +1108,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Files Modified
 - **lib/screens/event_screen.dart**: Implemented the conditional logic to show a simplified view for past events.
+
+## [v0.1.0] - 2025-07-01
+
+### User Requests
+- "I have few event files to test the import on"
+- "I got error, please check"
+- "Implement first task"
+
+### Added
+- **Event Import Preview**: The event import preview now shows the number of new dancers for each event.
+- **New Dancer Highlighting**: New dancers are now marked with a "New" chip in the attendance list for each event.
+- **Duplicate Event Indication**: Events that already exist in the database are now marked as "Skipped" in the preview.
+
+### Fixed
+- Fixed a crash during event import caused by a JSON key mismatch (`dancerName` vs `dancer_name`) in the `ImportableAttendance` model.
+
+### Technical
+- Added `EventImportAnalysis` model to hold per-event details during the import validation process.
+- Refactored `EventImportService` to generate and use the new analysis model.
+- Updated `EventDataPreviewStep` to consume the new analysis and display the enhanced information.

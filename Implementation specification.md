@@ -136,6 +136,7 @@ Users can adjust rankings during events for various reasons:
 - Navigate to ranks management (app bar icon)
 - Navigate to tags management (app bar icon)
 - Import events from JSON files (overflow menu)
+- Export all data (overflow menu)
 **Navigation**:
 - → Create Event Screen (FAB)
 - → Event Screen (tap event)
@@ -143,6 +144,7 @@ Users can adjust rankings during events for various reasons:
 - → Rank Editor Screen (app bar action)
 - → Tags Screen (app bar action)
 - → Event Import Dialog (overflow menu action)
+- → Export Data Dialog (overflow menu action)
 
 ### 2. Create Event Screen (`CreateEventScreen`)
 **Purpose**: Form to create new dance events
@@ -639,3 +641,29 @@ Example logs:
 **Navigation**:
 - ← Back to Home Screen
 - No sub-navigation (self-contained management)
+
+### 11. Event Import Dialog (`ImportEventsDialog`)
+**Purpose**: Full-screen dialog for importing events from a JSON file.
+**Workflow**:
+1.  **File Selection**: User selects a JSON file.
+2.  **Parsing & Validation**: The app parses the file and performs a "dry run" to validate the data.
+    - It checks for duplicate events and identifies new dancers that will be created.
+3.  **Data Preview**: The user is shown a preview of the events to be imported.
+    - Each event in the list displays its name, date, and number of attendees.
+    - **New Dancer Count**: A chip indicates how many new dancers will be created for that event.
+    - **Duplicate Indication**: Events that already exist in the database are clearly marked and shown as "Skipped".
+    - Users can expand each event to see the list of attendees.
+    - **New Dancer Highlighting**: Within the attendee list, dancers who do not yet exist in the database are marked with a "New" chip.
+4.  **Confirmation**: User confirms the import.
+5.  **Import**: The app imports the valid events and attendees.
+    - Duplicate events are automatically skipped.
+    - New dancers are automatically created.
+**Navigation**:
+- Opened from Home Screen's overflow menu.
+- Closes upon completion or cancellation.
+
+## Navigation Flow
+
+```mermaid
+graph TD
+// ... existing code ...
