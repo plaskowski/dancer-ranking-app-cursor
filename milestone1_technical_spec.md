@@ -119,10 +119,10 @@ Summary Tab
 **Changes**:
 - Add score assignment to dancer action dialogs
 - Show current score (if any) in dancer cards
-- Add "first met here" indicator for new people
+- Add "first met here" indicator for new people // use star emoji for that
 - Update dancer actions to include score management
 
-### 3.4 New Score Assignment Dialog (`lib/widgets/score_assignment_dialog.dart`)
+### 3.4 New Score Assignment Dialog (`lib/widgets/score_assignment_dialog.dart`)  // don't need this - it is enough to have a contextual action on a present dancer
 **Purpose**: Assign/edit scores for attendances
 **Features**:
 - Dropdown with active scores ordered by ordinal
@@ -132,9 +132,9 @@ Summary Tab
 
 ### 3.5 Enhanced Dancer Actions Dialog
 **New Actions**:
-- "Assign Score" (if no score assigned)
+- "Assign Score" (if no score assigned) // state what dialog this leads to
 - "Edit Score" (if score already assigned)
-- "Remove Score" (if score assigned)
+- "Remove Score" (if score assigned) // not needed
 - Combined "Record Dance & Score" action
 
 ## 4. Enhanced Import System
@@ -143,28 +143,27 @@ Summary Tab
 **Changes**:
 - Parse optional `score` field in attendance records
 - Parse optional `first_met` boolean flag in attendance records
-- Support both old format (without scores) and new format (with scores/firstMet)
-- Validate score names against known values
+- Support both old format (without scores) and new format (with scores/firstMet) // I don't need to support old format
 
 ### 4.2 Enhanced EventImportValidator (`lib/services/event_import_validator.dart`)
 **Changes**:
 - Validate score names exist in database
-- Option to create missing scores during import
+- Option to create missing scores during import // I want it to always create the missing scores
 - Validate `first_met` field is boolean when present
-- Logic to handle multiple events claiming to be "first met" for same dancer
+- Logic to handle multiple events claiming to be "first met" for same dancer // not needed
 
 ### 4.3 Enhanced EventImportService (`lib/services/event_import_service.dart`)
 **Changes**:
 - Create missing scores when auto-creation enabled
 - Assign scores to attendances during import (directly in attendances table)
-- Set first_met_date on dancers when `first_met: true` flag is encountered
+- Set first_met_date on dancers when `first_met: true` flag is encountered // nope, set the firstMet flag on attendance instead
 - Handle score conflicts and missing score creation
 
 ### 4.4 Import Models Updates (`lib/models/import_models.dart`)
 **Changes**:
 - Add `score` and `firstMet` fields to `ImportableAttendance`
 - Add score-related fields to import result summaries
-- Support backwards compatibility with old format
+- Support backwards compatibility with old format // not needed
 
 ## 5. First Met Date Implementation
 
