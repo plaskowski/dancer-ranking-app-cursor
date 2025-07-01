@@ -132,10 +132,10 @@ class DancerCard extends StatelessWidget {
             if (dancer.hasDanced) ...[
               const SizedBox(width: 8),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: context.danceTheme.present.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: context.danceTheme.present.withValues(alpha: 0.5),
                   ),
@@ -143,7 +143,7 @@ class DancerCard extends StatelessWidget {
                 child: Text(
                   '✓',
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: context.danceTheme.present,
                   ),
