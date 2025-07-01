@@ -10,7 +10,6 @@ import 'score_dialog.dart';
 class DancerCard extends StatelessWidget {
   final DancerWithEventInfo dancer;
   final int eventId;
-  final bool showPresenceIndicator;
   final bool isPlanningMode;
   final bool hideScorePill;
 
@@ -18,7 +17,6 @@ class DancerCard extends StatelessWidget {
     super.key,
     required this.dancer,
     required this.eventId,
-    required this.showPresenceIndicator,
     required this.isPlanningMode,
     this.hideScorePill = false,
   });
@@ -187,12 +185,6 @@ class DancerCard extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-
-            // Presence indicator
-            if (showPresenceIndicator && dancer.isPresent) ...[
-              const SizedBox(width: 8),
-              Icon(Icons.check, color: context.danceTheme.present, size: 20),
             ],
           ],
         ),

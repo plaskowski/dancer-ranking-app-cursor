@@ -16,7 +16,8 @@ class PresentTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ActionLogger.logAction('UI_PresentTab', 'build_called', {'eventId': eventId});
+    ActionLogger.logAction(
+        'UI_PresentTab', 'build_called', {'eventId': eventId});
 
     final dancerService = Provider.of<DancerService>(context);
 
@@ -24,7 +25,8 @@ class PresentTab extends StatelessWidget {
       stream: dancerService.watchDancersForEvent(eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          ActionLogger.logAction('UI_PresentTab', 'loading_state', {'eventId': eventId});
+          ActionLogger.logAction(
+              'UI_PresentTab', 'loading_state', {'eventId': eventId});
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -37,7 +39,9 @@ class PresentTab extends StatelessWidget {
         }
 
         final allDancers = snapshot.data ?? [];
-        final presentDancers = allDancers.where((d) => d.status == 'present' || d.status == 'served').toList();
+        final presentDancers = allDancers
+            .where((d) => d.status == 'present' || d.status == 'served')
+            .toList();
 
         ActionLogger.logListRendering(
             'UI_PresentTab',
@@ -110,7 +114,8 @@ class PresentTab extends StatelessWidget {
             final dancerA = groupedDancers[a]!.first;
             final dancerB = groupedDancers[b]!.first;
 
-            return (dancerA.rankOrdinal ?? 999).compareTo(dancerB.rankOrdinal ?? 999);
+            return (dancerA.rankOrdinal ?? 999)
+                .compareTo(dancerB.rankOrdinal ?? 999);
           });
 
         ActionLogger.logAction('UI_PresentTab', 'grouping_complete', {
@@ -139,7 +144,6 @@ class PresentTab extends StatelessWidget {
                 ...rankDancers.map((dancer) => DancerCard(
                       dancer: dancer,
                       eventId: eventId,
-                      showPresenceIndicator: false,
                       isPlanningMode: false,
                     )),
                 const SizedBox(height: 16),
@@ -163,7 +167,8 @@ class PresentTabActions implements EventTabActions {
   });
 
   @override
-  Future<void> onFabPressed(BuildContext context, VoidCallback onRefresh) async {
+  Future<void> onFabPressed(
+      BuildContext context, VoidCallback onRefresh) async {
     // Show speed dial menu with two options
     _showPresentTabSpeedDial(context, onRefresh);
   }

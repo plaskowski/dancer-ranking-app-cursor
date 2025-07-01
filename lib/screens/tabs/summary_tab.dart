@@ -249,7 +249,6 @@ class SummaryTab extends StatelessWidget {
                   ...scoreDancers.map((dancer) => DancerCard(
                         dancer: dancer,
                         eventId: eventId,
-                        showPresenceIndicator: false,
                         isPlanningMode: false,
                         hideScorePill: true,
                       )),

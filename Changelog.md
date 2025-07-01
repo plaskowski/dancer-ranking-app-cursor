@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - "Make the new pill the same color as the impression text"
 - "Let's try having only the checkmark without pill background, but keep the sizing"
 - "Move it to the right of the score pill"
+- "Remove the conditional presence indicator, it is not used anymore"
 
 ### Improved
 - **Dance Status Visual**: Replaced checkmark emoji with clean ✓ character (no background pill)
@@ -20,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Minimalist Design**: Removed pill background for cleaner appearance while maintaining proper spacing
 - **Color Harmony**: Dance indicator uses same color as impression text for cohesive visual theming
 - **Proper Spacing**: Maintained equivalent padding for consistent alignment with other elements
+- **Code Cleanup**: Removed unused presence indicator parameter and functionality for cleaner codebase
 
 ### Technical
 - Removed emoji-based checkmark from text spans in `DancerCard`
@@ -27,6 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed from Container with decoration to simple Padding widget
 - Repositioned checkmark to appear after score pill in layout order
 - Used `danceAccent` color to match impression text styling
+- Removed `showPresenceIndicator` parameter from DancerCard widget and all usage sites
+- Cleaned up unused presence indicator Icon widget and conditional logic
 
 ## [v0.56.0] - 2025-01-15
 

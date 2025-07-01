@@ -186,7 +186,6 @@ class _PlanningTabState extends State<PlanningTab> {
                 ...rankDancers.map((dancer) => DancerCard(
                       dancer: dancer,
                       eventId: widget.eventId,
-                      showPresenceIndicator: true,
                       isPlanningMode: true,
                     )),
                 const SizedBox(height: 16),
