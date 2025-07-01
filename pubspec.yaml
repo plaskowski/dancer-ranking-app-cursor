@@ -24,6 +24,7 @@ dependencies:
   
   # File handling for imports
   file_picker: ^8.0.0
+  desktop_drop: ^0.4.4
 
   # UI & Date/Time
   flutter_datetime_picker: ^1.5.1

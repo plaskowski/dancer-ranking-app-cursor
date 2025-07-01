@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.56.3] - 2025-01-15
+
+### User Requests
+- "The drag and drop in dancers import does not work"
+
+### Added
+- **Drag and Drop Support**: Implemented full drag and drop functionality for both dancer and event import file selection
+- **Visual Feedback**: Added animated visual states when files are dragged over drop areas
+- **Desktop UX**: Enhanced desktop user experience with native drag and drop behavior
+- **File Validation**: Automatic validation of dragged files (JSON format, size limits, extension checking)
+
+### Improved
+- **File Selection UI**: Updated both import dialogs with modern drag and drop areas
+- **Interactive Feedback**: Dynamic text and icon changes during drag operations
+- **Error Handling**: Comprehensive error handling for dropped files with detailed error messages
+- **Accessibility**: Maintained existing click/tap functionality alongside new drag and drop features
+
+### Technical
+- Added `desktop_drop: ^0.4.4` package for cross-platform drag and drop support
+- Converted `FileSelectionStep` and `EventFileSelectionStep` from StatelessWidget to StatefulWidget
+- Implemented `DropTarget` widgets with `onDragDone`, `onDragEntered`, and `onDragExited` callbacks
+- Added animated containers with visual state changes during drag operations
+- Enhanced action logging for drag and drop events
+
 ## [v0.56.2] - 2025-01-15
 
 ### User Requests
