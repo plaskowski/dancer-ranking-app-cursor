@@ -8,6 +8,7 @@ import 'services/dancer_import_service.dart';
 import 'services/dancer_service.dart';
 import 'services/event_service.dart';
 import 'services/ranking_service.dart';
+import 'services/score_service.dart';
 import 'services/tag_service.dart';
 import 'theme/app_theme.dart';
 
@@ -40,6 +41,9 @@ class DancerRankingApp extends StatelessWidget {
         ),
         ProxyProvider<AppDatabase, AttendanceService>(
           update: (_, db, __) => AttendanceService(db),
+        ),
+        ProxyProvider<AppDatabase, ScoreService>(
+          update: (_, db, __) => ScoreService(db),
         ),
         ProxyProvider<AppDatabase, TagService>(
           update: (_, db, __) => TagService(db),
