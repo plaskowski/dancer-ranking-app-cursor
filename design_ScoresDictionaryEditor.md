@@ -30,12 +30,12 @@ The Scores Dictionary Editor allows users to manage and standardize the scoring 
 
 ### 3. Merge Scores
 - **Purpose**: Combine duplicate or similar scores into one
-- **Use Case**: Merge "Great", "Awesome", and "5 stars" into single "Excellent" score
+- **Use Case**: Merge "Great" into "Excellent" 
 - **Behavior**:
-  - Select multiple scores to merge
-  - Choose target score name (can be new or existing)
-  - Show preview of affected dance records
-  - Bulk update all references to use the merged score
+  - Select source score and target score (two at a time)
+  - Show preview of affected dances
+  - Update all attendances using source score to use target score
+  - Delete the source score
 
 ## UI Design
 
@@ -49,10 +49,9 @@ Scores Dictionary Editor
 │   ├── Drag handles for reordering
 │   ├── Score name (tap for contextual menu)
 │   ├── Usage count (e.g., "Used in 23 dances")
-│   └── Long press for contextual actions (Rename, Delete, Merge)
+│   └── Long press for contextual actions (Rename, Delete, Merge into...)
 └── Actions Bar
     ├── Add New Score button
-    ├── Multi-select mode toggle (for merging)
     └── Reset to Defaults button
 ```
 
@@ -63,19 +62,17 @@ Long Press Score → Context Menu
 │   └── Simple dialog with text input and confirm/cancel
 ├── Delete Score
 │   └── Confirmation dialog showing usage count
-└── Start Merge
-    └── Enters multi-select mode for choosing merge targets
+└── Merge into...
+    └── Shows list of other scores to merge this one into
 ```
 
 ### Merge Scores Dialog
-**Navigation**: Context menu "Start Merge" → Multi-select mode → "Merge Selected" button
+**Navigation**: Context menu "Merge into..." → Select target score → Confirmation dialog
 ```
-Merge Scores
-├── Selected Scores (read-only list of chosen scores)
-├── Target Score (dropdown of existing scores excluding selected ones)
-├── Preview Impact
-│   ├── "X dances will now use '[target score name]'"
-│   └── "Y events will be affected"
+Merge Score
+├── Source: "[source score name]" (X dances)
+├── Target: "[target score name]" (Y dances)
+├── Result: "All dances scored '[source]' will become '[target]'"
 └── Actions
     ├── Confirm Merge
     └── Cancel
@@ -94,7 +91,7 @@ Merge Scores
 1. **Load**: Query Scores table with JOIN to count usage in Attendances
 2. **Display**: Show scores with usage statistics and ordinal order
 3. **Edit**: Update Scores table (name, ordinal) - foreign keys handle consistency
-4. **Merge**: Update Attendances to point to target score, delete source scores
+4. **Merge**: Update Attendances.scoreId from source to target, delete source score
 5. **Validate**: Check constraints and prevent deletion of in-use scores
 
 ### Services Needed
@@ -113,15 +110,14 @@ Merge Scores
 7. User sees success message with summary
 
 ### Secondary Journey: Merge Duplicate Scores
-1. User identifies duplicate scores in list
-2. User selects multiple scores (checkboxes appear)
-3. User taps "Merge Selected" button
-4. System opens merge dialog
-5. User chooses target score name
-6. User reviews impact preview
-7. User confirms merge
-8. System performs bulk update
-9. User sees merged result in list
+1. User identifies duplicate score in list
+2. User long presses on source score
+3. User taps "Merge into..." from context menu
+4. User selects target score from list
+5. System shows confirmation dialog with impact preview
+6. User confirms merge
+7. System updates attendances and deletes source score
+8. User sees updated list with merged score
 
 ## Edge Cases & Validations
 

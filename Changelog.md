@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.58.0] - 2025-01-16
+
+### User Requests
+- "Let's add this. Write down design to a file first, don't provide code yet" (referring to screen to edit scores dictionary from Milestone 2)
+- "No, I want 'screen to edit scores dictionary'"
+- "Address the comments I added" (correcting foreign key understanding and simplifying UI)
+- "Let's simplify the merging." (reducing complexity of merge workflow)
+
+### Added
+- **Scores Dictionary Editor Design**: Created comprehensive design document for managing and standardizing scoring system
+  - **Edit Score Names**: Rename scores with proper foreign key relationship handling
+  - **Edit Score Order**: Drag-and-drop reordering to define ranking hierarchy using existing ordinal field
+  - **Merge Scores**: Simplified two-score-at-a-time merging with "Merge into..." context action
+  - **Contextual Actions**: Long press menu with rename, delete, and merge operations instead of complex multi-select
+  - **Usage Statistics**: Display score usage counts from attendance records
+  - **Database Integration**: Leverages existing Scores table and foreign key relationships
+
+### Technical
+- Design addresses inconsistent score naming from imported event history
+- Simplified merge workflow: context menu → select target → confirm (no multi-select mode)
+- Utilizes existing database schema with `scores` table and `attendances.scoreId` foreign key
+- Contextual dialog-based editing instead of inline editing for better mobile UX
+- Proper handling of ordinal field for score ranking calculations
+
 ## [v0.57.9] - 2025-01-02
 
 ### User Requests
