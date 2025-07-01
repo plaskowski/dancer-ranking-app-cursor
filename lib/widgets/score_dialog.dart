@@ -24,9 +24,9 @@ class ScoreDialog extends StatefulWidget {
 
 class _ScoreDialogState extends State<ScoreDialog> {
   List<Score> _scores = [];
-  Score? _selectedScore;
+  int? _currentScoreId;
   String _dancerName = '';
-  bool _isLoading = false;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -75,20 +75,8 @@ class _ScoreDialogState extends State<ScoreDialog> {
         setState(() {
           _scores = scores;
           _dancerName = dancer?.name ?? 'Unknown';
-
-          if (currentScoreId != null) {
-            _selectedScore = scores.firstWhere(
-              (s) => s.id == currentScoreId,
-              orElse: () =>
-                  scores.firstWhere((s) => s.ordinal == 3), // Default to "Good"
-            );
-          } else {
-            // Default to neutral score (Good - ordinal 3)
-            _selectedScore = scores.firstWhere(
-              (s) => s.ordinal == 3,
-              orElse: () => scores.first,
-            );
-          }
+          _currentScoreId = currentScoreId;
+          _isLoading = false;
         });
       }
     } catch (e) {
@@ -98,30 +86,21 @@ class _ScoreDialogState extends State<ScoreDialog> {
       });
 
       if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
         ToastHelper.showError(context, 'Error loading data: $e');
       }
     }
   }
 
-  Future<void> _saveScore() async {
-    if (_selectedScore == null) {
-      ActionLogger.logUserAction('ScoreDialog', 'save_validation_failed', {
-        'dancerId': widget.dancerId,
-        'eventId': widget.eventId,
-        'reason': 'no_score_selected',
-      });
-      return;
-    }
-
-    ActionLogger.logUserAction('ScoreDialog', 'save_score_started', {
+  Future<void> _selectScore(Score score) async {
+    ActionLogger.logUserAction('ScoreDialog', 'score_selected', {
       'dancerId': widget.dancerId,
       'eventId': widget.eventId,
-      'scoreId': _selectedScore!.id,
-      'scoreName': _selectedScore!.name,
-    });
-
-    setState(() {
-      _isLoading = true;
+      'scoreId': score.id,
+      'scoreName': score.name,
+      'previousScoreId': _currentScoreId,
     });
 
     try {
@@ -131,36 +110,31 @@ class _ScoreDialogState extends State<ScoreDialog> {
       await attendanceService.assignScore(
         widget.eventId,
         widget.dancerId,
-        _selectedScore!.id,
+        score.id,
       );
 
       if (mounted) {
-        ActionLogger.logUserAction('ScoreDialog', 'save_score_completed', {
+        ActionLogger.logUserAction('ScoreDialog', 'score_assigned', {
           'dancerId': widget.dancerId,
           'eventId': widget.eventId,
-          'scoreId': _selectedScore!.id,
-          'scoreName': _selectedScore!.name,
+          'scoreId': score.id,
+          'scoreName': score.name,
           'dancerName': _dancerName,
         });
 
         Navigator.pop(context, true); // Return true to indicate success
-        ToastHelper.showSuccess(context, 'Score updated for $_dancerName');
+        ToastHelper.showSuccess(
+            context, 'Score "${score.name}" set for $_dancerName');
       }
     } catch (e) {
-      ActionLogger.logError('ScoreDialog._saveScore', e.toString(), {
+      ActionLogger.logError('ScoreDialog._selectScore', e.toString(), {
         'dancerId': widget.dancerId,
         'eventId': widget.eventId,
-        'scoreId': _selectedScore?.id,
+        'scoreId': score.id,
       });
 
       if (mounted) {
-        ToastHelper.showError(context, 'Error saving score: $e');
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
+        ToastHelper.showError(context, 'Error setting score: $e');
       }
     }
   }
@@ -169,60 +143,45 @@ class _ScoreDialogState extends State<ScoreDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text('Score $_dancerName'),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Select Score:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            ...(_scores.map((score) {
-              return RadioListTile<Score>(
-                title: Text(score.name),
-                subtitle: Text('Rating: ${score.ordinal}'),
-                value: score,
-                groupValue: _selectedScore,
-                onChanged: _isLoading
-                    ? null
-                    : (Score? value) {
-                        setState(() {
-                          _selectedScore = value;
-                        });
-                      },
-              );
-            })),
-          ],
-        ),
-      ),
-      actions: [
-        // Cancel button
-        TextButton(
-          onPressed: _isLoading
-              ? null
-              : () {
-                  ActionLogger.logUserAction(
-                      'ScoreDialog', 'dialog_cancelled', {
-                    'dancerId': widget.dancerId,
-                    'eventId': widget.eventId,
-                  });
-                  Navigator.pop(context);
-                },
-          child: const Text('Cancel'),
-        ),
+      content: _isLoading
+          ? const SizedBox(
+              height: 100,
+              child: Center(child: CircularProgressIndicator()),
+            )
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              children: _scores.map((score) {
+                final isCurrentScore = score.id == _currentScoreId;
 
-        // Save button
-        ElevatedButton(
-          onPressed: _isLoading ? null : _saveScore,
-          child: _isLoading
-              ? const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : const Text('Save Score'),
+                return ListTile(
+                  leading: Icon(
+                    isCurrentScore ? Icons.check_circle : Icons.circle_outlined,
+                    color: isCurrentScore
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  title: Text(
+                    score.name,
+                    style: TextStyle(
+                      fontWeight:
+                          isCurrentScore ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
+                  subtitle: Text('Rating: ${score.ordinal}'),
+                  onTap: () => _selectScore(score),
+                );
+              }).toList(),
+            ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            ActionLogger.logUserAction('ScoreDialog', 'dialog_cancelled', {
+              'dancerId': widget.dancerId,
+              'eventId': widget.eventId,
+            });
+            Navigator.pop(context);
+          },
+          child: const Text('Cancel'),
         ),
       ],
     );
