@@ -1,9 +1,8 @@
 # Next Steps
 
 ## Immediate Priorities (take one at a time)
-- test the generated events files
 - fill the spec with additional things
-- review and test the export
+- rename export to backup to file, add an action to restore from file
 
 ## Later
 - **Test Event Import UI**: Manually test the full-screen Event Import UI and verify the "new dancer" count is accurate.
