@@ -404,7 +404,7 @@ Home Screen
 │   │   │   └── → Attendance management
 │   │   ├── **Score Pills**: Score names displayed as colored pills for any attendant with assigned scores
 │   │   └── **First Met Indicators**: "just met" text in green for dancers met for the first time at this event (any attendance status, respects firstMetDate field)
-│   ├── Summary Page (Page 2) - Post-dance analysis and score management tab
+│   ├── Summary Page (Page 2) - Post-dance analysis and score management tab for all attendees
 │   │   ├── **Dance Summary Card**: Statistics showing total dances, scored/unscored counts, first meetings
 │   │   ├── **Score Groups**: Dancers grouped by score (Amazing, Great, Good, Okay, Meh, No score assigned)
 │   │   ├── **Count Badges**: Each score group shows dancer count in primary container styling
@@ -466,7 +466,7 @@ Home Screen
   - **Single-line layout**: Name followed by bullet-separated information: "Name • Notes • Ranking • Dance Status"
       - **Personal notes**: General dancer notes displayed inline on all tabs
     - **Ranking reasons**: Italic event-specific reasoning in blue displayed on all tabs
-    - **Dance status with impressions**: ✓ checkmark followed by italicized impression text when available
+    - **Dance status with impressions**: ✅ green checkmark before dancer name, with italicized impression text when available
     - **Consistent display**: All dancer information (notes, ranking reasons, impressions) visible across all tabs for complete context
   - **Responsive design**: Uses RichText with TextSpan elements for flexible text styling within single line
 

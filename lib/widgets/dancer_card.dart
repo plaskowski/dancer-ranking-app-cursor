@@ -4,6 +4,7 @@ import '../services/dancer_service.dart';
 import '../theme/theme_extensions.dart';
 import '../utils/action_logger.dart';
 import 'dancer_actions_dialog.dart';
+import 'score_dialog.dart';
 
 // Dancer Card widget used in both tabs
 class DancerCard extends StatelessWidget {
@@ -38,6 +39,16 @@ class DancerCard extends StatelessWidget {
                   RichText(
                     text: TextSpan(
                       children: [
+                        // Show danced checkmark before name if they have danced
+                        if (dancer.hasDanced) ...[
+                          const TextSpan(
+                            text: '✅ ',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+
                         // Dancer name
                         TextSpan(
                           text: dancer.name,
@@ -92,29 +103,20 @@ class DancerCard extends StatelessWidget {
                           ),
                         ],
 
-                        // Show checkmark indicator with impression if they have danced
-                        if (dancer.hasDanced) ...[
+                        // Show dance impression if they have danced and have an impression
+                        if (dancer.hasDanced &&
+                            dancer.impression != null &&
+                            dancer.impression!.isNotEmpty) ...[
                           const TextSpan(text: ' • '),
                           TextSpan(
-                            text: '✓',
+                            text: dancer.impression!,
                             style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                              fontStyle: FontStyle.italic,
                               color: context.danceTheme.danceAccent,
                             ),
                           ),
-                          if (dancer.impression != null &&
-                              dancer.impression!.isNotEmpty) ...[
-                            TextSpan(
-                              text: ' - ${dancer.impression!}',
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.normal,
-                                fontStyle: FontStyle.italic,
-                                color: context.danceTheme.danceAccent,
-                              ),
-                            ),
-                          ],
                         ],
 
                         // Show first met indicator (for any attendance status)
@@ -139,22 +141,43 @@ class DancerCard extends StatelessWidget {
             // Score pill on the right side
             if (dancer.hasScore && !hideScorePill) ...[
               const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: context.danceTheme.rankingHigh.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
+              GestureDetector(
+                onTap: () {
+                  ActionLogger.logUserAction(
+                      'DancerCard', 'score_pill_tapped', {
+                    'dancerId': dancer.id,
+                    'dancerName': dancer.name,
+                    'eventId': eventId,
+                    'currentScore': dancer.scoreName,
+                  });
+
+                  showDialog(
+                    context: context,
+                    builder: (context) => ScoreDialog(
+                      dancerId: dancer.id,
+                      eventId: eventId,
+                    ),
+                  );
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
                     color:
-                        context.danceTheme.rankingHigh.withValues(alpha: 0.5),
+                        context.danceTheme.rankingHigh.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color:
+                          context.danceTheme.rankingHigh.withValues(alpha: 0.5),
+                    ),
                   ),
-                ),
-                child: Text(
-                  dancer.scoreName!,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: context.danceTheme.rankingHigh,
+                  child: Text(
+                    dancer.scoreName!,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: context.danceTheme.rankingHigh,
+                    ),
                   ),
                 ),
               ),

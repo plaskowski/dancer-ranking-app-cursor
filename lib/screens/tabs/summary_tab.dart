@@ -37,12 +37,13 @@ class SummaryTab extends StatelessWidget {
         }
 
         final allDancers = snapshot.data ?? [];
-        final dancedDancers = allDancers.where((d) => d.hasDanced).toList();
+        final attendedDancers =
+            allDancers.where((d) => d.isPresent || d.hasLeft).toList();
 
         ActionLogger.logListRendering(
             'UI_SummaryTab',
-            'danced_dancers',
-            dancedDancers
+            'attended_dancers',
+            attendedDancers
                 .map((d) => {
                       'id': d.id,
                       'name': d.name,
@@ -57,13 +58,14 @@ class SummaryTab extends StatelessWidget {
         ActionLogger.logAction('UI_SummaryTab', 'filtering_complete', {
           'eventId': eventId,
           'totalDancers': allDancers.length,
-          'dancedDancers': dancedDancers.length,
-          'scoredDancers': dancedDancers.where((d) => d.hasScore).length,
-          'unscoredDancers': dancedDancers.where((d) => !d.hasScore).length,
-          'firstMetCount': dancedDancers.where((d) => d.isFirstMetHere).length,
+          'attendedDancers': attendedDancers.length,
+          'scoredDancers': attendedDancers.where((d) => d.hasScore).length,
+          'unscoredDancers': attendedDancers.where((d) => !d.hasScore).length,
+          'firstMetCount':
+              attendedDancers.where((d) => d.isFirstMetHere).length,
         });
 
-        if (dancedDancers.isEmpty) {
+        if (attendedDancers.isEmpty) {
           return const Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -83,7 +85,7 @@ class SummaryTab extends StatelessWidget {
 
         // Group dancers by score
         final Map<String, List<DancerWithEventInfo>> groupedDancers = {};
-        for (final dancer in dancedDancers) {
+        for (final dancer in attendedDancers) {
           final scoreName = dancer.scoreName ?? 'No score assigned';
           if (!groupedDancers.containsKey(scoreName)) {
             groupedDancers[scoreName] = [];
@@ -149,7 +151,8 @@ class SummaryTab extends StatelessWidget {
                                     .onSurfaceVariant),
                           ),
                           TextSpan(
-                            text: '${dancedDancers.length}',
+                            text:
+                                '${attendedDancers.where((d) => d.hasDanced).length}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
@@ -161,7 +164,7 @@ class SummaryTab extends StatelessWidget {
                           ),
                           TextSpan(
                             text:
-                                '${dancedDancers.where((d) => d.hasScore).length}',
+                                '${attendedDancers.where((d) => d.hasScore).length}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
@@ -173,7 +176,7 @@ class SummaryTab extends StatelessWidget {
                           ),
                           TextSpan(
                             text:
-                                '${dancedDancers.where((d) => !d.hasScore).length}',
+                                '${attendedDancers.where((d) => !d.hasScore).length}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
@@ -185,7 +188,7 @@ class SummaryTab extends StatelessWidget {
                           ),
                           TextSpan(
                             text:
-                                '${dancedDancers.where((d) => d.isFirstMetHere).length}',
+                                '${attendedDancers.where((d) => d.isFirstMetHere).length}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           TextSpan(

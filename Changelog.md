@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Dancer Notes Visibility**: Notes now always visible on all tabs instead of being hidden for danced dancers in Present tab
 - **Dance Status Display**: Replaced "Danced!" text with compact ✓ checkmark to save space while maintaining clarity
 - **First Met Indicator**: Changed from ⭐ star emoji to "just met" text in green with proper dot separator for better readability
+- **Summary Tab Scope**: Changed from showing only danced dancers to all event attendees (present + left) for comprehensive scoring
+- **Dance Status Visual**: Moved checkmark from inline text to left of dancer name using green ✅ emoji for better visibility
+- **Score Pill Interaction**: Made score pills tappable to directly open score assignment dialog for quick score changes
 
 ### Changed
 - Modified DancerService to check earliest attendance of any status (except 'absent') when determining first met
