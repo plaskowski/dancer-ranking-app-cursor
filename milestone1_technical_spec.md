@@ -3,7 +3,8 @@
 ## Overview
 This document outlines the technical changes required to complete Milestone 1 scope, focusing on the missing features:
 - Scores system for present persons
-- First met date tracking  
+- First met date tracking
+  - Note: the explicit value should only be used for a case of a dancer I met before the events I have tracked, use the attendance data for the rest
 - Summary tab in Event Screen
 - Enhanced event import with scores support
 
@@ -120,14 +121,14 @@ Summary Tab
 **Changes**:
 - Add score assignment to dancer action dialogs
 - Show current score (if any) in dancer cards
-  - Add "⭐ first met here" indicator for new people
+  - Add "⭐ first met here" indicator for new people // I want the star only to avoid clutter
 - Update dancer actions to include score management
 
 ### 3.4 Enhanced Dancer Actions Dialog
 **New Actions**:
 - "Assign Score" (if no score assigned) → Opens Ranking Dialog modified to show scores instead of ranks
 - "Edit Score" (if score already assigned) → Opens same score selection dialog
-- Combined "Record Dance & Score" action
+- Combined "Record Dance & Score" action // don't combine these, usually I fill the scores after the party
 
 ## 4. Enhanced Import System
 
@@ -135,7 +136,7 @@ Summary Tab
 **Changes**:
 - Parse optional `score` field in attendance records
 - Parse optional `first_met` boolean flag in attendance records
-- Validate score names against known values
+- Validate score names against known values // do we need this?
 
 ### 4.2 Enhanced EventImportValidator (`lib/services/event_import_validator.dart`)
 **Changes**:
