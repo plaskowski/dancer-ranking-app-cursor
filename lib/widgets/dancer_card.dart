@@ -117,18 +117,18 @@ class DancerCard extends StatelessWidget {
                               ),
                             ),
                           ],
+                        ],
 
-                          // Show first met indicator
-                          if (dancer.isFirstMetHere) ...[
-                            const TextSpan(text: ' '),
-                            TextSpan(
-                              text: '⭐',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: context.danceTheme.danceAccent,
-                              ),
+                        // Show first met indicator (for any attendance status)
+                        if (dancer.isFirstMetHere) ...[
+                          const TextSpan(text: ' '),
+                          TextSpan(
+                            text: '⭐',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: context.danceTheme.danceAccent,
                             ),
-                          ],
+                          ),
                         ],
                       ],
                     ),

@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.56.0] - 2025-01-15
+
+### User Requests
+- "Let's change it this way - just disregard the attendant status" - referring to the first met indicator logic that only showed for 'served' status dancers
+
+### Improved
+- **First Met Indicators**: Enhanced ⭐ first met logic to show for dancers with any attendance status, not just those who have danced ('served')
+- **Event History**: Dancers in oldest events now properly show as "first met" regardless of whether they were marked as 'present', 'served', or 'left'
+- **Status Independence**: First met detection now based purely on chronological attendance order, independent of dance completion
+
+### Changed
+- Modified DancerService to check earliest attendance of any status (except 'absent') when determining first met
+- Updated DancerCard widget to display ⭐ indicator for any attendance status, not just danced dancers
+- Improved logic clarity with updated comments and variable names
+
+### Technical
+- **DancerService**: Changed `watchDancersForEvent` to look for earliest attendance regardless of status rather than only 'served' status
+- **DancerCard**: Moved first met indicator outside the 'hasDanced' conditional block to display for all attendance statuses
+- **Query Enhancement**: Updated database queries to filter by 'not absent' rather than 'served' only
+
 ## [v0.55.0] - 2025-01-07
 
 ### User Requests

@@ -403,7 +403,7 @@ Home Screen
 │   │   │   ├── → Score Dialog (for any present attendant regardless of dance status)
 │   │   │   └── → Attendance management
 │   │   ├── **Score Pills**: Score names displayed as colored pills for any attendant with assigned scores
-│   │   └── **First Met Indicators**: ⭐ emoji for dancers met for the first time at this event
+│   │   └── **First Met Indicators**: ⭐ emoji for dancers met for the first time at this event (any attendance status)
 │   ├── Summary Page (Page 2) - Post-dance analysis and score management tab
 │   │   ├── **Dance Summary Card**: Statistics showing total dances, scored/unscored counts, first meetings
 │   │   ├── **Score Groups**: Dancers grouped by score (Amazing, Great, Good, Okay, Meh, No score assigned)
