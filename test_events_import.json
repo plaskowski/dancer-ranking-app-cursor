@@ -5,39 +5,43 @@
             "date": "2024-12-20",
             "attendances": [
                 {
-                    "dancerName": "Agnieszka Borysewicz",
+                    "dancer_name": "Agnieszka Borysewicz",
                     "status": "served",
-                    "impression": "Excellent energy and technique"
+                    "impression": "Excellent energy and technique",
+                    "score_name": "Amazing"
                 },
                 {
-                    "dancerName": "Kasia Miguela",
+                    "dancer_name": "Kasia Miguela",
                     "status": "served",
-                    "impression": "Great leading skills"
+                    "impression": "Great leading skills",
+                    "score_name": "Great"
                 },
                 {
-                    "dancerName": "Anna Kaliska",
+                    "dancer_name": "Anna Kaliska",
                     "status": "present"
                 },
                 {
-                    "dancerName": "Wiktoria Batsai",
+                    "dancer_name": "Wiktoria Batsai",
                     "status": "served",
-                    "impression": "Amazing connection and musicality"
+                    "impression": "Amazing connection and musicality",
+                    "score_name": "Amazing"
                 },
                 {
-                    "dancerName": "Carlos Rodriguez",
+                    "dancer_name": "Carlos Rodriguez",
                     "status": "present"
                 },
                 {
-                    "dancerName": "Maria Santos",
+                    "dancer_name": "Maria Santos",
                     "status": "served",
-                    "impression": "Beautiful styling and flow"
+                    "impression": "Beautiful styling and flow",
+                    "score_name": "Great"
                 },
                 {
-                    "dancerName": "Magdalena Kulej",
+                    "dancer_name": "Magdalena Kulej",
                     "status": "left"
                 },
                 {
-                    "dancerName": "Diego Martinez",
+                    "dancer_name": "Diego Martinez",
                     "status": "present"
                 }
             ]
@@ -47,34 +51,37 @@
             "date": "2024-12-21",
             "attendances": [
                 {
-                    "dancerName": "Dagmara",
+                    "dancer_name": "Dagmara",
                     "status": "served",
-                    "impression": "Perfect bachata connection"
+                    "impression": "Perfect bachata connection",
+                    "score_name": "Amazing"
                 },
                 {
-                    "dancerName": "Kasia Panterka",
+                    "dancer_name": "Kasia Panterka",
                     "status": "present"
                 },
                 {
-                    "dancerName": "Isabella Torres",
+                    "dancer_name": "Isabella Torres",
                     "status": "served",
-                    "impression": "Sensual and smooth moves"
+                    "impression": "Sensual and smooth moves",
+                    "score_name": "Great"
                 },
                 {
-                    "dancerName": "Lena 40tka",
+                    "dancer_name": "Lena 40tka",
                     "status": "present"
                 },
                 {
-                    "dancerName": "Rafael Silva",
+                    "dancer_name": "Rafael Silva",
                     "status": "left"
                 },
                 {
-                    "dancerName": "Paulina opalona",
+                    "dancer_name": "Paulina opalona",
                     "status": "served",
-                    "impression": "Great energy and timing"
+                    "impression": "Great energy and timing",
+                    "score_name": "Good"
                 },
                 {
-                    "dancerName": "Carmen Delgado",
+                    "dancer_name": "Carmen Delgado",
                     "status": "present"
                 }
             ]
@@ -84,34 +91,37 @@
             "date": "2024-12-22",
             "attendances": [
                 {
-                    "dancerName": "Liza",
+                    "dancer_name": "Liza",
                     "status": "served",
-                    "impression": "Exceptional mambo technique"
+                    "impression": "Exceptional mambo technique",
+                    "score_name": "Amazing"
                 },
                 {
-                    "dancerName": "Sonia z LP",
+                    "dancer_name": "Sonia z LP",
                     "status": "present"
                 },
                 {
-                    "dancerName": "Natalia Peta",
+                    "dancer_name": "Natalia Peta",
                     "status": "served",
-                    "impression": "Sharp and precise movements"
+                    "impression": "Sharp and precise movements",
+                    "score_name": "Great"
                 },
                 {
-                    "dancerName": "Eduardo Vega",
+                    "dancer_name": "Eduardo Vega",
                     "status": "present"
                 },
                 {
-                    "dancerName": "Anastasia",
+                    "dancer_name": "Anastasia",
                     "status": "left"
                 },
                 {
-                    "dancerName": "Lucia Morales",
+                    "dancer_name": "Lucia Morales",
                     "status": "served",
-                    "impression": "Outstanding partner work"
+                    "impression": "Outstanding partner work",
+                    "score_name": "Amazing"
                 },
                 {
-                    "dancerName": "Roberto Jimenez",
+                    "dancer_name": "Roberto Jimenez",
                     "status": "present"
                 }
             ]
@@ -121,38 +131,41 @@
             "date": "2024-12-23",
             "attendances": [
                 {
-                    "dancerName": "Wiktoria Warcholińska",
+                    "dancer_name": "Wiktoria Warcholińska",
                     "status": "present"
                 },
                 {
-                    "dancerName": "Kristina",
+                    "dancer_name": "Kristina",
                     "status": "served",
-                    "impression": "Consistent improvement shown"
+                    "impression": "Consistent improvement shown",
+                    "score_name": "Good"
                 },
                 {
-                    "dancerName": "Marianna Lis",
+                    "dancer_name": "Marianna Lis",
                     "status": "present"
                 },
                 {
-                    "dancerName": "Alessandro Bruno",
+                    "dancer_name": "Alessandro Bruno",
                     "status": "served",
-                    "impression": "Strong lead and musicality"
+                    "impression": "Strong lead and musicality",
+                    "score_name": "Great"
                 },
                 {
-                    "dancerName": "Olena",
+                    "dancer_name": "Olena",
                     "status": "left"
                 },
                 {
-                    "dancerName": "Sofia Ramirez",
+                    "dancer_name": "Sofia Ramirez",
                     "status": "present"
                 },
                 {
-                    "dancerName": "Lilia",
+                    "dancer_name": "Lilia",
                     "status": "served",
-                    "impression": "Graceful and elegant style"
+                    "impression": "Graceful and elegant style",
+                    "score_name": "Great"
                 },
                 {
-                    "dancerName": "Marco Fernandez",
+                    "dancer_name": "Marco Fernandez",
                     "status": "present"
                 }
             ]
@@ -162,49 +175,50 @@
             "date": "2024-12-31",
             "attendances": [
                 {
-                    "dancerName": "Agnieszka Borysewicz",
+                    "dancer_name": "Agnieszka Borysewicz",
                     "status": "served",
-                    "impression": "Party energy at its best!"
+                    "impression": "Party energy at its best!",
+                    "score_name": "Amazing"
                 },
                 {
-                    "dancerName": "Anna Kaliska",
+                    "dancer_name": "Anna Kaliska",
                     "status": "served",
-                    "impression": "Fantastic celebration dance"
+                    "impression": "Fantastic celebration dance",
+                    "score_name": "Great"
                 },
                 {
-                    "dancerName": "Kasia Preś",
+                    "dancer_name": "Kasia Preś",
                     "status": "present"
                 },
                 {
-                    "dancerName": "Valentina Costa",
+                    "dancer_name": "Valentina Costa",
                     "status": "served",
-                    "impression": "Brought amazing festive spirit"
+                    "impression": "Brought amazing festive spirit",
+                    "score_name": "Amazing"
                 },
                 {
-                    "dancerName": "Wiktoria Batsai",
+                    "dancer_name": "Wiktoria Batsai",
                     "status": "present"
                 },
                 {
-                    "dancerName": "Gabriel Herrera",
+                    "dancer_name": "Gabriel Herrera",
                     "status": "served",
-                    "impression": "Celebrated with great style"
+                    "impression": "Celebrated with great style",
+                    "score_name": "Great"
                 },
                 {
-                    "dancerName": "Milena",
+                    "dancer_name": "Milena",
                     "status": "left"
                 },
                 {
-                    "dancerName": "Helena Vargas",
+                    "dancer_name": "Helena Vargas",
                     "status": "present"
                 },
                 {
-                    "dancerName": "Zuzia z pon.",
+                    "dancer_name": "Antonio Ruiz",
                     "status": "served",
-                    "impression": "Perfect way to end the year"
-                },
-                {
-                    "dancerName": "Antonio Reyes",
-                    "status": "present"
+                    "impression": "Perfect way to end the year",
+                    "score_name": "Amazing"
                 }
             ]
         }

@@ -293,11 +293,13 @@ class ImportableAttendance {
   final String dancerName;
   final String status; // 'present', 'served', 'left'
   final String? impression;
+  final String? scoreName; // Score name to assign (optional)
 
   const ImportableAttendance({
     required this.dancerName,
     required this.status,
     this.impression,
+    this.scoreName,
   });
 
   factory ImportableAttendance.fromJson(Map<String, dynamic> json) {
@@ -312,6 +314,7 @@ class ImportableAttendance {
       dancerName: (json['dancer_name'] as String).trim(),
       status: status,
       impression: json['impression'] as String?,
+      scoreName: json['score_name'] as String?,
     );
   }
 
@@ -320,12 +323,13 @@ class ImportableAttendance {
       'dancer_name': dancerName,
       'status': status,
       if (impression != null) 'impression': impression,
+      if (scoreName != null) 'score_name': scoreName,
     };
   }
 
   @override
   String toString() =>
-      'ImportableAttendance(dancerName: $dancerName, status: $status)';
+      'ImportableAttendance(dancerName: $dancerName, status: $status, scoreName: $scoreName)';
 
   @override
   bool operator ==(Object other) {
@@ -333,11 +337,12 @@ class ImportableAttendance {
     return other is ImportableAttendance &&
         other.dancerName == dancerName &&
         other.status == status &&
-        other.impression == impression;
+        other.impression == impression &&
+        other.scoreName == scoreName;
   }
 
   @override
-  int get hashCode => Object.hash(dancerName, status, impression);
+  int get hashCode => Object.hash(dancerName, status, impression, scoreName);
 }
 
 class EventImportResult {
@@ -408,9 +413,12 @@ class EventImportSummary {
   final int eventsSkipped;
   final int attendancesCreated;
   final int dancersCreated;
+  final int scoresCreated; // New scores created during import
+  final int scoreAssignments; // Number of score assignments made
   final int errors;
   final List<String> errorMessages;
   final List<String> skippedEvents;
+  final List<String> createdScoreNames; // Names of new scores created
   final List<EventImportAnalysis> eventAnalyses;
 
   const EventImportSummary({
@@ -419,21 +427,25 @@ class EventImportSummary {
     required this.eventsSkipped,
     required this.attendancesCreated,
     required this.dancersCreated,
+    this.scoresCreated = 0,
+    this.scoreAssignments = 0,
     required this.errors,
     required this.errorMessages,
     required this.skippedEvents,
+    this.createdScoreNames = const [],
     this.eventAnalyses = const [],
   });
 
   int get totalSuccessful =>
-      eventsCreated + attendancesCreated + dancersCreated;
+      eventsCreated + attendancesCreated + dancersCreated + scoresCreated;
   bool get hasErrors => errors > 0;
   bool get hasSkipped => eventsSkipped > 0;
   bool get isSuccessful => errors == 0;
+  bool get hasScoreData => scoresCreated > 0 || scoreAssignments > 0;
 
   @override
   String toString() {
-    return 'EventImportSummary(processed: $eventsProcessed, created: $eventsCreated, skipped: $eventsSkipped, errors: $errors)';
+    return 'EventImportSummary(processed: $eventsProcessed, created: $eventsCreated, skipped: $eventsSkipped, scores: $scoresCreated, scoreAssigns: $scoreAssignments, errors: $errors)';
   }
 }
 

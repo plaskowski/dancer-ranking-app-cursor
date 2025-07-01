@@ -356,384 +356,54 @@ Users can adjust rankings during events for various reasons:
 - Prevents duplicate dance records
 - Save/cancel actions
 
-**Event Import Dialog (`ImportEventsDialog`)**:
-- **Full-screen 3-step stepper interface** for importing historical event data from JSON files
-- **Step 1: File Selection**
-  - Drag-and-drop file picker with JSON validation
-  - 5MB file size limit with clear error messages
-  - Format requirements display with JSON structure example
-  - File validation with immediate feedback
-- **Step 2: Data Preview**
-  - Rich preview with statistics cards showing events, attendances, unique dancers, and **new dancers to be created**
-  - Expandable event cards with comprehensive details
-  - Color-coded attendance status icons (present/served/left) for visual clarity
-  - Automatic behavior information about duplicate skipping and missing dancer creation
-- **Step 3: Results**
-  - Comprehensive import results with detailed statistics breakdown
-  - Skipped events display with reasons (duplicates)
-  - Error reporting with specific failure details
-  - Action buttons for closing dialog or starting new import
-- **Integration**: Accessible from Home screen overflow menu as a full-screen dialog
-- **Automatic Processing**: Phase 1 implementation with full automation - skips duplicates and creates missing dancers
-- **Progress Tracking**: Step progression with enabled/disabled state management
-- **Error Handling**: Comprehensive validation and user-friendly error messages
-- **Pre-import Analysis**: Service performs a dry run to calculate statistics (like new dancers) before the import begins
-
-### Navigation Flow
-```
-Home Screen
-├── Create Event Screen
-├── Event Import Dialog (overflow menu) - 3-step wizard for bulk event import
-│   ├── Step 1: File Selection (JSON file picker with validation)
-│   ├── Step 2: Data Preview (statistics and expandable event cards)
-│   └── Step 3: Results (import summary and action buttons)
-├── Event Screen (Swipe-based Three-Tab Pages)
-│   ├── Planning Page (Page 0)
-│   │   ├── FAB → Select Dancers Screen (page-specific action)
-│   │   ├── Import Rankings Button → ImportRankingsDialog (when no dancers added yet)
-│   │   ├── Tap dancer → Planning Actions Dialog (rank/notes editing only)
-│   │   └── Blue location icon → Instant "Mark Present" (context action)
-│   ├── Present Page (Page 1) - Enhanced with score display and first met indicators
-│   │   ├── FAB → Modal Menu
-│   │   │   ├── → Add Dancer Dialog (create new dancer)
-│   │   │   └── → Add Existing Dancer Screen (mark existing as present)
-│   │   ├── Tap dancer → Full Actions Dialog (context-aware with score management)
-│   │   │   ├── → Ranking Dialog
-│   │   │   ├── → Dance Recording Dialog
-│   │   │   ├── → Score Dialog (for any present attendant regardless of dance status)
-│   │   │   └── → Attendance management
-│   │   ├── **Score Pills**: Score names displayed as colored pills for any attendant with assigned scores
-│   │   └── **First Met Indicators**: "just met" text in green for dancers met for the first time at this event (any attendance status, respects firstMetDate field)
-│   ├── Summary Page (Page 2) - Post-dance analysis and score management tab for all attendees
-│   │   ├── **Dance Summary Card**: Statistics showing total dances, scored/unscored counts, first meetings
-│   │   ├── **Score Groups**: Dancers grouped by score (Amazing, Great, Good, Okay, Meh, No score assigned)
-│   │   ├── **Count Badges**: Each score group shows dancer count in primary container styling
-│   │   ├── **Post-Party Editing**: Primary use for reviewing and editing scores/impressions after events
-│   │   └── Tap dancer → Full Actions Dialog (same as Present tab for score management)
-│   └── Swipe Left/Right → Switch between Planning, Present, and Summary pages
-├── Dancers Screen
-│   └── Add/Edit Dancer Dialog (modal) - Full dancer management with tag selection
-└── Tags Screen
-    └── Add Tag Dialog (FAB) - Create new custom tags
-```
-
-### Event Workflow with Dynamic Rankings
-
-**Phase 1: Pre-event Planning**
-1. **Planning Tab** → **FAB** → **Select Dancers Screen**
-2. **Multi-select existing dancers** from database to add to event ranking
-3. **All selected dancers get default "Neutral" rank** initially
-4. **Adjust individual rankings** by tapping dancers → Ranking Dialog
-5. **Add reasons for rankings** based on general preferences
-
-**Phase 2: At the Event**
-1. **Spot ranked dancers** → **Planning Tab** → click blue location icon for instant "Mark Present"
-   - No dialog needed - immediate action with visual feedback
-   - Dancer disappears from Planning tab once marked present (focuses on remaining absent dancers)
-   - Stay on Planning tab for efficient batch processing
-2. **Adjust rankings** → tap dancers for Actions Dialog (ranking and notes available in both Planning and Present tabs)
-3. **Switch to Present Tab** for live event management when needed
-4. **Meet new people** → **Present Tab FAB** → **Add Dancer Dialog**
-   - Create new dancer in database
-   - Option to mark as "already danced with" + add impression
-   - Automatically adds to event attendance
-5. **Dance and record** → Present Tab → choose from present dancers, record completion
-
-### Key Features
-- **Pre-event planning**: Add dancers, set initial rank preferences with reasons
-- **Dynamic ranking adjustment**: Change rankings during events based on real-time impressions
-- **Efficient presence tracking**: One-click "Mark Present" with instant feedback and automatic list refresh
-- **Context-aware actions**: Different dialog contents based on Planning vs Present mode
-- **Streamlined workflow**: Stay on Planning tab for batch presence marking, focuses only on absent dancers
-- **Dual FAB behavior**: Tab-specific actions (Select Dancers vs Add Dancer)
-- **Dance prioritization**: Present tab shows dancers sorted by rank ordinal for decision making
-- **Integrated dance tracking**: Record completed dances and impressions in attendance records
-- **Streamlined combo actions**: One-click "Mark Present & Record Dance" for absent dancers
-- **Efficient bulk operations**: Persistent "Add Existing Dancer" screen for marking multiple dancers
-- **Seamless dancer management**: Add new people during events without leaving screen
-- **Post-dance integration**: Mark new dancers as already danced with immediate impression capture
-- **Rich context**: Notes, reasons, and impressions for informed decisions
-- **Ranking history**: Track when rankings were last updated for context
-- **Streamlined data model**: Record existence indicates presence, no boolean flags needed
-- **Import rankings from other events**: Copy rankings between similar events to leverage existing preferences
-  - **Smart source filtering**: Only shows events that have existing rankings as import options
-  - **Conflict resolution**: Choose to skip or overwrite existing rankings for dancers already ranked in target event
-  - **Batch import processing**: Efficiently copy multiple rankings in a single operation
-  - **Context preservation**: Imported rankings marked with source event context while preserving original reasons
-  - **Detailed feedback**: Shows summary of imported, skipped, and overwritten rankings for transparency
-  - **Contextual placement**: Available in Planning tab when setting up event rankings (when no dancers added yet)
-- **Compact dancer cards**: Display all information inline for maximum vertical space efficiency
-  - **Single-line layout**: Name followed by bullet-separated information: "Name • Notes • Ranking • Dance Status"
-      - **Personal notes**: General dancer notes displayed inline on all tabs
-    - **Ranking reasons**: Italic event-specific reasoning in blue displayed on all tabs
-    - **Dance status with impressions**: Clean ✓ checkmark character positioned to the right of score pill (matching impression text color), with italicized impression text when available
-    - **Consistent display**: All dancer information (notes, ranking reasons, impressions) visible across all tabs for complete context
-  - **Responsive design**: Uses RichText with TextSpan elements for flexible text styling within single line
-
-### Tags on Persons Feature
-**Purpose**: Categorize dancers by context and frequency to enable better organization and future filtering
-
-**Tag System**:
-- **8 predefined tags**: `regular`, `occasional`, `rare`, `new`, `dance-class`, `dance-school`, `workshop`, `social`
-- **Custom tags**: Users can create additional tags as needed
-- **Frequency categories**: regular, occasional, rare, new (attendance patterns)  
-- **Context categories**: dance-class, dance-school, workshop, social (where you met them)
-- **Duplicate prevention**: TagService prevents duplicate tag creation
-
-**Tag Selection UI**:
-- **Pill-based interface**: FilterChip widgets that can be toggled on/off
-- **Visual feedback**: Selected tags show primary container background color
-- **Multi-selection**: Dancers can have multiple tags (many-to-many relationship)
-- **Integrated into Add/Edit Dancer Dialog**: Tags appear below notes field
-
-**Tag Display**:
-- **Dancers Screen only**: Tags displayed as colored chips under dancer names
-- **Event screens clean**: Tags not shown on event screens to avoid clutter
-- **Chip styling**: Small rounded containers with subtle primary container coloring
-
-**Tag Management Screen**:
-- **Tags Screen Navigation**: Accessible from Home screen app bar with label icon button
-- **Complete CRUD Operations**: Full Create, Read, Update, Delete functionality for tags
-- **Context Menu Actions**: Tap any tag to access Edit and Delete options via modal bottom sheet
-- **Tag Creation**: FloatingActionButton with dialog to create custom tags
-- **Tag Editing**: Simple text field with validation and duplicate checking
-- **Tag Deletion**: Confirmation dialog with warning about permanent action and dancer impact
-- **Real-time Updates**: StreamBuilder automatically refreshes when tags are modified
-- **User Feedback**: Success/error notifications via SnackBar for all operations
-- **Database Integrity**: Cascade delete automatically removes tag from all associated dancers
-- **Responsive layout**: Tags wrap to multiple lines when needed
-
-**Data Architecture**:
-- **Database migration**: Seamless upgrade from version 3 to 4 with automatic tag insertion
-- **Many-to-many relationship**: DancerTags table links dancers to tags
-- **Cascade deletion**: Tags automatically removed when dancers are deleted
-- **Backward compatibility**: Existing data remains intact during migration
-
-**Implementation Components**:
-- **TagService**: Full CRUD operations for tag management
-- **TagSelectionWidget**: Reusable component for tag selection interface
-- **DancerCardWithTags**: Enhanced dancer display with tag chips
-- **DancerWithTags**: Model combining dancer data with associated tags
-
-### Code Architecture
-- **Reactive Data Layer**: Drift database streams with automatic UI updates via StreamBuilder
-- **Modular Structure**: Components split into focused, single-responsibility modules
-- **Tab Actions Interface**: Clean abstraction for tab-specific FAB behaviors
-- **Reusable Components**: Shared widgets across tabs with different behavioral modes
-- **Separation of Concerns**: UI components separated from business logic and data access
-- **Automatic Refresh**: No manual callbacks - UI updates automatically when any data changes
-
-# Implementation Specification
-
-## Overview
-This document serves as the technical specification for implementing the Dancer Ranking App features. It describes the database schema, services, UI components, and workflows needed to support the core functionality.
-
-## Debugging and Development Features
-
-### Action Logging System
-The app includes a comprehensive structured action logging system for debugging and development:
-
-#### Logging Categories
-- **`[ACTION_LOG]`**: User interactions, service calls, state changes, navigation events
-- **`[LIST_LOG]`**: UI list contents with item IDs and key properties for data visibility  
-- **`[STATE_LOG]`**: Before/after states, data transitions, filtering results
-- **`[ERROR_LOG]`**: Errors with full operational context and parameters
-- **`[Database]`**: CRUD operations with affected records and success status
-
-#### Coverage Areas
-- **Screen Lifecycle**: Initialization, disposal, tab changes with context
-- **User Interactions**: All taps, form submissions, dialog actions with parameters
-- **Service Operations**: All CRUD methods with input/output data
-- **Navigation**: Route changes, screen parameters, navigation method tracking
-- **Data Flow**: Database operations, filtering, list rendering with item details
-- **Error Handling**: Complete error context for debugging failures
-
-#### Log Format
-```
-[CATEGORY] TIMESTAMP | Component | Action | key1=value1, key2=value2
-```
-
-Example logs:
-```
-[ACTION_LOG] 2025-01-11T12:34:56.789 | UI_EventCard | event_tapped | eventId=2, eventName="DaMeTimba"
-[LIST_LOG] 2025-01-11T12:34:57.123 | UI_PresentTab | present_dancers | count=3 | items=[id=1, name="Alice", status="present"]
-[Database] 2025-01-11T12:34:57.456 | UPDATE attendances | id=22, oldStatus="present", newStatus="served", success=true
-```
-
-#### Development Benefits
-- **Bug Reproduction**: Complete action trails for recreating issues
-- **Workflow Analysis**: Step-by-step user interaction tracking
-- **Performance Monitoring**: Service call timing and database operation efficiency
-- **Data Visibility**: Real-time view of list contents and filtering results
-- **Error Debugging**: Full context for operation failures
-
-## Services
-
-### ScoreService (`lib/services/score_service.dart`)
-**Purpose**: Complete CRUD operations for score management in post-dance rating system
-**Key Methods**:
-- `getAllScores()` - Get all scores ordered by ordinal (best first)
-- `getActiveScores()` - Get non-archived scores for dropdowns
-- `getDefaultScore()` - Get default "Good" score (ordinal 3)
-- `getScoreByName(name)` - Find score by name (for imports)
-- `createScore(name, ordinal, isArchived)` - Create new score
-- `updateScore(id, name, ordinal, isArchived)` - Update existing score
-- `archiveScore(id)` / `unarchiveScore(id)` - Archive management
-- `deleteScore(id, replacementScoreId)` - Safe deletion with reassignment
-
-**Features**:
-- **Default Scores**: Pre-populated with "Amazing", "Great", "Good", "Okay", "Meh"
-- **Archive Support**: Hide scores from new events while preserving history
-- **Safe Deletion**: Requires replacement score for existing assignments
-- **Transaction Safety**: Atomic operations with rollback on errors
-- **Action Logging**: Comprehensive logging for debugging and audit
-- **Import Support**: Name-based lookup for data import operations
-
-### Enhanced AttendanceService
-**New Score Management Methods**:
-- `assignScore(eventId, dancerId, scoreId)` - Assign post-dance score
-- `removeScore(eventId, dancerId)` - Remove score assignment
-- `getAttendanceScore(eventId, dancerId)` - Get current score
-- `updateFirstMet(eventId, dancerId, isFirstMet)` - Update first met flag
-
-**Features**:
-- **Score Integration**: Seamless score assignment to attendance records
-- **First Met Tracking**: Boolean flag for tracking first meetings
-- **Error Handling**: Graceful handling of missing attendance records
-- **Consistency**: Follows established service patterns with action logging
-
-### Enhanced DancerService
-**New First Met Management**:
-- `updateFirstMetDate(id, firstMetDate)` - Set explicit pre-tracking meeting date
-
-**Features**:
-- **Pre-tracking Dates**: Support for dancers met before event tracking began
-- **Null Handling**: Optional dates for normal tracked dancers
-- **Backward Compatibility**: Existing functionality unchanged
-
-### Dancer Import Services
-
-#### DancerImportService (`lib/services/dancer_import_service.dart`)
-**Purpose**: Main orchestrator for dancer import operations
-**Key Methods**:
-- `importDancersFromJson(jsonContent, options)` - Complete import workflow with atomic transactions
-- `validateImportFile(jsonContent)` - Validation-only mode for preview
-- `getImportPreview(jsonContent)` - Quick preview information without full parsing
-
-**Features**:
-- **Atomic Transactions**: All imports wrapped in database transactions with rollback on errors
-- **Conflict Resolution**: Three strategies - skip duplicates, update existing, import with suffix
-- **Automatic Tag Creation**: Creates missing tags when enabled in options
-- **Comprehensive Logging**: Action logging throughout all import operations
-- **Error Handling**: Graceful error handling with user-friendly messages
-- **Performance Optimized**: Batch operations and efficient database queries
-
-#### DancerImportParser (`lib/services/dancer_import_parser.dart`)
-**Purpose**: JSON parsing and data extraction service
-**Key Methods**:
-- `parseJsonContent(jsonContent)` - Main JSON parsing with validation
-- `validateJsonStructure(jsonContent)` - Quick structure validation
-- `getImportPreview(jsonContent)` - Preview without full parsing
-
-**Features**:
-- **JSON Format Support**: Handles dancers array with optional metadata
-- **Size Limits**: Maximum 1000 dancers per import file
-- **Duplicate Detection**: Identifies duplicate names within import file
-- **Field Validation**: Validates all dancer fields (name, tags, notes) according to database constraints
-- **Error Aggregation**: Collects all parsing errors with detailed messages
-
-#### DancerImportValidator (`lib/services/dancer_import_validator.dart`)
-**Purpose**: Validation and conflict detection service
-**Key Methods**:
-- `validateImport(dancers, options)` - Main validation orchestrator
-- `isDancerNameTaken(name)` - Check existing dancer names
-- `generateUniqueName(baseName)` - Create unique names with suffixes
-- `canProceedWithImport(conflicts, options)` - Determine if import is safe
-
-**Features**:
-- **Conflict Detection**: Identifies duplicate names and validation errors
-- **Database Validation**: Checks against existing dancers and tags
-- **Unique Name Generation**: Creates unique names with numbered suffixes
-- **Missing Tag Detection**: Identifies tags that don't exist when auto-creation disabled
-- **Import Safety**: Validates all constraints before allowing import to proceed
-
-#### Import Data Models (`lib/models/import_models.dart`)
-**Purpose**: Complete data model set for import operations
-
-**Key Classes**:
-- `ImportableDancer` - Represents a dancer to be imported with name, tags, and notes
-- `DancerImportResult` - Parse results with validation status and error messages
-- `DancerImportSummary` - Import operation summary with counts and detailed results
-- `DancerImportOptions` - Configuration options for conflict resolution and tag creation
-- `DancerImportConflict` - Conflict detection results with suggestions for resolution
-
-**JSON Format Specification**:
-```json
-{
-  "dancers": [
-    {
-      "name": "Dancer Name",
-      "tags": ["tag1", "tag2"],
-      "notes": "Optional notes"
-    }
-  ],
-  "metadata": {
-    "version": "1.0",
-    "created_at": "2024-01-01T12:00:00Z",
-    "total_count": 100,
-    "source": "Manual export"
-  }
-}
-```
-
-**Validation Rules**:
-- Names: Required, 1-100 characters, unique within import
-- Tags: Optional, 1-50 characters each, fully case-sensitive with trimming only
-- Notes: Optional, up to 500 characters
-- File size: Maximum 1000 dancers per import
-
-### 5. Rank Editor Screen (`RankEditorScreen`)
-**Purpose**: Comprehensive rank management system with clean, modern interface
-**Actions**:
-- View all ranks ordered by priority (visual position indicates priority)
-- Drag-to-reorder ranks to change priority
-- Add new rank (FloatingActionButton)
-- Edit rank name (tap rank → menu → edit)
-- Archive rank (tap rank → menu → archive)
-- Delete rank with reassignment (tap rank → menu → delete)
-- Visual feedback for all operations
-**UI Design**:
-- **Minimalist Cards**: Clean rank name display without visual clutter
-- **Single Tap Interaction**: Context menu via tap gesture showing modal bottom sheet with all actions
-- **Visual Priority**: Position in list clearly indicates priority order (no numbers needed)
-- **Unified Actions**: Single tap opens menu with Edit, Archive, and Delete options
-- **Simple Pattern**: Clean single-action interface eliminates interaction confusion
-- **Archived Status**: Shows "Archived" subtitle only when relevant
-**Features**:
-- **Smart Filtering**: Only active (non-archived) ranks shown in ranking dialogs
-- **Safe Deletion**: Requires replacement rank selection for existing rankings
-- **Real-time Updates**: Immediate UI refresh after operations
-- **Error Handling**: Comprehensive validation and user feedback
-- **Database Migration**: Proper schema versioning for backward compatibility
-**Navigation**:
-- ← Back to Home Screen
-- No sub-navigation (self-contained management)
-
 ### 11. Event Import Dialog (`ImportEventsDialog`)
-**Purpose**: Full-screen dialog for importing events from a JSON file.
+**Purpose**: Full-screen dialog for importing events from a JSON file with comprehensive attendance and score data.
+**Enhanced Features**:
+- **Score Import Support**: Automatic creation of missing scores referenced in import data
+- **Automatic Score Assignment**: Assigns scores to attendance records during import
+- **Score Conflict Resolution**: Creates new scores when referenced score names don't exist
 **Workflow**:
 1.  **File Selection**: User selects a JSON file.
 2.  **Parsing & Validation**: The app parses the file and performs a "dry run" to validate the data.
     - It checks for duplicate events and identifies new dancers that will be created.
+    - Validates score names and identifies missing scores that will be auto-created.
 3.  **Data Preview**: The user is shown a preview of the events to be imported.
     - Each event in the list displays its name, date, and number of attendees. The new dancer count is appended to the attendance info (e.g., "15 attendances (3 new)").
+    - **Score Information**: Shows count of score assignments and new scores to be created (e.g., "12 score assignments (2 new scores)")
     - **Duplicate Indication**: Events that already exist in the database are clearly marked and shown as "Skipped".
     - Users can expand each event to see the list of attendees.
     - **New Dancer Highlighting**: Within the attendee list, dancers who do not yet exist in the database are marked with a " (new)" text label next to their name.
+    - **Score Preview**: Shows scores that will be assigned to dancers with "served" status.
 4.  **Confirmation**: User confirms the import.
-5.  **Import**: The app imports the valid events and attendees.
+5.  **Import**: The app imports the valid events and attendees with score assignments.
     - Duplicate events are automatically skipped.
     - New dancers are automatically created.
+    - Missing scores are automatically created with appropriate ordinal values.
+    - Score assignments are applied to attendance records for "served" status dancers.
+**Enhanced JSON Format**:
+```json
+{
+  "events": [
+    {
+      "name": "Event Name",
+      "date": "2024-12-20",
+      "attendances": [
+        {
+          "dancer_name": "Dancer Name",
+          "status": "served",
+          "impression": "Optional impression text",
+          "score_name": "Great"
+        }
+      ]
+    }
+  ]
+}
+```
+**Import Rules**:
+- **Score Assignment**: Only applies to dancers with "served" status
+- **Missing Scores**: Automatically created with default ordinal values
+- **Score Names**: Case-sensitive matching, trimmed whitespace
+- **Error Handling**: Invalid score assignments logged but don't block import
 **Navigation**:
 - Opened from Home Screen's overflow menu.
 - Closes upon completion or cancellation.

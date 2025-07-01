@@ -198,11 +198,43 @@ class EventImportValidator {
             eventName: event.name,
             dancerName: attendance.dancerName,
             message:
-                'Dancer name too long (max 100 characters) in event "${event.name}"',
+                'Dancer name too long (max 100 characters): "${attendance.dancerName}"',
           ));
         }
 
-        // Validate status
+        // Validate score name if provided
+        if (attendance.scoreName != null) {
+          final scoreName = attendance.scoreName!.trim();
+          if (scoreName.isEmpty) {
+            conflicts.add(EventImportConflict(
+              type: EventImportConflictType.invalidData,
+              eventName: event.name,
+              dancerName: attendance.dancerName,
+              message:
+                  'Score name cannot be empty for dancer "${attendance.dancerName}"',
+            ));
+          } else if (scoreName.length > 50) {
+            conflicts.add(EventImportConflict(
+              type: EventImportConflictType.invalidData,
+              eventName: event.name,
+              dancerName: attendance.dancerName,
+              message: 'Score name too long (max 50 characters): "$scoreName"',
+            ));
+          }
+        }
+
+        // Validate that scores are only assigned to 'served' status
+        if (attendance.scoreName != null && attendance.status != 'served') {
+          conflicts.add(EventImportConflict(
+            type: EventImportConflictType.invalidData,
+            eventName: event.name,
+            dancerName: attendance.dancerName,
+            message:
+                'Score can only be assigned to dancers with "served" status, but dancer has "${attendance.status}" status',
+          ));
+        }
+
+        // Validate status values
         const validStatuses = ['present', 'served', 'left'];
         if (!validStatuses.contains(attendance.status)) {
           conflicts.add(EventImportConflict(
@@ -210,7 +242,7 @@ class EventImportValidator {
             eventName: event.name,
             dancerName: attendance.dancerName,
             message:
-                'Invalid status "${attendance.status}" for dancer "${attendance.dancerName}". Must be one of: ${validStatuses.join(', ')}',
+                'Invalid status "${attendance.status}". Must be one of: ${validStatuses.join(', ')}',
           ));
         }
 
@@ -249,36 +281,63 @@ class EventImportValidator {
     return '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   }
 
-  // Get existing dancers by names (for efficiency)
+  // Get existing dancers by names for validation
   Future<Map<String, Dancer>> getExistingDancersByNames(
-      Set<String> names) async {
+      Set<String> dancerNames) async {
     ActionLogger.logServiceCall(
         'EventImportValidator', 'getExistingDancersByNames', {
-      'namesCount': names.length,
+      'dancerNamesCount': dancerNames.length,
     });
 
-    try {
-      final dancers = await (_database.select(_database.dancers)
-            ..where((d) => d.name.isIn(names.toList())))
-          .get();
+    if (dancerNames.isEmpty) return {};
 
-      final dancerMap = <String, Dancer>{};
-      for (final dancer in dancers) {
-        dancerMap[dancer.name] = dancer;
+    final dancers = await (_database.select(_database.dancers)
+          ..where((d) => d.name.isIn(dancerNames)))
+        .get();
+
+    return {for (final dancer in dancers) dancer.name: dancer};
+  }
+
+  // Get existing scores by names for validation
+  Future<Map<String, Score>> getExistingScoresByNames(
+      Set<String> scoreNames) async {
+    ActionLogger.logServiceCall(
+        'EventImportValidator', 'getExistingScoresByNames', {
+      'scoreNamesCount': scoreNames.length,
+    });
+
+    if (scoreNames.isEmpty) return {};
+
+    final scores = await (_database.select(_database.scores)
+          ..where((s) => s.name.isIn(scoreNames)))
+        .get();
+
+    return {for (final score in scores) score.name: score};
+  }
+
+  // Get all unique score names from events
+  Set<String> getScoreNamesFromEvents(List<ImportableEvent> events) {
+    final scoreNames = <String>{};
+    for (final event in events) {
+      for (final attendance in event.attendances) {
+        if (attendance.scoreName != null &&
+            attendance.scoreName!.trim().isNotEmpty) {
+          scoreNames.add(attendance.scoreName!.trim());
+        }
       }
-
-      ActionLogger.logAction(
-          'EventImportValidator.getExistingDancersByNames', 'dancers_found', {
-        'requestedCount': names.length,
-        'foundCount': dancerMap.length,
-      });
-
-      return dancerMap;
-    } catch (e) {
-      ActionLogger.logError(
-          'EventImportValidator.getExistingDancersByNames', e.toString());
-      return {};
     }
+    return scoreNames;
+  }
+
+  // Check for missing scores that need to be created
+  Future<Set<String>> getMissingScoreNames(List<ImportableEvent> events) async {
+    final allScoreNames = getScoreNamesFromEvents(events);
+    if (allScoreNames.isEmpty) return {};
+
+    final existingScores = await getExistingScoresByNames(allScoreNames);
+    return allScoreNames
+        .where((name) => !existingScores.containsKey(name))
+        .toSet();
   }
 
   // Check if event exists by name and date

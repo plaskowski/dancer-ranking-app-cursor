@@ -1266,26 +1266,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Files Modified
 - **lib/screens/event_screen.dart**: Implemented the conditional logic to show a simplified view for past events.
 
-## [v0.1.0] - 2025-07-01
+## [v1.3.0] - 2024-12-20
 
 ### User Requests
-- "I have few event files to test the import on"
-- "I got error, please check"
-- "Implement first task"
+- "Let's implement phase 3" - Complete Phase 3 import system enhancement
+- "We don't want the isFirstMet on event level anymore. Update the spec and continue" - Remove firstMet from import format and focus on score support
 
 ### Added
-- **Event Import Preview**: The event import preview now shows the number of new dancers for each event.
-- **New Dancer Highlighting**: New dancers are now marked with a "New" chip in the attendance list for each event.
-- **Duplicate Event Indication**: Events that already exist in the database are now marked as "Skipped" in the preview.
+- **Score Import Support**: Event import now supports `score_name` field in attendance records
+- **Automatic Score Creation**: Missing scores referenced in import data are automatically created with appropriate ordinal values
+- **Score Assignment**: Scores are automatically assigned to attendance records for dancers with "served" status during import
+- **Enhanced Import Summary**: Import results now include counts for created scores and score assignments
+- **Score Validation**: Comprehensive validation for score names, length limits, and status requirements
+- **Score Conflict Resolution**: Automatic handling of missing scores with database creation
 
-### Improved
-- Replaced the "New" chip for new dancers in the import preview with a more subtle " (new)" text label for better readability.
-- Moved the new dancer count in the event import preview from a chip to the event's subtitle for a cleaner UI.
-
-### Fixed
-- Fixed a crash during event import caused by a JSON key mismatch (`dancerName` vs `dancer_name`) in the `ImportableAttendance` model.
+### Changed
+- **Import Data Models**: Removed `isFirstMet` field from `ImportableAttendance` - firstMet tracking is now handled automatically at dancer level
+- **EventImportSummary**: Added `scoresCreated`, `scoreAssignments`, and `createdScoreNames` fields
+- **JSON Format**: Enhanced event import format to support optional `score_name` field for served dancers
+- **Import Validation**: Added score-specific validation rules and error messages
+- **Test Data**: Updated `test_events_import.json` with score examples and proper field names
 
 ### Technical
-- Added `EventImportAnalysis` model to hold per-event details during the import validation process.
-- Refactored `EventImportService` to generate and use the new analysis model.
-- Updated `EventDataPreviewStep` to consume the new analysis and display the enhanced information.
+- **EventImportService**: Enhanced with ScoreService dependency and score processing logic
+- **EventImportValidator**: Added score validation methods and missing score detection
+- **Import Processing**: Scores are created before event processing and assigned during attendance creation
+- **Transaction Safety**: Score creation and assignment included in import transaction rollback protection
+- **Logging**: Added comprehensive action logging for score creation and assignment operations
+
+### Improved
+- **Import Preview**: Dry-run analysis now includes score creation and assignment counts
+- **Error Handling**: Score-related errors are logged but don't block the entire import process
+- **Performance**: Optimized score lookups with pre-fetching and caching during import
+
+### Fixed
+- **Field Naming**: Corrected test JSON to use `dancer_name` instead of `dancerName` for consistency
+- **Validation Logic**: Enhanced business rule validation for score assignments and status requirements
+
+## [v1.2.0] - 2024-12-19
