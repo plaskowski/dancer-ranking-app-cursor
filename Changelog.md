@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.56.1] - 2025-01-15
+
+### User Requests
+- "Replace checkmark emoji with a pill-style indicator containing checkmark character, make the pill green, positioned to the right before the rating pill"
+
+### Improved
+- **Dance Status Visual**: Replaced checkmark emoji with elegant green pill containing ✓ character
+- **Visual Layout**: Positioned dance indicator pill to the right side before score pill for better visual balance
+- **UI Consistency**: Enhanced visual consistency with pill-style indicators across the interface
+
+### Technical
+- Removed emoji-based checkmark from text spans in `DancerCard`
+- Implemented pill-style dance indicator with proper theming and positioning
+- Used theme's present color for consistent green styling throughout app
+
 ## [v0.56.0] - 2025-01-15
 
 ### User Requests
