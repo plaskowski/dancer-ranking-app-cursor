@@ -466,7 +466,7 @@ Home Screen
   - **Single-line layout**: Name followed by bullet-separated information: "Name • Notes • Ranking • Dance Status"
       - **Personal notes**: General dancer notes displayed inline on all tabs
     - **Ranking reasons**: Italic event-specific reasoning in blue displayed on all tabs
-    - **Dance status with impressions**: Pill with ✓ checkmark character positioned to the right before score pill (matching impression text color), with italicized impression text when available
+    - **Dance status with impressions**: Clean ✓ checkmark character positioned to the right of score pill (matching impression text color), with italicized impression text when available
     - **Consistent display**: All dancer information (notes, ranking reasons, impressions) visible across all tabs for complete context
   - **Responsive design**: Uses RichText with TextSpan elements for flexible text styling within single line
 

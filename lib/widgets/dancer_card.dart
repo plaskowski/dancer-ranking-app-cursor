@@ -128,30 +128,6 @@ class DancerCard extends StatelessWidget {
               ),
             ),
 
-            // Danced indicator pill (pill with checkmark matching impression color)
-            if (dancer.hasDanced) ...[
-              const SizedBox(width: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: context.danceTheme.danceAccent.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color:
-                        context.danceTheme.danceAccent.withValues(alpha: 0.5),
-                  ),
-                ),
-                child: Text(
-                  '✓',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: context.danceTheme.danceAccent,
-                  ),
-                ),
-              ),
-            ],
-
             // Score pill on the right side
             if (dancer.hasScore && !hideScorePill) ...[
               const SizedBox(width: 8),
@@ -192,6 +168,22 @@ class DancerCard extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: context.danceTheme.rankingHigh,
                     ),
+                  ),
+                ),
+              ),
+            ],
+
+            // Danced indicator (checkmark matching impression color)
+            if (dancer.hasDanced) ...[
+              const SizedBox(width: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                child: Text(
+                  '✓',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: context.danceTheme.danceAccent,
                   ),
                 ),
               ),
