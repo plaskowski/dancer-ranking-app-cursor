@@ -317,12 +317,12 @@ Users can adjust rankings during events for various reasons:
 - Save/cancel actions (updates `last_updated` timestamp)
 
 **Score Dialog (`ScoreDialog`)**:
-- Simple post-dance score assignment from predefined score options
+- Simple score assignment from predefined score options for any present attendant
 - Display score names with ordinal ratings (1=Amazing, 5=Meh) as radio buttons
 - Auto-selects current score if already assigned, otherwise defaults to "Good"
 - Save/cancel actions only - simplified interface without removal options
-- **Context**: Only accessible for dancers who have completed a dance
-- **Integration**: Launched from Dancer Actions Dialog for scored dancers
+- **Context**: Accessible for any present attendant regardless of dance completion status
+- **Integration**: Launched from Dancer Actions Dialog for any attendant with flexible rating criteria
 
 **Dancer Actions Dialog (`DancerActionsDialog`)**:
 - Context-aware actions based on dancer state and tab mode
@@ -401,9 +401,9 @@ Home Screen
 │   │   ├── Tap dancer → Full Actions Dialog (context-aware with score management)
 │   │   │   ├── → Ranking Dialog
 │   │   │   ├── → Dance Recording Dialog
-│   │   │   ├── → Score Dialog (for dancers who have danced)
+│   │   │   ├── → Score Dialog (for any present attendant regardless of dance status)
 │   │   │   └── → Attendance management
-│   │   ├── **Score Pills**: Score names displayed as colored pills for dancers with assigned scores
+│   │   ├── **Score Pills**: Score names displayed as colored pills for any attendant with assigned scores
 │   │   └── **First Met Indicators**: ⭐ emoji for dancers met for the first time at this event
 │   ├── Summary Page (Page 2) - Post-dance analysis and score management tab
 │   │   ├── **Dance Summary Card**: Statistics showing total dances, scored/unscored counts, first meetings
@@ -744,3 +744,28 @@ Example logs:
 ```mermaid
 graph TD
 // ... existing code ...
+
+```
+
+## Scoring System Design
+
+### Score Assignment Philosophy
+The scoring system is designed to be **completely independent** from dance completion status, providing maximum flexibility for rating attendants based on various criteria:
+
+**Scoring Availability**:
+- Any present attendant can be assigned a score
+- Scores can be assigned before, during, or after dancing
+- Multiple rating criteria supported (dance skill, attractiveness, conversation, overall impression)
+
+**Score Display**:
+- Score pills appear on the right side of dancer rows for any attendant with assigned scores
+- Visual distinction independent of "Danced!" status or impression text
+- Consistent styling across Planning, Present, and Summary tabs
+
+**Use Cases**:
+- **Pre-dance impressions**: Rate based on initial conversations or visual assessment
+- **Post-dance evaluation**: Traditional dance skill/chemistry rating
+- **Overall event rating**: Comprehensive assessment including non-dance interactions
+- **Flexible criteria**: Any personal rating system (attractiveness, personality, dance ability, etc.)
+
+This design allows users to maintain their rating system flexibly without being constrained by whether they've actually danced with someone.

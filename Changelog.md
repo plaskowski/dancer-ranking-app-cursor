@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.55.0] - 2025-01-07
+
+### User Requests
+- Allow score assignment for any attendant independently from dance status
+- Remove restriction that limited scoring to only dancers who have completed a dance
+
+### Improved
+- **Scoring Flexibility**: Score assignment now available for any present attendant regardless of dance completion status
+- **Score Display**: Score pills now display for any attendant with assigned scores, independent of dance status
+- **Rating Criteria**: Support for flexible rating criteria including pre-dance impressions, overall event assessment, and non-dance interactions
+
+### Changed
+- Removed dance completion requirement from score assignment in DancerActionsDialog
+- Updated score pill display logic to show scores for any attendant with assignments
+- Enhanced scoring system documentation with comprehensive design philosophy
+
+### Technical
+- Updated DancerActionsDialog condition from `dancer.hasDanced` to `dancer.isPresent` for score assignment availability
+- Modified DancerCard score pill display logic to remove `dancer.hasDanced` restriction
+- Added new "Scoring System Design" section to Implementation specification documenting flexibility philosophy
+- Updated navigation flow and dialog descriptions to reflect scoring availability for all present attendants
+
 ## [v0.54.0] - 2025-01-07
 
 ### User Requests

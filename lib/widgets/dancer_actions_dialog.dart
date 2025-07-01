@@ -72,8 +72,8 @@ class DancerActionsDialog extends StatelessWidget {
               },
             ),
 
-          // Score actions (only for present mode and dancers who have danced)
-          if (!isPlanningMode && dancer.hasDanced)
+          // Score actions (only for present mode and attendants)
+          if (!isPlanningMode && dancer.isPresent)
             ListTile(
               leading: Icon(
                 dancer.hasScore ? Icons.star : Icons.star_outline,

@@ -138,7 +138,7 @@ class DancerCard extends StatelessWidget {
             ),
 
             // Score pill on the right side
-            if (dancer.hasScore && !hideScorePill && dancer.hasDanced) ...[
+            if (dancer.hasScore && !hideScorePill) ...[
               const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
