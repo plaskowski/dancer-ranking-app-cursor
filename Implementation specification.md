@@ -306,7 +306,44 @@ Users can adjust rankings during events for various reasons:
 - ← Back to Home Screen
 - → Add Tag Dialog (FAB)
 
-  ### 7. Dialogs and Modals
+### 7. Scores Dictionary Screen (`ScoresDictionaryScreen`)
+**Purpose**: Manage and standardize the scoring system used across events
+**Access**: Available through Home Screen's overflow menu → "Manage Scores"
+**Actions**:
+- View all scores with usage statistics (how many dances use each score)
+- Drag-and-drop reordering to define ranking hierarchy (updates ordinal values)
+- Tap any score row to access contextual actions via bottom sheet menu:
+  - **Rename Score**: Edit score name with validation and confirmation
+  - **Delete Score**: Archive unused scores (only available for scores with 0 usage)
+  - **Merge into...**: Combine duplicate scores using simplified two-score workflow
+- Add new scores (FAB) with automatic ordinal assignment
+**UI Design**:
+- **ReorderableListView**: Drag handles on the left for intuitive reordering
+- **Score Information Display**: 
+  - Score name and usage count (e.g., "Excellent • Used in 23 dances")
+  - Ordinal indicator on the right showing rank position (#1, #2, etc.)
+- **Contextual Bottom Sheet**: Modal sheet with context-aware actions based on score usage
+- **Safety Features**: 
+  - Prevent deletion of scores in use
+  - Confirmation dialogs for destructive actions
+  - Error handling with user-friendly toast messages
+**Merge Workflow**:
+1. Tap source score → Select "Merge into..." from context menu
+2. Select target score from available options
+3. Review merge confirmation showing both scores and affected dance counts
+4. Confirm merge → Source score data transferred to target, source score deleted
+**Integration**:
+- **Database Integration**: Leverages existing Scores table with foreign key relationships
+- **Real-time Updates**: Changes immediately reflected in all score assignment interfaces
+- **Provider Pattern**: Uses proper dependency injection following app conventions
+- **Transaction Safety**: Merge operations use database transactions for data integrity
+**Navigation**:
+- ← Back to Home Screen
+- → Rename Dialog (contextual action)
+- → Merge Confirmation Dialog (contextual action)
+- → Add Score Dialog (FAB)
+
+  ### 8. Dialogs and Modals
 
 **Ranking Dialog (`RankingDialog`)**:
 - Interactive rank selection from predefined options

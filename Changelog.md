@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.59.0] - 2025-01-16
+
+### User Requests
+- "Let's implement it" (referring to the scores dictionary editor design)
+- "- the Add new score should use fab pattern" 
+- "- I don't need the Reset to Defaults"
+
+### Added
+- **Scores Dictionary Editor Screen**: Complete implementation for managing and standardizing scoring system
+  - **Contextual Actions**: Tap score row to access rename, delete, and merge operations via bottom sheet menu
+  - **Drag-and-Drop Reordering**: Reorder scores to define ranking hierarchy with real-time ordinal updates
+  - **Merge Functionality**: Simplified two-score-at-a-time merging with "Merge into..." workflow
+  - **Usage Statistics**: Display score usage counts from attendance records for informed decisions
+  - **Add New Scores**: Floating Action Button pattern for adding new scores with automatic ordinal assignment
+  - **Safety Features**: Prevent deletion of scores in use, confirmation dialogs for destructive actions
+  - **Provider Integration**: Proper dependency injection using existing Provider pattern
+
+### Enhanced
+- **ScoreService**: Extended with new methods for dictionary editor functionality
+  - `getAllScoresWithUsage()`: Get scores with usage statistics from attendance records
+  - `mergeScores()`: Merge source score into target score with transactional safety
+  - `updateScoreOrder()`: Batch update ordinals for drag-and-drop reordering
+  - `getScoreUsageCount()`: Get usage statistics for individual scores
+  - Helper classes: `ScoreWithUsage` and `ScoreOrderUpdate` for data management
+
+### Navigation
+- **Home Screen Menu**: Added "Manage Scores" option to popup menu with star_rate icon
+- **Seamless Integration**: Accessible through main navigation without disrupting existing workflow
+
+### Technical
+- Leverages existing database schema with `scores` table and foreign key relationships
+- Contextual dialog-based editing for optimal mobile UX (no inline editing)
+- Proper error handling with user-friendly toast messages
+- Follows existing code patterns and architectural conventions
+- Transaction-based operations ensure data integrity during merge operations
+
 ## [v0.58.0] - 2025-01-16
 
 ### User Requests
