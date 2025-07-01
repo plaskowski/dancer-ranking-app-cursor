@@ -1,8 +1,9 @@
 # Changelog
 
-All notable changes to the Dancer Ranking App will be documented in this file.
+All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [v0.54.0] - 2024-12-20
 
@@ -66,29 +67,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Enhanced foreign key relationships between attendances and scores
 - Implemented safe score deletion with reassignment logic
 - Database schema migration with backward compatibility
-
-## [v0.52.0] - 2025-01-13
-
-### User Requests
-- "Take first task from @Next steps.md" (referring to Data Export)
-
-### Added
-- **Data Export Feature**: Added the ability to export all application data into a single JSON file.
-  - Users can export data via the overflow menu on the Home Screen.
-  - The export includes all events, dancers, tags, ranks, rankings, and attendances.
-  - The exported file can be saved to the device or shared with other applications.
-
-### Technical
-- **DataExportService**: Created a new service to handle data fetching and JSON serialization.
-- **share_plus**: Integrated the `share_plus` package to provide a native sharing experience.
-- **File Generation**: The export process generates a timestamped JSON file (e.g., `dancer_ranking_export_20250113_143000.json`).
-
-### Files Added
-- `lib/services/data_export_service.dart`
-
-### Files Modified
-- `pubspec.yaml`: Added `share_plus` dependency.
-- `lib/screens/home_screen.dart`: Added the "Export Data" menu item and handler.
 
 ## [v0.51.0] - 2025-01-13
 

@@ -11,7 +11,7 @@
 
 **✅ COMPLETED - Phase 2: UI Components**  
 - ✅ Enhanced DancerWithEventInfo model with score fields
-- ✅ Simple ScoreDialog for post-dance score assignment (rudimentary picker)
+- ✅ Simple ScoreDialog for post-dance score assignment (one-tap selection)
 - ✅ Enhanced Dancer Actions Dialog with score management
 - ✅ Enhanced Present Tab with score pills and ⭐ first met indicators
 - ✅ New Summary Tab for post-party score/impression editing
@@ -30,7 +30,7 @@
 
 ### High Priority
 1. **Complete Phase 3**: Import system enhancements for Milestone 1
-2. **Export Enhancement**: Include scores and first met data in data exports
+2. **Data Export**: Add ability to export event data with scores and first met data
 3. **Performance**: Optimize database queries for large datasets
 
 ### Feature Enhancements
@@ -53,4 +53,4 @@
 
 ---
 
-*Updated: 2024-12-20 - Phase 2 UI Components completed with user feedback addressed*
+*Updated: 2024-12-20 - Phase 2 UI Components completed, export feature removed per user request*

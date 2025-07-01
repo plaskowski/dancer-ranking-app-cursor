@@ -1,13 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../database/database.dart';
-import '../services/data_export_service.dart';
 import '../services/event_import_service.dart';
 import '../services/event_service.dart';
 import '../services/tag_service.dart';
@@ -86,27 +81,16 @@ class HomeScreen extends StatelessWidget {
             onSelected: (value) {
               switch (value) {
                 case 'import_events':
-                  _showImportEventsDialog(context);
-                  break;
-                case 'export_data':
-                  _exportData(context);
+                  _importEvents(context);
                   break;
               }
             },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
                 value: 'import_events',
                 child: ListTile(
-                  leading: Icon(Icons.file_download),
-                  title: Text('Import Events'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'export_data',
-                child: ListTile(
                   leading: Icon(Icons.file_upload),
-                  title: Text('Export Data'),
+                  title: Text('Import Events'),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
@@ -187,7 +171,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  void _showImportEventsDialog(BuildContext context) {
+  void _importEvents(BuildContext context) {
     ActionLogger.logUserAction('HomeScreen', 'import_events_dialog_opened', {});
 
     showGeneralDialog(
@@ -217,48 +201,6 @@ class HomeScreen extends StatelessWidget {
         ToastHelper.showSuccess(context, 'Events imported successfully');
       }
     });
-  }
-
-  void _exportData(BuildContext context) async {
-    ActionLogger.logUserAction('HomeScreen', 'export_data_started');
-    try {
-      final exportService =
-          DataExportService(Provider.of<AppDatabase>(context, listen: false));
-      final jsonString = await exportService.exportDataAsJson();
-
-      final directory = await getTemporaryDirectory();
-      final fileName =
-          'dancer_ranking_export_${DateFormat('yyyyMMdd_HHmmss').format(DateTime.now())}.json';
-      final file = File('${directory.path}/$fileName');
-      await file.writeAsString(jsonString);
-
-      ActionLogger.logAction('HomeScreen', 'export_file_created', {
-        'path': file.path,
-        'size': await file.length(),
-      });
-
-      final xFile = XFile(file.path, name: fileName);
-
-      final result = await Share.shareXFiles(
-        [xFile],
-        subject: 'Dancer Ranking App - Data Export',
-        text: 'Here is your exported data from the Dancer Ranking App.',
-      );
-
-      if (result.status == ShareResultStatus.success) {
-        ActionLogger.logUserAction('HomeScreen', 'export_data_success');
-        ToastHelper.showSuccess(context, 'Data exported successfully!');
-      } else {
-        ActionLogger.logUserAction('HomeScreen', 'export_data_dismissed',
-            {'status': result.status.toString()});
-      }
-    } catch (e, s) {
-      ActionLogger.logError(
-          'HomeScreen.exportData', e.toString(), {'stackTrace': s.toString()});
-      if (context.mounted) {
-        ToastHelper.showError(context, 'Error exporting data: $e');
-      }
-    }
   }
 }
 
@@ -297,8 +239,7 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Rename'),
                 onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_rename_tapped', {
+                  ActionLogger.logUserAction('EventCard', 'context_rename_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                   });
@@ -314,8 +255,7 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Change Date'),
                 onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_change_date_tapped', {
+                  ActionLogger.logUserAction('EventCard', 'context_change_date_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                     'currentDate': event.date.toIso8601String(),
@@ -332,8 +272,7 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Delete'),
                 onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_delete_tapped', {
+                  ActionLogger.logUserAction('EventCard', 'context_delete_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                   });
@@ -416,8 +355,7 @@ class _EventCard extends StatelessWidget {
     }
   }
 
-  void _performDateChange(
-      BuildContext context, DateTime newDate, EventService eventService) async {
+  void _performDateChange(BuildContext context, DateTime newDate, EventService eventService) async {
     ActionLogger.logUserAction('EventCard', 'date_change_started', {
       'eventId': event.id,
       'newDate': newDate.toIso8601String(),
@@ -435,11 +373,9 @@ class _EventCard extends StatelessWidget {
           });
 
           final formattedDate = DateFormat('MMM d, y').format(newDate);
-          ToastHelper.showSuccess(
-              context, 'Event date changed to $formattedDate');
+          ToastHelper.showSuccess(context, 'Event date changed to $formattedDate');
         } else {
-          ActionLogger.logError(
-              'EventCard.performDateChange', 'update_failed', {
+          ActionLogger.logError('EventCard.performDateChange', 'update_failed', {
             'eventId': event.id,
             'newDate': newDate.toIso8601String(),
           });
@@ -457,8 +393,7 @@ class _EventCard extends StatelessWidget {
     }
   }
 
-  void _performRename(
-      BuildContext context, TextEditingController controller) async {
+  void _performRename(BuildContext context, TextEditingController controller) async {
     final newName = controller.text.trim();
     if (newName.isEmpty) {
       ActionLogger.logUserAction('EventCard', 'rename_validation_failed', {
@@ -598,17 +533,13 @@ class _EventCard extends StatelessWidget {
             event.name,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : null,
+              color: isPast ? Theme.of(context).colorScheme.onSurfaceVariant : null,
             ),
           ),
           subtitle: Text(
             formattedDate,
             style: TextStyle(
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : Theme.of(context).colorScheme.primary,
+              color: isPast ? Theme.of(context).colorScheme.onSurfaceVariant : Theme.of(context).colorScheme.primary,
             ),
           ),
         ),
