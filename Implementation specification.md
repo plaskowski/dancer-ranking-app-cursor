@@ -317,11 +317,10 @@ Users can adjust rankings during events for various reasons:
 - Save/cancel actions (updates `last_updated` timestamp)
 
 **Score Dialog (`ScoreDialog`)**:
-- Post-dance score assignment from predefined score options
-- Display score names with ordinal ratings (1=Amazing, 5=Meh)
-- Shows current score if already assigned
-- Remove score option for dancers with existing scores
-- Save/cancel/remove actions with confirmation for removal
+- Simple post-dance score assignment from predefined score options
+- Display score names with ordinal ratings (1=Amazing, 5=Meh) as radio buttons
+- Auto-selects current score if already assigned, otherwise defaults to "Good"
+- Save/cancel actions only - simplified interface without removal options
 - **Context**: Only accessible for dancers who have completed a dance
 - **Integration**: Launched from Dancer Actions Dialog for scored dancers
 
@@ -404,13 +403,13 @@ Home Screen
 │   │   │   ├── → Dance Recording Dialog
 │   │   │   ├── → Score Dialog (for dancers who have danced)
 │   │   │   └── → Attendance management
-│   │   ├── **Score Display**: Shows "Score: [ScoreName]" for dancers with assigned scores
+│   │   ├── **Score Pills**: Score names displayed as colored pills for dancers with assigned scores
 │   │   └── **First Met Indicators**: ⭐ emoji for dancers met for the first time at this event
-│   ├── Summary Page (Page 2) - New post-dance analysis tab
+│   ├── Summary Page (Page 2) - Post-dance analysis and score management tab
 │   │   ├── **Dance Summary Card**: Statistics showing total dances, scored/unscored counts, first meetings
 │   │   ├── **Score Groups**: Dancers grouped by score (Amazing, Great, Good, Okay, Meh, No score assigned)
 │   │   ├── **Count Badges**: Each score group shows dancer count in primary container styling
-│   │   ├── **Read-only Tab**: No FAB actions - purely for analysis and review
+│   │   ├── **Post-Party Editing**: Primary use for reviewing and editing scores/impressions after events
 │   │   └── Tap dancer → Full Actions Dialog (same as Present tab for score management)
 │   └── Swipe Left/Right → Switch between Planning, Present, and Summary pages
 ├── Dancers Screen

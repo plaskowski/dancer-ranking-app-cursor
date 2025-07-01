@@ -29,114 +29,129 @@ class DancerCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    // Dancer name
-                    TextSpan(
-                      text: dancer.name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: Theme.of(context).colorScheme.onSurface,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Main text content
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        // Dancer name
+                        TextSpan(
+                          text: dancer.name,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+
+                        // Show dancer notes if they exist (hide for danced dancers in Present tab)
+                        if (dancer.notes != null &&
+                            dancer.notes!.isNotEmpty &&
+                            (isPlanningMode || !dancer.hasDanced)) ...[
+                          const TextSpan(text: ' • '),
+                          TextSpan(
+                            text: dancer.notes!,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+
+                        // Show ranking reason if it exists (hide for danced dancers in Present tab)
+                        if (dancer.rankingReason != null &&
+                            dancer.rankingReason!.isNotEmpty &&
+                            (isPlanningMode || !dancer.hasDanced)) ...[
+                          const TextSpan(text: ' • '),
+                          TextSpan(
+                            text: '"${dancer.rankingReason}"',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.normal,
+                              fontStyle: FontStyle.italic,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ],
+
+                        // Show "Left" indicator if they left before dancing
+                        if (dancer.hasLeft) ...[
+                          const TextSpan(text: ' • '),
+                          TextSpan(
+                            text: 'Left',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: context.danceTheme.warning,
+                            ),
+                          ),
+                        ],
+
+                        // Show "Danced!" indicator with impression if they have danced
+                        if (dancer.hasDanced) ...[
+                          const TextSpan(text: ' • '),
+                          TextSpan(
+                            text: 'Danced!',
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: context.danceTheme.danceAccent,
+                            ),
+                          ),
+                          if (dancer.impression != null && dancer.impression!.isNotEmpty) ...[
+                            TextSpan(
+                              text: ' - ${dancer.impression!}',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                                fontStyle: FontStyle.italic,
+                                color: context.danceTheme.danceAccent,
+                              ),
+                            ),
+                          ],
+
+                          // Show first met indicator
+                          if (dancer.isFirstMetHere) ...[
+                            const TextSpan(text: ' '),
+                            TextSpan(
+                              text: '⭐',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: context.danceTheme.danceAccent,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ],
+                    ),
+                  ),
+
+                  // Score pill (separate from main text for better styling)
+                  if (dancer.hasDanced && dancer.hasScore) ...[
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: context.danceTheme.rankingHigh.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: context.danceTheme.rankingHigh.withValues(alpha: 0.5),
+                        ),
+                      ),
+                      child: Text(
+                        dancer.scoreName!,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: context.danceTheme.rankingHigh,
+                        ),
                       ),
                     ),
-
-                    // Show dancer notes if they exist (hide for danced dancers in Present tab)
-                    if (dancer.notes != null &&
-                        dancer.notes!.isNotEmpty &&
-                        (isPlanningMode || !dancer.hasDanced)) ...[
-                      const TextSpan(text: ' • '),
-                      TextSpan(
-                        text: dancer.notes!,
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.normal,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
-
-                    // Show ranking reason if it exists (hide for danced dancers in Present tab)
-                    if (dancer.rankingReason != null &&
-                        dancer.rankingReason!.isNotEmpty &&
-                        (isPlanningMode || !dancer.hasDanced)) ...[
-                      const TextSpan(text: ' • '),
-                      TextSpan(
-                        text: '"${dancer.rankingReason}"',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.normal,
-                          fontStyle: FontStyle.italic,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                    ],
-
-                    // Show "Left" indicator if they left before dancing
-                    if (dancer.hasLeft) ...[
-                      const TextSpan(text: ' • '),
-                      TextSpan(
-                        text: 'Left',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: context.danceTheme.warning,
-                        ),
-                      ),
-                    ],
-
-                    // Show "Danced!" indicator with impression if they have danced
-                    if (dancer.hasDanced) ...[
-                      const TextSpan(text: ' • '),
-                      TextSpan(
-                        text: 'Danced!',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
-                          color: context.danceTheme.danceAccent,
-                        ),
-                      ),
-                      if (dancer.impression != null &&
-                          dancer.impression!.isNotEmpty) ...[
-                        TextSpan(
-                          text: ' - ${dancer.impression!}',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.normal,
-                            fontStyle: FontStyle.italic,
-                            color: context.danceTheme.danceAccent,
-                          ),
-                        ),
-                      ],
-
-                      // Show score if assigned
-                      if (dancer.hasScore) ...[
-                        const TextSpan(text: ' • '),
-                        TextSpan(
-                          text: 'Score: ${dancer.scoreName}',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            color: context.danceTheme.rankingHigh,
-                          ),
-                        ),
-                      ],
-
-                      // Show first met indicator
-                      if (dancer.isFirstMetHere) ...[
-                        const TextSpan(text: ' '),
-                        TextSpan(
-                          text: '⭐',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: context.danceTheme.danceAccent,
-                          ),
-                        ),
-                      ],
-                    ],
                   ],
-                ),
+                ],
               ),
             ),
             if (showPresenceIndicator && dancer.isPresent)

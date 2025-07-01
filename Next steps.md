@@ -11,10 +11,10 @@
 
 **✅ COMPLETED - Phase 2: UI Components**  
 - ✅ Enhanced DancerWithEventInfo model with score fields
-- ✅ Score Dialog for post-dance score assignment
+- ✅ Simple ScoreDialog for post-dance score assignment (rudimentary picker)
 - ✅ Enhanced Dancer Actions Dialog with score management
-- ✅ Enhanced Present Tab with score display and ⭐ first met indicators
-- ✅ New Summary Tab showing dances grouped by scores
+- ✅ Enhanced Present Tab with score pills and ⭐ first met indicators
+- ✅ New Summary Tab for post-party score/impression editing
 - ✅ Three-tab Event Screen navigation (Planning • Present • Summary)
 
 **🔄 REMAINING - Phase 3: Import System Enhancement**
@@ -53,4 +53,4 @@
 
 ---
 
-*Updated: 2024-12-20 - Phase 2 UI Components completed*
+*Updated: 2024-12-20 - Phase 2 UI Components completed with user feedback addressed*

@@ -27,7 +27,6 @@ class _ScoreDialogState extends State<ScoreDialog> {
   Score? _selectedScore;
   String _dancerName = '';
   bool _isLoading = false;
-  int? _currentScoreId;
 
   @override
   void initState() {
@@ -76,7 +75,6 @@ class _ScoreDialogState extends State<ScoreDialog> {
         setState(() {
           _scores = scores;
           _dancerName = dancer?.name ?? 'Unknown';
-          _currentScoreId = currentScoreId;
 
           if (currentScoreId != null) {
             _selectedScore = scores.firstWhere(
@@ -120,7 +118,6 @@ class _ScoreDialogState extends State<ScoreDialog> {
       'eventId': widget.eventId,
       'scoreId': _selectedScore!.id,
       'scoreName': _selectedScore!.name,
-      'previousScoreId': _currentScoreId,
     });
 
     setState(() {
@@ -168,51 +165,6 @@ class _ScoreDialogState extends State<ScoreDialog> {
     }
   }
 
-  Future<void> _removeScore() async {
-    ActionLogger.logUserAction('ScoreDialog', 'remove_score_started', {
-      'dancerId': widget.dancerId,
-      'eventId': widget.eventId,
-      'currentScoreId': _currentScoreId,
-    });
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      final attendanceService =
-          Provider.of<AttendanceService>(context, listen: false);
-
-      await attendanceService.removeScore(widget.eventId, widget.dancerId);
-
-      if (mounted) {
-        ActionLogger.logUserAction('ScoreDialog', 'remove_score_completed', {
-          'dancerId': widget.dancerId,
-          'eventId': widget.eventId,
-          'dancerName': _dancerName,
-        });
-
-        Navigator.pop(context, true); // Return true to indicate success
-        ToastHelper.showSuccess(context, 'Score removed for $_dancerName');
-      }
-    } catch (e) {
-      ActionLogger.logError('ScoreDialog._removeScore', e.toString(), {
-        'dancerId': widget.dancerId,
-        'eventId': widget.eventId,
-      });
-
-      if (mounted) {
-        ToastHelper.showError(context, 'Error removing score: $e');
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -222,17 +174,6 @@ class _ScoreDialogState extends State<ScoreDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (_currentScoreId != null) ...[
-              const Text(
-                'Current Score:',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(_scores
-                  .firstWhere((s) => s.id == _currentScoreId,
-                      orElse: () => _scores.first)
-                  .name),
-              const SizedBox(height: 16),
-            ],
             const Text(
               'Select Score:',
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -257,36 +198,6 @@ class _ScoreDialogState extends State<ScoreDialog> {
         ),
       ),
       actions: [
-        // Remove Score button (only show if there's a current score)
-        if (_currentScoreId != null)
-          TextButton(
-            onPressed: _isLoading
-                ? null
-                : () async {
-                    final confirmed = await showDialog<bool>(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Remove Score'),
-                        content: Text('Remove score for $_dancerName?'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, true),
-                            child: const Text('Remove'),
-                          ),
-                        ],
-                      ),
-                    );
-                    if (confirmed == true) {
-                      await _removeScore();
-                    }
-                  },
-            child: const Text('Remove Score'),
-          ),
-
         // Cancel button
         TextButton(
           onPressed: _isLoading
@@ -311,7 +222,7 @@ class _ScoreDialogState extends State<ScoreDialog> {
                   height: 16,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : Text(_currentScoreId != null ? 'Update Score' : 'Assign Score'),
+              : const Text('Save Score'),
         ),
       ],
     );
