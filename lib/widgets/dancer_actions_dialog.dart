@@ -156,7 +156,7 @@ class DancerActionsDialog extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.edit_note,
                 color: Theme.of(context).colorScheme.primary),
-            title: const Text('Edit general note'),
+            title: const Text('Edit the dancer'),
             onTap: () {
               ActionLogger.logUserAction(
                   'DancerActionsDialog', 'edit_notes_tapped', {

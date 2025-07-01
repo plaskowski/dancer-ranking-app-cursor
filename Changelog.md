@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **First Met Indicators**: Enhanced ⭐ first met logic to show for dancers with any attendance status, not just those who have danced ('served')
 - **Event History**: Dancers in oldest events now properly show as "first met" regardless of whether they were marked as 'present', 'served', or 'left'
 - **Status Independence**: First met detection now based purely on chronological attendance order, independent of dance completion
+- **UI Text**: Changed "Edit general note" to "Edit the dancer" for clearer action description in dancer context menu
 
 ### Changed
 - Modified DancerService to check earliest attendance of any status (except 'absent') when determining first met
