@@ -8,13 +8,13 @@
                     "dancer_name": "Agnieszka Borysewicz",
                     "status": "served",
                     "impression": "Excellent energy and technique",
-                    "score_name": "Amazing"
+                    "score": "Amazing"
                 },
                 {
                     "dancer_name": "Kasia Miguela",
                     "status": "served",
                     "impression": "Great leading skills",
-                    "score_name": "Great"
+                    "score": "Great"
                 },
                 {
                     "dancer_name": "Anna Kaliska",
@@ -24,7 +24,7 @@
                     "dancer_name": "Wiktoria Batsai",
                     "status": "served",
                     "impression": "Amazing connection and musicality",
-                    "score_name": "Amazing"
+                    "score": "Amazing"
                 },
                 {
                     "dancer_name": "Carlos Rodriguez",
@@ -34,7 +34,7 @@
                     "dancer_name": "Maria Santos",
                     "status": "served",
                     "impression": "Beautiful styling and flow",
-                    "score_name": "Great"
+                    "score": "Great"
                 },
                 {
                     "dancer_name": "Magdalena Kulej",
@@ -54,7 +54,7 @@
                     "dancer_name": "Dagmara",
                     "status": "served",
                     "impression": "Perfect bachata connection",
-                    "score_name": "Amazing"
+                    "score": "Amazing"
                 },
                 {
                     "dancer_name": "Kasia Panterka",
@@ -64,7 +64,7 @@
                     "dancer_name": "Isabella Torres",
                     "status": "served",
                     "impression": "Sensual and smooth moves",
-                    "score_name": "Great"
+                    "score": "Great"
                 },
                 {
                     "dancer_name": "Lena 40tka",
@@ -78,7 +78,7 @@
                     "dancer_name": "Paulina opalona",
                     "status": "served",
                     "impression": "Great energy and timing",
-                    "score_name": "Good"
+                    "score": "Good"
                 },
                 {
                     "dancer_name": "Carmen Delgado",
@@ -94,7 +94,7 @@
                     "dancer_name": "Liza",
                     "status": "served",
                     "impression": "Exceptional mambo technique",
-                    "score_name": "Amazing"
+                    "score": "Amazing"
                 },
                 {
                     "dancer_name": "Sonia z LP",
@@ -104,7 +104,7 @@
                     "dancer_name": "Natalia Peta",
                     "status": "served",
                     "impression": "Sharp and precise movements",
-                    "score_name": "Great"
+                    "score": "Great"
                 },
                 {
                     "dancer_name": "Eduardo Vega",
@@ -118,7 +118,7 @@
                     "dancer_name": "Lucia Morales",
                     "status": "served",
                     "impression": "Outstanding partner work",
-                    "score_name": "Amazing"
+                    "score": "Amazing"
                 },
                 {
                     "dancer_name": "Roberto Jimenez",
@@ -138,7 +138,7 @@
                     "dancer_name": "Kristina",
                     "status": "served",
                     "impression": "Consistent improvement shown",
-                    "score_name": "Good"
+                    "score": "Good"
                 },
                 {
                     "dancer_name": "Marianna Lis",
@@ -148,7 +148,7 @@
                     "dancer_name": "Alessandro Bruno",
                     "status": "served",
                     "impression": "Strong lead and musicality",
-                    "score_name": "Great"
+                    "score": "Great"
                 },
                 {
                     "dancer_name": "Olena",
@@ -162,7 +162,7 @@
                     "dancer_name": "Lilia",
                     "status": "served",
                     "impression": "Graceful and elegant style",
-                    "score_name": "Great"
+                    "score": "Great"
                 },
                 {
                     "dancer_name": "Marco Fernandez",
@@ -178,13 +178,13 @@
                     "dancer_name": "Agnieszka Borysewicz",
                     "status": "served",
                     "impression": "Party energy at its best!",
-                    "score_name": "Amazing"
+                    "score": "Amazing"
                 },
                 {
                     "dancer_name": "Anna Kaliska",
                     "status": "served",
                     "impression": "Fantastic celebration dance",
-                    "score_name": "Great"
+                    "score": "Great"
                 },
                 {
                     "dancer_name": "Kasia Preś",
@@ -194,31 +194,37 @@
                     "dancer_name": "Valentina Costa",
                     "status": "served",
                     "impression": "Brought amazing festive spirit",
-                    "score_name": "Amazing"
+                    "score": "Amazing"
                 },
                 {
                     "dancer_name": "Wiktoria Batsai",
+                    "status": "served",
+                    "impression": "New Year's magic in every move",
+                    "score": "Amazing"
+                },
+                {
+                    "dancer_name": "Gabriel Montenegro",
                     "status": "present"
                 },
                 {
-                    "dancer_name": "Gabriel Herrera",
+                    "dancer_name": "Carmen Delgado",
                     "status": "served",
-                    "impression": "Celebrated with great style",
-                    "score_name": "Great"
+                    "impression": "Celebratory and joyful dancing",
+                    "score": "Great"
                 },
                 {
-                    "dancer_name": "Milena",
+                    "dancer_name": "Luciana Ferreira",
                     "status": "left"
                 },
                 {
-                    "dancer_name": "Helena Vargas",
+                    "dancer_name": "Miguel Santos",
                     "status": "present"
                 },
                 {
-                    "dancer_name": "Antonio Ruiz",
+                    "dancer_name": "Elena Vasquez",
                     "status": "served",
-                    "impression": "Perfect way to end the year",
-                    "score_name": "Amazing"
+                    "impression": "Ending the year with style",
+                    "score": "Good"
                 }
             ]
         }

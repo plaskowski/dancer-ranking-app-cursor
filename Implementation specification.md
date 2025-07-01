@@ -396,7 +396,7 @@ Users can adjust rankings during events for various reasons:
           "dancer_name": "Dancer Name",
           "status": "served",
           "impression": "Optional impression text",
-          "score_name": "Great"
+          "score": "Great"
         }
       ]
     }

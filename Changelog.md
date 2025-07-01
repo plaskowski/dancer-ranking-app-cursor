@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.57.5] - 2025-01-15
+
+### User Requests
+- "Now I see the problem. Let's change the spec and impl to use 'score', not 'score_name' in the file format"
+
+### Changed
+- **Event Import JSON Format**: Simplified score field name from "score_name" to "score"
+  - **Breaking Change**: Import files now use `"score": "Amazing"` instead of `"score_name": "Amazing"`
+  - **Cleaner Format**: More intuitive and concise field naming
+  - **Consistency**: Aligns with simpler naming conventions throughout the app
+  - **Updated Test Data**: test_events_import.json updated to use new format
+
+### Technical
+- Updated ImportableAttendance.fromJson to map "score" field instead of "score_name"
+- Updated ImportableAttendance.toJson to export "score" field
+- Updated test_events_import.json to use new field format
+- Updated Implementation specification with corrected JSON example
+- This is a breaking change for existing import files using "score_name"
+
 ## [v0.57.4] - 2025-01-15
 
 ### User Requests
