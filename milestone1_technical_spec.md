@@ -23,8 +23,9 @@ CREATE TABLE scores (
 
 ### 1.2 Enhanced Attendances Table
 ```sql
--- Add new column to existing Attendances table
+-- Add new columns to existing Attendances table
 ALTER TABLE attendances ADD COLUMN score_id INTEGER REFERENCES scores(id);
+ALTER TABLE attendances ADD COLUMN first_met BOOLEAN DEFAULT FALSE;
 ```
 
 ### 1.3 Enhanced Dancers Table
@@ -119,22 +120,13 @@ Summary Tab
 **Changes**:
 - Add score assignment to dancer action dialogs
 - Show current score (if any) in dancer cards
-- Add "first met here" indicator for new people // use star emoji for that
+  - Add "⭐ first met here" indicator for new people
 - Update dancer actions to include score management
 
-### 3.4 New Score Assignment Dialog (`lib/widgets/score_assignment_dialog.dart`)  // don't need this - it is enough to have a contextual action on a present dancer
-**Purpose**: Assign/edit scores for attendances
-**Features**:
-- Dropdown with active scores ordered by ordinal
-- Optional impression editing in same dialog
-- Save/cancel actions
-- Show current score if already assigned
-
-### 3.5 Enhanced Dancer Actions Dialog
+### 3.4 Enhanced Dancer Actions Dialog
 **New Actions**:
-- "Assign Score" (if no score assigned) // state what dialog this leads to
-- "Edit Score" (if score already assigned)
-- "Remove Score" (if score assigned) // not needed
+- "Assign Score" (if no score assigned) → Opens Ranking Dialog modified to show scores instead of ranks
+- "Edit Score" (if score already assigned) → Opens same score selection dialog
 - Combined "Record Dance & Score" action
 
 ## 4. Enhanced Import System
@@ -143,27 +135,24 @@ Summary Tab
 **Changes**:
 - Parse optional `score` field in attendance records
 - Parse optional `first_met` boolean flag in attendance records
-- Support both old format (without scores) and new format (with scores/firstMet) // I don't need to support old format
+- Validate score names against known values
 
 ### 4.2 Enhanced EventImportValidator (`lib/services/event_import_validator.dart`)
 **Changes**:
-- Validate score names exist in database
-- Option to create missing scores during import // I want it to always create the missing scores
+- Validate score names exist in database (missing scores will be auto-created)
 - Validate `first_met` field is boolean when present
-- Logic to handle multiple events claiming to be "first met" for same dancer // not needed
 
 ### 4.3 Enhanced EventImportService (`lib/services/event_import_service.dart`)
 **Changes**:
-- Create missing scores when auto-creation enabled
+- Always create missing scores automatically
 - Assign scores to attendances during import (directly in attendances table)
-- Set first_met_date on dancers when `first_met: true` flag is encountered // nope, set the firstMet flag on attendance instead
-- Handle score conflicts and missing score creation
+- Set firstMet flag on attendance records when `first_met: true` flag is encountered
+- Handle missing score creation
 
 ### 4.4 Import Models Updates (`lib/models/import_models.dart`)
 **Changes**:
 - Add `score` and `firstMet` fields to `ImportableAttendance`
 - Add score-related fields to import result summaries
-- Support backwards compatibility with old format // not needed
 
 ## 5. First Met Date Implementation
 
@@ -175,22 +164,22 @@ Summary Tab
 
 ### 5.2 UI Integration
 **Display Rules**:
-- Show "• first met here" indicator when first met date matches current event date
+- Show "⭐ first met here" indicator when attendance record has `first_met = true`
 - Show on both Present tab and Summary tab
-- Only show for attendances with `status = 'served'` (actually danced)
+- Only show for attendances with `status = 'served'` and `first_met = true`
 
 ### 5.3 Import Integration
 **For New Imports**:
 - When `first_met: true` flag is encountered in attendance record:
-  - Set the dancer's `first_met_date` to the event's date (if not already set)
-  - Handle conflicts when multiple events claim to be "first met"
-  - Prioritize earlier dates when conflicts occur
+  - Set `first_met = true` on the attendance record
+  - Set the dancer's `first_met_date` to the event's date (if not already set or if this event is earlier)
 
 ### 5.4 Migration Strategy
 **For Existing Data**:
 - Calculate first met dates for all existing dancers based on earliest served attendance
 - Store calculated dates in `first_met_date` column
-- Future imports with `first_met: true` can override if they represent earlier dates
+- Set `first_met = true` on the earliest served attendance for each dancer
+- Future imports with `first_met: true` can add additional first met flags
 
 ## 6. Integration Points
 
@@ -205,9 +194,10 @@ EventImportService ← ScoreService (for missing score creation)
 ### 6.2 Database Migration
 **Migration Steps**:
 1. Create `scores` table with default data
-2. Add `score_id` column to `attendances` table
+2. Add `score_id` and `first_met` columns to `attendances` table
 3. Add `first_met_date` column to `dancers` table
 4. Calculate and populate first met dates for existing dancers
+5. Set `first_met = true` on earliest served attendance for each dancer
 
 ### 6.3 Provider Integration
 **New Providers Needed**:
@@ -222,10 +212,9 @@ EventImportService ← ScoreService (for missing score creation)
 - Verify first met dates are calculated correctly for existing data
 
 ### 7.2 Import Testing
-- Test backwards compatibility with old event import format (without scores/firstMet)
-- Test new format with scores and firstMet boolean flags
-- Test missing score creation during import
-- Test conflicting firstMet flag handling (multiple events claiming to be first)
+- Test import format with scores and firstMet boolean flags
+- Test automatic missing score creation during import
+- Test firstMet flag setting on attendance records
 
 ### 7.3 UI Testing
 - Test Summary tab with various score distributions
@@ -242,10 +231,9 @@ EventImportService ← ScoreService (for missing score creation)
 4. Enhanced DancerService with first met date logic
 
 ### Phase 2: UI Components
-1. Score Assignment Dialog
-2. Enhanced Dancer Actions Dialog with score management
-3. Enhanced Present Tab with score display and first met indicators
-4. New Summary Tab implementation
+1. Enhanced Dancer Actions Dialog with score management
+2. Enhanced Present Tab with score display and first met indicators
+3. New Summary Tab implementation
 
 ### Phase 3: Event Screen Integration
 1. Add Summary tab to Event Screen
@@ -254,8 +242,7 @@ EventImportService ← ScoreService (for missing score creation)
 
 ### Phase 4: Import Enhancement
 1. Enhanced import models with score support
-2. Updated import services with score creation
-3. Backwards compatibility testing
-4. Integration testing with real import data
+2. Updated import services with automatic score creation
+3. Integration testing with real import data
 
 This specification provides the roadmap for completing all missing Milestone 1 features while maintaining compatibility with existing functionality. 
