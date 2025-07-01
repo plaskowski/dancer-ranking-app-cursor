@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - "Let's try having only the checkmark without pill background, but keep the sizing"
 - "Move it to the right of the score pill"
 - "Remove the conditional presence indicator, it is not used anymore"
+- "Remove subtitle from 'Mark as left' action"
 
 ### Improved
 - **Dance Status Visual**: Replaced checkmark emoji with clean ✓ character (no background pill)
@@ -22,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Color Harmony**: Dance indicator uses same color as impression text for cohesive visual theming
 - **Proper Spacing**: Maintained equivalent padding for consistent alignment with other elements
 - **Code Cleanup**: Removed unused presence indicator parameter and functionality for cleaner codebase
+- **UI Simplification**: Removed explanatory subtitle from "Mark as left" action for cleaner dialog interface
 
 ### Technical
 - Removed emoji-based checkmark from text spans in `DancerCard`
@@ -31,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Used `danceAccent` color to match impression text styling
 - Removed `showPresenceIndicator` parameter from DancerCard widget and all usage sites
 - Cleaned up unused presence indicator Icon widget and conditional logic
+- Removed subtitle property from "Mark as left" ListTile in DancerActionsDialog
 
 ## [v0.56.0] - 2025-01-15
 

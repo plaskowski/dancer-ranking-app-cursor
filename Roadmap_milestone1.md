@@ -33,12 +33,12 @@ Planned improvements:
 - inteligent dancers suggestions
   - by default show those I danced with more than one in last 3 months
   - a switch to show all
+- introduce settings screen that will contain all the less relevant screens as tabs
 - screen to edit scores dictionary
   - edit name
   - edit scores order
   - merge scores
     - rationale: in the imported history I used different names for similar scores in different events
-- introduce settings screen that will contain all the less relevant screens as tabs
 - app state management (maybe it is enough to handle this at SQLite file level?)
   - an option to reset app database
   - an option to backup app database to a file
