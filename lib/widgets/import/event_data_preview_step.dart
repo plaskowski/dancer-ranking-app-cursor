@@ -69,6 +69,25 @@ class EventDataPreviewStep extends StatelessWidget {
         .toSet()
         .length;
 
+    // Calculate additional statistics for rich data
+    final totalImpressions = parseResult!.events
+        .expand((event) => event.attendances)
+        .where((attendance) =>
+            attendance.impression != null && attendance.impression!.isNotEmpty)
+        .length;
+    final totalScoreAssignments = parseResult!.events
+        .expand((event) => event.attendances)
+        .where((attendance) =>
+            attendance.scoreName != null && attendance.scoreName!.isNotEmpty)
+        .length;
+    final uniqueScoreNames = parseResult!.events
+        .expand((event) => event.attendances)
+        .where((attendance) =>
+            attendance.scoreName != null && attendance.scoreName!.isNotEmpty)
+        .map((attendance) => attendance.scoreName!)
+        .toSet()
+        .length;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -76,39 +95,87 @@ class EventDataPreviewStep extends StatelessWidget {
         Card(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            child: Column(
               children: [
-                _buildStatItem(
-                  context,
-                  'Events',
-                  '${parseResult!.events.length}',
-                  Icons.event,
-                  Theme.of(context).colorScheme.primary,
+                // Primary statistics row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildStatItem(
+                      context,
+                      'Events',
+                      '${parseResult!.events.length}',
+                      Icons.event,
+                      Theme.of(context).colorScheme.primary,
+                    ),
+                    _buildStatItem(
+                      context,
+                      'Attendances',
+                      '$totalAttendances',
+                      Icons.people,
+                      context.danceTheme.success,
+                    ),
+                    _buildStatItem(
+                      context,
+                      'Dancers',
+                      '$uniqueDancers',
+                      Icons.person,
+                      Theme.of(context).colorScheme.secondary,
+                    ),
+                    if (parseResult!.summary != null &&
+                        parseResult!.summary!.dancersCreated > 0)
+                      _buildStatItem(
+                        context,
+                        'New Dancers',
+                        '${parseResult!.summary!.dancersCreated}',
+                        Icons.person_add,
+                        Theme.of(context).colorScheme.tertiary,
+                      ),
+                  ],
                 ),
-                _buildStatItem(
-                  context,
-                  'Attendances',
-                  '$totalAttendances',
-                  Icons.people,
-                  context.danceTheme.success,
-                ),
-                _buildStatItem(
-                  context,
-                  'Dancers',
-                  '$uniqueDancers',
-                  Icons.person,
-                  Theme.of(context).colorScheme.secondary,
-                ),
-                if (parseResult!.summary != null &&
-                    parseResult!.summary!.dancersCreated > 0)
-                  _buildStatItem(
-                    context,
-                    'New Dancers',
-                    '${parseResult!.summary!.dancersCreated}',
-                    Icons.person_add,
-                    Theme.of(context).colorScheme.tertiary,
+                // Additional data statistics row (if any rich data exists)
+                if (totalImpressions > 0 || totalScoreAssignments > 0) ...[
+                  const SizedBox(height: 16),
+                  const Divider(),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      if (totalImpressions > 0)
+                        _buildStatItem(
+                          context,
+                          'Impressions',
+                          '$totalImpressions',
+                          Icons.comment,
+                          context.danceTheme.danceAccent,
+                        ),
+                      if (totalScoreAssignments > 0)
+                        _buildStatItem(
+                          context,
+                          'Score Assigns',
+                          '$totalScoreAssignments',
+                          Icons.star_rate,
+                          Theme.of(context).colorScheme.tertiary,
+                        ),
+                      if (uniqueScoreNames > 0)
+                        _buildStatItem(
+                          context,
+                          'Score Types',
+                          '$uniqueScoreNames',
+                          Icons.category,
+                          Theme.of(context)
+                              .colorScheme
+                              .tertiary
+                              .withOpacity(0.7),
+                        ),
+                      // Add spacer if we don't have all 3 stats
+                      if (totalImpressions == 0 ||
+                          totalScoreAssignments == 0 ||
+                          uniqueScoreNames == 0)
+                        const Spacer(),
+                    ],
                   ),
+                ],
               ],
             ),
           ),
@@ -145,6 +212,7 @@ class EventDataPreviewStep extends StatelessWidget {
                 Text(
                   '• Duplicate events will be automatically skipped\n'
                   '• Missing dancers will be automatically created\n'
+                  '• Dance impressions and score assignments will be preserved\n'
                   '• All events will be imported immediately',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -211,6 +279,7 @@ class EventDataPreviewStep extends StatelessWidget {
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 2),
                               child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Icon(
                                     _getStatusIcon(attendance.status),
@@ -220,22 +289,98 @@ class EventDataPreviewStep extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 8),
                                   Expanded(
-                                    child: Text(
-                                      '${attendance.dancerName}${isNew ? ' (new)' : ''}',
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                  ),
-                                  Text(
-                                    attendance.status,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                          color: _getStatusColor(
-                                              context, attendance.status),
-                                          fontWeight: FontWeight.w500,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // Main dancer info line
+                                        RichText(
+                                          text: TextSpan(
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall,
+                                            children: [
+                                              TextSpan(
+                                                text: attendance.dancerName,
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              if (isNew)
+                                                TextSpan(
+                                                  text: ' (new)',
+                                                  style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              TextSpan(
+                                                text: ' • ${attendance.status}',
+                                                style: TextStyle(
+                                                  color: _getStatusColor(
+                                                      context,
+                                                      attendance.status),
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
+                                        // Additional data (impression, score) if present
+                                        if (attendance.impression != null ||
+                                            attendance.scoreName != null) ...[
+                                          const SizedBox(height: 2),
+                                          RichText(
+                                            text: TextSpan(
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall
+                                                  ?.copyWith(
+                                                    fontSize: 12,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onSurfaceVariant,
+                                                  ),
+                                              children: [
+                                                if (attendance.impression !=
+                                                    null) ...[
+                                                  TextSpan(
+                                                    text:
+                                                        attendance.impression!,
+                                                    style: const TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                    ),
+                                                  ),
+                                                ],
+                                                if (attendance.impression !=
+                                                        null &&
+                                                    attendance.scoreName !=
+                                                        null)
+                                                  const TextSpan(text: ' • '),
+                                                if (attendance.scoreName !=
+                                                    null) ...[
+                                                  const TextSpan(
+                                                      text: 'Score: '),
+                                                  TextSpan(
+                                                    text: attendance.scoreName!,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),

@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.57.0] - 2025-01-15
+
+### User Requests
+- "event import preview should show all the imported data for the attendance record (in compact form, e.g. collate the impression)"
+
+### Improved
+- **Event Import Preview**: Enhanced attendance records display to show all imported data in compact form
+  - **Comprehensive Data**: Displays dancer name, status, impression notes, and score assignments
+  - **Compact Layout**: Multi-line compact format with main info on first line and rich data details below
+  - **Visual Hierarchy**: Clear separation between primary data (name/status) and secondary data (impressions/scores)
+  - **Rich Statistics**: Added statistics for impressions count, score assignments, and unique score types
+  - **Data Summary**: Enhanced behavior info to mention preservation of impressions and score assignments
+
+### Added
+- **Impression Display**: Shows dance impressions in italicized format below dancer info when present
+- **Score Assignment Display**: Shows score names with "Score:" prefix in secondary color when present
+- **Enhanced Statistics**: Added secondary statistics row showing:
+  - Impressions count with comment icon
+  - Score assignments count with star rate icon
+  - Unique score types count with category icon
+- **Combined Data View**: Efficiently displays both impression and score data on same line when both present
+
+### Technical
+- Enhanced `EventDataPreviewStep` attendance display from simple row to multi-line column layout
+- Added impression and score name display with proper styling and color theming
+- Implemented rich data statistics calculation for import preview summary
+- Added conditional secondary statistics row with divider for clean visual separation
+- Applied proper text styling with italic impressions and highlighted score names
+- Updated automatic behavior information to mention data preservation
+
 ## [v0.56.3] - 2025-01-15
 
 ### User Requests

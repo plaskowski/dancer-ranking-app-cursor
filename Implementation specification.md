@@ -367,13 +367,19 @@ Users can adjust rankings during events for various reasons:
 2.  **Parsing & Validation**: The app parses the file and performs a "dry run" to validate the data.
     - It checks for duplicate events and identifies new dancers that will be created.
     - Validates score names and identifies missing scores that will be auto-created.
-3.  **Data Preview**: The user is shown a preview of the events to be imported.
+3.  **Data Preview**: The user is shown a comprehensive preview of the events to be imported with enhanced statistics and detailed attendance data.
+    - **Enhanced Statistics**: Primary row shows events, attendances, dancers, and new dancers count
+    - **Rich Data Statistics**: Secondary row displays impression count, score assignment count, and unique score types when present
+    - **Visual Hierarchy**: Clear separation between basic and advanced statistics with divider
     - Each event in the list displays its name, date, and number of attendees. The new dancer count is appended to the attendance info (e.g., "15 attendances (3 new)").
-    - **Score Information**: Shows count of score assignments and new scores to be created (e.g., "12 score assignments (2 new scores)")
     - **Duplicate Indication**: Events that already exist in the database are clearly marked and shown as "Skipped".
-    - Users can expand each event to see the list of attendees.
-    - **New Dancer Highlighting**: Within the attendee list, dancers who do not yet exist in the database are marked with a " (new)" text label next to their name.
-    - **Score Preview**: Shows scores that will be assigned to dancers with "served" status.
+    - Users can expand each event to see the detailed list of attendees with all imported data.
+    - **Comprehensive Attendance Display**: 
+      - **Compact Multi-line Format**: Main line shows dancer name (with "new" indicator), status with colored icon
+      - **Rich Data Details**: Secondary line shows impression text in italics and score assignments with "Score:" prefix
+      - **Visual Styling**: Impressions in italic format, score names highlighted in secondary color
+      - **Combined Display**: Efficiently shows both impression and score data when both present
+    - **Data Preservation Notice**: Automatic behavior section mentions preservation of impressions and score assignments
 4.  **Confirmation**: User confirms the import.
 5.  **Import**: The app imports the valid events and attendees with score assignments.
     - Duplicate events are automatically skipped.
