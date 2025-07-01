@@ -10,11 +10,10 @@ What is needed:
 - ✅ import dancers (with tags and notes)
 - ✅ import historical events (with attendances full data)
   - create missing dancers
-  - create missing scores
 - support putting a score on a present person in the event
   - have a scores dictionary for that (they should have a global order)
   - one can assign score independently from their status
-  - support scores in events import
+  - support scores in events import (create missing)
 - have an info when I first met given person
   - either as explicit date set on dancer or calulated at runtime as the date of our first dance
   - on current and summary tab indicate that I first met them at that party
