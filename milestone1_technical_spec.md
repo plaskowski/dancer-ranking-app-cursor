@@ -99,18 +99,18 @@ Pre-populate Scores table with standard scoring scale:
 - Group attendances by assigned scores (Amazing, Great, Good, etc.)
 - Show unscored attendances in separate section
 - Tap dancer to edit score and impression
-- Display first met indicators for new people
+- Display ⭐ indicators for first met people
 - Empty state for events with no attendances
 
 **UI Structure**:
 ```
 Summary Tab
 ├── Score Group: "Amazing" (2 people)
-│   ├── Alice • first met here
+│   ├── Alice ⭐
 │   └── Bob
 ├── Score Group: "Great" (3 people)
 │   ├── Carol
-│   ├── Dave • first met here  
+│   ├── Dave ⭐
 │   └── Eve
 ├── Unscored (1 person)
 │   └── Frank
@@ -121,14 +121,13 @@ Summary Tab
 **Changes**:
 - Add score assignment to dancer action dialogs
 - Show current score (if any) in dancer cards
-  - Add "⭐ first met here" indicator for new people // I want the star only to avoid clutter
+  - Add "⭐" indicator for new people
 - Update dancer actions to include score management
 
 ### 3.4 Enhanced Dancer Actions Dialog
 **New Actions**:
 - "Assign Score" (if no score assigned) → Opens Ranking Dialog modified to show scores instead of ranks
 - "Edit Score" (if score already assigned) → Opens same score selection dialog
-- Combined "Record Dance & Score" action // don't combine these, usually I fill the scores after the party
 
 ## 4. Enhanced Import System
 
@@ -136,12 +135,11 @@ Summary Tab
 **Changes**:
 - Parse optional `score` field in attendance records
 - Parse optional `first_met` boolean flag in attendance records
-- Validate score names against known values // do we need this?
 
 ### 4.2 Enhanced EventImportValidator (`lib/services/event_import_validator.dart`)
 **Changes**:
-- Validate score names exist in database (missing scores will be auto-created)
 - Validate `first_met` field is boolean when present
+- Basic validation of score field format (missing scores will be auto-created)
 
 ### 4.3 Enhanced EventImportService (`lib/services/event_import_service.dart`)
 **Changes**:
@@ -159,13 +157,15 @@ Summary Tab
 
 ### 5.1 Calculation Strategy
 **Priority Order**:
-1. **Explicit date** - If `first_met_date` set on dancer record
+1. **Explicit date** - If `first_met_date` set on dancer record (only used for dancers met before tracked events)
 2. **Calculated date** - Earliest attendance with `status = 'served'`
 3. **No date** - Return null if never danced
 
+**Note**: The explicit `first_met_date` value should only be used for dancers met before the events you have tracked. For all other cases, use the attendance data with `first_met = true` flags.
+
 ### 5.2 UI Integration
 **Display Rules**:
-- Show "⭐ first met here" indicator when attendance record has `first_met = true`
+- Show "⭐" indicator when attendance record has `first_met = true`
 - Show on both Present tab and Summary tab
 - Only show for attendances with `status = 'served'` and `first_met = true`
 
@@ -219,7 +219,7 @@ EventImportService ← ScoreService (for missing score creation)
 
 ### 7.3 UI Testing
 - Test Summary tab with various score distributions
-- Test first met indicators appear correctly
+- Test "⭐" indicators appear correctly for first met attendances
 - Test score assignment and editing workflows
 - Test empty states and edge cases
 
@@ -233,7 +233,7 @@ EventImportService ← ScoreService (for missing score creation)
 
 ### Phase 2: UI Components
 1. Enhanced Dancer Actions Dialog with score management
-2. Enhanced Present Tab with score display and first met indicators
+2. Enhanced Present Tab with score display and ⭐ indicators
 3. New Summary Tab implementation
 
 ### Phase 3: Event Screen Integration
