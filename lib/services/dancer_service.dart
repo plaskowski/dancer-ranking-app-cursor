@@ -119,6 +119,46 @@ class DancerService {
     }
   }
 
+  // Update first met date for a dancer (for dancers met before event tracking)
+  Future<bool> updateFirstMetDate(int id, DateTime? firstMetDate) async {
+    ActionLogger.logServiceCall('DancerService', 'updateFirstMetDate', {
+      'dancerId': id,
+      'firstMetDate': firstMetDate?.toIso8601String(),
+    });
+
+    try {
+      final dancer = await getDancer(id);
+      if (dancer == null) {
+        ActionLogger.logError(
+            'DancerService.updateFirstMetDate', 'dancer_not_found', {
+          'dancerId': id,
+        });
+        return false;
+      }
+
+      final result = await _database.update(_database.dancers).replace(
+            dancer.copyWith(
+              firstMetDate: Value(firstMetDate),
+            ),
+          );
+
+      ActionLogger.logDbOperation('UPDATE', 'dancers', {
+        'id': id,
+        'oldFirstMetDate': dancer.firstMetDate?.toIso8601String(),
+        'newFirstMetDate': firstMetDate?.toIso8601String(),
+        'success': result,
+      });
+
+      return result;
+    } catch (e) {
+      ActionLogger.logError('DancerService.updateFirstMetDate', e.toString(), {
+        'dancerId': id,
+        'firstMetDate': firstMetDate?.toIso8601String(),
+      });
+      return false;
+    }
+  }
+
   // Delete a dancer (this will cascade delete rankings and attendances)
   Future<int> deleteDancer(int id) async {
     ActionLogger.logServiceCall('DancerService', 'deleteDancer', {

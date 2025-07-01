@@ -4,6 +4,45 @@ All notable changes to the Dancer Ranking App will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.53.0] - 2025-01-13
+
+### User Requests
+- "Let's implement the phases one by one, commiting and testing in between" - implementing Milestone 1 features phase by phase
+
+### Added
+- **Phase 1 Foundation**: Core infrastructure for scores system and first met tracking
+  - **Scores Table**: New post-dance rating system with ordinal ordering (1=best, 5=worst)
+  - **Enhanced Attendances**: Added `scoreId` and `firstMet` fields for comprehensive dance tracking
+  - **Enhanced Dancers**: Added `firstMetDate` field for pre-tracking meeting dates
+  - **Default Scores**: Pre-populated with "Amazing", "Great", "Good", "Okay", "Meh" ratings
+  - **Database Migration**: Automatic schema upgrade from v4 to v5 with first met flag initialization
+
+### Technical
+- **ScoreService**: Complete CRUD operations for score management with archive support
+- **Enhanced AttendanceService**: Added `assignScore()`, `removeScore()`, `updateFirstMet()` methods
+- **Enhanced DancerService**: Added `updateFirstMetDate()` method for pre-tracking meetings
+- **Migration Strategy**: Intelligent first met flag setting on earliest served attendance per dancer
+- **Schema Version**: Upgraded database to v5 with backward-compatible migration
+
+### Database Schema Changes
+- **Scores Table**: `id`, `name`, `ordinal`, `isArchived`, `createdAt`, `updatedAt`
+- **Attendances Table**: Added `scoreId` (nullable reference), `firstMet` (boolean with default false)
+- **Dancers Table**: Added `firstMetDate` (nullable datetime) for explicit pre-tracking dates
+
+### Services Architecture
+- **ScoreService**: Full lifecycle management with default score handling and conflict resolution
+- **Consistent Patterns**: Following established service patterns with action logging and error handling
+- **Transaction Safety**: Proper database transaction handling for complex operations
+
+### Files Added
+- **lib/services/score_service.dart**: Complete score management service with CRUD operations
+
+### Files Modified
+- **lib/database/tables.dart**: Added Scores table and enhanced Attendances/Dancers tables
+- **lib/database/database.dart**: Added migration logic and default score insertion
+- **lib/services/attendance_service.dart**: Enhanced with score assignment and first met tracking
+- **lib/services/dancer_service.dart**: Added first met date management functionality
+
 ## [v0.52.0] - 2025-01-13
 
 ### User Requests

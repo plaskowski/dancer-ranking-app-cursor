@@ -13,6 +13,8 @@ class Dancers extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 1, max: 100)();
   TextColumn get notes => text().nullable()();
+  DateTimeColumn get firstMetDate =>
+      dateTime().nullable()(); // For dancers met before tracked events
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 }
 
@@ -23,6 +25,17 @@ class Ranks extends Table {
   IntColumn get ordinal => integer()(); // 1 = best, 5 = worst
   BoolColumn get isArchived => boolean().withDefault(
       const Constant(false))(); // Archived ranks are hidden from new events
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+// Scores table (post-dance rating system)
+class Scores extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get name => text().withLength(min: 1, max: 50).unique()();
+  IntColumn get ordinal => integer()(); // 1 = best, 5 = worst (like Ranks)
+  BoolColumn get isArchived => boolean().withDefault(
+      const Constant(false))(); // Hide from new events but keep in history
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
 }
@@ -60,6 +73,11 @@ class Attendances extends Table {
   DateTimeColumn get dancedAt => dateTime().nullable()(); // When dance occurred
   TextColumn get impression =>
       text().nullable()(); // Post-dance impression/notes
+  IntColumn get scoreId => integer()
+      .references(Scores, #id)
+      .nullable()(); // Post-dance score assignment
+  BoolColumn get firstMet =>
+      boolean().withDefault(const Constant(false))(); // First met flag
 
   @override
   List<Set<Column>> get uniqueKeys => [

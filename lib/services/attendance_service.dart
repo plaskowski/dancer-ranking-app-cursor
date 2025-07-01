@@ -377,6 +377,141 @@ class AttendanceService {
       notDancedCount: presentCount - dancedCount,
     );
   }
+
+  // Assign a score to an attendance record
+  Future<bool> assignScore(int eventId, int dancerId, int scoreId) async {
+    ActionLogger.logServiceCall('AttendanceService', 'assignScore', {
+      'eventId': eventId,
+      'dancerId': dancerId,
+      'scoreId': scoreId,
+    });
+
+    try {
+      final attendance = await getAttendance(eventId, dancerId);
+      if (attendance == null) {
+        ActionLogger.logError(
+            'AttendanceService.assignScore', 'attendance_not_found', {
+          'eventId': eventId,
+          'dancerId': dancerId,
+        });
+        return false;
+      }
+
+      final result = await _database.update(_database.attendances).replace(
+            attendance.copyWith(
+              scoreId: Value(scoreId),
+            ),
+          );
+
+      ActionLogger.logDbOperation('UPDATE', 'attendances', {
+        'id': attendance.id,
+        'eventId': eventId,
+        'dancerId': dancerId,
+        'scoreId': scoreId,
+        'success': result,
+      });
+
+      return result;
+    } catch (e) {
+      ActionLogger.logError('AttendanceService.assignScore', e.toString(), {
+        'eventId': eventId,
+        'dancerId': dancerId,
+        'scoreId': scoreId,
+      });
+      return false;
+    }
+  }
+
+  // Remove score assignment from an attendance record
+  Future<bool> removeScore(int eventId, int dancerId) async {
+    ActionLogger.logServiceCall('AttendanceService', 'removeScore', {
+      'eventId': eventId,
+      'dancerId': dancerId,
+    });
+
+    try {
+      final attendance = await getAttendance(eventId, dancerId);
+      if (attendance == null) {
+        ActionLogger.logError(
+            'AttendanceService.removeScore', 'attendance_not_found', {
+          'eventId': eventId,
+          'dancerId': dancerId,
+        });
+        return false;
+      }
+
+      final result = await _database.update(_database.attendances).replace(
+            attendance.copyWith(),
+          );
+
+      ActionLogger.logDbOperation('UPDATE', 'attendances', {
+        'id': attendance.id,
+        'eventId': eventId,
+        'dancerId': dancerId,
+        'action': 'remove_score',
+        'success': result,
+      });
+
+      return result;
+    } catch (e) {
+      ActionLogger.logError('AttendanceService.removeScore', e.toString(), {
+        'eventId': eventId,
+        'dancerId': dancerId,
+      });
+      return false;
+    }
+  }
+
+  // Get current score for an attendance record
+  Future<int?> getAttendanceScore(int eventId, int dancerId) async {
+    final attendance = await getAttendance(eventId, dancerId);
+    return attendance?.scoreId;
+  }
+
+  // Update first met flag for an attendance record
+  Future<bool> updateFirstMet(
+      int eventId, int dancerId, bool isFirstMet) async {
+    ActionLogger.logServiceCall('AttendanceService', 'updateFirstMet', {
+      'eventId': eventId,
+      'dancerId': dancerId,
+      'isFirstMet': isFirstMet,
+    });
+
+    try {
+      final attendance = await getAttendance(eventId, dancerId);
+      if (attendance == null) {
+        ActionLogger.logError(
+            'AttendanceService.updateFirstMet', 'attendance_not_found', {
+          'eventId': eventId,
+          'dancerId': dancerId,
+        });
+        return false;
+      }
+
+      final result = await _database.update(_database.attendances).replace(
+            attendance.copyWith(
+              firstMet: isFirstMet,
+            ),
+          );
+
+      ActionLogger.logDbOperation('UPDATE', 'attendances', {
+        'id': attendance.id,
+        'eventId': eventId,
+        'dancerId': dancerId,
+        'firstMet': isFirstMet,
+        'success': result,
+      });
+
+      return result;
+    } catch (e) {
+      ActionLogger.logError('AttendanceService.updateFirstMet', e.toString(), {
+        'eventId': eventId,
+        'dancerId': dancerId,
+        'isFirstMet': isFirstMet,
+      });
+      return false;
+    }
+  }
 }
 
 // Helper class for attendance with dancer info

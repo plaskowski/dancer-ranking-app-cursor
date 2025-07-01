@@ -287,6 +287,12 @@ class $DancersTable extends Dancers with TableInfo<$DancersTable, Dancer> {
   late final GeneratedColumn<String> notes = GeneratedColumn<String>(
       'notes', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _firstMetDateMeta =
+      const VerificationMeta('firstMetDate');
+  @override
+  late final GeneratedColumn<DateTime> firstMetDate = GeneratedColumn<DateTime>(
+      'first_met_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   static const VerificationMeta _createdAtMeta =
       const VerificationMeta('createdAt');
   @override
@@ -296,7 +302,8 @@ class $DancersTable extends Dancers with TableInfo<$DancersTable, Dancer> {
       requiredDuringInsert: false,
       defaultValue: currentDateAndTime);
   @override
-  List<GeneratedColumn> get $columns => [id, name, notes, createdAt];
+  List<GeneratedColumn> get $columns =>
+      [id, name, notes, firstMetDate, createdAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -320,6 +327,12 @@ class $DancersTable extends Dancers with TableInfo<$DancersTable, Dancer> {
       context.handle(
           _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
     }
+    if (data.containsKey('first_met_date')) {
+      context.handle(
+          _firstMetDateMeta,
+          firstMetDate.isAcceptableOrUnknown(
+              data['first_met_date']!, _firstMetDateMeta));
+    }
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
@@ -339,6 +352,8 @@ class $DancersTable extends Dancers with TableInfo<$DancersTable, Dancer> {
           .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       notes: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}notes']),
+      firstMetDate: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}first_met_date']),
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
     );
@@ -354,11 +369,13 @@ class Dancer extends DataClass implements Insertable<Dancer> {
   final int id;
   final String name;
   final String? notes;
+  final DateTime? firstMetDate;
   final DateTime createdAt;
   const Dancer(
       {required this.id,
       required this.name,
       this.notes,
+      this.firstMetDate,
       required this.createdAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -367,6 +384,9 @@ class Dancer extends DataClass implements Insertable<Dancer> {
     map['name'] = Variable<String>(name);
     if (!nullToAbsent || notes != null) {
       map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || firstMetDate != null) {
+      map['first_met_date'] = Variable<DateTime>(firstMetDate);
     }
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
@@ -378,6 +398,9 @@ class Dancer extends DataClass implements Insertable<Dancer> {
       name: Value(name),
       notes:
           notes == null && nullToAbsent ? const Value.absent() : Value(notes),
+      firstMetDate: firstMetDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(firstMetDate),
       createdAt: Value(createdAt),
     );
   }
@@ -389,6 +412,7 @@ class Dancer extends DataClass implements Insertable<Dancer> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       notes: serializer.fromJson<String?>(json['notes']),
+      firstMetDate: serializer.fromJson<DateTime?>(json['firstMetDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
@@ -399,6 +423,7 @@ class Dancer extends DataClass implements Insertable<Dancer> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'notes': serializer.toJson<String?>(notes),
+      'firstMetDate': serializer.toJson<DateTime?>(firstMetDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
@@ -407,11 +432,14 @@ class Dancer extends DataClass implements Insertable<Dancer> {
           {int? id,
           String? name,
           Value<String?> notes = const Value.absent(),
+          Value<DateTime?> firstMetDate = const Value.absent(),
           DateTime? createdAt}) =>
       Dancer(
         id: id ?? this.id,
         name: name ?? this.name,
         notes: notes.present ? notes.value : this.notes,
+        firstMetDate:
+            firstMetDate.present ? firstMetDate.value : this.firstMetDate,
         createdAt: createdAt ?? this.createdAt,
       );
   Dancer copyWithCompanion(DancersCompanion data) {
@@ -419,6 +447,9 @@ class Dancer extends DataClass implements Insertable<Dancer> {
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       notes: data.notes.present ? data.notes.value : this.notes,
+      firstMetDate: data.firstMetDate.present
+          ? data.firstMetDate.value
+          : this.firstMetDate,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
@@ -429,13 +460,14 @@ class Dancer extends DataClass implements Insertable<Dancer> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('notes: $notes, ')
+          ..write('firstMetDate: $firstMetDate, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, notes, createdAt);
+  int get hashCode => Object.hash(id, name, notes, firstMetDate, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -443,6 +475,7 @@ class Dancer extends DataClass implements Insertable<Dancer> {
           other.id == this.id &&
           other.name == this.name &&
           other.notes == this.notes &&
+          other.firstMetDate == this.firstMetDate &&
           other.createdAt == this.createdAt);
 }
 
@@ -450,29 +483,34 @@ class DancersCompanion extends UpdateCompanion<Dancer> {
   final Value<int> id;
   final Value<String> name;
   final Value<String?> notes;
+  final Value<DateTime?> firstMetDate;
   final Value<DateTime> createdAt;
   const DancersCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.notes = const Value.absent(),
+    this.firstMetDate = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
   DancersCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     this.notes = const Value.absent(),
+    this.firstMetDate = const Value.absent(),
     this.createdAt = const Value.absent(),
   }) : name = Value(name);
   static Insertable<Dancer> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? notes,
+    Expression<DateTime>? firstMetDate,
     Expression<DateTime>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (notes != null) 'notes': notes,
+      if (firstMetDate != null) 'first_met_date': firstMetDate,
       if (createdAt != null) 'created_at': createdAt,
     });
   }
@@ -481,11 +519,13 @@ class DancersCompanion extends UpdateCompanion<Dancer> {
       {Value<int>? id,
       Value<String>? name,
       Value<String?>? notes,
+      Value<DateTime?>? firstMetDate,
       Value<DateTime>? createdAt}) {
     return DancersCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       notes: notes ?? this.notes,
+      firstMetDate: firstMetDate ?? this.firstMetDate,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -502,6 +542,9 @@ class DancersCompanion extends UpdateCompanion<Dancer> {
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
     }
+    if (firstMetDate.present) {
+      map['first_met_date'] = Variable<DateTime>(firstMetDate.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -514,6 +557,7 @@ class DancersCompanion extends UpdateCompanion<Dancer> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('notes: $notes, ')
+          ..write('firstMetDate: $firstMetDate, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
@@ -1245,6 +1289,347 @@ class RankingsCompanion extends UpdateCompanion<Ranking> {
   }
 }
 
+class $ScoresTable extends Scores with TableInfo<$ScoresTable, Score> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ScoresTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 1, maxTextLength: 50),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _ordinalMeta =
+      const VerificationMeta('ordinal');
+  @override
+  late final GeneratedColumn<int> ordinal = GeneratedColumn<int>(
+      'ordinal', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _isArchivedMeta =
+      const VerificationMeta('isArchived');
+  @override
+  late final GeneratedColumn<bool> isArchived = GeneratedColumn<bool>(
+      'is_archived', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_archived" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, name, ordinal, isArchived, createdAt, updatedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'scores';
+  @override
+  VerificationContext validateIntegrity(Insertable<Score> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('ordinal')) {
+      context.handle(_ordinalMeta,
+          ordinal.isAcceptableOrUnknown(data['ordinal']!, _ordinalMeta));
+    } else if (isInserting) {
+      context.missing(_ordinalMeta);
+    }
+    if (data.containsKey('is_archived')) {
+      context.handle(
+          _isArchivedMeta,
+          isArchived.isAcceptableOrUnknown(
+              data['is_archived']!, _isArchivedMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Score map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Score(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      ordinal: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}ordinal'])!,
+      isArchived: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_archived'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+    );
+  }
+
+  @override
+  $ScoresTable createAlias(String alias) {
+    return $ScoresTable(attachedDatabase, alias);
+  }
+}
+
+class Score extends DataClass implements Insertable<Score> {
+  final int id;
+  final String name;
+  final int ordinal;
+  final bool isArchived;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const Score(
+      {required this.id,
+      required this.name,
+      required this.ordinal,
+      required this.isArchived,
+      required this.createdAt,
+      required this.updatedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['ordinal'] = Variable<int>(ordinal);
+    map['is_archived'] = Variable<bool>(isArchived);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  ScoresCompanion toCompanion(bool nullToAbsent) {
+    return ScoresCompanion(
+      id: Value(id),
+      name: Value(name),
+      ordinal: Value(ordinal),
+      isArchived: Value(isArchived),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory Score.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Score(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      ordinal: serializer.fromJson<int>(json['ordinal']),
+      isArchived: serializer.fromJson<bool>(json['isArchived']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'ordinal': serializer.toJson<int>(ordinal),
+      'isArchived': serializer.toJson<bool>(isArchived),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  Score copyWith(
+          {int? id,
+          String? name,
+          int? ordinal,
+          bool? isArchived,
+          DateTime? createdAt,
+          DateTime? updatedAt}) =>
+      Score(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        ordinal: ordinal ?? this.ordinal,
+        isArchived: isArchived ?? this.isArchived,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
+  Score copyWithCompanion(ScoresCompanion data) {
+    return Score(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      ordinal: data.ordinal.present ? data.ordinal.value : this.ordinal,
+      isArchived:
+          data.isArchived.present ? data.isArchived.value : this.isArchived,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Score(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('ordinal: $ordinal, ')
+          ..write('isArchived: $isArchived, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, name, ordinal, isArchived, createdAt, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Score &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.ordinal == this.ordinal &&
+          other.isArchived == this.isArchived &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class ScoresCompanion extends UpdateCompanion<Score> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<int> ordinal;
+  final Value<bool> isArchived;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  const ScoresCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.ordinal = const Value.absent(),
+    this.isArchived = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  ScoresCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    required int ordinal,
+    this.isArchived = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  })  : name = Value(name),
+        ordinal = Value(ordinal);
+  static Insertable<Score> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<int>? ordinal,
+    Expression<bool>? isArchived,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (ordinal != null) 'ordinal': ordinal,
+      if (isArchived != null) 'is_archived': isArchived,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  ScoresCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? name,
+      Value<int>? ordinal,
+      Value<bool>? isArchived,
+      Value<DateTime>? createdAt,
+      Value<DateTime>? updatedAt}) {
+    return ScoresCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      ordinal: ordinal ?? this.ordinal,
+      isArchived: isArchived ?? this.isArchived,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (ordinal.present) {
+      map['ordinal'] = Variable<int>(ordinal.value);
+    }
+    if (isArchived.present) {
+      map['is_archived'] = Variable<bool>(isArchived.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ScoresCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('ordinal: $ordinal, ')
+          ..write('isArchived: $isArchived, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $AttendancesTable extends Attendances
     with TableInfo<$AttendancesTable, Attendance> {
   @override
@@ -1305,9 +1690,37 @@ class $AttendancesTable extends Attendances
   late final GeneratedColumn<String> impression = GeneratedColumn<String>(
       'impression', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _scoreIdMeta =
+      const VerificationMeta('scoreId');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, eventId, dancerId, markedAt, status, dancedAt, impression];
+  late final GeneratedColumn<int> scoreId = GeneratedColumn<int>(
+      'score_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES scores (id)'));
+  static const VerificationMeta _firstMetMeta =
+      const VerificationMeta('firstMet');
+  @override
+  late final GeneratedColumn<bool> firstMet = GeneratedColumn<bool>(
+      'first_met', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("first_met" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        eventId,
+        dancerId,
+        markedAt,
+        status,
+        dancedAt,
+        impression,
+        scoreId,
+        firstMet
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1351,6 +1764,14 @@ class $AttendancesTable extends Attendances
           impression.isAcceptableOrUnknown(
               data['impression']!, _impressionMeta));
     }
+    if (data.containsKey('score_id')) {
+      context.handle(_scoreIdMeta,
+          scoreId.isAcceptableOrUnknown(data['score_id']!, _scoreIdMeta));
+    }
+    if (data.containsKey('first_met')) {
+      context.handle(_firstMetMeta,
+          firstMet.isAcceptableOrUnknown(data['first_met']!, _firstMetMeta));
+    }
     return context;
   }
 
@@ -1378,6 +1799,10 @@ class $AttendancesTable extends Attendances
           .read(DriftSqlType.dateTime, data['${effectivePrefix}danced_at']),
       impression: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}impression']),
+      scoreId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}score_id']),
+      firstMet: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}first_met'])!,
     );
   }
 
@@ -1395,6 +1820,8 @@ class Attendance extends DataClass implements Insertable<Attendance> {
   final String status;
   final DateTime? dancedAt;
   final String? impression;
+  final int? scoreId;
+  final bool firstMet;
   const Attendance(
       {required this.id,
       required this.eventId,
@@ -1402,7 +1829,9 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       required this.markedAt,
       required this.status,
       this.dancedAt,
-      this.impression});
+      this.impression,
+      this.scoreId,
+      required this.firstMet});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1417,6 +1846,10 @@ class Attendance extends DataClass implements Insertable<Attendance> {
     if (!nullToAbsent || impression != null) {
       map['impression'] = Variable<String>(impression);
     }
+    if (!nullToAbsent || scoreId != null) {
+      map['score_id'] = Variable<int>(scoreId);
+    }
+    map['first_met'] = Variable<bool>(firstMet);
     return map;
   }
 
@@ -1433,6 +1866,10 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       impression: impression == null && nullToAbsent
           ? const Value.absent()
           : Value(impression),
+      scoreId: scoreId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(scoreId),
+      firstMet: Value(firstMet),
     );
   }
 
@@ -1447,6 +1884,8 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       status: serializer.fromJson<String>(json['status']),
       dancedAt: serializer.fromJson<DateTime?>(json['dancedAt']),
       impression: serializer.fromJson<String?>(json['impression']),
+      scoreId: serializer.fromJson<int?>(json['scoreId']),
+      firstMet: serializer.fromJson<bool>(json['firstMet']),
     );
   }
   @override
@@ -1460,6 +1899,8 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       'status': serializer.toJson<String>(status),
       'dancedAt': serializer.toJson<DateTime?>(dancedAt),
       'impression': serializer.toJson<String?>(impression),
+      'scoreId': serializer.toJson<int?>(scoreId),
+      'firstMet': serializer.toJson<bool>(firstMet),
     };
   }
 
@@ -1470,7 +1911,9 @@ class Attendance extends DataClass implements Insertable<Attendance> {
           DateTime? markedAt,
           String? status,
           Value<DateTime?> dancedAt = const Value.absent(),
-          Value<String?> impression = const Value.absent()}) =>
+          Value<String?> impression = const Value.absent(),
+          Value<int?> scoreId = const Value.absent(),
+          bool? firstMet}) =>
       Attendance(
         id: id ?? this.id,
         eventId: eventId ?? this.eventId,
@@ -1479,6 +1922,8 @@ class Attendance extends DataClass implements Insertable<Attendance> {
         status: status ?? this.status,
         dancedAt: dancedAt.present ? dancedAt.value : this.dancedAt,
         impression: impression.present ? impression.value : this.impression,
+        scoreId: scoreId.present ? scoreId.value : this.scoreId,
+        firstMet: firstMet ?? this.firstMet,
       );
   Attendance copyWithCompanion(AttendancesCompanion data) {
     return Attendance(
@@ -1490,6 +1935,8 @@ class Attendance extends DataClass implements Insertable<Attendance> {
       dancedAt: data.dancedAt.present ? data.dancedAt.value : this.dancedAt,
       impression:
           data.impression.present ? data.impression.value : this.impression,
+      scoreId: data.scoreId.present ? data.scoreId.value : this.scoreId,
+      firstMet: data.firstMet.present ? data.firstMet.value : this.firstMet,
     );
   }
 
@@ -1502,14 +1949,16 @@ class Attendance extends DataClass implements Insertable<Attendance> {
           ..write('markedAt: $markedAt, ')
           ..write('status: $status, ')
           ..write('dancedAt: $dancedAt, ')
-          ..write('impression: $impression')
+          ..write('impression: $impression, ')
+          ..write('scoreId: $scoreId, ')
+          ..write('firstMet: $firstMet')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id, eventId, dancerId, markedAt, status, dancedAt, impression);
+  int get hashCode => Object.hash(id, eventId, dancerId, markedAt, status,
+      dancedAt, impression, scoreId, firstMet);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1520,7 +1969,9 @@ class Attendance extends DataClass implements Insertable<Attendance> {
           other.markedAt == this.markedAt &&
           other.status == this.status &&
           other.dancedAt == this.dancedAt &&
-          other.impression == this.impression);
+          other.impression == this.impression &&
+          other.scoreId == this.scoreId &&
+          other.firstMet == this.firstMet);
 }
 
 class AttendancesCompanion extends UpdateCompanion<Attendance> {
@@ -1531,6 +1982,8 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
   final Value<String> status;
   final Value<DateTime?> dancedAt;
   final Value<String?> impression;
+  final Value<int?> scoreId;
+  final Value<bool> firstMet;
   const AttendancesCompanion({
     this.id = const Value.absent(),
     this.eventId = const Value.absent(),
@@ -1539,6 +1992,8 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
     this.status = const Value.absent(),
     this.dancedAt = const Value.absent(),
     this.impression = const Value.absent(),
+    this.scoreId = const Value.absent(),
+    this.firstMet = const Value.absent(),
   });
   AttendancesCompanion.insert({
     this.id = const Value.absent(),
@@ -1548,6 +2003,8 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
     this.status = const Value.absent(),
     this.dancedAt = const Value.absent(),
     this.impression = const Value.absent(),
+    this.scoreId = const Value.absent(),
+    this.firstMet = const Value.absent(),
   })  : eventId = Value(eventId),
         dancerId = Value(dancerId);
   static Insertable<Attendance> custom({
@@ -1558,6 +2015,8 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
     Expression<String>? status,
     Expression<DateTime>? dancedAt,
     Expression<String>? impression,
+    Expression<int>? scoreId,
+    Expression<bool>? firstMet,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1567,6 +2026,8 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
       if (status != null) 'status': status,
       if (dancedAt != null) 'danced_at': dancedAt,
       if (impression != null) 'impression': impression,
+      if (scoreId != null) 'score_id': scoreId,
+      if (firstMet != null) 'first_met': firstMet,
     });
   }
 
@@ -1577,7 +2038,9 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
       Value<DateTime>? markedAt,
       Value<String>? status,
       Value<DateTime?>? dancedAt,
-      Value<String?>? impression}) {
+      Value<String?>? impression,
+      Value<int?>? scoreId,
+      Value<bool>? firstMet}) {
     return AttendancesCompanion(
       id: id ?? this.id,
       eventId: eventId ?? this.eventId,
@@ -1586,6 +2049,8 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
       status: status ?? this.status,
       dancedAt: dancedAt ?? this.dancedAt,
       impression: impression ?? this.impression,
+      scoreId: scoreId ?? this.scoreId,
+      firstMet: firstMet ?? this.firstMet,
     );
   }
 
@@ -1613,6 +2078,12 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
     if (impression.present) {
       map['impression'] = Variable<String>(impression.value);
     }
+    if (scoreId.present) {
+      map['score_id'] = Variable<int>(scoreId.value);
+    }
+    if (firstMet.present) {
+      map['first_met'] = Variable<bool>(firstMet.value);
+    }
     return map;
   }
 
@@ -1625,7 +2096,9 @@ class AttendancesCompanion extends UpdateCompanion<Attendance> {
           ..write('markedAt: $markedAt, ')
           ..write('status: $status, ')
           ..write('dancedAt: $dancedAt, ')
-          ..write('impression: $impression')
+          ..write('impression: $impression, ')
+          ..write('scoreId: $scoreId, ')
+          ..write('firstMet: $firstMet')
           ..write(')'))
         .toString();
   }
@@ -2089,6 +2562,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $DancersTable dancers = $DancersTable(this);
   late final $RanksTable ranks = $RanksTable(this);
   late final $RankingsTable rankings = $RankingsTable(this);
+  late final $ScoresTable scores = $ScoresTable(this);
   late final $AttendancesTable attendances = $AttendancesTable(this);
   late final $TagsTable tags = $TagsTable(this);
   late final $DancerTagsTable dancerTags = $DancerTagsTable(this);
@@ -2097,7 +2571,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [events, dancers, ranks, rankings, attendances, tags, dancerTags];
+      [events, dancers, ranks, rankings, scores, attendances, tags, dancerTags];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
         [
@@ -2451,12 +2925,14 @@ typedef $$DancersTableCreateCompanionBuilder = DancersCompanion Function({
   Value<int> id,
   required String name,
   Value<String?> notes,
+  Value<DateTime?> firstMetDate,
   Value<DateTime> createdAt,
 });
 typedef $$DancersTableUpdateCompanionBuilder = DancersCompanion Function({
   Value<int> id,
   Value<String> name,
   Value<String?> notes,
+  Value<DateTime?> firstMetDate,
   Value<DateTime> createdAt,
 });
 
@@ -2526,6 +3002,9 @@ class $$DancersTableFilterComposer
 
   ColumnFilters<String> get notes => $composableBuilder(
       column: $table.notes, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get firstMetDate => $composableBuilder(
+      column: $table.firstMetDate, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
       column: $table.createdAt, builder: (column) => ColumnFilters(column));
@@ -2612,6 +3091,10 @@ class $$DancersTableOrderingComposer
   ColumnOrderings<String> get notes => $composableBuilder(
       column: $table.notes, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<DateTime> get firstMetDate => $composableBuilder(
+      column: $table.firstMetDate,
+      builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
       column: $table.createdAt, builder: (column) => ColumnOrderings(column));
 }
@@ -2633,6 +3116,9 @@ class $$DancersTableAnnotationComposer
 
   GeneratedColumn<String> get notes =>
       $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get firstMetDate => $composableBuilder(
+      column: $table.firstMetDate, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -2728,24 +3214,28 @@ class $$DancersTableTableManager extends RootTableManager<
             Value<int> id = const Value.absent(),
             Value<String> name = const Value.absent(),
             Value<String?> notes = const Value.absent(),
+            Value<DateTime?> firstMetDate = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
           }) =>
               DancersCompanion(
             id: id,
             name: name,
             notes: notes,
+            firstMetDate: firstMetDate,
             createdAt: createdAt,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             required String name,
             Value<String?> notes = const Value.absent(),
+            Value<DateTime?> firstMetDate = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
           }) =>
               DancersCompanion.insert(
             id: id,
             name: name,
             notes: notes,
+            firstMetDate: firstMetDate,
             createdAt: createdAt,
           ),
           withReferenceMapper: (p0) => p0
@@ -3523,6 +4013,265 @@ typedef $$RankingsTableProcessedTableManager = ProcessedTableManager<
     (Ranking, $$RankingsTableReferences),
     Ranking,
     PrefetchHooks Function({bool eventId, bool dancerId, bool rankId})>;
+typedef $$ScoresTableCreateCompanionBuilder = ScoresCompanion Function({
+  Value<int> id,
+  required String name,
+  required int ordinal,
+  Value<bool> isArchived,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+});
+typedef $$ScoresTableUpdateCompanionBuilder = ScoresCompanion Function({
+  Value<int> id,
+  Value<String> name,
+  Value<int> ordinal,
+  Value<bool> isArchived,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+});
+
+final class $$ScoresTableReferences
+    extends BaseReferences<_$AppDatabase, $ScoresTable, Score> {
+  $$ScoresTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$AttendancesTable, List<Attendance>>
+      _attendancesRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.attendances,
+              aliasName:
+                  $_aliasNameGenerator(db.scores.id, db.attendances.scoreId));
+
+  $$AttendancesTableProcessedTableManager get attendancesRefs {
+    final manager = $$AttendancesTableTableManager($_db, $_db.attendances)
+        .filter((f) => f.scoreId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_attendancesRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
+
+class $$ScoresTableFilterComposer
+    extends Composer<_$AppDatabase, $ScoresTable> {
+  $$ScoresTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get ordinal => $composableBuilder(
+      column: $table.ordinal, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  Expression<bool> attendancesRefs(
+      Expression<bool> Function($$AttendancesTableFilterComposer f) f) {
+    final $$AttendancesTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.attendances,
+        getReferencedColumn: (t) => t.scoreId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AttendancesTableFilterComposer(
+              $db: $db,
+              $table: $db.attendances,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$ScoresTableOrderingComposer
+    extends Composer<_$AppDatabase, $ScoresTable> {
+  $$ScoresTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get ordinal => $composableBuilder(
+      column: $table.ordinal, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+}
+
+class $$ScoresTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ScoresTable> {
+  $$ScoresTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<int> get ordinal =>
+      $composableBuilder(column: $table.ordinal, builder: (column) => column);
+
+  GeneratedColumn<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  Expression<T> attendancesRefs<T extends Object>(
+      Expression<T> Function($$AttendancesTableAnnotationComposer a) f) {
+    final $$AttendancesTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.attendances,
+        getReferencedColumn: (t) => t.scoreId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AttendancesTableAnnotationComposer(
+              $db: $db,
+              $table: $db.attendances,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$ScoresTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $ScoresTable,
+    Score,
+    $$ScoresTableFilterComposer,
+    $$ScoresTableOrderingComposer,
+    $$ScoresTableAnnotationComposer,
+    $$ScoresTableCreateCompanionBuilder,
+    $$ScoresTableUpdateCompanionBuilder,
+    (Score, $$ScoresTableReferences),
+    Score,
+    PrefetchHooks Function({bool attendancesRefs})> {
+  $$ScoresTableTableManager(_$AppDatabase db, $ScoresTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ScoresTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ScoresTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ScoresTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<int> ordinal = const Value.absent(),
+            Value<bool> isArchived = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+          }) =>
+              ScoresCompanion(
+            id: id,
+            name: name,
+            ordinal: ordinal,
+            isArchived: isArchived,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+            required int ordinal,
+            Value<bool> isArchived = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+          }) =>
+              ScoresCompanion.insert(
+            id: id,
+            name: name,
+            ordinal: ordinal,
+            isArchived: isArchived,
+            createdAt: createdAt,
+            updatedAt: updatedAt,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) =>
+                  (e.readTable(table), $$ScoresTableReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: ({attendancesRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (attendancesRefs) db.attendances],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (attendancesRefs)
+                    await $_getPrefetchedData<Score, $ScoresTable, Attendance>(
+                        currentTable: table,
+                        referencedTable:
+                            $$ScoresTableReferences._attendancesRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$ScoresTableReferences(db, table, p0)
+                                .attendancesRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.scoreId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$ScoresTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $ScoresTable,
+    Score,
+    $$ScoresTableFilterComposer,
+    $$ScoresTableOrderingComposer,
+    $$ScoresTableAnnotationComposer,
+    $$ScoresTableCreateCompanionBuilder,
+    $$ScoresTableUpdateCompanionBuilder,
+    (Score, $$ScoresTableReferences),
+    Score,
+    PrefetchHooks Function({bool attendancesRefs})>;
 typedef $$AttendancesTableCreateCompanionBuilder = AttendancesCompanion
     Function({
   Value<int> id,
@@ -3532,6 +4281,8 @@ typedef $$AttendancesTableCreateCompanionBuilder = AttendancesCompanion
   Value<String> status,
   Value<DateTime?> dancedAt,
   Value<String?> impression,
+  Value<int?> scoreId,
+  Value<bool> firstMet,
 });
 typedef $$AttendancesTableUpdateCompanionBuilder = AttendancesCompanion
     Function({
@@ -3542,6 +4293,8 @@ typedef $$AttendancesTableUpdateCompanionBuilder = AttendancesCompanion
   Value<String> status,
   Value<DateTime?> dancedAt,
   Value<String?> impression,
+  Value<int?> scoreId,
+  Value<bool> firstMet,
 });
 
 final class $$AttendancesTableReferences
@@ -3576,6 +4329,20 @@ final class $$AttendancesTableReferences
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: [item]));
   }
+
+  static $ScoresTable _scoreIdTable(_$AppDatabase db) => db.scores
+      .createAlias($_aliasNameGenerator(db.attendances.scoreId, db.scores.id));
+
+  $$ScoresTableProcessedTableManager? get scoreId {
+    final $_column = $_itemColumn<int>('score_id');
+    if ($_column == null) return null;
+    final manager = $$ScoresTableTableManager($_db, $_db.scores)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_scoreIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
 }
 
 class $$AttendancesTableFilterComposer
@@ -3601,6 +4368,9 @@ class $$AttendancesTableFilterComposer
 
   ColumnFilters<String> get impression => $composableBuilder(
       column: $table.impression, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get firstMet => $composableBuilder(
+      column: $table.firstMet, builder: (column) => ColumnFilters(column));
 
   $$EventsTableFilterComposer get eventId {
     final $$EventsTableFilterComposer composer = $composerBuilder(
@@ -3641,6 +4411,26 @@ class $$AttendancesTableFilterComposer
             ));
     return composer;
   }
+
+  $$ScoresTableFilterComposer get scoreId {
+    final $$ScoresTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.scoreId,
+        referencedTable: $db.scores,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ScoresTableFilterComposer(
+              $db: $db,
+              $table: $db.scores,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
 }
 
 class $$AttendancesTableOrderingComposer
@@ -3666,6 +4456,9 @@ class $$AttendancesTableOrderingComposer
 
   ColumnOrderings<String> get impression => $composableBuilder(
       column: $table.impression, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get firstMet => $composableBuilder(
+      column: $table.firstMet, builder: (column) => ColumnOrderings(column));
 
   $$EventsTableOrderingComposer get eventId {
     final $$EventsTableOrderingComposer composer = $composerBuilder(
@@ -3706,6 +4499,26 @@ class $$AttendancesTableOrderingComposer
             ));
     return composer;
   }
+
+  $$ScoresTableOrderingComposer get scoreId {
+    final $$ScoresTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.scoreId,
+        referencedTable: $db.scores,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ScoresTableOrderingComposer(
+              $db: $db,
+              $table: $db.scores,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
 }
 
 class $$AttendancesTableAnnotationComposer
@@ -3731,6 +4544,9 @@ class $$AttendancesTableAnnotationComposer
 
   GeneratedColumn<String> get impression => $composableBuilder(
       column: $table.impression, builder: (column) => column);
+
+  GeneratedColumn<bool> get firstMet =>
+      $composableBuilder(column: $table.firstMet, builder: (column) => column);
 
   $$EventsTableAnnotationComposer get eventId {
     final $$EventsTableAnnotationComposer composer = $composerBuilder(
@@ -3771,6 +4587,26 @@ class $$AttendancesTableAnnotationComposer
             ));
     return composer;
   }
+
+  $$ScoresTableAnnotationComposer get scoreId {
+    final $$ScoresTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.scoreId,
+        referencedTable: $db.scores,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ScoresTableAnnotationComposer(
+              $db: $db,
+              $table: $db.scores,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
 }
 
 class $$AttendancesTableTableManager extends RootTableManager<
@@ -3784,7 +4620,7 @@ class $$AttendancesTableTableManager extends RootTableManager<
     $$AttendancesTableUpdateCompanionBuilder,
     (Attendance, $$AttendancesTableReferences),
     Attendance,
-    PrefetchHooks Function({bool eventId, bool dancerId})> {
+    PrefetchHooks Function({bool eventId, bool dancerId, bool scoreId})> {
   $$AttendancesTableTableManager(_$AppDatabase db, $AttendancesTable table)
       : super(TableManagerState(
           db: db,
@@ -3803,6 +4639,8 @@ class $$AttendancesTableTableManager extends RootTableManager<
             Value<String> status = const Value.absent(),
             Value<DateTime?> dancedAt = const Value.absent(),
             Value<String?> impression = const Value.absent(),
+            Value<int?> scoreId = const Value.absent(),
+            Value<bool> firstMet = const Value.absent(),
           }) =>
               AttendancesCompanion(
             id: id,
@@ -3812,6 +4650,8 @@ class $$AttendancesTableTableManager extends RootTableManager<
             status: status,
             dancedAt: dancedAt,
             impression: impression,
+            scoreId: scoreId,
+            firstMet: firstMet,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -3821,6 +4661,8 @@ class $$AttendancesTableTableManager extends RootTableManager<
             Value<String> status = const Value.absent(),
             Value<DateTime?> dancedAt = const Value.absent(),
             Value<String?> impression = const Value.absent(),
+            Value<int?> scoreId = const Value.absent(),
+            Value<bool> firstMet = const Value.absent(),
           }) =>
               AttendancesCompanion.insert(
             id: id,
@@ -3830,6 +4672,8 @@ class $$AttendancesTableTableManager extends RootTableManager<
             status: status,
             dancedAt: dancedAt,
             impression: impression,
+            scoreId: scoreId,
+            firstMet: firstMet,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (
@@ -3837,7 +4681,8 @@ class $$AttendancesTableTableManager extends RootTableManager<
                     $$AttendancesTableReferences(db, table, e)
                   ))
               .toList(),
-          prefetchHooksCallback: ({eventId = false, dancerId = false}) {
+          prefetchHooksCallback: (
+              {eventId = false, dancerId = false, scoreId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -3874,6 +4719,16 @@ class $$AttendancesTableTableManager extends RootTableManager<
                         $$AttendancesTableReferences._dancerIdTable(db).id,
                   ) as T;
                 }
+                if (scoreId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.scoreId,
+                    referencedTable:
+                        $$AttendancesTableReferences._scoreIdTable(db),
+                    referencedColumn:
+                        $$AttendancesTableReferences._scoreIdTable(db).id,
+                  ) as T;
+                }
 
                 return state;
               },
@@ -3896,7 +4751,7 @@ typedef $$AttendancesTableProcessedTableManager = ProcessedTableManager<
     $$AttendancesTableUpdateCompanionBuilder,
     (Attendance, $$AttendancesTableReferences),
     Attendance,
-    PrefetchHooks Function({bool eventId, bool dancerId})>;
+    PrefetchHooks Function({bool eventId, bool dancerId, bool scoreId})>;
 typedef $$TagsTableCreateCompanionBuilder = TagsCompanion Function({
   Value<int> id,
   required String name,
@@ -4436,6 +5291,8 @@ class $AppDatabaseManager {
       $$RanksTableTableManager(_db, _db.ranks);
   $$RankingsTableTableManager get rankings =>
       $$RankingsTableTableManager(_db, _db.rankings);
+  $$ScoresTableTableManager get scores =>
+      $$ScoresTableTableManager(_db, _db.scores);
   $$AttendancesTableTableManager get attendances =>
       $$AttendancesTableTableManager(_db, _db.attendances);
   $$TagsTableTableManager get tags => $$TagsTableTableManager(_db, _db.tags);

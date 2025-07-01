@@ -9,8 +9,16 @@ import 'tables.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(
-    tables: [Events, Dancers, Ranks, Rankings, Attendances, Tags, DancerTags])
+@DriftDatabase(tables: [
+  Events,
+  Dancers,
+  Ranks,
+  Rankings,
+  Attendances,
+  Tags,
+  DancerTags,
+  Scores
+])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
@@ -18,7 +26,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -30,6 +38,9 @@ class AppDatabase extends _$AppDatabase {
 
           // Insert default tags
           await _insertDefaultTags();
+
+          // Insert default scores
+          await _insertDefaultScores();
         },
         onUpgrade: (Migrator m, int from, int to) async {
           if (from < 2) {
@@ -43,6 +54,10 @@ class AppDatabase extends _$AppDatabase {
           if (from < 4) {
             // Migration from v3 to v4: Add Tags and DancerTags tables
             await _addTagsTables(m);
+          }
+          if (from < 5) {
+            // Migration from v4 to v5: Add Scores table and enhance Attendances/Dancers tables
+            await _addScoresAndEnhanceTables(m);
           }
         },
       );
@@ -130,6 +145,28 @@ class AppDatabase extends _$AppDatabase {
     await _insertDefaultTags();
   }
 
+  // Migration helper to add Scores table and enhance Attendances/Dancers tables
+  Future<void> _addScoresAndEnhanceTables(Migrator m) async {
+    // Create the new scores table
+    await m.createTable(scores);
+
+    // Add new columns to attendances table
+    await customStatement(
+        'ALTER TABLE attendances ADD COLUMN score_id INTEGER REFERENCES scores(id)');
+    await customStatement(
+        'ALTER TABLE attendances ADD COLUMN first_met INTEGER NOT NULL DEFAULT 0');
+
+    // Add new column to dancers table
+    await customStatement(
+        'ALTER TABLE dancers ADD COLUMN first_met_date INTEGER');
+
+    // Insert default scores
+    await _insertDefaultScores();
+
+    // Set first_met = true on earliest served attendance for each dancer
+    await _setFirstMetFlags();
+  }
+
   // Insert the predefined tags
   Future<void> _insertDefaultTags() async {
     await batch((batch) {
@@ -144,6 +181,48 @@ class AppDatabase extends _$AppDatabase {
         TagsCompanion.insert(name: 'social'),
       ]);
     });
+  }
+
+  // Insert the predefined scores
+  Future<void> _insertDefaultScores() async {
+    await batch((batch) {
+      batch.insertAll(scores, [
+        ScoresCompanion.insert(
+          name: 'Amazing',
+          ordinal: 1,
+        ),
+        ScoresCompanion.insert(
+          name: 'Great',
+          ordinal: 2,
+        ),
+        ScoresCompanion.insert(
+          name: 'Good',
+          ordinal: 3,
+        ),
+        ScoresCompanion.insert(
+          name: 'Okay',
+          ordinal: 4,
+        ),
+        ScoresCompanion.insert(
+          name: 'Meh',
+          ordinal: 5,
+        ),
+      ]);
+    });
+  }
+
+  // Set first_met = true on earliest served attendance for each dancer
+  Future<void> _setFirstMetFlags() async {
+    await customStatement('''
+      UPDATE attendances 
+      SET first_met = 1 
+      WHERE (dancer_id, marked_at) IN (
+        SELECT dancer_id, MIN(marked_at)
+        FROM attendances 
+        WHERE status = 'served' 
+        GROUP BY dancer_id
+      )
+    ''');
   }
 }
 

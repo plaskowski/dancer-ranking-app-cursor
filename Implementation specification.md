@@ -532,7 +532,118 @@ Example logs:
 
 ## Database Schema
 
+The application uses a Drift-based SQLite database with the following core tables:
+
+### Events Table
+- `id` (PK, auto-increment)
+- `name` (text, 1-100 chars)
+- `date` (datetime)
+- `createdAt` (datetime, auto)
+
+### Dancers Table
+- `id` (PK, auto-increment)
+- `name` (text, 1-100 chars)
+- `notes` (text, nullable)
+- `firstMetDate` (datetime, nullable) - For dancers met before tracked events
+- `createdAt` (datetime, auto)
+
+### Ranks Table (Planning Stage Ratings)
+- `id` (PK, auto-increment)
+- `name` (text, 1-50 chars)
+- `ordinal` (integer) - 1 = best, 5 = worst
+- `isArchived` (boolean, default false)
+- `createdAt` (datetime, auto)
+- `updatedAt` (datetime, auto)
+
+### Scores Table (Post-Dance Ratings)
+- `id` (PK, auto-increment)
+- `name` (text, 1-50 chars, unique)
+- `ordinal` (integer) - 1 = best, 5 = worst
+- `isArchived` (boolean, default false)
+- `createdAt` (datetime, auto)
+- `updatedAt` (datetime, auto)
+
+### Rankings Table (Planning Stage Assignments)
+- `id` (PK, auto-increment)
+- `eventId` (FK to Events)
+- `dancerId` (FK to Dancers)
+- `rankId` (FK to Ranks)
+- `reason` (text, nullable)
+- `createdAt` (datetime, auto)
+- `lastUpdated` (datetime, auto)
+- Unique key: (eventId, dancerId)
+
+### Attendances Table (Presence and Dance Tracking)
+- `id` (PK, auto-increment)
+- `eventId` (FK to Events)
+- `dancerId` (FK to Dancers)
+- `markedAt` (datetime, auto) - When spotted at event
+- `status` (text, default 'present') - present, served, left
+- `dancedAt` (datetime, nullable) - When dance occurred
+- `impression` (text, nullable) - Post-dance notes
+- `scoreId` (FK to Scores, nullable) - Post-dance rating
+- `firstMet` (boolean, default false) - First meeting flag
+- Unique key: (eventId, dancerId)
+
+### Tags Table
+- `id` (PK, auto-increment)
+- `name` (text, 1-50 chars, unique)
+- `createdAt` (datetime, auto)
+
+### DancerTags Table (Many-to-Many)
+- `dancerId` (FK to Dancers)
+- `tagId` (FK to Tags)
+- `createdAt` (datetime, auto)
+- Primary key: (dancerId, tagId)
+
+### Schema Versioning
+- **Current Version**: 5
+- **Migration Support**: Automatic upgrades from v1-v4
+- **Default Data**: Pre-populated ranks, scores, and tags on fresh install
+
 ## Services
+
+### ScoreService (`lib/services/score_service.dart`)
+**Purpose**: Complete CRUD operations for score management in post-dance rating system
+**Key Methods**:
+- `getAllScores()` - Get all scores ordered by ordinal (best first)
+- `getActiveScores()` - Get non-archived scores for dropdowns
+- `getDefaultScore()` - Get default "Good" score (ordinal 3)
+- `getScoreByName(name)` - Find score by name (for imports)
+- `createScore(name, ordinal, isArchived)` - Create new score
+- `updateScore(id, name, ordinal, isArchived)` - Update existing score
+- `archiveScore(id)` / `unarchiveScore(id)` - Archive management
+- `deleteScore(id, replacementScoreId)` - Safe deletion with reassignment
+
+**Features**:
+- **Default Scores**: Pre-populated with "Amazing", "Great", "Good", "Okay", "Meh"
+- **Archive Support**: Hide scores from new events while preserving history
+- **Safe Deletion**: Requires replacement score for existing assignments
+- **Transaction Safety**: Atomic operations with rollback on errors
+- **Action Logging**: Comprehensive logging for debugging and audit
+- **Import Support**: Name-based lookup for data import operations
+
+### Enhanced AttendanceService
+**New Score Management Methods**:
+- `assignScore(eventId, dancerId, scoreId)` - Assign post-dance score
+- `removeScore(eventId, dancerId)` - Remove score assignment
+- `getAttendanceScore(eventId, dancerId)` - Get current score
+- `updateFirstMet(eventId, dancerId, isFirstMet)` - Update first met flag
+
+**Features**:
+- **Score Integration**: Seamless score assignment to attendance records
+- **First Met Tracking**: Boolean flag for tracking first meetings
+- **Error Handling**: Graceful handling of missing attendance records
+- **Consistency**: Follows established service patterns with action logging
+
+### Enhanced DancerService
+**New First Met Management**:
+- `updateFirstMetDate(id, firstMetDate)` - Set explicit pre-tracking meeting date
+
+**Features**:
+- **Pre-tracking Dates**: Support for dancers met before event tracking began
+- **Null Handling**: Optional dates for normal tracked dancers
+- **Backward Compatibility**: Existing functionality unchanged
 
 ### Dancer Import Services
 
