@@ -649,8 +649,7 @@ Example logs:
 2.  **Parsing & Validation**: The app parses the file and performs a "dry run" to validate the data.
     - It checks for duplicate events and identifies new dancers that will be created.
 3.  **Data Preview**: The user is shown a preview of the events to be imported.
-    - Each event in the list displays its name, date, and number of attendees.
-    - **New Dancer Count**: A chip indicates how many new dancers will be created for that event.
+    - Each event in the list displays its name, date, and number of attendees. The new dancer count is appended to the attendance info (e.g., "15 attendances (3 new)").
     - **Duplicate Indication**: Events that already exist in the database are clearly marked and shown as "Skipped".
     - Users can expand each event to see the list of attendees.
     - **New Dancer Highlighting**: Within the attendee list, dancers who do not yet exist in the database are marked with a " (new)" text label next to their name.

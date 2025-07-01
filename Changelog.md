@@ -90,6 +90,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Visual Feedback**: Statistics cards showing events, attendances, and unique dancers counts during preview
 - **Status Visualization**: Color-coded icons for attendance statuses (present/served/left) with expandable event details
 - **Error Reporting**: Clear error messages for file validation, parsing issues, and import conflicts
+- **New Dancer Highlighting**: New dancers are now marked with a "New" chip in the attendance list for each event.
+- **Moved the new dancer count in the event import preview from a chip to the event's subtitle for a cleaner UI.**
 
 ### Technical
 - **ImportEventsDialog**: Main stepper dialog with state management and navigation between steps
@@ -1123,6 +1125,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Improved
 - Replaced the "New" chip for new dancers in the import preview with a more subtle " (new)" text label for better readability.
+- Moved the new dancer count in the event import preview from a chip to the event's subtitle for a cleaner UI.
 
 ### Fixed
 - Fixed a crash during event import caused by a JSON key mismatch (`dancerName` vs `dancer_name`) in the `ImportableAttendance` model.

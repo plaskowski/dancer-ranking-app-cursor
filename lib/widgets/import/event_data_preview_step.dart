@@ -184,7 +184,7 @@ class EventDataPreviewStep extends StatelessWidget {
                   ),
                   title: Text(event.name),
                   subtitle: Text(
-                    '${DateFormat.yMMMd().format(event.date)} • ${event.attendances.length} attendances',
+                    '${DateFormat.yMMMd().format(event.date)} • ${event.attendances.length} attendances${analysis.hasNewDancers ? ' (${analysis.newDancersCount} new)' : ''}',
                   ),
                   trailing: analysis.isDuplicate
                       ? const Tooltip(
@@ -192,12 +192,7 @@ class EventDataPreviewStep extends StatelessWidget {
                               'This event already exists and will be skipped.',
                           child: Chip(label: Text('Skipped')),
                         )
-                      : (analysis.hasNewDancers
-                          ? Chip(
-                              label: Text('${analysis.newDancersCount} new'),
-                              avatar: const Icon(Icons.person_add, size: 16),
-                            )
-                          : null),
+                      : null,
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
