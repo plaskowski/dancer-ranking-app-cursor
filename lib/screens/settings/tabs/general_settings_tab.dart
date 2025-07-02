@@ -129,6 +129,14 @@ class GeneralSettingsTab extends StatelessWidget {
               const Text('• All dance recordings and scores'),
               const Text('• Custom tags and associations'),
               const Text('• All ranks, tags, and scores'),
+              const SizedBox(height: 12),
+              Text(
+                'Default ranks, tags, and scores will be restored.',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontSize: 12,
+                ),
+              ),
               const SizedBox(height: 16),
               Text(
                 'This action cannot be undone!',
@@ -198,7 +206,7 @@ class GeneralSettingsTab extends StatelessWidget {
         // Show success message
         ToastHelper.showSuccess(
           context,
-          'Database reset successfully. All data has been completely cleared.',
+          'Database reset successfully. All user data cleared, defaults restored.',
         );
       }
     } catch (e) {
