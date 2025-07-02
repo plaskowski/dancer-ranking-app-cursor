@@ -29,6 +29,7 @@
 - auto-commit todo files after 1 minute of inactivity
 - keep up-to-date wireframes
 - auto-save todo file 
+- a way to instruct the macOS app to auto-navigate to given screen (to test faster, via CMD arg)
 
 # Hard ones
 - increase the 25 tool calls limit
