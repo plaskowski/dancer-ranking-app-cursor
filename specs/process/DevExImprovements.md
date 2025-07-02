@@ -23,6 +23,7 @@
 - close all editor windows after commit
 - don't edit dot files directly, write down changes to a separate file I can review first
 - save the reasoning I provided for decisions
+- split the impl work to front and backend tasks and use two agents?
 
 # Hard ones
 - increase the 25 tool calls limit
