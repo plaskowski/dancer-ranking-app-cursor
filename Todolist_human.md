@@ -4,10 +4,7 @@
 # GA for private use
 
 ## Status
-The app has all I need to start using it. 
-
-## Optional improvements
-- ...
+The app has all I need to start using it. :celebrate:
 
 ## RTB work
 Next:
@@ -16,7 +13,6 @@ Next:
 
 Nice to haves:
 - move all main screen actions (except Dancers) under the three dots, Import events should be the last
-- reorganize code into sub-dirs per screen (plus common for shared things)
 - mark current events dates green (with the same logic as for showing tabs in event screen, have the logic reused)
 - enter in edit name dialog should confirm it
 
