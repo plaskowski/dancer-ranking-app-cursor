@@ -10,6 +10,7 @@ The app has all I need to start using it. :celebrate:
 Next:
 - check file sizes and suggest classes to be extracted to reduce big files
 - settings screen
+- let agent delete any .dart and .md file
 
 Nice to haves:
 - move all main screen actions (except Dancers) under the three dots, Import events should be the last

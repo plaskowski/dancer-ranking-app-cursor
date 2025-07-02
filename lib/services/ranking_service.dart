@@ -1,673 +1,141 @@
-import 'package:drift/drift.dart';
-
 import '../database/database.dart';
-import '../utils/action_logger.dart';
+import 'ranking/rank_management_service.dart';
+import 'ranking/ranking_import_service.dart';
+import 'ranking/ranking_models.dart';
+import 'ranking/ranking_operations_service.dart';
+import 'ranking/ranking_usage_service.dart';
+
+// Re-export models for backward compatibility
+export 'ranking/ranking_models.dart';
 
 class RankingService {
   final AppDatabase _database;
+  late final RankManagementService _rankManagementService;
+  late final RankingOperationsService _operationsService;
+  late final RankingImportService _importService;
+  late final RankingUsageService _usageService;
 
-  RankingService(this._database);
-
-  // Get all available ranks ordered by ordinal (best first)
-  Future<List<Rank>> getAllRanks() {
-    return (_database.select(_database.ranks)..orderBy([(r) => OrderingTerm.asc(r.ordinal)])).get();
+  RankingService(this._database) {
+    _rankManagementService = RankManagementService(_database);
+    _operationsService = RankingOperationsService(_database);
+    _importService = RankingImportService(_database, _operationsService);
+    _usageService = RankingUsageService(_database);
   }
 
-  // Get a specific rank by ID
-  Future<Rank?> getRank(int id) {
-    return (_database.select(_database.ranks)..where((r) => r.id.equals(id))).getSingleOrNull();
-  }
+  // Rank Management Methods
+  Future<List<Rank>> getAllRanks() => _rankManagementService.getAllRanks();
 
-  // Get default rank (Neutral / Default - ordinal 3)
-  Future<Rank?> getDefaultRank() {
-    return (_database.select(_database.ranks)..where((r) => r.ordinal.equals(3))).getSingleOrNull();
-  }
+  Future<Rank?> getRank(int id) => _rankManagementService.getRank(id);
 
-  // Get all non-archived ranks for use in ranking dropdowns
-  Future<List<Rank>> getActiveRanks() {
-    return (_database.select(_database.ranks)
-          ..where((r) => r.isArchived.equals(false))
-          ..orderBy([(r) => OrderingTerm.asc(r.ordinal)]))
-        .get();
-  }
+  Future<Rank?> getDefaultRank() => _rankManagementService.getDefaultRank();
 
-  // Create a new rank
+  Future<List<Rank>> getActiveRanks() =>
+      _rankManagementService.getActiveRanks();
+
   Future<int> createRank({
     required String name,
     required int ordinal,
-  }) async {
-    ActionLogger.logServiceCall('RankingService', 'createRank', {
-      'name': name,
-      'ordinal': ordinal,
-    });
+  }) =>
+      _rankManagementService.createRank(name: name, ordinal: ordinal);
 
-    try {
-      final id = await _database.into(_database.ranks).insert(
-            RanksCompanion.insert(
-              name: name,
-              ordinal: ordinal,
-            ),
-          );
-
-      ActionLogger.logDbOperation('INSERT', 'ranks', {
-        'id': id,
-        'name': name,
-        'ordinal': ordinal,
-      });
-
-      return id;
-    } catch (e) {
-      ActionLogger.logError('RankingService.createRank', e.toString(), {
-        'name': name,
-        'ordinal': ordinal,
-      });
-      rethrow;
-    }
-  }
-
-  // Update a rank
   Future<bool> updateRank({
     required int id,
     String? name,
     int? ordinal,
     bool? isArchived,
-  }) async {
-    ActionLogger.logServiceCall('RankingService', 'updateRank', {
-      'id': id,
-      'hasName': name != null,
-      'hasOrdinal': ordinal != null,
-      'hasIsArchived': isArchived != null,
-    });
+  }) =>
+      _rankManagementService.updateRank(
+        id: id,
+        name: name,
+        ordinal: ordinal,
+        isArchived: isArchived,
+      );
 
-    try {
-      final existing = await getRank(id);
-      if (existing == null) {
-        ActionLogger.logError('RankingService.updateRank', 'rank_not_found', {
-          'id': id,
-        });
-        return false;
-      }
+  Future<bool> archiveRank(int id) => _rankManagementService.archiveRank(id);
 
-      final result = await _database.update(_database.ranks).replace(
-            existing.copyWith(
-              name: name ?? existing.name,
-              ordinal: ordinal ?? existing.ordinal,
-              isArchived: isArchived ?? existing.isArchived,
-              updatedAt: DateTime.now(),
-            ),
-          );
+  Future<bool> unarchiveRank(int id) =>
+      _rankManagementService.unarchiveRank(id);
 
-      ActionLogger.logDbOperation('UPDATE', 'ranks', {
-        'id': id,
-        'name': name,
-        'ordinal': ordinal,
-        'isArchived': isArchived,
-        'success': result,
-      });
-
-      return result;
-    } catch (e) {
-      ActionLogger.logError('RankingService.updateRank', e.toString(), {
-        'id': id,
-      });
-      rethrow;
-    }
-  }
-
-  // Archive a rank (hide from new events but keep in past events)
-  Future<bool> archiveRank(int id) async {
-    ActionLogger.logServiceCall('RankingService', 'archiveRank', {
-      'id': id,
-    });
-
-    return await updateRank(id: id, isArchived: true);
-  }
-
-  // Unarchive a rank
-  Future<bool> unarchiveRank(int id) async {
-    ActionLogger.logServiceCall('RankingService', 'unarchiveRank', {
-      'id': id,
-    });
-
-    return await updateRank(id: id, isArchived: false);
-  }
-
-  // Delete a rank (with reassignment of existing rankings)
   Future<bool> deleteRank({
     required int id,
     required int replacementRankId,
-  }) async {
-    ActionLogger.logServiceCall('RankingService', 'deleteRank', {
-      'id': id,
-      'replacementRankId': replacementRankId,
-    });
+  }) =>
+      _rankManagementService.deleteRank(
+        id: id,
+        replacementRankId: replacementRankId,
+      );
 
-    try {
-      await _database.transaction(() async {
-        // First, get all rankings that need to be reassigned
-        final rankingsToUpdate = await (_database.select(_database.rankings)..where((r) => r.rankId.equals(id))).get();
+  Future<bool> updateRankOrdinals(List<Rank> ranks) =>
+      _rankManagementService.updateRankOrdinals(ranks);
 
-        // Reassign all existing rankings to the replacement rank
-        int updateResult = 0;
-        for (final ranking in rankingsToUpdate) {
-          await _database.update(_database.rankings).replace(
-                ranking.copyWith(
-                  rankId: replacementRankId,
-                  lastUpdated: DateTime.now(),
-                ),
-              );
-          updateResult++;
-        }
-
-        ActionLogger.logDbOperation('UPDATE', 'rankings', {
-          'reassigned_from_rank': id,
-          'reassigned_to_rank': replacementRankId,
-          'affected_rows': updateResult,
-        });
-
-        // Then delete the rank
-        final deleteResult = await (_database.delete(_database.ranks)..where((r) => r.id.equals(id))).go();
-
-        ActionLogger.logDbOperation('DELETE', 'ranks', {
-          'id': id,
-          'affected_rows': deleteResult,
-        });
-
-        if (deleteResult == 0) {
-          throw Exception('Rank not found');
-        }
-      });
-
-      return true;
-    } catch (e) {
-      ActionLogger.logError('RankingService.deleteRank', e.toString(), {
-        'id': id,
-        'replacementRankId': replacementRankId,
-      });
-      rethrow;
-    }
-  }
-
-  // Update rank ordinals after reordering
-  Future<bool> updateRankOrdinals(List<Rank> ranks) async {
-    ActionLogger.logServiceCall('RankingService', 'updateRankOrdinals', {
-      'ranksCount': ranks.length,
-    });
-
-    try {
-      await _database.transaction(() async {
-        for (int i = 0; i < ranks.length; i++) {
-          final rank = ranks[i];
-          final newOrdinal = i + 1; // 1-based ordinal
-
-          if (rank.ordinal != newOrdinal) {
-            await _database.update(_database.ranks).replace(
-                  rank.copyWith(
-                    ordinal: newOrdinal,
-                    updatedAt: DateTime.now(),
-                  ),
-                );
-
-            ActionLogger.logDbOperation('UPDATE', 'ranks', {
-              'id': rank.id,
-              'oldOrdinal': rank.ordinal,
-              'newOrdinal': newOrdinal,
-            });
-          }
-        }
-      });
-
-      return true;
-    } catch (e) {
-      ActionLogger.logError('RankingService.updateRankOrdinals', e.toString(), {
-        'ranksCount': ranks.length,
-      });
-      rethrow;
-    }
-  }
-
-  // Set or update a ranking for a dancer at an event
+  // Ranking Operations Methods
   Future<int> setRanking({
     required int eventId,
     required int dancerId,
     required int rankId,
     String? reason,
-  }) async {
-    ActionLogger.logServiceCall('RankingService', 'setRanking', {
-      'eventId': eventId,
-      'dancerId': dancerId,
-      'rankId': rankId,
-      'hasReason': reason != null,
-    });
+  }) =>
+      _operationsService.setRanking(
+        eventId: eventId,
+        dancerId: dancerId,
+        rankId: rankId,
+        reason: reason,
+      );
 
-    try {
-      // Check if ranking already exists
-      final existingRanking = await (_database.select(_database.rankings)
-            ..where((r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
-          .getSingleOrNull();
+  Future<Ranking?> getRanking(int eventId, int dancerId) =>
+      _operationsService.getRanking(eventId, dancerId);
 
-      if (existingRanking != null) {
-        ActionLogger.logAction('RankingService.setRanking', 'updating_existing', {
-          'eventId': eventId,
-          'dancerId': dancerId,
-          'oldRankId': existingRanking.rankId,
-          'newRankId': rankId,
-          'rankingId': existingRanking.id,
-        });
+  Future<List<RankingWithInfo>> getRankingsForEvent(int eventId) =>
+      _operationsService.getRankingsForEvent(eventId);
 
-        // Update existing ranking
-        await _database.update(_database.rankings).replace(
-              existingRanking.copyWith(
-                rankId: rankId,
-                reason: Value(reason),
-                lastUpdated: DateTime.now(),
-              ),
-            );
+  Future<Map<String, List<RankingWithInfo>>> getRankingsGroupedByRank(
+          int eventId) =>
+      _operationsService.getRankingsGroupedByRank(eventId);
 
-        ActionLogger.logDbOperation('UPDATE', 'rankings', {
-          'id': existingRanking.id,
-          'eventId': eventId,
-          'dancerId': dancerId,
-          'rankId': rankId,
-          'reason': reason,
-        });
-
-        return existingRanking.id;
-      } else {
-        ActionLogger.logAction('RankingService.setRanking', 'creating_new', {
-          'eventId': eventId,
-          'dancerId': dancerId,
-          'rankId': rankId,
-        });
-
-        // Create new ranking
-        final id = await _database.into(_database.rankings).insert(
-              RankingsCompanion.insert(
-                eventId: eventId,
-                dancerId: dancerId,
-                rankId: rankId,
-                reason: Value(reason),
-              ),
-            );
-
-        ActionLogger.logDbOperation('INSERT', 'rankings', {
-          'id': id,
-          'eventId': eventId,
-          'dancerId': dancerId,
-          'rankId': rankId,
-          'reason': reason,
-        });
-
-        return id;
-      }
-    } catch (e) {
-      ActionLogger.logError('RankingService.setRanking', e.toString(), {
-        'eventId': eventId,
-        'dancerId': dancerId,
-        'rankId': rankId,
-      });
-      rethrow;
-    }
-  }
-
-  // Get ranking for a specific dancer at an event
-  Future<Ranking?> getRanking(int eventId, int dancerId) {
-    return (_database.select(_database.rankings)..where((r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
-        .getSingleOrNull();
-  }
-
-  // Get all rankings for an event with dancer and rank info
-  Future<List<RankingWithInfo>> getRankingsForEvent(int eventId) async {
-    ActionLogger.logServiceCall('RankingService', 'getRankingsForEvent', {
-      'eventId': eventId,
-    });
-
-    try {
-      final query = _database.select(_database.rankings).join([
-        innerJoin(_database.dancers, _database.dancers.id.equalsExp(_database.rankings.dancerId)),
-        innerJoin(_database.ranks, _database.ranks.id.equalsExp(_database.rankings.rankId)),
-      ])
-        ..where(_database.rankings.eventId.equals(eventId))
-        ..orderBy([
-          OrderingTerm(expression: _database.ranks.ordinal),
-          OrderingTerm(expression: _database.dancers.name),
-        ]);
-
-      final results = await query.get();
-
-      final rankingsWithInfo = results.map((row) {
-        final ranking = row.readTable(_database.rankings);
-        final dancer = row.readTable(_database.dancers);
-        final rank = row.readTable(_database.ranks);
-
-        return RankingWithInfo(
-          id: ranking.id,
-          eventId: ranking.eventId,
-          dancerId: ranking.dancerId,
-          rankId: ranking.rankId,
-          reason: ranking.reason,
-          createdAt: ranking.createdAt,
-          lastUpdated: ranking.lastUpdated,
-          dancerName: dancer.name,
-          rankName: rank.name,
-          rankOrdinal: rank.ordinal,
-        );
-      }).toList();
-
-      ActionLogger.logDbOperation('SELECT', 'rankings_with_info', {
-        'eventId': eventId,
-        'resultCount': rankingsWithInfo.length,
-      });
-
-      return rankingsWithInfo;
-    } catch (e) {
-      ActionLogger.logError('RankingService.getRankingsForEvent', e.toString(), {
-        'eventId': eventId,
-      });
-      rethrow;
-    }
-  }
-
-  // Get rankings grouped by rank for an event
-  Future<Map<String, List<RankingWithInfo>>> getRankingsGroupedByRank(int eventId) async {
-    final rankings = await getRankingsForEvent(eventId);
-    final Map<String, List<RankingWithInfo>> grouped = {};
-
-    for (final ranking in rankings) {
-      final rankName = ranking.rankName;
-      if (!grouped.containsKey(rankName)) {
-        grouped[rankName] = [];
-      }
-      grouped[rankName]!.add(ranking);
-    }
-
-    return grouped;
-  }
-
-  // Delete a ranking
-  Future<int> deleteRanking(int eventId, int dancerId) async {
-    ActionLogger.logServiceCall('RankingService', 'deleteRanking', {
-      'eventId': eventId,
-      'dancerId': dancerId,
-    });
-
-    try {
-      final result = await (_database.delete(_database.rankings)
-            ..where((r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
-          .go();
-
-      ActionLogger.logDbOperation('DELETE', 'rankings', {
-        'eventId': eventId,
-        'dancerId': dancerId,
-        'affected_rows': result,
-      });
-
-      return result;
-    } catch (e) {
-      ActionLogger.logError('RankingService.deleteRanking', e.toString(), {
-        'eventId': eventId,
-        'dancerId': dancerId,
-      });
-      rethrow;
-    }
-  }
-
-  // Get rankings count for an event
-  Future<int> getRankingsCountForEvent(int eventId) async {
-    final query = _database.selectOnly(_database.rankings)
-      ..addColumns([_database.rankings.id.count()])
-      ..where(_database.rankings.eventId.equals(eventId));
-
-    final result = await query.getSingle();
-    return result.read(_database.rankings.id.count()) ?? 0;
-  }
+  Future<int> deleteRanking(int eventId, int dancerId) =>
+      _operationsService.deleteRanking(eventId, dancerId);
 
   // Quick rank assignment methods
-  Future<int> setRankReallyWantToDance(int eventId, int dancerId, {String? reason}) async {
-    final rank = await (_database.select(_database.ranks)..where((r) => r.ordinal.equals(1))).getSingle();
-    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
-  }
+  Future<int> setRankReallyWantToDance(int eventId, int dancerId,
+          {String? reason}) =>
+      _operationsService.setRankReallyWantToDance(eventId, dancerId,
+          reason: reason);
 
-  Future<int> setRankWouldLikeToDance(int eventId, int dancerId, {String? reason}) async {
-    final rank = await (_database.select(_database.ranks)..where((r) => r.ordinal.equals(2))).getSingle();
-    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
-  }
+  Future<int> setRankWouldLikeToDance(int eventId, int dancerId,
+          {String? reason}) =>
+      _operationsService.setRankWouldLikeToDance(eventId, dancerId,
+          reason: reason);
 
-  Future<int> setRankNeutral(int eventId, int dancerId, {String? reason}) async {
-    final rank = await (_database.select(_database.ranks)..where((r) => r.ordinal.equals(3))).getSingle();
-    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
-  }
+  Future<int> setRankNeutral(int eventId, int dancerId, {String? reason}) =>
+      _operationsService.setRankNeutral(eventId, dancerId, reason: reason);
 
-  Future<int> setRankMaybeLater(int eventId, int dancerId, {String? reason}) async {
-    final rank = await (_database.select(_database.ranks)..where((r) => r.ordinal.equals(4))).getSingle();
-    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
-  }
+  Future<int> setRankMaybeLater(int eventId, int dancerId, {String? reason}) =>
+      _operationsService.setRankMaybeLater(eventId, dancerId, reason: reason);
 
-  Future<int> setRankNotInterested(int eventId, int dancerId, {String? reason}) async {
-    final rank = await (_database.select(_database.ranks)..where((r) => r.ordinal.equals(5))).getSingle();
-    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
-  }
+  Future<int> setRankNotInterested(int eventId, int dancerId,
+          {String? reason}) =>
+      _operationsService.setRankNotInterested(eventId, dancerId,
+          reason: reason);
 
-  // Import rankings from another event
+  // Import/Export Methods
   Future<ImportRankingsResult> importRankingsFromEvent({
     required int sourceEventId,
     required int targetEventId,
     bool overwriteExisting = false,
-  }) async {
-    ActionLogger.logServiceCall('RankingService', 'importRankingsFromEvent', {
-      'sourceEventId': sourceEventId,
-      'targetEventId': targetEventId,
-      'overwriteExisting': overwriteExisting,
-    });
-
-    try {
-      // Get all rankings from source event
-      final sourceRankings =
-          await (_database.select(_database.rankings)..where((r) => r.eventId.equals(sourceEventId))).get();
-
-      if (sourceRankings.isEmpty) {
-        ActionLogger.logAction('RankingService.importRankingsFromEvent', 'no_source_rankings', {
-          'sourceEventId': sourceEventId,
-          'targetEventId': targetEventId,
-        });
-        return ImportRankingsResult(
-          imported: 0,
-          skipped: 0,
-          overwritten: 0,
-          sourceRankingsCount: 0,
-        );
-      }
-
-      // Get existing rankings in target event
-      final existingRankings =
-          await (_database.select(_database.rankings)..where((r) => r.eventId.equals(targetEventId))).get();
-
-      final existingDancerIds = existingRankings.map((r) => r.dancerId).toSet();
-
-      int imported = 0;
-      int skipped = 0;
-      int overwritten = 0;
-
-      // Process each source ranking
-      for (final sourceRanking in sourceRankings) {
-        final dancerId = sourceRanking.dancerId;
-
-        if (existingDancerIds.contains(dancerId)) {
-          if (overwriteExisting) {
-            // Update existing ranking
-            await setRanking(
-              eventId: targetEventId,
-              dancerId: dancerId,
-              rankId: sourceRanking.rankId,
-              reason: sourceRanking.reason,
-            );
-            overwritten++;
-            ActionLogger.logAction('RankingService.importRankingsFromEvent', 'ranking_overwritten', {
-              'sourceEventId': sourceEventId,
-              'targetEventId': targetEventId,
-              'dancerId': dancerId,
-              'rankId': sourceRanking.rankId,
-            });
-          } else {
-            // Skip existing ranking
-            skipped++;
-            ActionLogger.logAction('RankingService.importRankingsFromEvent', 'ranking_skipped', {
-              'sourceEventId': sourceEventId,
-              'targetEventId': targetEventId,
-              'dancerId': dancerId,
-              'reason': 'already_exists',
-            });
-          }
-        } else {
-          // Create new ranking
-          await setRanking(
-            eventId: targetEventId,
-            dancerId: dancerId,
-            rankId: sourceRanking.rankId,
-            reason: sourceRanking.reason,
-          );
-          imported++;
-          ActionLogger.logAction('RankingService.importRankingsFromEvent', 'ranking_imported', {
-            'sourceEventId': sourceEventId,
-            'targetEventId': targetEventId,
-            'dancerId': dancerId,
-            'rankId': sourceRanking.rankId,
-          });
-        }
-      }
-
-      final result = ImportRankingsResult(
-        imported: imported,
-        skipped: skipped,
-        overwritten: overwritten,
-        sourceRankingsCount: sourceRankings.length,
+  }) =>
+      _importService.importRankingsFromEvent(
+        sourceEventId: sourceEventId,
+        targetEventId: targetEventId,
+        overwriteExisting: overwriteExisting,
       );
 
-      ActionLogger.logAction('RankingService.importRankingsFromEvent', 'import_completed', {
-        'sourceEventId': sourceEventId,
-        'targetEventId': targetEventId,
-        'imported': imported,
-        'skipped': skipped,
-        'overwritten': overwritten,
-        'sourceRankingsCount': sourceRankings.length,
-      });
+  // Usage Statistics Methods
+  Future<int> getRankUsageCount(int rankId) =>
+      _usageService.getRankUsageCount(rankId);
 
-      return result;
-    } catch (e) {
-      ActionLogger.logError('RankingService.importRankingsFromEvent', e.toString(), {
-        'sourceEventId': sourceEventId,
-        'targetEventId': targetEventId,
-      });
-      rethrow;
-    }
-  }
+  Future<List<RankWithUsage>> getAllRanksWithUsage() =>
+      _usageService.getAllRanksWithUsage();
 
-  // Get usage statistics for a rank
-  Future<int> getRankUsageCount(int rankId) async {
-    final count = await (_database.selectOnly(_database.rankings)
-          ..addColumns([_database.rankings.id.count()])
-          ..where(_database.rankings.rankId.equals(rankId)))
-        .getSingle();
-    return count.read(_database.rankings.id.count()) ?? 0;
-  }
-
-  // Get all ranks with usage statistics
-  Future<List<RankWithUsage>> getAllRanksWithUsage() async {
-    final ranks = await getAllRanks(); // Get all ranks including archived
-    final ranksWithUsage = <RankWithUsage>[];
-
-    for (final rank in ranks) {
-      final usageCount = await getRankUsageCount(rank.id);
-      ranksWithUsage.add(RankWithUsage(
-        rank: rank,
-        usageCount: usageCount,
-      ));
-    }
-
-    return ranksWithUsage;
-  }
-}
-
-// Helper class for rank with usage statistics
-class RankWithUsage {
-  final Rank rank;
-  final int usageCount;
-
-  RankWithUsage({
-    required this.rank,
-    required this.usageCount,
-  });
-}
-
-// Helper class for rankings with additional info
-class RankingWithInfo {
-  final int id;
-  final int eventId;
-  final int dancerId;
-  final int rankId;
-  final String? reason;
-  final DateTime createdAt;
-  final DateTime lastUpdated;
-  final String dancerName;
-  final String rankName;
-  final int rankOrdinal;
-
-  RankingWithInfo({
-    required this.id,
-    required this.eventId,
-    required this.dancerId,
-    required this.rankId,
-    this.reason,
-    required this.createdAt,
-    required this.lastUpdated,
-    required this.dancerName,
-    required this.rankName,
-    required this.rankOrdinal,
-  });
-
-  factory RankingWithInfo.fromRow(Map<String, dynamic> row) {
-    return RankingWithInfo(
-      id: row['id'] as int,
-      eventId: row['event_id'] as int,
-      dancerId: row['dancer_id'] as int,
-      rankId: row['rank_id'] as int,
-      reason: row['reason'] as String?,
-      createdAt: DateTime.parse(row['created_at'] as String),
-      lastUpdated: DateTime.parse(row['last_updated'] as String),
-      dancerName: row['dancer_name'] as String,
-      rankName: row['rank_name'] as String,
-      rankOrdinal: row['rank_ordinal'] as int,
-    );
-  }
-}
-
-// Helper class for import rankings results
-class ImportRankingsResult {
-  final int imported;
-  final int skipped;
-  final int overwritten;
-  final int sourceRankingsCount;
-
-  ImportRankingsResult({
-    required this.imported,
-    required this.skipped,
-    required this.overwritten,
-    required this.sourceRankingsCount,
-  });
-
-  int get totalProcessed => imported + skipped + overwritten;
-  bool get hasAnyChanges => imported > 0 || overwritten > 0;
-
-  String get summaryMessage {
-    if (sourceRankingsCount == 0) {
-      return 'No rankings found in source event';
-    }
-
-    final parts = <String>[];
-    if (imported > 0) parts.add('$imported imported');
-    if (overwritten > 0) parts.add('$overwritten overwritten');
-    if (skipped > 0) parts.add('$skipped skipped');
-
-    return parts.isEmpty ? 'No changes made' : parts.join(', ');
-  }
+  Future<int> getRankingsCountForEvent(int eventId) =>
+      _usageService.getRankingsCountForEvent(eventId);
 }
