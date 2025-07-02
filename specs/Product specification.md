@@ -213,16 +213,18 @@ Users can adjust rankings during events for various reasons:
 - **Subtitle**: 
   - For old events (2+ days ago): Static text "Summary" 
   - For recent past events: Dynamic tab indicator showing available tabs with active one in brackets (e.g., "[Present] • Summary")
-  - For current/future events: Dynamic tab indicator showing all tabs with active one in brackets (e.g., "[Planning] • Present • Summary")
+  - For far future events (1+ days): Static text "Planning"
+- For current events (today/within 1 day): Dynamic tab indicator showing all tabs with active one in brackets (e.g., "[Planning] • Present • Summary")
 **Smart Tab Navigation**: Automatically determines tab configuration based on event age for optimal user experience
-- **Navigation**: Pure swipe-based using PageController for multi-tab views. Single-tab view for old events eliminates unnecessary navigation.
+- **Navigation**: Pure swipe-based using PageController for multi-tab views. Single-tab view for old/far future events eliminates unnecessary navigation.
 **Conditional View**:
 - **Old Events (2+ days ago)**: Shows only Summary tab with direct focus on reviewing scores and impressions
+- **Far Future Events (1+ days from now)**: Shows only Planning tab for focused event preparation
 - **Recent Past Events**: Shows Present + Summary tabs for attendance review and scoring
-- **Current/Future Events**: Shows full Planning + Present + Summary tabs functionality
+- **Current Events (today/within 1 day)**: Shows full Planning + Present + Summary tabs functionality
 **Pages**:
 
-**Planning Tab** (Only for current/future events):
+**Planning Tab** (Only for current events and far future events):
 - View only ranked dancers who are NOT present yet (focused on marking presence)
 - Set/edit rank selection (using predefined ranks)
 - Add reasons for rankings (pre-event planning)

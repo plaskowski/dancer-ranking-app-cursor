@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### User Requests
 - "add action to events import summary - 'Import more files'" - Request to add ability to import additional files after completing an import
+- "future events (in 1+ days) should only have planning tab" - Request to simplify UI for distant future events
 
 ### Added
 - **Import More Files Action**: Added "Import more files" button to events import summary screen
@@ -53,11 +54,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Action Logging**: Tracks when users choose to import additional files for analytics
   - **Better UX**: Eliminates need to close and reopen import dialog for multiple imports
 
+### Changed
+- **Event Screen Tab Logic**: Enhanced tab visibility based on event timing
+  - **Far Future Events**: Events 1+ days in the future now show only the Planning tab
+  - **Current Events**: Events today/within 1 day continue to show all 3 tabs (Planning, Present, Summary)
+  - **Past Events**: Events before today show Present and Summary tabs
+  - **Old Events**: Events 2+ days ago show only Summary tab
+  - **Cleaner UI**: Distant future events focus users on planning tasks only
+  - **Better UX**: Simplified interface for events that don't need immediate action
+
 ### Technical
 - Enhanced `_buildStepControls` method in `ImportEventsDialog` to show "Import more files" button on results step
 - Added `_resetToFileSelection` method to clear import state and return to step 0
 - Added action logging to track user behavior when importing multiple files
 - Maintained existing "Close" button functionality alongside new import action
+- **EventStatusHelper Enhancement**: Added `isFarFutureEvent()` method to detect events 1+ days in the future
+- **Centralized Logic**: Updated `getAvailableTabs()` method to handle all event timing scenarios
+- **EventScreen Refactoring**: Updated all tab logic to use centralized `EventStatusHelper` methods
+- **Dynamic Tab Names**: Improved logging to use actual available tab names instead of hardcoded values
+- **Performance**: Single tab events no longer use PageView, improving performance
 
 ## [v0.84.0] - 2025-01-16
 

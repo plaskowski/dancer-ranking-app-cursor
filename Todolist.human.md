@@ -35,7 +35,7 @@ Small improvements:
 
 Extract more historical data:
 - [ ] regenerate file for 2024-08
-- [ ] AloCubano z 2024-10
+- [ ] AloCubano z 2024-08
 - [ ] extract earlier months
 
 ### Milestone 3
