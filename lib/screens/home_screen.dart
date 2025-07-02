@@ -12,7 +12,6 @@ import '../widgets/import_events_dialog.dart';
 import 'create_event_screen.dart';
 import 'dancers_screen.dart';
 import 'event_screen.dart';
-import 'rank_editor_screen.dart';
 import 'settings_screen.dart';
 import 'tags_screen.dart';
 
@@ -40,22 +39,6 @@ class HomeScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => const DancersScreen(),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.star_border),
-            tooltip: 'Manage Ranks',
-            onPressed: () {
-              ActionLogger.logUserAction('HomeScreen', 'navigate_to_ranks', {
-                'destination': 'RankEditorScreen',
-              });
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RankEditorScreen(),
                 ),
               );
             },
@@ -264,8 +247,7 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Rename'),
                 onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_rename_tapped', {
+                  ActionLogger.logUserAction('EventCard', 'context_rename_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                   });
@@ -281,8 +263,7 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Change Date'),
                 onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_change_date_tapped', {
+                  ActionLogger.logUserAction('EventCard', 'context_change_date_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                     'currentDate': event.date.toIso8601String(),
@@ -299,8 +280,7 @@ class _EventCard extends StatelessWidget {
                 ),
                 title: const Text('Delete'),
                 onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_delete_tapped', {
+                  ActionLogger.logUserAction('EventCard', 'context_delete_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                   });
@@ -383,8 +363,7 @@ class _EventCard extends StatelessWidget {
     }
   }
 
-  void _performDateChange(
-      BuildContext context, DateTime newDate, EventService eventService) async {
+  void _performDateChange(BuildContext context, DateTime newDate, EventService eventService) async {
     ActionLogger.logUserAction('EventCard', 'date_change_started', {
       'eventId': event.id,
       'newDate': newDate.toIso8601String(),
@@ -402,11 +381,9 @@ class _EventCard extends StatelessWidget {
           });
 
           final formattedDate = DateFormat('MMM d, y').format(newDate);
-          ToastHelper.showSuccess(
-              context, 'Event date changed to $formattedDate');
+          ToastHelper.showSuccess(context, 'Event date changed to $formattedDate');
         } else {
-          ActionLogger.logError(
-              'EventCard.performDateChange', 'update_failed', {
+          ActionLogger.logError('EventCard.performDateChange', 'update_failed', {
             'eventId': event.id,
             'newDate': newDate.toIso8601String(),
           });
@@ -424,8 +401,7 @@ class _EventCard extends StatelessWidget {
     }
   }
 
-  void _performRename(
-      BuildContext context, TextEditingController controller) async {
+  void _performRename(BuildContext context, TextEditingController controller) async {
     final newName = controller.text.trim();
     if (newName.isEmpty) {
       ActionLogger.logUserAction('EventCard', 'rename_validation_failed', {
@@ -565,17 +541,13 @@ class _EventCard extends StatelessWidget {
             event.name,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : null,
+              color: isPast ? Theme.of(context).colorScheme.onSurfaceVariant : null,
             ),
           ),
           subtitle: Text(
             formattedDate,
             style: TextStyle(
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : Theme.of(context).colorScheme.primary,
+              color: isPast ? Theme.of(context).colorScheme.onSurfaceVariant : Theme.of(context).colorScheme.primary,
             ),
           ),
         ),

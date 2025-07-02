@@ -5,6 +5,73 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.65.2] - 2025-01-02
+
+### User Requests
+- "Add similar statistics to rank rows to as we have for score rows" - Adding usage statistics to ranks similar to scores
+- "Why it says X rankings? It should say X attendances?" - Fixed terminology to be more user-friendly
+
+### Added
+- **Rank Usage Statistics**: Each rank now displays usage count (e.g., "Beginner • 5 attendances")
+- **RankWithUsage Model**: Helper class for rank with usage statistics similar to ScoreWithUsage
+- **getRankUsageCount()**: Service method to count rankings for a specific rank
+- **getAllRanksWithUsage()**: Service method to get all ranks with their usage statistics
+
+### Changed
+- **Ranks Display**: Rank rows now show usage statistics in format "rank name • X attendances"
+- **Ranks Management Tab**: Updated to use RankWithUsage for consistent statistics display
+- **Data Loading**: Ranks tab now loads usage statistics for informed management decisions
+
+### Fixed
+- **Terminology**: Changed "X rankings" to "X attendances" for better user understanding
+
+### Technical
+- Added `RankWithUsage` class to `RankingService` following ScoreWithUsage pattern
+- Updated `_RanksManagementTab` to use `List<RankWithUsage>` instead of `List<Rank>`
+- Modified `_RankCard` widget to display usage statistics
+- Updated reordering logic to work with RankWithUsage objects
+- Maintained all existing functionality while adding usage insights
+
+## [v0.65.1] - 2025-01-02
+
+### User Requests
+- "Nice, move the ranks tab before scores tab" - Reordering tabs in settings screen for better workflow
+
+### Changed
+- **Settings Screen**: Reordered tabs from [General | Scores | Ranks] to [General | Ranks | Scores]
+- **Tab Navigation**: Ranks management now appears as second tab for more logical workflow
+
+### Technical
+- Updated TabBar configuration to show Ranks tab before Scores tab
+- Updated TabBarView children order to match new tab sequence
+- Updated Implementation specification navigation flow documentation
+
+## [v0.65.0] - 2025-01-02
+
+### User Requests
+- "Nice, now convert the Rank screen the same way" - Converting Rank Editor screen to a tab within the settings screen
+
+### Changed
+- **Settings Screen**: Converted standalone Rank Editor screen into third tab "Ranks" within settings
+- **Home Screen**: Removed "Manage Ranks" button from toolbar
+- **Navigation Flow**: Ranks management now accessed through Settings → Ranks tab instead of standalone screen
+
+### Added
+- **Ranks Management Tab**: All rank editor functionality now available as third tab in settings screen
+- **Settings Navigation**: Ranks tab with military medal icon for consistent iconography
+
+### Technical
+- Converted `RankEditorScreen` into `_RanksManagementTab` component within settings
+- Maintained all rank management features: add, edit, delete, archive, drag-to-reorder, merge functionality
+- Updated TabController length from 2 to 3 tabs in settings screen
+- Removed standalone `rank_editor_screen.dart` file to eliminate code duplication
+- Updated action logging prefixes from 'RankEditorScreen' to 'RanksManagementTab'
+- Preserved floating action button for adding new ranks within tab interface
+
+### Fixed
+- Centralized configuration management with unified settings interface
+- Reduced navigation complexity by consolidating management screens
+
 ## [v0.64.0] - 2025-01-16
 
 ### User Requests

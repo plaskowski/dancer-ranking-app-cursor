@@ -10,22 +10,17 @@ class RankingService {
 
   // Get all available ranks ordered by ordinal (best first)
   Future<List<Rank>> getAllRanks() {
-    return (_database.select(_database.ranks)
-          ..orderBy([(r) => OrderingTerm.asc(r.ordinal)]))
-        .get();
+    return (_database.select(_database.ranks)..orderBy([(r) => OrderingTerm.asc(r.ordinal)])).get();
   }
 
   // Get a specific rank by ID
   Future<Rank?> getRank(int id) {
-    return (_database.select(_database.ranks)..where((r) => r.id.equals(id)))
-        .getSingleOrNull();
+    return (_database.select(_database.ranks)..where((r) => r.id.equals(id))).getSingleOrNull();
   }
 
   // Get default rank (Neutral / Default - ordinal 3)
   Future<Rank?> getDefaultRank() {
-    return (_database.select(_database.ranks)
-          ..where((r) => r.ordinal.equals(3)))
-        .getSingleOrNull();
+    return (_database.select(_database.ranks)..where((r) => r.ordinal.equals(3))).getSingleOrNull();
   }
 
   // Get all non-archived ranks for use in ranking dropdowns
@@ -150,9 +145,7 @@ class RankingService {
     try {
       await _database.transaction(() async {
         // First, get all rankings that need to be reassigned
-        final rankingsToUpdate = await (_database.select(_database.rankings)
-              ..where((r) => r.rankId.equals(id)))
-            .get();
+        final rankingsToUpdate = await (_database.select(_database.rankings)..where((r) => r.rankId.equals(id))).get();
 
         // Reassign all existing rankings to the replacement rank
         int updateResult = 0;
@@ -173,9 +166,7 @@ class RankingService {
         });
 
         // Then delete the rank
-        final deleteResult = await (_database.delete(_database.ranks)
-              ..where((r) => r.id.equals(id)))
-            .go();
+        final deleteResult = await (_database.delete(_database.ranks)..where((r) => r.id.equals(id))).go();
 
         ActionLogger.logDbOperation('DELETE', 'ranks', {
           'id': id,
@@ -252,13 +243,11 @@ class RankingService {
     try {
       // Check if ranking already exists
       final existingRanking = await (_database.select(_database.rankings)
-            ..where(
-                (r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
+            ..where((r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
           .getSingleOrNull();
 
       if (existingRanking != null) {
-        ActionLogger.logAction(
-            'RankingService.setRanking', 'updating_existing', {
+        ActionLogger.logAction('RankingService.setRanking', 'updating_existing', {
           'eventId': eventId,
           'dancerId': dancerId,
           'oldRankId': existingRanking.rankId,
@@ -323,9 +312,7 @@ class RankingService {
 
   // Get ranking for a specific dancer at an event
   Future<Ranking?> getRanking(int eventId, int dancerId) {
-    return (_database.select(_database.rankings)
-          ..where(
-              (r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
+    return (_database.select(_database.rankings)..where((r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
         .getSingleOrNull();
   }
 
@@ -337,10 +324,8 @@ class RankingService {
 
     try {
       final query = _database.select(_database.rankings).join([
-        innerJoin(_database.dancers,
-            _database.dancers.id.equalsExp(_database.rankings.dancerId)),
-        innerJoin(_database.ranks,
-            _database.ranks.id.equalsExp(_database.rankings.rankId)),
+        innerJoin(_database.dancers, _database.dancers.id.equalsExp(_database.rankings.dancerId)),
+        innerJoin(_database.ranks, _database.ranks.id.equalsExp(_database.rankings.rankId)),
       ])
         ..where(_database.rankings.eventId.equals(eventId))
         ..orderBy([
@@ -376,8 +361,7 @@ class RankingService {
 
       return rankingsWithInfo;
     } catch (e) {
-      ActionLogger.logError(
-          'RankingService.getRankingsForEvent', e.toString(), {
+      ActionLogger.logError('RankingService.getRankingsForEvent', e.toString(), {
         'eventId': eventId,
       });
       rethrow;
@@ -385,8 +369,7 @@ class RankingService {
   }
 
   // Get rankings grouped by rank for an event
-  Future<Map<String, List<RankingWithInfo>>> getRankingsGroupedByRank(
-      int eventId) async {
+  Future<Map<String, List<RankingWithInfo>>> getRankingsGroupedByRank(int eventId) async {
     final rankings = await getRankingsForEvent(eventId);
     final Map<String, List<RankingWithInfo>> grouped = {};
 
@@ -410,8 +393,7 @@ class RankingService {
 
     try {
       final result = await (_database.delete(_database.rankings)
-            ..where(
-                (r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
+            ..where((r) => r.eventId.equals(eventId) & r.dancerId.equals(dancerId)))
           .go();
 
       ActionLogger.logDbOperation('DELETE', 'rankings', {
@@ -441,49 +423,29 @@ class RankingService {
   }
 
   // Quick rank assignment methods
-  Future<int> setRankReallyWantToDance(int eventId, int dancerId,
-      {String? reason}) async {
-    final rank = await (_database.select(_database.ranks)
-          ..where((r) => r.ordinal.equals(1)))
-        .getSingle();
-    return setRanking(
-        eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
+  Future<int> setRankReallyWantToDance(int eventId, int dancerId, {String? reason}) async {
+    final rank = await (_database.select(_database.ranks)..where((r) => r.ordinal.equals(1))).getSingle();
+    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
   }
 
-  Future<int> setRankWouldLikeToDance(int eventId, int dancerId,
-      {String? reason}) async {
-    final rank = await (_database.select(_database.ranks)
-          ..where((r) => r.ordinal.equals(2)))
-        .getSingle();
-    return setRanking(
-        eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
+  Future<int> setRankWouldLikeToDance(int eventId, int dancerId, {String? reason}) async {
+    final rank = await (_database.select(_database.ranks)..where((r) => r.ordinal.equals(2))).getSingle();
+    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
   }
 
-  Future<int> setRankNeutral(int eventId, int dancerId,
-      {String? reason}) async {
-    final rank = await (_database.select(_database.ranks)
-          ..where((r) => r.ordinal.equals(3)))
-        .getSingle();
-    return setRanking(
-        eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
+  Future<int> setRankNeutral(int eventId, int dancerId, {String? reason}) async {
+    final rank = await (_database.select(_database.ranks)..where((r) => r.ordinal.equals(3))).getSingle();
+    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
   }
 
-  Future<int> setRankMaybeLater(int eventId, int dancerId,
-      {String? reason}) async {
-    final rank = await (_database.select(_database.ranks)
-          ..where((r) => r.ordinal.equals(4)))
-        .getSingle();
-    return setRanking(
-        eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
+  Future<int> setRankMaybeLater(int eventId, int dancerId, {String? reason}) async {
+    final rank = await (_database.select(_database.ranks)..where((r) => r.ordinal.equals(4))).getSingle();
+    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
   }
 
-  Future<int> setRankNotInterested(int eventId, int dancerId,
-      {String? reason}) async {
-    final rank = await (_database.select(_database.ranks)
-          ..where((r) => r.ordinal.equals(5)))
-        .getSingle();
-    return setRanking(
-        eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
+  Future<int> setRankNotInterested(int eventId, int dancerId, {String? reason}) async {
+    final rank = await (_database.select(_database.ranks)..where((r) => r.ordinal.equals(5))).getSingle();
+    return setRanking(eventId: eventId, dancerId: dancerId, rankId: rank.id, reason: reason);
   }
 
   // Import rankings from another event
@@ -500,13 +462,11 @@ class RankingService {
 
     try {
       // Get all rankings from source event
-      final sourceRankings = await (_database.select(_database.rankings)
-            ..where((r) => r.eventId.equals(sourceEventId)))
-          .get();
+      final sourceRankings =
+          await (_database.select(_database.rankings)..where((r) => r.eventId.equals(sourceEventId))).get();
 
       if (sourceRankings.isEmpty) {
-        ActionLogger.logAction(
-            'RankingService.importRankingsFromEvent', 'no_source_rankings', {
+        ActionLogger.logAction('RankingService.importRankingsFromEvent', 'no_source_rankings', {
           'sourceEventId': sourceEventId,
           'targetEventId': targetEventId,
         });
@@ -519,9 +479,8 @@ class RankingService {
       }
 
       // Get existing rankings in target event
-      final existingRankings = await (_database.select(_database.rankings)
-            ..where((r) => r.eventId.equals(targetEventId)))
-          .get();
+      final existingRankings =
+          await (_database.select(_database.rankings)..where((r) => r.eventId.equals(targetEventId))).get();
 
       final existingDancerIds = existingRankings.map((r) => r.dancerId).toSet();
 
@@ -543,8 +502,7 @@ class RankingService {
               reason: sourceRanking.reason,
             );
             overwritten++;
-            ActionLogger.logAction('RankingService.importRankingsFromEvent',
-                'ranking_overwritten', {
+            ActionLogger.logAction('RankingService.importRankingsFromEvent', 'ranking_overwritten', {
               'sourceEventId': sourceEventId,
               'targetEventId': targetEventId,
               'dancerId': dancerId,
@@ -553,8 +511,7 @@ class RankingService {
           } else {
             // Skip existing ranking
             skipped++;
-            ActionLogger.logAction(
-                'RankingService.importRankingsFromEvent', 'ranking_skipped', {
+            ActionLogger.logAction('RankingService.importRankingsFromEvent', 'ranking_skipped', {
               'sourceEventId': sourceEventId,
               'targetEventId': targetEventId,
               'dancerId': dancerId,
@@ -570,8 +527,7 @@ class RankingService {
             reason: sourceRanking.reason,
           );
           imported++;
-          ActionLogger.logAction(
-              'RankingService.importRankingsFromEvent', 'ranking_imported', {
+          ActionLogger.logAction('RankingService.importRankingsFromEvent', 'ranking_imported', {
             'sourceEventId': sourceEventId,
             'targetEventId': targetEventId,
             'dancerId': dancerId,
@@ -587,8 +543,7 @@ class RankingService {
         sourceRankingsCount: sourceRankings.length,
       );
 
-      ActionLogger.logAction(
-          'RankingService.importRankingsFromEvent', 'import_completed', {
+      ActionLogger.logAction('RankingService.importRankingsFromEvent', 'import_completed', {
         'sourceEventId': sourceEventId,
         'targetEventId': targetEventId,
         'imported': imported,
@@ -599,14 +554,49 @@ class RankingService {
 
       return result;
     } catch (e) {
-      ActionLogger.logError(
-          'RankingService.importRankingsFromEvent', e.toString(), {
+      ActionLogger.logError('RankingService.importRankingsFromEvent', e.toString(), {
         'sourceEventId': sourceEventId,
         'targetEventId': targetEventId,
       });
       rethrow;
     }
   }
+
+  // Get usage statistics for a rank
+  Future<int> getRankUsageCount(int rankId) async {
+    final count = await (_database.selectOnly(_database.rankings)
+          ..addColumns([_database.rankings.id.count()])
+          ..where(_database.rankings.rankId.equals(rankId)))
+        .getSingle();
+    return count.read(_database.rankings.id.count()) ?? 0;
+  }
+
+  // Get all ranks with usage statistics
+  Future<List<RankWithUsage>> getAllRanksWithUsage() async {
+    final ranks = await getAllRanks(); // Get all ranks including archived
+    final ranksWithUsage = <RankWithUsage>[];
+
+    for (final rank in ranks) {
+      final usageCount = await getRankUsageCount(rank.id);
+      ranksWithUsage.add(RankWithUsage(
+        rank: rank,
+        usageCount: usageCount,
+      ));
+    }
+
+    return ranksWithUsage;
+  }
+}
+
+// Helper class for rank with usage statistics
+class RankWithUsage {
+  final Rank rank;
+  final int usageCount;
+
+  RankWithUsage({
+    required this.rank,
+    required this.usageCount,
+  });
 }
 
 // Helper class for rankings with additional info

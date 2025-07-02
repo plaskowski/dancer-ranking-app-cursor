@@ -162,7 +162,7 @@ Users can adjust rankings during events for various reasons:
 - → Create Event Screen (FAB)
 - → Event Screen (tap event)
 - → Dancers Screen (app bar action)
-- → Rank Editor Screen (app bar action)
+  - → Settings Screen → Ranks Tab (popup menu)
 - → Tags Screen (app bar action)
 - → Event Import Dialog (overflow menu action)
 - → Settings Screen (overflow menu action)
@@ -389,40 +389,81 @@ Users can adjust rankings during events for various reasons:
 - → Add Tag Dialog (FAB)
 
 ### 7. Settings Screen (`SettingsScreen`)
-**Purpose**: Centralized application settings and configuration hub with tabbed interface
-**Access**: Available through Home Screen's overflow menu → "Settings"
-**UI Design**:
-- **Two-Tab Interface**: Professional tab-based navigation using `TabController` and `TabBarView`
-- **Material Design**: Consistent theming and styling following app design patterns
-- **Unified Configuration**: All management features centralized in one location
-**Current Tabs**:
 
-**General Settings Tab**: 
-- **App Information Section**: Displays app name, current version (v0.64.0), and usage purpose
-- **Future Settings Placeholder**: Reserved area for upcoming configuration options
+Centralized configuration management with tabbed interface for different settings categories.
 
-**Scores Management Tab**:
-- **Complete Scores Dictionary**: Full scoring system management integrated as settings tab
-- **View & Organize**: All scores with usage statistics and drag-and-drop reordering for ranking hierarchy
-- **Score Operations**: Tap any score for contextual actions (rename, delete, merge) via bottom sheet
-- **Add New Scores**: Floating Action Button for creating new scores with automatic ordinal assignment
-- **Usage Statistics**: Display score usage counts from attendance records for informed decisions
-- **Merge Functionality**: Simplified two-score-at-a-time merging with confirmation workflow
-- **Safety Features**: Prevent deletion of scores in use, confirmation dialogs for destructive actions
-- **Real-time Updates**: Changes immediately reflected in all score assignment interfaces
-- **Provider Integration**: Full ScoreService integration with proper error handling and state management
+### 7.1 Screen Structure
+- **AppBar**: Title "Settings" with tab bar for navigation
+- **TabController**: Manages three tabs (General, Scores, Ranks)
+- **TabBarView**: Contains tab content widgets
 
-**Technical Features**:
-- **Proper Tab Management**: `TickerProviderStateMixin` for smooth tab animations
-- **Independent State Management**: Each tab maintains its own state and lifecycle
-- **Lifecycle Management**: Proper initialization and disposal of tab controllers
-- **Action Logging**: Complete navigation tracking for settings access and screen lifecycle
-- **Code Consolidation**: Scores functionality fully integrated while maintaining all original features
-**Navigation**:
-- ← Back to Home Screen
-- **Scores Tab FAB** → Add Score Dialog
+### 7.2 Tab Configuration
+```dart
+Tab(icon: Icon(Icons.settings), text: 'General')
+Tab(icon: Icon(Icons.military_tech), text: 'Ranks')
+Tab(icon: Icon(Icons.star_rate), text: 'Scores') 
+```
 
-  ### 8. Dialogs and Modals
+### 7.3 General Settings Tab
+- **App Information Card**: 
+  - App name: "Dancer Ranking App"
+  - Version: "v0.65.0"
+  - Built for: "Private use"
+- **Future Settings Placeholder**: Space for additional configuration options
+
+### 7.4 Scores Management Tab (`_ScoresManagementTab`)
+- **Drag-to-Reorder List**: ReorderableListView of all scores with usage statistics
+- **Context Menu**: Rename, delete (if unused), merge operations
+- **Add Score Dialog**: Create new score with automatic ordinal assignment
+- **Floating Action Button**: Positioned within tab for adding new scores
+
+### 7.5 Ranks Management Tab (`_RanksManagementTab`)
+- **Drag-to-Reorder List**: ReorderableListView of all ranks with priority order and usage statistics
+- **Usage Statistics**: Each rank displays usage count (e.g., "Beginner • 5 attendances")
+- **Context Menu**: Edit, archive/unarchive, delete operations
+- **Add Rank Dialog**: Create new rank with automatic ordinal assignment
+- **Edit Rank Dialog**: Modify existing rank name
+- **Archive/Unarchive**: Toggle rank availability for new events
+- **Delete with Replacement**: Choose replacement rank when deleting (prevents orphaned rankings)
+- **Floating Action Button**: Positioned within tab for adding new ranks
+
+### 7.6 Actions Available
+
+#### General Tab Actions:
+- View app information
+
+#### Scores Tab Actions:
+- **Drag to reorder**: Update score priority
+- **Tap score**: Open context menu
+- **Rename**: Update score name
+- **Delete**: Remove unused scores
+- **Merge**: Combine scores and reassign dances
+- **Add New**: Create additional score
+
+#### Ranks Tab Actions:
+- **Drag to reorder**: Update rank priority
+- **Tap rank**: Open context menu  
+- **Edit**: Update rank name
+- **Archive/Unarchive**: Toggle availability for new events
+- **Delete**: Remove rank with replacement selection
+- **Add New**: Create additional rank
+
+### 7.7 Navigation Flow
+```
+Home Screen → Settings (popup menu)
+Settings Screen → [General | Ranks | Scores] tabs
+Ranks Tab → [Add | Edit | Archive | Delete] → Back to tab
+Scores Tab → [Add | Edit | Delete | Merge] → Back to tab
+```
+
+### 7.8 Data Management
+- **Scores**: Full CRUD operations with usage tracking and ordinal management
+- **Ranks**: Full CRUD operations with usage tracking, archival system and ordinal management
+- **Usage Statistics**: Both scores and ranks display usage counts for informed management
+- **Real-time Updates**: setState() triggers UI refresh after operations
+- **Error Handling**: Toast messages for operation success/failure
+
+### 8. Dialogs and Modals
 
 **Ranking Dialog (`RankingDialog`)**:
 - Interactive rank selection from predefined options
