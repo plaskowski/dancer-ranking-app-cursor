@@ -33,6 +33,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Consistent Pattern**: Applied uniform styling across tags, scores, and ranks management tabs
   - **Better Focus**: Main item names now stand out more prominently without visual clutter from stats
 
+### Fixed
+- **Impression Editing Bug**: Fixed text field not showing current impression when editing existing dance impressions
+  - **Root Cause**: DanceRecordingDialog wasn't loading existing impression data from attendance records
+  - **Solution**: Added automatic loading of current impression text when dialog opens for editing
+  - **User Experience**: Impression text field now properly pre-populated with existing text for seamless editing
+
 ### Technical
 - Leveraged existing `TagService.getAllTagsWithUsageCount()` method for statistics
 - Replaced reactive stream with manual refresh pattern for consistency with other dictionary screens  
@@ -40,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated state management from stream-based to local state with loading indicators
 - Maintained all existing tag management functionality while adding usage insights
 - Applied consistent title/subtitle styling pattern across all dictionary management screens
+- Enhanced DanceRecordingDialog with `_loadCurrentImpression()` method using AttendanceService.getAttendance()
 
 ## [v0.69.0] - 2024-12-30
 

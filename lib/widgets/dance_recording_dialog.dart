@@ -38,6 +38,7 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
     });
 
     _checkIfAlreadyDanced();
+    _loadCurrentImpression();
   }
 
   @override
@@ -74,6 +75,43 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
     } catch (e) {
       ActionLogger.logError(
           'DanceRecordingDialog._checkIfAlreadyDanced', e.toString(), {
+        'dancerId': widget.dancerId,
+        'eventId': widget.eventId,
+      });
+      // Handle error silently, user can still proceed
+    }
+  }
+
+  Future<void> _loadCurrentImpression() async {
+    ActionLogger.logUserAction(
+        'DanceRecordingDialog', 'loading_current_impression', {
+      'dancerId': widget.dancerId,
+      'eventId': widget.eventId,
+    });
+
+    try {
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
+
+      // Get the current attendance record to load existing impression
+      final attendance = await attendanceService.getAttendance(
+          widget.eventId, widget.dancerId);
+
+      if (mounted && attendance != null && attendance.impression != null) {
+        ActionLogger.logUserAction(
+            'DanceRecordingDialog', 'current_impression_loaded', {
+          'dancerId': widget.dancerId,
+          'eventId': widget.eventId,
+          'hasImpression': attendance.impression!.isNotEmpty,
+        });
+
+        setState(() {
+          _impressionController.text = attendance.impression!;
+        });
+      }
+    } catch (e) {
+      ActionLogger.logError(
+          'DanceRecordingDialog._loadCurrentImpression', e.toString(), {
         'dancerId': widget.dancerId,
         'eventId': widget.eventId,
       });

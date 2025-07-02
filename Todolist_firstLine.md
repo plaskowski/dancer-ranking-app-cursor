@@ -6,7 +6,6 @@ The app has all I need to start using it. :celebrate:
 
 ## Tasks list (take one at a time)
 Next:
-- [ ] merge branches
 - [ ] ...
 
 Nice to haves:
