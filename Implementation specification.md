@@ -255,7 +255,10 @@ Users can adjust rankings during events for various reasons:
 - **Optimized for Old Events**: Only tab shown for events 2+ days ago to focus on historical review
 
 **Summary Tab Actions**:
-- **FAB**: Opens Add Existing Dancer Screen to add missed attendees to event records
+- **FAB (Active Events)**: Speed dial menu with two options for flexible attendance management:
+  - **Add New Dancer** → Opens Add Dancer Dialog to create new dancer profiles
+  - **Add Existing Dancer** → Opens Add Existing Dancer Screen to mark unranked dancers as present
+- **FAB (Old Events)**: Hidden for events 2+ days ago to maintain read-only experience
 - **Tap dancer**: Opens context-aware actions dialog:
   - **Edit Score** → Opens Score Dialog for any attendee (context-aware text)
   - **Edit Impression** → Quick text editing for dance impressions

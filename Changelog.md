@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.60.2] - 2025-01-16
+
+### User Requests
+- "The summary tab should have the same FAB action as Present Tab (assuming it is not +2 days ago)"
+- "run again" (after fixing build failure)
+- "Looks good, commit"
+
+### Enhanced
+- **Summary Tab FAB**: Unified FAB functionality across all event tabs for consistent user experience
+  - **Speed Dial Menu**: Summary tab now has same dual-action FAB as Present tab
+  - **Add New Dancer**: Create new dancer profiles directly from Summary tab
+  - **Add Existing Dancer**: Mark unranked dancers as present from Summary tab  
+  - **Consistent UX**: All tabs (Planning, Present, Summary) now provide identical add dancer workflows
+  - **Smart Behavior**: Old events (2+ days ago) maintain no FAB for read-only experience
+
+### User Experience
+- **Flexible Attendance Management**: Users can add missed attendees from any tab during active events
+- **Post-Event Corrections**: Summary tab allows adding dancers discovered missing after event completion
+- **Unified Interface**: Same icons, tooltips, and behavior patterns across all event tabs
+- **Contextual Actions**: Comprehensive add dancer options available where relevant
+
+### Fixed
+- **Build Issues**: Resolved missing import for `AddDancerDialog` widget in Summary tab implementation
+- **Import Structure**: Added proper import path `'../../widgets/add_dancer_dialog.dart'` to Summary tab
+
+### Technical
+- Extended SummaryTabActions with speed dial functionality matching PresentTabActions
+- Proper navigation using MaterialPageRoute for AddExistingDancerScreen integration
+- Maintained conditional FAB display logic for old events (no FAB when read-only)
+- Consistent error handling and refresh callbacks across tab implementations
+
 ## [v0.60.1] - 2025-01-16
 
 ### User Requests

@@ -25,13 +25,9 @@ class _EventScreenState extends State<EventScreen> {
   Event? _event;
   late List<EventTabActions> _tabActions;
 
-  bool get _isPastEvent =>
-      _event != null &&
-      _event!.date.isBefore(DateUtils.dateOnly(DateTime.now()));
+  bool get _isPastEvent => _event != null && _event!.date.isBefore(DateUtils.dateOnly(DateTime.now()));
 
-  bool get _isOldEvent =>
-      _event != null &&
-      _event!.date.isBefore(DateTime.now().subtract(const Duration(days: 2)));
+  bool get _isOldEvent => _event != null && _event!.date.isBefore(DateTime.now().subtract(const Duration(days: 2)));
 
   @override
   void initState() {
@@ -139,14 +135,10 @@ class _EventScreenState extends State<EventScreen> {
     // Different tab configurations based on event age
     final pages = _isOldEvent
         ? [
-            SummaryTab(
-                eventId: widget.eventId) // Only Summary tab for old events
+            SummaryTab(eventId: widget.eventId) // Only Summary tab for old events
           ]
         : _isPastEvent
-            ? [
-                PresentTab(eventId: widget.eventId),
-                SummaryTab(eventId: widget.eventId)
-              ]
+            ? [PresentTab(eventId: widget.eventId), SummaryTab(eventId: widget.eventId)]
             : [
                 PlanningTab(eventId: widget.eventId),
                 PresentTab(eventId: widget.eventId),
@@ -157,9 +149,7 @@ class _EventScreenState extends State<EventScreen> {
     final currentTabActions = _isOldEvent
         ? _tabActions[2] // Always Summary actions for old events
         : _isPastEvent
-            ? (_currentPage == 0
-                ? _tabActions[1]
-                : _tabActions[2]) // Present or Summary
+            ? (_currentPage == 0 ? _tabActions[1] : _tabActions[2]) // Present or Summary
             : _tabActions[_currentPage]; // Planning, Present, or Summary
 
     return Scaffold(
@@ -208,15 +198,17 @@ class _EventScreenState extends State<EventScreen> {
               onPageChanged: _onPageChanged,
               children: pages,
             ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => currentTabActions.onFabPressed(context, () {
-          setState(() {
-            // Trigger rebuild to refresh the active tab
-          });
-        }),
-        tooltip: currentTabActions.fabTooltip,
-        child: Icon(currentTabActions.fabIcon),
-      ),
+      floatingActionButton: _isOldEvent
+          ? null // Hide FAB for old events (2+ days ago)
+          : FloatingActionButton(
+              onPressed: () => currentTabActions.onFabPressed(context, () {
+                setState(() {
+                  // Trigger rebuild to refresh the active tab
+                });
+              }),
+              tooltip: currentTabActions.fabTooltip,
+              child: Icon(currentTabActions.fabIcon),
+            ),
     );
   }
 

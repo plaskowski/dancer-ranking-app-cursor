@@ -11,7 +11,7 @@ Planned improvements:
   - by default show those I danced with more than one in last 3 months
   - a switch to show all
 - introduce settings screen that will contain all the less relevant screens as tabs
-- screen to edit scores dictionary
+- X screen to edit scores dictionary
   - edit name
   - edit scores order
   - merge scores
