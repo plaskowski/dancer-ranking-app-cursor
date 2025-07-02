@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.84.0] - 2025-01-16
+
+### User Requests
+- "move info block into the scroll area to not take vertical space" (Add existing dancer dialog)
+- "move 'already danced' checkbox in above the tags section so I don't have to scroll through tags for it" (Add new dancer dialog)
+
+### Improved
+- **Add Existing Dancer Dialog**: Info block is now inside the scrollable area, so it doesn't take up fixed vertical space
+- **Add New Dancer Dialog**: "Already danced" checkbox (and impression field) now appear above the tags section, right after notes
+- **Better Usability**: Both dialogs are more compact and user-friendly, especially on smaller screens
+
+### Technical
+- Refactored layout in `add_existing_dancer_screen.dart` to move info block into the scrollable list
+- Refactored layout in `add_dancer_dialog.dart` to move "already danced" option above tags
+
 ## [v0.83.0] - 2025-01-16
 
 ### User Requests

@@ -262,6 +262,43 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
               const SizedBox(height: 16),
 
+              // Show "already danced" option only when adding during an event
+              if (isEventContext && !isEditing) ...[
+                const SizedBox(height: 16),
+                CheckboxListTile(
+                  title: const Text('Already danced with this person'),
+                  value: _alreadyDanced,
+                  onChanged: (value) {
+                    ActionLogger.logUserAction(
+                        'AddDancerDialog', 'already_danced_toggled', {
+                      'value': value ?? false,
+                      'eventId': widget.eventId,
+                    });
+
+                    setState(() {
+                      _alreadyDanced = value ?? false;
+                    });
+                  },
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: EdgeInsets.zero,
+                ),
+
+                // Show impression field if already danced is checked
+                if (_alreadyDanced) ...[
+                  const SizedBox(height: 8),
+                  TextFormField(
+                    controller: _impressionController,
+                    decoration: const InputDecoration(
+                      labelText: 'Impression (optional)',
+                      border: OutlineInputBorder(),
+                      hintText: 'How was the dance?',
+                    ),
+                    maxLines: 3,
+                    textCapitalization: TextCapitalization.sentences,
+                  ),
+                ],
+              ],
+
               // Tag selection
               TagSelectionWidget(
                 selectedTagIds: _selectedTagIds,
@@ -324,43 +361,6 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                     ),
                   ),
                 ),
-              ],
-
-              // Show "already danced" option only when adding during an event
-              if (isEventContext && !isEditing) ...[
-                const SizedBox(height: 16),
-                CheckboxListTile(
-                  title: const Text('Already danced with this person'),
-                  value: _alreadyDanced,
-                  onChanged: (value) {
-                    ActionLogger.logUserAction(
-                        'AddDancerDialog', 'already_danced_toggled', {
-                      'value': value ?? false,
-                      'eventId': widget.eventId,
-                    });
-
-                    setState(() {
-                      _alreadyDanced = value ?? false;
-                    });
-                  },
-                  controlAffinity: ListTileControlAffinity.leading,
-                  contentPadding: EdgeInsets.zero,
-                ),
-
-                // Show impression field if already danced is checked
-                if (_alreadyDanced) ...[
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _impressionController,
-                    decoration: const InputDecoration(
-                      labelText: 'Impression (optional)',
-                      border: OutlineInputBorder(),
-                      hintText: 'How was the dance?',
-                    ),
-                    maxLines: 3,
-                    textCapitalization: TextCapitalization.sentences,
-                  ),
-                ],
               ],
             ],
           ),

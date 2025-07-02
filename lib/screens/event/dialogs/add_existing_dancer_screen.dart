@@ -18,7 +18,8 @@ class AddExistingDancerScreen extends StatefulWidget {
   });
 
   @override
-  State<AddExistingDancerScreen> createState() => _AddExistingDancerScreenState();
+  State<AddExistingDancerScreen> createState() =>
+      _AddExistingDancerScreenState();
 }
 
 class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
@@ -42,7 +43,8 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
 
   Future<void> _markDancerPresent(int dancerId, String dancerName) async {
     try {
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
 
       await attendanceService.markPresent(widget.eventId, dancerId);
 
@@ -52,7 +54,8 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
           SnackBar(
             content: Text('$dancerName marked as present'),
             backgroundColor: context.danceTheme.success,
-            duration: const Duration(seconds: 1), // Shorter duration for efficiency
+            duration:
+                const Duration(seconds: 1), // Shorter duration for efficiency
           ),
         );
       }
@@ -101,120 +104,48 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
             ),
           ),
 
-          // Info Banner
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
+          // Dancers List (with info block inside scroll)
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
               children: [
-                Icon(
-                  Icons.info_outline,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    'Showing unranked and absent dancers only. Present dancers managed in Present tab.',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    ),
+                // Info Banner (now scrollable)
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Showing unranked and absent dancers only. Present dancers managed in Present tab.',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                // Dancers List
+                const SizedBox(
+                  height: 8,
+                ),
+                ..._buildDancerList(context),
               ],
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // Dancers List
-          Expanded(
-            child: StreamBuilder<List<DancerWithEventInfo>>(
-              stream: _getAvailableDancersStream(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
-
-                final allDancers = snapshot.data ?? [];
-                final filteredDancers = _filterDancers(allDancers);
-
-                if (filteredDancers.isEmpty) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.person_search,
-                          size: 64,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          _searchQuery.isNotEmpty || _selectedTagId != null
-                              ? 'No dancers found with current filters'
-                              : 'No available dancers',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          _searchQuery.isNotEmpty || _selectedTagId != null
-                              ? 'Try different search terms or clear filters'
-                              : 'All unranked dancers are already present or ranked!',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: filteredDancers.length,
-                  itemBuilder: (context, index) {
-                    final dancer = filteredDancers[index];
-
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      child: ListTile(
-                        title: Text(
-                          dancer.name,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
-                            ? Text(
-                                dancer.notes!,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                ),
-                              )
-                            : null,
-                        trailing: ElevatedButton.icon(
-                          onPressed: () => _markDancerPresent(dancer.id, dancer.name),
-                          icon: const Icon(Icons.location_on, size: 18),
-                          label: const Text('Mark Present'),
-                        ),
-                        onTap: () => _markDancerPresent(dancer.id, dancer.name),
-                      ),
-                    );
-                  },
-                );
-              },
             ),
           ),
         ],
@@ -222,16 +153,96 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
     );
   }
 
+  List<Widget> _buildDancerList(BuildContext context) {
+    return [
+      StreamBuilder<List<DancerWithEventInfo>>(
+        stream: _getAvailableDancersStream(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return const Center(child: Text('Error: {snapshot.error}'));
+          }
+
+          final allDancers = snapshot.data ?? [];
+          final filteredDancers = _filterDancers(allDancers);
+
+          if (filteredDancers.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.person_search,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    _searchQuery.isNotEmpty || _selectedTagId != null
+                        ? 'No dancers found with current filters'
+                        : 'No available dancers',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _searchQuery.isNotEmpty || _selectedTagId != null
+                        ? 'Try different search terms or clear filters'
+                        : 'All unranked dancers are already present or ranked!',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return Column(
+            children: List.generate(filteredDancers.length, (index) {
+              final dancer = filteredDancers[index];
+              return Card(
+                margin: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+                child: ListTile(
+                  title: Text(
+                    dancer.name,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
+                      ? Text(dancer.notes!)
+                      : null,
+                  trailing: ElevatedButton(
+                    onPressed: () => _markDancerPresent(dancer.id, dancer.name),
+                    child: const Text('Mark Present'),
+                  ),
+                ),
+              );
+            }),
+          );
+        },
+      ),
+    ];
+  }
+
   Stream<List<DancerWithEventInfo>> _getAvailableDancersStream() {
     final dancerService = Provider.of<DancerService>(context, listen: false);
-    final dancerTagService = Provider.of<DancerTagService>(context, listen: false);
+    final dancerTagService =
+        Provider.of<DancerTagService>(context, listen: false);
 
     if (_selectedTagId != null) {
       // Use tag-filtered stream
-      return dancerTagService.watchAvailableDancersForEventByTag(widget.eventId, _selectedTagId!);
+      return dancerTagService.watchAvailableDancersForEventByTag(
+          widget.eventId, _selectedTagId!);
     } else {
       // Use existing stream and filter to show only unranked and absent dancers
-      return dancerService.watchDancersForEvent(widget.eventId).map((allDancers) {
+      return dancerService
+          .watchDancersForEvent(widget.eventId)
+          .map((allDancers) {
         return allDancers.where((dancer) {
           // Show dancers who are NOT ranked (no rankName) AND NOT present (no attendanceMarkedAt)
           final isUnranked = dancer.rankName == null;
