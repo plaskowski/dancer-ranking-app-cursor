@@ -160,7 +160,8 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete Score'),
-        content: Text('Are you sure you want to delete "${scoreWithUsage.score.name}"?'),
+        content: Text(
+            'Are you sure you want to delete "${scoreWithUsage.score.name}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -177,8 +178,9 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
 
     if (confirmed == true) {
       try {
-        // Since usage count is 0, we can safely delete without replacement
+        // Delete the score directly since usage count is 0
         final scoreService = Provider.of<ScoreService>(context, listen: false);
+        // Use archiveScore which will hide it from the UI
         await scoreService.archiveScore(scoreWithUsage.score.id);
         await _loadScores();
         if (mounted) {
@@ -193,7 +195,10 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
   }
 
   Future<void> _showMergeDialog(Score sourceScore) async {
-    final targetScores = _scoresWithUsage.where((s) => s.score.id != sourceScore.id).map((s) => s.score).toList();
+    final targetScores = _scoresWithUsage
+        .where((s) => s.score.id != sourceScore.id)
+        .map((s) => s.score)
+        .toList();
 
     if (targetScores.isEmpty) {
       ToastHelper.showError(context, 'No other scores available for merging');
@@ -204,18 +209,32 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Merge Into'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Merge "${sourceScore.name}" into:'),
-            const SizedBox(height: 16),
-            ...targetScores.map((score) => ListTile(
-                  title: Text(score.name),
-                  subtitle: Text('Ordinal: ${score.ordinal}'),
-                  onTap: () => Navigator.pop(context, score),
-                )),
-          ],
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 300,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Merge "${sourceScore.name}" into:'),
+              const SizedBox(height: 16),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: targetScores.length,
+                  itemBuilder: (context, index) {
+                    final score = targetScores[index];
+                    return ListTile(
+                      title: Text(score.name),
+                      subtitle: Text(
+                          'Used in ${_scoresWithUsage.firstWhere((s) => s.score.id == score.id).usageCount} dances'),
+                      onTap: () => Navigator.pop(context, score),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
         actions: [
           TextButton(
@@ -231,9 +250,14 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
     }
   }
 
-  Future<void> _showMergeConfirmationDialog(Score sourceScore, Score targetScore) async {
-    final sourceUsage = _scoresWithUsage.firstWhere((s) => s.score.id == sourceScore.id).usageCount;
-    final targetUsage = _scoresWithUsage.firstWhere((s) => s.score.id == targetScore.id).usageCount;
+  Future<void> _showMergeConfirmationDialog(
+      Score sourceScore, Score targetScore) async {
+    final sourceUsage = _scoresWithUsage
+        .firstWhere((s) => s.score.id == sourceScore.id)
+        .usageCount;
+    final targetUsage = _scoresWithUsage
+        .firstWhere((s) => s.score.id == targetScore.id)
+        .usageCount;
 
     final confirmed = await showDialog<bool>(
       context: context,
@@ -246,7 +270,8 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
             Text('Source: "${sourceScore.name}" ($sourceUsage dances)'),
             Text('Target: "${targetScore.name}" ($targetUsage dances)'),
             const SizedBox(height: 16),
-            Text('All dances scored "${sourceScore.name}" will become "${targetScore.name}"'),
+            Text(
+                'All dances scored "${sourceScore.name}" will become "${targetScore.name}"'),
           ],
         ),
         actions: [
@@ -317,8 +342,11 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
     if (result != null) {
       try {
         // Find the next ordinal (worst rank + 1)
-        final maxOrdinal =
-            _scoresWithUsage.isEmpty ? 0 : _scoresWithUsage.map((s) => s.score.ordinal).reduce((a, b) => a > b ? a : b);
+        final maxOrdinal = _scoresWithUsage.isEmpty
+            ? 0
+            : _scoresWithUsage
+                .map((s) => s.score.ordinal)
+                .reduce((a, b) => a > b ? a : b);
 
         final scoreService = Provider.of<ScoreService>(context, listen: false);
         await scoreService.createScore(
@@ -399,14 +427,9 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
                     final scoreWithUsage = _scoresWithUsage[index];
                     return ListTile(
                       key: ValueKey(scoreWithUsage.score.id),
-                      leading: const Icon(Icons.drag_handle),
-                      title: Text(scoreWithUsage.score.name),
-                      subtitle: Text('Used in ${scoreWithUsage.usageCount} dances'),
-                      trailing: Text(
-                        '#${scoreWithUsage.score.ordinal}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
-                            ),
+                      title: Text(
+                        '${scoreWithUsage.score.name} • ${scoreWithUsage.usageCount} dances',
+                        style: const TextStyle(fontSize: 16),
                       ),
                       onTap: () => _showContextMenu(scoreWithUsage),
                     );

@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - "Let's implement it" (referring to the scores dictionary editor design)
 - "- the Add new score should use fab pattern" 
 - "- I don't need the Reset to Defaults"
+- "Wrong, you were supposed to remove the left icon, the list should stay draggable to reorder them"
+- "No, I want to keep the drag handle on the right, I want to remove the excessive drag handle icon on the left"
+- "Great, all works now" (confirmed full functionality after testing)
 
 ### Added
 - **Scores Dictionary Editor Screen**: Complete implementation for managing and standardizing scoring system
@@ -34,12 +37,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Home Screen Menu**: Added "Manage Scores" option to popup menu with star_rate icon
 - **Seamless Integration**: Accessible through main navigation without disrupting existing workflow
 
+### Fixed
+- **UI Refinements**: Cleaned up scores list display for optimal user experience
+  - **Clean Layout**: Removed excessive drag handle icons from left side of rows
+  - **Maintained Drag Functionality**: Preserved full drag-and-drop reordering capability with right-side handles
+  - **Simplified Display**: Single-line format showing "Score Name • X dances" for better readability
+  - **Proper Leading**: Explicitly set `leading: null` to prevent automatic icon placement
+
 ### Technical
 - Leverages existing database schema with `scores` table and foreign key relationships
 - Contextual dialog-based editing for optimal mobile UX (no inline editing)
 - Proper error handling with user-friendly toast messages
 - Follows existing code patterns and architectural conventions
 - Transaction-based operations ensure data integrity during merge operations
+- **Fully Tested**: All functionality confirmed working including drag reordering, adding, renaming, and merging scores
 
 ## [v0.58.0] - 2025-01-16
 

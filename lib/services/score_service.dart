@@ -203,7 +203,7 @@ class ScoreService {
 
   // Get all scores with usage statistics
   Future<List<ScoreWithUsage>> getAllScoresWithUsage() async {
-    final scores = await getAllScores();
+    final scores = await getActiveScores(); // Only get non-archived scores
     final scoresWithUsage = <ScoreWithUsage>[];
 
     for (final score in scores) {
