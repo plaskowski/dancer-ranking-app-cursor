@@ -20,5 +20,5 @@ Planned improvements:
   - an option to reset app database
   - an option to backup app database to a file
   - an option to restore the app database from a file
-- add new “Dancer history” screen
+- [ ] add new “Dancer history” screen
   - purpose: review our dances history to aid ranking decisions

@@ -8,11 +8,14 @@ The app has all I need to start using it. :celebrate:
 
 ### Line #1
 - [ ] add new “Dancer history” screen
-  - purpose: review our dances history to aid ranking decisions
+  purpose: review our dances history to aid ranking decisions
+  - [ ] What is this "❌ Absent"?
+  - [ ] ...
 - [ ] ...
 
 ### Line #2
-- [ ] merge branches
+- [X] merge branches
+- [ ] ...?  <---
 
 ## Backlog
 - [ ] ...

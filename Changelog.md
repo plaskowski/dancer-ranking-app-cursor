@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.71.0] - 2025-01-16
+
+### User Requests
+- "Let's write a design for this (no code yet)" - Request to design new Dancer History screen
+- "Too complex, stay with 'Ranking Context: When ranking dancers at events, users need to recall past performance and interactions' only" - Simplify design scope
+- "What is this '🏆 Advanced'?" - Question about ranking system terminology
+- "Nah, I don't need the rank in this history and it is used only for planning the event. In history only the actual score and impression matter." - Remove rankings from history
+- "What is this '❌ Absent'?" - Question about absent status in history
+- "the 'Left early' is of no use" - Remove left early status from history
+- "Great commit the spec for now" - Request to commit the design specification
+
+### Added
+- **Dancer History Screen Design**: Created comprehensive design specification for new dancer history feature
+  - **Purpose**: Help users recall past dance experiences and interactions when making ranking decisions during event planning
+  - **Simple UI**: Single screen showing recent attended events with dance scores and impressions
+  - **Focus on Relevance**: Shows only events where dancer actually attended (no absent/non-events)
+  - **Essential Data**: Date, event name, dance status (danced vs present only), scores, and impressions
+  - **Navigation**: Accessed from Event Planning Tab → Dancer → "View History"
+
+### Designed
+- **Clean Data Model**: Simple `DancerRecentHistory` class with essential fields only
+- **Efficient Query**: Shows last 6 events where dancer attended (INNER JOIN on attendances)
+- **User-Focused Information**: Recent dance scores, impressions, and attendance patterns
+- **Simplified Status**: Only "Danced" vs "Present only" - removed rankings, absent, and left early as irrelevant
+- **Context-Driven**: Designed specifically for ranking decision support during event planning
+
+### Technical
+- Design specification saved at `specs/designs/design_DancerHistory.md`
+- Database query design using existing tables (events, attendances, scores)
+- Service method planned for existing `DancerEventService`
+- Single screen file approach for simplicity
+- Focus on actual dance experiences rather than planning preferences
+
 ## [v0.70.0] - 2025-01-08
 
 ### User Requests
