@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../utils/action_logger.dart';
 import '../../dancers/dancers_screen.dart';
-import '../../settings/settings_screen.dart';
 import '../services/home_navigation_service.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -30,22 +29,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => const DancersScreen(),
-              ),
-            );
-          },
-        ),
-        IconButton(
-          icon: const Icon(Icons.label),
-          tooltip: 'Manage Tags',
-          onPressed: () {
-            ActionLogger.logUserAction('HomeScreen', 'navigate_to_tags', {
-              'destination': 'SettingsScreen_TagsTab',
-            });
-
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const SettingsScreen(initialTabIndex: 3),
               ),
             );
           },

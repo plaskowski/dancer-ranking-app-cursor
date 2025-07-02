@@ -164,18 +164,14 @@ Users can adjust rankings during events for various reasons:
 - Navigate to event details by tapping event
 - Create new event (FAB)
 - Navigate to dancers management (app bar icon)
-- Navigate to ranks management (app bar icon)
-- Navigate to tags management (app bar icon)
 - Import events from JSON files (overflow menu)
-- Manage scores dictionary (overflow menu)
-- Access application settings (overflow menu)
+- Access application settings (app bar icon)
 **Navigation**:
 - → Create Event Screen (FAB)
 - → Event Screen (tap event)
 - → Dancers Screen (app bar action)
-- → Settings Screen → Tags Tab (app bar action)
+- → Settings Screen (app bar action)
 - → Event Import Dialog (overflow menu action)
-- → Settings Screen (overflow menu action)
 
 ### 2. Create Event Screen (`CreateEventScreen`)
 **Purpose**: Form to create new dance events
@@ -495,7 +491,7 @@ Tab(icon: Icon(Icons.label), text: 'Tags')
 
 ### 7.8 Navigation Flow
 ```
-Home Screen → Settings (popup menu OR app bar for Tags)
+Home Screen → Settings (app bar action)
 Settings Screen → [General | Ranks | Scores | Tags] tabs
 Ranks Tab → [Add | Edit | Archive | Delete] → Back to tab
 Scores Tab → [Add | Edit | Delete | Merge] → Back to tab

@@ -6,10 +6,8 @@ The app has all I need to start using it. :celebrate:
 
 ## Tasks list (take one at a time)
 Next:
-- settings screen
-  - remove tag icon from tag screen rows
-  - migrate tags screen
-- how to run second cursor agent on separate branch of the same repo
+- [X] settings screen
+- [X] how to run second cursor agent on separate branch of the same repo
 
 Nice to haves:
 - move all main screen actions (except Dancers) under the three dots, Import events should be the last
