@@ -34,8 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Simplified
 - **Minimal UI Design**: Further simplified interface based on user feedback
   - **Removed Header Stats**: Eliminated summary section with total dances and recent scores
-  - **Compact Event List**: One line per event showing "Date - Event • Status • Score • Notes"
-  - **No Visual Clutter**: Removed icons, separators, and extra formatting elements
+  - **Compact Event List**: One line per event showing "Date - Event • ☑/☐ Score • Notes"
+  - **Checkbox Icons**: Used ☑ (danced) and ☐ (present only) to save space for longer impressions
+  - **No Visual Clutter**: Removed separators and extra formatting elements
   - **Essential Only**: Shows just the core information needed for ranking decisions
 
 ### Technical

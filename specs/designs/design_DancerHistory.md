@@ -31,28 +31,28 @@
 ├─────────────────────────────────────┤
 │                                     │
 │ Dec 15 - Christmas Party           │
-│ Danced • Amazing • "Excellent lead"│
+│ ☑ Amazing • "Excellent lead & flow"│
 │                                     │
 │ Nov 28 - Weekly Social             │
-│ Present • "Too crowded"             │
+│ ☐ "Too crowded, left early"        │
 │                                     │
 │ Nov 14 - Practice Session          │
-│ Danced • Great • "Good turns"      │
+│ ☑ Great • "Good improvement turns" │
 │                                     │
 │ Oct 30 - Halloween Dance           │
-│ Danced • Great • "Consistent"      │
+│ ☑ Great • "Consistent performance" │
 │                                     │
 │ Oct 16 - Workshop Night            │
-│ Present • "Very busy night"         │
+│ ☐ "Very busy night, no chance"     │
 │                                     │
 └─────────────────────────────────────┘
 ```
 
 ### Key Information
 
-Each line shows: **Date - Event • Status • Score • "Notes"**
-- **Danced**: Shows score (Amazing/Great/Good/Okay/Meh)
-- **Present**: Shows only notes (no score since no dance)
+Each line shows: **Date - Event • ☑/☐ Score • "Impression"**
+- **☑ (Danced)**: Shows score + impression
+- **☐ (Present only)**: Shows impression only
 
 ## Database Design
 
