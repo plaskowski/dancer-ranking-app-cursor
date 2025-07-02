@@ -165,7 +165,6 @@ Users can adjust rankings during events for various reasons:
 - → Rank Editor Screen (app bar action)
 - → Tags Screen (app bar action)
 - → Event Import Dialog (overflow menu action)
-- → Scores Dictionary Screen (overflow menu action)
 - → Settings Screen (overflow menu action)
 
 ### 2. Create Event Screen (`CreateEventScreen`)
@@ -389,63 +388,41 @@ Users can adjust rankings during events for various reasons:
 - ← Back to Home Screen
 - → Add Tag Dialog (FAB)
 
-### 7. Scores Dictionary Screen (`ScoresDictionaryScreen`)
-**Purpose**: Manage and standardize the scoring system used across events
-**Access**: Available through Home Screen's overflow menu → "Manage Scores"
-**Actions**:
-- View all scores with usage statistics (how many dances use each score)
-- Drag-and-drop reordering to define ranking hierarchy (updates ordinal values)
-- Tap any score row to access contextual actions via bottom sheet menu:
-  - **Rename Score**: Edit score name with validation and confirmation
-  - **Delete Score**: Archive unused scores (only available for scores with 0 usage)
-  - **Merge into...**: Combine duplicate scores using simplified two-score workflow
-- Add new scores (FAB) with automatic ordinal assignment
-**UI Design**:
-- **ReorderableListView**: Drag handles on the left for intuitive reordering
-- **Score Information Display**: 
-  - Score name and usage count (e.g., "Excellent • Used in 23 dances")
-  - Ordinal indicator on the right showing rank position (#1, #2, etc.)
-- **Contextual Bottom Sheet**: Modal sheet with context-aware actions based on score usage
-- **Safety Features**: 
-  - Prevent deletion of scores in use
-  - Confirmation dialogs for destructive actions
-  - Error handling with user-friendly toast messages
-**Merge Workflow**:
-1. Tap source score → Select "Merge into..." from context menu
-2. Select target score from available options
-3. Review merge confirmation showing both scores and affected dance counts
-4. Confirm merge → Source score data transferred to target, source score deleted
-**Integration**:
-- **Database Integration**: Leverages existing Scores table with foreign key relationships
-- **Real-time Updates**: Changes immediately reflected in all score assignment interfaces
-- **Provider Pattern**: Uses proper dependency injection following app conventions
-- **Transaction Safety**: Merge operations use database transactions for data integrity
-**Navigation**:
-- ← Back to Home Screen
-- → Rename Dialog (contextual action)
-- → Merge Confirmation Dialog (contextual action)
-- → Add Score Dialog (FAB)
-
-### 8. Settings Screen (`SettingsScreen`)
-**Purpose**: Application settings and configuration with tabbed interface for future extensibility
+### 7. Settings Screen (`SettingsScreen`)
+**Purpose**: Centralized application settings and configuration hub with tabbed interface
 **Access**: Available through Home Screen's overflow menu → "Settings"
 **UI Design**:
-- **Tabbed Interface**: Professional tab-based navigation using `TabController` and `TabBarView`
+- **Two-Tab Interface**: Professional tab-based navigation using `TabController` and `TabBarView`
 - **Material Design**: Consistent theming and styling following app design patterns
-- **Scalable Architecture**: Foundation ready for additional tabs (appearance, data, privacy, etc.)
+- **Unified Configuration**: All management features centralized in one location
 **Current Tabs**:
-- **General Settings Tab**: Primary configuration and app information
-  - **App Information Section**: Displays app name, current version, and usage purpose
-  - **Future Settings Placeholder**: Reserved area for upcoming configuration options
+
+**General Settings Tab**: 
+- **App Information Section**: Displays app name, current version (v0.64.0), and usage purpose
+- **Future Settings Placeholder**: Reserved area for upcoming configuration options
+
+**Scores Management Tab**:
+- **Complete Scores Dictionary**: Full scoring system management integrated as settings tab
+- **View & Organize**: All scores with usage statistics and drag-and-drop reordering for ranking hierarchy
+- **Score Operations**: Tap any score for contextual actions (rename, delete, merge) via bottom sheet
+- **Add New Scores**: Floating Action Button for creating new scores with automatic ordinal assignment
+- **Usage Statistics**: Display score usage counts from attendance records for informed decisions
+- **Merge Functionality**: Simplified two-score-at-a-time merging with confirmation workflow
+- **Safety Features**: Prevent deletion of scores in use, confirmation dialogs for destructive actions
+- **Real-time Updates**: Changes immediately reflected in all score assignment interfaces
+- **Provider Integration**: Full ScoreService integration with proper error handling and state management
+
 **Technical Features**:
 - **Proper Tab Management**: `TickerProviderStateMixin` for smooth tab animations
+- **Independent State Management**: Each tab maintains its own state and lifecycle
 - **Lifecycle Management**: Proper initialization and disposal of tab controllers
 - **Action Logging**: Complete navigation tracking for settings access and screen lifecycle
-- **Future-Ready**: Architecture designed to easily accommodate new settings categories
+- **Code Consolidation**: Scores functionality fully integrated while maintaining all original features
 **Navigation**:
 - ← Back to Home Screen
+- **Scores Tab FAB** → Add Score Dialog
 
-  ### 9. Dialogs and Modals
+  ### 8. Dialogs and Modals
 
 **Ranking Dialog (`RankingDialog`)**:
 - Interactive rank selection from predefined options
@@ -495,7 +472,7 @@ Users can adjust rankings during events for various reasons:
 - Prevents duplicate dance records
 - Save/cancel actions
 
-### 10. Event Import Dialog (`ImportEventsDialog`)
+### 9. Event Import Dialog (`ImportEventsDialog`)
 **Purpose**: Full-screen dialog for importing events from a JSON file with comprehensive attendance and score data.
 **Enhanced Features**:
 - **Score Import Support**: Automatic creation of missing scores referenced in import data

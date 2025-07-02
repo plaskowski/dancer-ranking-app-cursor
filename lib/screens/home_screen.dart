@@ -13,7 +13,6 @@ import 'create_event_screen.dart';
 import 'dancers_screen.dart';
 import 'event_screen.dart';
 import 'rank_editor_screen.dart';
-import 'scores_dictionary_screen.dart';
 import 'settings_screen.dart';
 import 'tags_screen.dart';
 
@@ -85,9 +84,6 @@ class HomeScreen extends StatelessWidget {
                 case 'import_events':
                   _importEvents(context);
                   break;
-                case 'manage_scores':
-                  _navigateToScoresDictionary(context);
-                  break;
                 case 'settings':
                   _navigateToSettings(context);
                   break;
@@ -99,14 +95,6 @@ class HomeScreen extends StatelessWidget {
                 child: ListTile(
                   leading: Icon(Icons.file_upload),
                   title: Text('Import Events'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const PopupMenuItem<String>(
-                value: 'manage_scores',
-                child: ListTile(
-                  leading: Icon(Icons.star_rate),
-                  title: Text('Manage Scores'),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
@@ -225,19 +213,6 @@ class HomeScreen extends StatelessWidget {
         ToastHelper.showSuccess(context, 'Events imported successfully');
       }
     });
-  }
-
-  void _navigateToScoresDictionary(BuildContext context) {
-    ActionLogger.logUserAction('HomeScreen', 'navigate_to_scores_dictionary', {
-      'destination': 'ScoresDictionaryScreen',
-    });
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const ScoresDictionaryScreen(),
-      ),
-    );
   }
 
   void _navigateToSettings(BuildContext context) {

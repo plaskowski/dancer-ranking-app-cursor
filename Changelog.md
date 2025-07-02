@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.64.0] - 2025-01-16
+
+### User Requests
+- "Convert score screen into a tab on settings screen"
+
+### Changed
+- **Settings Screen Enhancement**: Converted standalone Scores Dictionary into integrated Settings tab for better organization
+  - **Scores Tab**: Full scores management functionality moved from separate screen to dedicated settings tab
+  - **Two-Tab Interface**: Settings now contains General and Scores tabs with proper tab navigation
+  - **Unified Access**: All configuration features now centralized in one location through settings screen
+  - **Removed Standalone Screen**: Eliminated separate ScoresDictionaryScreen in favor of integrated approach
+  - **Navigation Cleanup**: Removed "Manage Scores" from home screen popup menu, now accessed via Settings → Scores tab
+
+### Enhanced
+- **Better UX Organization**: Settings provides natural home for all configuration features including scoring system
+- **Consistent Navigation**: All management features (general settings, scores) accessible through single entry point
+- **Tab-Based Experience**: Professional tabbed interface allows easy switching between different configuration areas
+- **Floating Action Button**: Scores tab maintains FAB for adding new scores with proper positioning within tab content
+
+### Technical
+- **Code Consolidation**: Merged ScoresDictionaryScreen functionality into SettingsScreen as _ScoresManagementTab
+- **Proper State Management**: Each tab maintains its own state and lifecycle independently
+- **Provider Integration**: Scores tab retains full ScoreService integration and error handling
+- **UI Consistency**: Maintained all existing scores functionality while adapting to tab-based layout
+
 ## [v0.63.0] - 2025-01-16
 
 ### User Requests

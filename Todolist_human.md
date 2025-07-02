@@ -16,6 +16,7 @@ Nice to haves:
 - move all main screen actions (except Dancers) under the three dots, Import events should be the last
 - reorganize code into sub-dirs per screen (plus common for shared things)
 - mark current events dates green (with the same logic as for showing tabs in event screen, have the logic reused)
+- enter in edit name dialog should confirm it
 
 Bugs:
 - when I edit impression the text field should contain current impression text
