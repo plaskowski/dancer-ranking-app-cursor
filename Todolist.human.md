@@ -19,13 +19,13 @@ Nice to haves:
 Small improvements:
 - [ ] events import
   - [ ] ...
-- [ ] Add existing dancer dialog
-  - [ ] move info block into the scroll area to not take vertical space
-- [ ] "Add new dancer" dialog
-  - [ ] move "already danced" checkbox in above the tags section so I don't have to scroll through tags for it
-- [ ] move the import actions to the settings screen
-- [ ] home screen
-  - [ ] move the settings action to AppBar and remove dots
+- [x] Add existing dancer dialog
+  - [x] move info block into the scroll area to not take vertical space
+- [x] "Add new dancer" dialog
+  - [x] move "already danced" checkbox in above the tags section so I don't have to scroll through tags for it
+- [x] move the import actions to the settings screen
+- [x] home screen
+  - [x] move the settings action to AppBar and remove dots
 - [ ] Android
   - [ ] the FAB button is covered with bottom system bar
   - [ ] use native android toasts
