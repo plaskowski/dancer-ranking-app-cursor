@@ -53,22 +53,22 @@ Future<List<Tag>> getTagsWithDancers() async
 class TagFilterChips extends StatefulWidget {
   final int? selectedTagId;
   final Function(int?) onTagChanged;
-  final bool showAllChip;
+  final bool showClearButton;
   
   const TagFilterChips({
     required this.selectedTagId,
     required this.onTagChanged,
-    this.showAllChip = true,
+    this.showClearButton = true,
   });
 }
 ```
 
 **Features**:
 - Horizontal scrollable row of FilterChip widgets
-- "All" chip for clearing filters
+- Clear button (✕) conditionally displayed on the right only when a tag is selected
 - Material 3 design with proper theming
 - Loading state during tag fetch
-- Empty state when no tags available
+- Empty state when no tags available (no chips, no clear button)
 
 #### Enhanced Dialog State Management
 
@@ -214,7 +214,7 @@ Ensure proper indexing for performance:
 
 #### Error Handling
 - **Database Errors**: Graceful fallback to text-only search
-- **Empty States**: Clear messaging when no tags or dancers available
+- **Empty States**: Clear messaging when no tags or dancers available, clear button visible when tag selected
 - **Network Independence**: All filtering happens locally with cached data
 
 #### Testing Strategy

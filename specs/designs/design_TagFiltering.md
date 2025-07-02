@@ -52,7 +52,7 @@ Focus on **venue/context tags** that users manually assign:
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
 │ ┌─ Tag Filters ─────────────────────────────────────────┐│
-│ │ [All] [Monday Class] [Cuban DC Festival] [Friday...] ││ 
+│ │ [Monday Class] [Cuban DC Festival] [Friday...]    ✕ ││ 
 │ │                                                     ││
 │ └─────────────────────────────────────────────────────┘│
 │                                                         │
@@ -93,23 +93,34 @@ Focus on **venue/context tags** that users manually assign:
 ```
 
 #### Tag Filters Section Detail
+
+**No tag selected (default state):**
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ [All] [Monday Class] [Cuban DC Festival] [Friday Social] │
+│ [Monday Class] [Cuban DC Festival] [Friday Social]      │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Tag selected (with clear button):**
+```
+┌─────────────────────────────────────────────────────────┐
+│ [Monday Class] [Cuban DC Festival] [Friday Social]    ✕ │
 │                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
 
 **Behavior**:
-- **"All" chip**: Always visible, selected by default, shows all dancers
 - **Tag chips**: One chip per existing tag, only shows tags that have associated dancers
-- **Single selection**: Users can select one tag chip at a time (deselects others and "All")
+- **Single selection**: Users can select one tag chip at a time (deselects others)
 - **Selection state**: Selected chip has primary color, unselected chips have neutral color
+- **Clear button (✕)**: Only appears on the right when a tag is selected, clears the filter
 - **Auto-scroll**: Horizontal scrolling for many tags
 
 #### Filter Logic
-- **"All" selected**: Show all unranked dancers
+- **No tag selected**: Show all unranked dancers
 - **One tag selected**: Show only dancers with that specific tag
+- **Clear button**: Resets to show all dancers
 - **Combined with search**: Apply tag filtering first, then text search on results
 
 ### Technical Implementation
@@ -147,7 +158,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
 - **Chip appearance**: 
   - Selected: Primary container color with checkmark
   - Unselected: Surface container color
-- **"All" chip**: Special styling to distinguish from tag chips
+- **Clear button**: IconButton with ✕ icon, appears only when tag is selected
 - **Spacing**: 8px between chips, 16px padding from screen edges
 
 #### Visual Hierarchy
@@ -156,9 +167,9 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
 3. **Consistent styling**: Match existing dialog's Material 3 design system
 
 #### Empty States
-- **No tags available**: Hide tag filter section entirely
+- **No tags available**: Show empty tag filter row (no chips, no clear button)
 - **No dancers after filtering**: Show existing empty state message with context about active filters
-- **No results**: "No dancers found with selected tags" + option to clear filters
+- **No results**: "No dancers found with selected tag" + clear button available to reset
 
 ### User Experience Flow
 
@@ -196,7 +207,7 @@ The same tag filtering functionality applies to the "Add Existing Dancer" dialog
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
 │ ┌─ Tag Filters ─────────────────────────────────────────┐│
-│ │ [All] [Monday Class] [Cuban DC Festival] [Friday...] ││ 
+│ │ [Monday Class] [Cuban DC Festival] [Friday...]    ✕ ││ 
 │ │                                                     ││
 │ └─────────────────────────────────────────────────────┘│
 │                                                         │
