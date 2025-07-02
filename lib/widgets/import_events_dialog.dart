@@ -314,17 +314,8 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
         _currentOperation = '';
       });
 
-      if (summary.hasErrors) {
-        ToastHelper.showWarning(
-          context,
-          'Import completed with ${summary.errors} errors',
-        );
-      } else {
-        ToastHelper.showSuccess(
-          context,
-          'Successfully imported ${summary.eventsCreated} events',
-        );
-      }
+      // Note: Removed toast messages to avoid obscuring the summary view
+      // The summary view provides all necessary import result information
 
       ActionLogger.logAction('ImportEventsDialog', 'import_completed', {
         'eventsCreated': summary.eventsCreated,

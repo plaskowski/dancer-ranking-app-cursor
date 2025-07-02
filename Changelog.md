@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.86.0] - 2025-01-16
+
+### User Requests
+- "remove the import completion toast as it obscures the summary view" - Request to remove toast notifications that block the import results view
+
+### Improved
+- **Events Import Summary View**: Removed toast notifications that were obscuring the import results
+  - **Cleaner Summary**: Import completion toasts no longer block the detailed results view
+  - **Better Visibility**: Users can now see all import statistics and details without toast interference
+  - **Comprehensive Information**: Summary view already provides all necessary import result information
+  - **Improved UX**: No more need to wait for toasts to disappear to read import results
+
+### Technical
+- Removed `ToastHelper.showSuccess` and `ToastHelper.showWarning` calls from `_performImport` method
+- Added explanatory comment about why toasts were removed
+- Maintained action logging for import completion tracking
+- Summary view continues to show all import statistics and error details
+
 ## [v0.85.0] - 2025-01-16
 
 ### User Requests

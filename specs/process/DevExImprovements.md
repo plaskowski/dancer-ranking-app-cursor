@@ -27,7 +27,7 @@
 - make the second-line started apps in different color (same for IDE)
 - don't open modified files (I don't read them either way)
 - auto-commit todo files after 1 minute of inactivity
-- keep up-to-date wireframes
+- keep up-to-date ASCII wireframes
 - auto-save todo file 
 - a way to instruct the macOS app to auto-navigate to given screen (to test faster, via CMD arg)
 - auto-close non-pinned editors after 2 min idle time
@@ -43,3 +43,6 @@
   - add vscode.markdown.preview.editor in "Preferences: Open Settings (UI)" > "editor assoc"
 - second cursor
   - https://egghead.io/launch-multiple-cursor-composer-ai-agents-to-work-in-parallel~y1q56
+
+  ## Przemyslenia
+  Bez szans zeby moc mergowac zmiany roznych agentow kiedy pisza low level code
