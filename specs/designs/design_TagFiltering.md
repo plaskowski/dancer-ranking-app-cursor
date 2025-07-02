@@ -1,7 +1,7 @@
-# Tag-Based Filtering in Event Dancer Selection Dialogs
+# Tag-Based Filtering in Event Dancer Selection
 
 ## Overview
-Tag-based filtering in dancer selection dialogs allows users to quickly find and invite specific groups of dancers to events based on venue, frequency, or other characteristics when planning events.
+Tag-based filtering in the dancer selection dialog allows users to quickly find and invite specific groups of dancers to events based on venue or context when planning events.
 
 ## Use Cases
 - **Event planning**: "Invite all dancers from Monday Class to tonight's social"
@@ -15,9 +15,8 @@ Tag-based filtering in dancer selection dialogs allows users to quickly find and
 ### 1. Integration Points
 
 #### Event Screen Dancer Selection Dialogs
-- **"Add Existing Dancer" Dialog**: When adding individual dancers to event
-- **"Select Dancers" Dialog**: When bulk selecting dancers for event
-- **"Planning Tab" Add Actions**: Quick add dancers based on filters
+- **"Add Existing Dancer" Dialog**: When adding dancers to event with tag filtering
+- **"Planning Tab" Integration**: Enhanced dancer selection with tag filters
 
 #### Context: Event Planning Workflow
 - User is planning an event and needs to invite specific groups
@@ -39,12 +38,11 @@ Event Screen
     └── View event results
 ```
 
-#### Enhancement: Add Tag Filtering to Dialogs
+#### Enhancement: Add Tag Filtering to Dialog
 - **"Add Existing Dancer" Dialog** → Add tag filter chips above dancer list
-- **"Select Dancers" Dialog** → New bulk selection dialog with tag-based groups
-- **Planning Tab Quick Actions** → Add "Select by tags" options
+- **Planning Tab Integration** → Enhanced dancer selection workflow
 
-### 2. Enhanced Dancer Selection Dialogs
+### 2. Enhanced Dancer Selection Dialog
 
 #### "Add Existing Dancer" Dialog with Tag Filter
 ```
@@ -70,28 +68,7 @@ Event Screen
 └─────────────────────────────────────────────────┘
 ```
 
-#### "Select Dancers" Dialog with Bulk Tag Filtering
-```
-┌─────────────────────────────────────────────────┐
-│ Select Dancers for Event                  [×]   │
-├─────────────────────────────────────────────────┤
-│ 🏷️ Filter by tags:                             │
-│                                                 │
-│ [Monday Class (12)] [Friday Social (18)]        │
-│ [Tuesday Workshop (6)] [Studio Downtown (15)]   │
-│ [Cuban DC Festival (8)] [Summer Intensive (4)]  │
-│ [Workshop Miami (5)] [Salsa Congress (12)]      │
-│                                                 │
-│ ┌─────────────────────────────────────────────┐ │
-│ │ ☐ Maria Rodriguez  [Monday Class]           │ │
-│ │ ☐ Carlos Santos    [Cuban DC Festival]      │ │
-│ │ ☐ Ana Garcia       [Friday Social]          │ │
-│ │ ...                                         │ │
-│ └─────────────────────────────────────────────┘ │
-│                                                 │
-│ Selected: 3 dancers    [Cancel] [Add Selected] │
-└─────────────────────────────────────────────────┘
-```
+
 
 ### 3. Filter Chips Design
 
@@ -141,30 +118,21 @@ Event Screen
 ### 6. Quick Actions
 
 #### Filter Shortcuts
-- **Recent filters**: "Recently used: [Monday Class] [#frequent]"
+- **Recent filters**: "Recently used: [Monday Class] [Friday Social]"
 - **Saved filters**: Save common filter combinations
-- **Smart suggestions**: "Try: dancers you haven't seen recently"
 
-#### Bulk Actions
+#### Selection Actions
 - **Multiple selection**: Select multiple dancers from filtered results
-- **Bulk tag operations**: Add/remove tags to selected dancers
+- **Clear filters**: Reset to show all dancers
 
 ## Interaction Flows
 
-### Individual Dancer Selection Flow
+### Tag-Filtered Dancer Selection Flow
 1. User is planning event and taps "Add Existing Dancer"
 2. Dialog opens with search box and tag filter chips
 3. User taps [Monday Class] tag to filter
 4. List shows only dancers from Monday Class with checkboxes
 5. User selects specific dancers and taps "Add Selected"
-
-### Bulk Group Invitation Flow  
-1. User is planning event and wants to invite specific groups
-2. Taps "Select Dancers" for bulk selection
-3. Dialog shows tag filters and dancer list
-4. User taps [Monday Class] tag to filter dancers from that class
-5. Selects multiple dancers from the filtered list
-6. Reviews selected count and taps "Add Selected"
 
 ### Memory-Aid Flow
 1. User remembers someone from Cuban DC Festival but forgot name
@@ -172,6 +140,13 @@ Event Screen
 3. Taps [Cuban DC Festival] tag filter
 4. Sees short list of 8 dancers from that event
 5. Recognizes the right person and adds them
+
+### Multiple Selection Flow
+1. User wants to add several dancers from same venue
+2. Opens "Add Existing Dancer" dialog
+3. Filters by [Friday Social] tag
+4. Selects multiple dancers from the filtered list
+5. Adds all selected dancers at once
 
 ## Technical Considerations
 
@@ -193,9 +168,8 @@ Event Screen
 ## Integration Points
 
 ### Event Screen Integration
-- **Add Existing Dancer Dialog**: Tag filtering for individual dancer selection
-- **Select Dancers Dialog**: Bulk tag-based group selection
-- **Planning Tab**: Quick actions like "Add all Monday Class dancers"
+- **Add Existing Dancer Dialog**: Tag filtering for enhanced dancer selection
+- **Planning Tab**: Improved dancer selection workflow with tag filtering
 
 ### Future Event Features
 - **Event Templates**: Save tag combinations for recurring events
@@ -205,5 +179,5 @@ Event Screen
 ## Success Metrics
 - **Event setup speed**: Time from opening event to finishing dancer invitations
 - **Tag filtering usage**: How often tag filtering is used vs. search for dancer selection
-- **Tag-based discovery**: % of event invitations that use tag filtering vs. search
+- **Tag-based discovery**: % of dancer selections that use tag filtering vs. search
 - **Tag filtering adoption**: How often users create and use tags for event planning 
