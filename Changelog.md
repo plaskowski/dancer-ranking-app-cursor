@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Tags Management Tab**: Replaced StreamBuilder with manual loading using `getAllTagsWithUsageCount()`
 - **Data Loading**: Tags now load with usage statistics on screen initialization and after operations
 - **Empty State**: Improved empty state with label icon and helpful guidance text
+- **Home Screen Navigation**: Reorganized app bar actions for cleaner interface
+  - **Dancers Button**: Kept as standalone icon button for primary access
+  - **Overflow Menu**: Moved Settings and Import events to three dots menu
+  - **Menu Order**: Import events positioned last in overflow menu as requested
 
 ### Improved
 - **Subtle Statistics Styling**: Made usage counts less prominent across all dictionary screens

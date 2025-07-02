@@ -6,7 +6,7 @@ The app has all I need to start using it. :celebrate:
 
 ## Tasks list (take one at a time)
 Next:
-- [ ] style stats so that they are standing out less
+- [ ] ...
 
 Nice to haves:
 - move all main screen actions (except Dancers) under the three dots, Import events should be the last
