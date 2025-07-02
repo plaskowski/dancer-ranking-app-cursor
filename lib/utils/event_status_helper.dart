@@ -15,10 +15,25 @@ class EventStatusHelper {
     return eventDate.isBefore(DateTime.now().subtract(const Duration(days: 2)));
   }
 
-  /// Checks if an event is "current" (not old)
-  /// Current events show multiple tabs in EventScreen and should have green dates
-  /// This includes: future events, today's events, and events from yesterday/day before
+  /// Checks if an event is "current" for green date marking
+  /// Current events are within a reasonable timeframe (recent or soon)
+  /// This includes events from 2 days ago through 3 days in the future
   static bool isCurrentEvent(DateTime eventDate) {
+    final now = DateTime.now();
+    final today = DateUtils.dateOnly(now);
+    final eventOnly = DateUtils.dateOnly(eventDate);
+
+    // Events from 2 days ago through 3 days in the future are "current"
+    final earliestCurrent = today.subtract(const Duration(days: 2));
+    final latestCurrent = today.add(const Duration(days: 3));
+
+    return !eventOnly.isBefore(earliestCurrent) &&
+        !eventOnly.isAfter(latestCurrent);
+  }
+
+  /// Checks if an event has multiple tabs (not old)
+  /// This is the original logic for tab visibility in EventScreen
+  static bool hasMultipleTabs(DateTime eventDate) {
     return !isOldEvent(eventDate);
   }
 
