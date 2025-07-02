@@ -7,7 +7,6 @@ The app has all I need to start using it. :celebrate:
 ## Tasks list
 
 ### Line #1
-- [ ] move the sample data in DB init code to separate file
 - [ ] ...
 
 ### Line #2
@@ -26,6 +25,8 @@ Small improvements:
 - [ ] Android
   - [ ] the FAB button is covered with bottom system bar
   - [ ] use native android toasts
+- [ ] event screen
+  - [ ] future events (in 1+ days should only have planning tab)
 
 Extract more historical data:
 - [ ] regenerate file for 2024-08
