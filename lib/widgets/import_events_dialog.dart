@@ -127,8 +127,7 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
                         child: Text(
                           error,
                           style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onErrorContainer,
+                            color: Theme.of(context).colorScheme.onErrorContainer,
                           ),
                         ),
                       ),
@@ -159,34 +158,23 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
     if (_parseResults.isEmpty) return null;
 
     final allEvents = _parseResults.expand((result) => result.events).toList();
-    final allSummaries = _parseResults
-        .where((result) => result.summary != null)
-        .map((result) => result.summary!);
+    final allSummaries = _parseResults.where((result) => result.summary != null).map((result) => result.summary!);
 
     if (allSummaries.isEmpty) return null;
 
     return EventImportSummary(
       eventsProcessed: allEvents.length,
-      eventsCreated:
-          allSummaries.fold(0, (sum, summary) => sum + summary.eventsCreated),
-      eventsSkipped:
-          allSummaries.fold(0, (sum, summary) => sum + summary.eventsSkipped),
-      attendancesCreated: allSummaries.fold(
-          0, (sum, summary) => sum + summary.attendancesCreated),
-      dancersCreated:
-          allSummaries.fold(0, (sum, summary) => sum + summary.dancersCreated),
-      scoresCreated:
-          allSummaries.fold(0, (sum, summary) => sum + summary.scoresCreated),
-      scoreAssignments: allSummaries.fold(
-          0, (sum, summary) => sum + summary.scoreAssignments),
+      eventsCreated: allSummaries.fold(0, (sum, summary) => sum + summary.eventsCreated),
+      eventsSkipped: allSummaries.fold(0, (sum, summary) => sum + summary.eventsSkipped),
+      attendancesCreated: allSummaries.fold(0, (sum, summary) => sum + summary.attendancesCreated),
+      dancersCreated: allSummaries.fold(0, (sum, summary) => sum + summary.dancersCreated),
+      scoresCreated: allSummaries.fold(0, (sum, summary) => sum + summary.scoresCreated),
+      scoreAssignments: allSummaries.fold(0, (sum, summary) => sum + summary.scoreAssignments),
       errors: 0,
       errorMessages: [],
-      skippedEvents:
-          allSummaries.expand((summary) => summary.skippedEvents).toList(),
-      createdScoreNames:
-          allSummaries.expand((summary) => summary.createdScoreNames).toList(),
-      eventAnalyses:
-          allSummaries.expand((summary) => summary.eventAnalyses).toList(),
+      skippedEvents: allSummaries.expand((summary) => summary.skippedEvents).toList(),
+      createdScoreNames: allSummaries.expand((summary) => summary.createdScoreNames).toList(),
+      eventAnalyses: allSummaries.expand((summary) => summary.eventAnalyses).toList(),
     );
   }
 
@@ -244,8 +232,7 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
       case 0:
         return _selectedFiles.isNotEmpty;
       case 1:
-        return _parseResults.isNotEmpty &&
-            _parseResults.every((result) => result.isValid);
+        return _parseResults.isNotEmpty && _parseResults.every((result) => result.isValid);
       case 2:
         return false; // Results is final step
       default:
@@ -322,15 +309,13 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
     });
 
     try {
-      final eventImportService =
-          Provider.of<EventImportService>(context, listen: false);
+      final eventImportService = Provider.of<EventImportService>(context, listen: false);
       final results = <EventImportResult>[];
 
       for (final file in _selectedFiles) {
         try {
           final jsonContent = await file.readAsString();
-          final result =
-              await eventImportService.parseAndValidateFile(jsonContent);
+          final result = await eventImportService.parseAndValidateFile(jsonContent);
           results.add(result);
         } catch (e) {
           // Create error result for this file
@@ -363,8 +348,7 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
     });
 
     try {
-      final eventImportService =
-          Provider.of<EventImportService>(context, listen: false);
+      final eventImportService = Provider.of<EventImportService>(context, listen: false);
 
       // Combine all valid events from all files
       final allEvents = <ImportableEvent>[];
@@ -382,17 +366,11 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
         throw Exception('No valid events found in any of the selected files.');
       }
 
-      // Import all events
+      // Import all events directly (no need to re-parse)
       final totalEvents = allEvents.length;
 
-      // Convert events to JSON structure that the import service expects
-      final eventsJson = allEvents.map((event) => event.toJson()).toList();
-      final combinedJson = {
-        'events': eventsJson,
-      };
-
-      final importResult = await eventImportService.importEventsFromJson(
-        combinedJson.toString(),
+      final importResult = await eventImportService.importEvents(
+        allEvents,
         const EventImportOptions(),
       );
 

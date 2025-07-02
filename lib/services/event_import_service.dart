@@ -52,8 +52,7 @@ class EventImportService {
       }
 
       // Step 2: Validate data
-      final conflicts =
-          await _validator.validateImport(parseResult.events, options);
+      final conflicts = await _validator.validateImport(parseResult.events, options);
       if (!_validator.canProceedWithImport(conflicts, options)) {
         final errorMessages = conflicts.map((c) => c.message).toList();
         return EventImportSummary(
@@ -71,10 +70,53 @@ class EventImportService {
       // Step 3: Perform import
       return await _performImport(parseResult.events, options, conflicts);
     } catch (e) {
-      ActionLogger.logError(
-          'EventImportService.importEventsFromJson', e.toString());
+      ActionLogger.logError('EventImportService.importEventsFromJson', e.toString());
       return EventImportSummary(
         eventsProcessed: 0,
+        eventsCreated: 0,
+        eventsSkipped: 0,
+        attendancesCreated: 0,
+        dancersCreated: 0,
+        errors: 1,
+        errorMessages: ['Import failed: ${e.toString()}'],
+        skippedEvents: [],
+      );
+    }
+  }
+
+  // Import events directly from parsed objects (more efficient)
+  Future<EventImportSummary> importEvents(
+    List<ImportableEvent> events,
+    EventImportOptions options,
+  ) async {
+    ActionLogger.logServiceCall('EventImportService', 'importEvents', {
+      'eventsCount': events.length,
+      'options': {},
+    });
+
+    try {
+      // Step 1: Validate data
+      final conflicts = await _validator.validateImport(events, options);
+      if (!_validator.canProceedWithImport(conflicts, options)) {
+        final errorMessages = conflicts.map((c) => c.message).toList();
+        return EventImportSummary(
+          eventsProcessed: events.length,
+          eventsCreated: 0,
+          eventsSkipped: 0,
+          attendancesCreated: 0,
+          dancersCreated: 0,
+          errors: errorMessages.length,
+          errorMessages: errorMessages,
+          skippedEvents: [],
+        );
+      }
+
+      // Step 2: Perform import
+      return await _performImport(events, options, conflicts);
+    } catch (e) {
+      ActionLogger.logError('EventImportService.importEvents', e.toString());
+      return EventImportSummary(
+        eventsProcessed: events.length,
         eventsCreated: 0,
         eventsSkipped: 0,
         attendancesCreated: 0,
@@ -93,8 +135,7 @@ class EventImportService {
 
     if (result.isValid) {
       // Perform a dry run to get the summary
-      final conflicts = await _validator.validateImport(
-          result.events, const EventImportOptions());
+      final conflicts = await _validator.validateImport(result.events, const EventImportOptions());
       final summary = await _getImportSummary(result.events, conflicts);
 
       ActionLogger.logAction('EventImportService', 'dry_run_complete', {
@@ -123,18 +164,13 @@ class EventImportService {
         .cast<String>()
         .toSet();
 
-    final allDancerNamesInImport =
-        events.expand((e) => e.attendances.map((a) => a.dancerName)).toSet();
-    final existingDancers =
-        await _validator.getExistingDancersByNames(allDancerNamesInImport);
-    final allNewDancersInImport = allDancerNamesInImport
-        .where((name) => !existingDancers.containsKey(name))
-        .toSet();
+    final allDancerNamesInImport = events.expand((e) => e.attendances.map((a) => a.dancerName)).toSet();
+    final existingDancers = await _validator.getExistingDancersByNames(allDancerNamesInImport);
+    final allNewDancersInImport = allDancerNamesInImport.where((name) => !existingDancers.containsKey(name)).toSet();
 
     // Analyze scores
     final allScoreNames = _validator.getScoreNamesFromEvents(events);
-    final existingScores =
-        await _validator.getExistingScoresByNames(allScoreNames);
+    final existingScores = await _validator.getExistingScoresByNames(allScoreNames);
     final missingScoreNames = await _validator.getMissingScoreNames(events);
 
     // Count score assignments (for any present dancers, not just served)
@@ -224,15 +260,12 @@ class EventImportService {
         .toSet();
 
     // Pre-fetch existing dancers for efficiency
-    final allDancerNames =
-        events.expand((e) => e.attendances.map((a) => a.dancerName)).toSet();
-    final existingDancers =
-        await _validator.getExistingDancersByNames(allDancerNames);
+    final allDancerNames = events.expand((e) => e.attendances.map((a) => a.dancerName)).toSet();
+    final existingDancers = await _validator.getExistingDancersByNames(allDancerNames);
 
     // Pre-fetch existing scores and identify missing ones
     final allScoreNames = _validator.getScoreNamesFromEvents(events);
-    final existingScores =
-        await _validator.getExistingScoresByNames(allScoreNames);
+    final existingScores = await _validator.getExistingScoresByNames(allScoreNames);
     final missingScoreNames = await _validator.getMissingScoreNames(events);
 
     try {
@@ -242,9 +275,7 @@ class EventImportService {
           try {
             // Auto-assign ordinal based on existing scores count + position in missing list
             final existingCount = (await _scoreService.getAllScores()).length;
-            final ordinal = existingCount +
-                missingScoreNames.toList().indexOf(scoreName) +
-                1;
+            final ordinal = existingCount + missingScoreNames.toList().indexOf(scoreName) + 1;
 
             final scoreId = await _scoreService.createScore(
               name: scoreName,
@@ -258,19 +289,16 @@ class EventImportService {
               createdScoreNames.add(scoreName);
               scoresCreated++;
 
-              ActionLogger.logAction(
-                  'EventImportService._performImport', 'score_created', {
+              ActionLogger.logAction('EventImportService._performImport', 'score_created', {
                 'scoreId': scoreId,
                 'scoreName': scoreName,
                 'ordinal': ordinal,
               });
             }
           } catch (e) {
-            final errorMsg =
-                'Failed to create score "$scoreName": ${e.toString()}';
+            final errorMsg = 'Failed to create score "$scoreName": ${e.toString()}';
             errorMessages.add(errorMsg);
-            ActionLogger.logError(
-                'EventImportService._performImport', errorMsg);
+            ActionLogger.logError('EventImportService._performImport', errorMsg);
           }
         }
 
@@ -281,8 +309,7 @@ class EventImportService {
             if (duplicateEventNames.contains(event.name)) {
               skippedEvents.add(event.name);
               eventsSkipped++;
-              ActionLogger.logAction(
-                  'EventImportService._performImport', 'event_skipped', {
+              ActionLogger.logAction('EventImportService._performImport', 'event_skipped', {
                 'eventName': event.name,
                 'reason': 'duplicate',
               });
@@ -296,8 +323,7 @@ class EventImportService {
             );
             eventsCreated++;
 
-            ActionLogger.logAction(
-                'EventImportService._performImport', 'event_created', {
+            ActionLogger.logAction('EventImportService._performImport', 'event_created', {
               'eventId': eventId,
               'eventName': event.name,
               'eventDate': event.date.toIso8601String(),
@@ -309,8 +335,7 @@ class EventImportService {
                 // Get or create dancer (always create missing dancers)
                 Dancer? dancer = existingDancers[attendance.dancerName];
                 if (dancer == null) {
-                  final dancerId = await _dancerService.createDancer(
-                      name: attendance.dancerName);
+                  final dancerId = await _dancerService.createDancer(name: attendance.dancerName);
                   dancer = await _dancerService.getDancer(dancerId);
                   if (dancer != null) {
                     existingDancers[attendance.dancerName] = dancer;
@@ -319,8 +344,7 @@ class EventImportService {
                 }
 
                 if (dancer == null) {
-                  errorMessages.add(
-                      'Dancer "${attendance.dancerName}" not found for event "${event.name}"');
+                  errorMessages.add('Dancer "${attendance.dancerName}" not found for event "${event.name}"');
                   continue;
                 }
 
@@ -349,13 +373,10 @@ class EventImportService {
 
                   if (score != null) {
                     try {
-                      await _attendanceService.assignScore(
-                          eventId, dancer.id, score.id);
+                      await _attendanceService.assignScore(eventId, dancer.id, score.id);
                       scoreAssignments++;
 
-                      ActionLogger.logAction(
-                          'EventImportService._performImport',
-                          'score_assigned', {
+                      ActionLogger.logAction('EventImportService._performImport', 'score_assigned', {
                         'eventId': eventId,
                         'dancerId': dancer.id,
                         'scoreId': score.id,
@@ -365,21 +386,18 @@ class EventImportService {
                       final errorMsg =
                           'Failed to assign score "$scoreName" to dancer "${attendance.dancerName}": ${e.toString()}';
                       errorMessages.add(errorMsg);
-                      ActionLogger.logError(
-                          'EventImportService._performImport', errorMsg);
+                      ActionLogger.logError('EventImportService._performImport', errorMsg);
                     }
                   } else {
                     // Score not found even after creation attempt
                     final errorMsg =
                         'Score "$scoreName" not found for dancer "${attendance.dancerName}" at event "${event.name}"';
                     errorMessages.add(errorMsg);
-                    ActionLogger.logError(
-                        'EventImportService._performImport', errorMsg);
+                    ActionLogger.logError('EventImportService._performImport', errorMsg);
                   }
                 }
 
-                ActionLogger.logAction(
-                    'EventImportService._performImport', 'attendance_created', {
+                ActionLogger.logAction('EventImportService._performImport', 'attendance_created', {
                   'eventId': eventId,
                   'dancerId': dancer.id,
                   'dancerName': attendance.dancerName,
@@ -390,16 +408,13 @@ class EventImportService {
                 final errorMsg =
                     'Failed to create attendance for "${attendance.dancerName}" at "${event.name}": ${e.toString()}';
                 errorMessages.add(errorMsg);
-                ActionLogger.logError(
-                    'EventImportService._performImport', errorMsg);
+                ActionLogger.logError('EventImportService._performImport', errorMsg);
               }
             }
           } catch (e) {
-            final errorMsg =
-                'Failed to import event "${event.name}": ${e.toString()}';
+            final errorMsg = 'Failed to import event "${event.name}": ${e.toString()}';
             errorMessages.add(errorMsg);
-            ActionLogger.logError(
-                'EventImportService._performImport', errorMsg);
+            ActionLogger.logError('EventImportService._performImport', errorMsg);
           }
         }
       });
@@ -418,8 +433,7 @@ class EventImportService {
         createdScoreNames: createdScoreNames,
       );
 
-      ActionLogger.logAction(
-          'EventImportService._performImport', 'import_completed', {
+      ActionLogger.logAction('EventImportService._performImport', 'import_completed', {
         'eventsProcessed': summary.eventsProcessed,
         'eventsCreated': summary.eventsCreated,
         'eventsSkipped': summary.eventsSkipped,
@@ -442,10 +456,7 @@ class EventImportService {
         scoresCreated: scoresCreated,
         scoreAssignments: scoreAssignments,
         errors: errorMessages.length + 1,
-        errorMessages: [
-          ...errorMessages,
-          'Transaction failed: ${e.toString()}'
-        ],
+        errorMessages: [...errorMessages, 'Transaction failed: ${e.toString()}'],
         skippedEvents: skippedEvents,
         createdScoreNames: createdScoreNames,
       );
@@ -459,11 +470,9 @@ class EventImportService {
 
   // Count missing dancers that would need to be created
   Future<int> _countMissingDancers(List<ImportableEvent> events) async {
-    final allDancerNames =
-        events.expand((e) => e.attendances.map((a) => a.dancerName)).toSet();
+    final allDancerNames = events.expand((e) => e.attendances.map((a) => a.dancerName)).toSet();
 
-    final existingDancers =
-        await _validator.getExistingDancersByNames(allDancerNames);
+    final existingDancers = await _validator.getExistingDancersByNames(allDancerNames);
     return allDancerNames.length - existingDancers.length;
   }
 
@@ -493,8 +502,7 @@ class EventImportService {
       }
 
       // Validate
-      final conflicts =
-          await _validator.validateImport(parseResult.events, options);
+      final conflicts = await _validator.validateImport(parseResult.events, options);
       final canProceed = _validator.canProceedWithImport(conflicts, options);
 
       return {
@@ -514,8 +522,7 @@ class EventImportService {
         'missingDancersCount': await _countMissingDancers(parseResult.events),
       };
     } catch (e) {
-      ActionLogger.logError(
-          'EventImportService.getDetailedValidation', e.toString());
+      ActionLogger.logError('EventImportService.getDetailedValidation', e.toString());
       return {
         'isValid': false,
         'parseErrors': ['Validation failed: ${e.toString()}'],
