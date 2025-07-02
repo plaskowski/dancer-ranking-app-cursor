@@ -34,7 +34,7 @@
 │ ☑ Amazing • "Excellent lead & flow"│
 │                                     │
 │ Nov 28 - Weekly Social             │
-│ ☐ "Too crowded, left early"        │
+│ ☐ Good • "Too crowded, left early" │
 │                                     │
 │ Nov 14 - Practice Session          │
 │ ☑ Great • "Good improvement turns" │
@@ -43,7 +43,7 @@
 │ ☑ Great • "Consistent performance" │
 │                                     │
 │ Oct 16 - Workshop Night            │
-│ ☐ "Very busy night, no chance"     │
+│ ☐ Okay • "Very busy night"         │
 │                                     │
 └─────────────────────────────────────┘
 ```
@@ -51,8 +51,8 @@
 ### Key Information
 
 Each line shows: **Date - Event • ☑/☐ Score • "Impression"**
-- **☑ (Danced)**: Shows score + impression
-- **☐ (Present only)**: Shows impression only
+- **☑ (Danced)**: Shows score from actual dance + impression
+- **☐ (Present only)**: Shows assessment score + impression (explains why no dance)
 
 ## Database Design
 
@@ -62,6 +62,8 @@ Each line shows: **Date - Event • ☑/☐ Score • "Impression"**
 - `events` table - Event details and dates  
 - `attendances` table - Dance status, impressions, scores
 - `scores` table - Score names
+
+**Note**: Currently scores are only assigned to danced attendances (`status = 'served'`). To support assessment scores for present-only attendances, the system would need to allow score assignment for `status = 'present'` as well.
 
 **Main Query** (get last 5-6 events with dancer involvement):
 

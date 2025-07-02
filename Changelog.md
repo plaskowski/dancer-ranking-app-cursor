@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Removed Header Stats**: Eliminated summary section with total dances and recent scores
   - **Compact Event List**: One line per event showing "Date - Event • ☑/☐ Score • Notes"
   - **Checkbox Icons**: Used ☑ (danced) and ☐ (present only) to save space for longer impressions
+  - **Assessment Scores**: Show scores for present-only events to indicate why no dance occurred
   - **No Visual Clutter**: Removed separators and extra formatting elements
   - **Essential Only**: Shows just the core information needed for ranking decisions
 
