@@ -172,6 +172,8 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
               ),
               maxLines: 4,
               textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => _recordDance(),
             ),
 
             const SizedBox(height: 16),

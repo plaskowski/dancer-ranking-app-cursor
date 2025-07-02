@@ -113,6 +113,12 @@ class _ScoresManagementTabState extends State<ScoresManagementTab> {
             border: OutlineInputBorder(),
           ),
           autofocus: true,
+          onSubmitted: (_) {
+            final newName = controller.text.trim();
+            if (newName.isNotEmpty && newName != score.name) {
+              Navigator.pop(context, newName);
+            }
+          },
         ),
         actions: [
           TextButton(

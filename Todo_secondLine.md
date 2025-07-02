@@ -3,13 +3,7 @@
 
 ## Tasks list (take one at a time)
 Next:
-- mark current events dates green (with the same logic as for showing tabs in event screen, have the logic reused)
+- [ ] merge branches
 
 Nice to haves:
-- move all main screen actions (except Dancers) under the three dots, Import events should be the last
-- enter in edit name dialog should confirm it
 - (bug) when I edit impression the text field should contain current impression text
-
-## Cursor Cheatsheet
-- always open Markdown files in preview
-  - add vscode.markdown.preview.editor in "Preferences: Open Settings (UI)" > "editor assoc"

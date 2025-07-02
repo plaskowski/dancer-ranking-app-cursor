@@ -245,6 +245,11 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                   return null;
                 },
                 textCapitalization: TextCapitalization.words,
+                textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) {
+                  // Move focus to notes field
+                  FocusScope.of(context).nextFocus();
+                },
               ),
 
               const SizedBox(height: 16),
@@ -258,6 +263,12 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                 ),
                 maxLines: 2,
                 textCapitalization: TextCapitalization.sentences,
+                textInputAction: TextInputAction.done,
+                onFieldSubmitted: (_) {
+                  if (_formKey.currentState?.validate() == true) {
+                    _saveDancer();
+                  }
+                },
               ),
 
               const SizedBox(height: 16),
