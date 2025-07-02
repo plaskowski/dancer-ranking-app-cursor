@@ -9,16 +9,7 @@ import 'tables.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [
-  Events,
-  Dancers,
-  Ranks,
-  Rankings,
-  Attendances,
-  Tags,
-  DancerTags,
-  Scores
-])
+@DriftDatabase(tables: [Events, Dancers, Ranks, Rankings, Attendances, Tags, DancerTags, Scores])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
@@ -96,16 +87,12 @@ class AppDatabase extends _$AppDatabase {
     final now = DateTime.now().millisecondsSinceEpoch;
 
     // Add new columns to existing ranks table
-    await customStatement(
-        'ALTER TABLE ranks ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0');
-    await customStatement(
-        'ALTER TABLE ranks ADD COLUMN created_at INTEGER NOT NULL DEFAULT $now');
-    await customStatement(
-        'ALTER TABLE ranks ADD COLUMN updated_at INTEGER NOT NULL DEFAULT $now');
+    await customStatement('ALTER TABLE ranks ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0');
+    await customStatement('ALTER TABLE ranks ADD COLUMN created_at INTEGER NOT NULL DEFAULT $now');
+    await customStatement('ALTER TABLE ranks ADD COLUMN updated_at INTEGER NOT NULL DEFAULT $now');
 
     // Update existing ranks to have proper timestamps
-    await customStatement(
-        'UPDATE ranks SET created_at = $now, updated_at = $now WHERE created_at = $now');
+    await customStatement('UPDATE ranks SET created_at = $now, updated_at = $now WHERE created_at = $now');
   }
 
   // Migration helper to add Tags and DancerTags tables
@@ -123,12 +110,10 @@ class AppDatabase extends _$AppDatabase {
     await m.createTable(scores);
 
     // Add new columns to attendances table
-    await customStatement(
-        'ALTER TABLE attendances ADD COLUMN score_id INTEGER REFERENCES scores(id)');
+    await customStatement('ALTER TABLE attendances ADD COLUMN score_id INTEGER REFERENCES scores(id)');
 
     // Add new column to dancers table
-    await customStatement(
-        'ALTER TABLE dancers ADD COLUMN first_met_date INTEGER');
+    await customStatement('ALTER TABLE dancers ADD COLUMN first_met_date INTEGER');
 
     // Insert default scores
     await _insertDefaultScores();
@@ -203,6 +188,21 @@ class AppDatabase extends _$AppDatabase {
           ordinal: 5,
         ),
       ]);
+    });
+  }
+
+  /// Resets the database by clearing all data completely
+  Future<void> resetDatabase() async {
+    await transaction(() async {
+      // Clear all tables (in order to respect foreign key constraints)
+      await delete(attendances).go();
+      await delete(rankings).go();
+      await delete(dancerTags).go();
+      await delete(dancers).go();
+      await delete(events).go();
+      await delete(ranks).go();
+      await delete(tags).go();
+      await delete(scores).go();
     });
   }
 }
