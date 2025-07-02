@@ -7,11 +7,11 @@ The app has all I need to start using it. :celebrate:
 ## Tasks list
 
 ### Line #1
-- [ ] option to reset DB in settings screen (general tab)
-- [ ] add new “Dancer history” screen
-  purpose: review our dances history to aid ranking decisions
-  - [ ] reset app state and load dancers and all event files
-  - [ ] test it
+- [X] option to reset DB in settings screen (general tab)
+- [X] add new “Dancer history” screen
+- [ ] regenerate file for 2024-08
+- [ ] AloCubano z 2024-10
+- [ ] (potential regression) add new person did not work
 - [ ] ...
 
 ### Line #2
