@@ -9,15 +9,24 @@ The app has all I need to start using it. :celebrate:
 ### Line #1
 - [X] option to reset DB in settings screen (general tab)
 - [X] add new “Dancer history” screen
-- [ ] regenerate file for 2024-08
-- [ ] AloCubano z 2024-10
-- [ ] extract earlier months
+- [ ] use native android toasts
+- [ ] move info block in Add dancer dialog into the scroll area to not take vertical space
+- [ ] "Add new dancer" dialog
+  - [ ] move "already danced" checkbox in above the tags section so I don't have to scroll through tags for it
+- [ ] move the import actions to the settings screen
+- [ ] home screen
+  - [ ] move the settings action to AppBar and remove dots
 - [ ] ...
 
 ### Line #2
 - [ ] ...?
 
 ## Backlog
+
+Extract more historical data:
+- [ ] regenerate file for 2024-08
+- [ ] AloCubano z 2024-10
+- [ ] extract earlier months
 
 ### Milestone 3
 - filter people by tags. Eg. tag about where I know them from in case I don't know or remember the name or #longTimeNoSee or #comesRarely
