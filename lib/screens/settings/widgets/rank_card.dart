@@ -25,18 +25,30 @@ class RankCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
         title: Text(
-          '${rank.name} • ${rankWithUsage.usageCount} attendances',
+          rank.name,
           style: const TextStyle(fontSize: 16),
         ),
-        subtitle: rank.isArchived
-            ? Text(
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${rankWithUsage.usageCount} attendances',
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+            if (rank.isArchived)
+              Text(
                 'Archived',
                 style: TextStyle(
                   fontSize: 12,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontStyle: FontStyle.italic,
                 ),
-              )
-            : null,
+              ),
+          ],
+        ),
         onTap: () => _showContextMenu(context),
       ),
     );

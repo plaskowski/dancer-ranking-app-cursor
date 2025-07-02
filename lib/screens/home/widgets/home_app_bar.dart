@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../../services/tag_service.dart';
 import '../../../utils/action_logger.dart';
 import '../../dancers/dancers_screen.dart';
-import '../../settings/tabs/tags_screen.dart';
 import '../services/home_navigation_service.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -15,7 +12,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tagService = Provider.of<TagService>(context);
     final navigationService = HomeNavigationService();
 
     return AppBar(
@@ -37,49 +33,41 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             );
           },
         ),
-        IconButton(
-          icon: const Icon(Icons.label),
-          tooltip: 'Manage Tags',
-          onPressed: () {
-            ActionLogger.logUserAction('HomeScreen', 'navigate_to_tags', {
-              'destination': 'TagsScreen',
-            });
-
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TagsScreen(tagService: tagService),
-              ),
-            );
-          },
-        ),
         PopupMenuButton<String>(
-          icon: const Icon(Icons.more_vert),
           tooltip: 'More options',
           onSelected: (value) {
             switch (value) {
-              case 'import_events':
-                navigationService.importEvents(context);
-                break;
               case 'settings':
+                ActionLogger.logUserAction(
+                    'HomeScreen', 'navigate_to_settings', {
+                  'destination': 'SettingsScreen',
+                  'source': 'overflow_menu',
+                });
                 navigationService.navigateToSettings(context);
+                break;
+              case 'import_events':
+                ActionLogger.logUserAction(
+                    'HomeScreen', 'import_events_opened', {
+                  'source': 'overflow_menu',
+                });
+                navigationService.importEvents(context);
                 break;
             }
           },
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-            const PopupMenuItem<String>(
-              value: 'import_events',
-              child: ListTile(
-                leading: Icon(Icons.file_upload),
-                title: Text('Import Events'),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-            const PopupMenuItem<String>(
+          itemBuilder: (context) => [
+            const PopupMenuItem(
               value: 'settings',
               child: ListTile(
                 leading: Icon(Icons.settings),
                 title: Text('Settings'),
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'import_events',
+              child: ListTile(
+                leading: Icon(Icons.file_upload),
+                title: Text('Import events'),
                 contentPadding: EdgeInsets.zero,
               ),
             ),

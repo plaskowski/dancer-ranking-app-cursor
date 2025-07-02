@@ -5,6 +5,67 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.70.0] - 2025-01-08
+
+### User Requests
+- "add stats on tags rows similar to what other dictionary screens have"
+
+### Enhanced
+- **Tags Management Statistics**: Added usage statistics to tag rows similar to scores and ranks management
+  - **Usage Display**: Each tag now shows usage count in format "tag name • X dancers"
+  - **Consistent Interface**: Tags management now matches the pattern used by other dictionary screens
+  - **Better Decision Making**: Users can see which tags are most/least used when managing their tag system
+  - **Visual Feedback**: Clear indication of tag popularity helps with tag cleanup and organization
+
+### Changed
+- **Tags Management Tab**: Replaced StreamBuilder with manual loading using `getAllTagsWithUsageCount()`
+- **Data Loading**: Tags now load with usage statistics on screen initialization and after operations
+- **Empty State**: Improved empty state with label icon and helpful guidance text
+- **Home Screen Navigation**: Reorganized app bar actions for cleaner interface
+  - **Dancers Button**: Kept as standalone icon button for primary access
+  - **Overflow Menu**: Moved Settings and Import events to three dots menu
+  - **Menu Order**: Import events positioned last in overflow menu as requested
+
+### Improved
+- **Subtle Statistics Styling**: Made usage counts less prominent across all dictionary screens
+  - **Title/Subtitle Layout**: Split item names and statistics into separate lines for better hierarchy
+  - **Muted Statistics**: Usage counts now display in smaller, muted text as subtitles
+  - **Consistent Pattern**: Applied uniform styling across tags, scores, and ranks management tabs
+  - **Better Focus**: Main item names now stand out more prominently without visual clutter from stats
+
+### Technical
+- Leveraged existing `TagService.getAllTagsWithUsageCount()` method for statistics
+- Replaced reactive stream with manual refresh pattern for consistency with other dictionary screens  
+- Added automatic reload after create, update, and delete operations to keep statistics current
+- Updated state management from stream-based to local state with loading indicators
+- Maintained all existing tag management functionality while adding usage insights
+- Applied consistent title/subtitle styling pattern across all dictionary management screens
+
+## [v0.69.0] - 2024-12-30
+
+### User Requests
+- "Go for it" - Continue with file size refactoring work
+
+### Changed
+- **MAJOR REFACTORING**: Refactored `home_screen.dart` from 557 lines to 67 lines (90% reduction)
+- Extracted event display logic into focused, reusable components
+- Improved code organization and maintainability for home screen functionality
+
+### Improved
+- **EventCard Widget**: Extracted complex event card functionality (364 lines) with context menus and dialogs
+- **HomeAppBar Widget**: Separated app bar navigation logic (91 lines) with clean action handling  
+- **EmptyEventsView Widget**: Created dedicated empty state component (36 lines) for better UX
+- **HomeNavigationService**: Extracted import events and settings navigation (56 lines) for better separation
+- **Code Compilation**: Faster compilation and hot reload times with smaller, focused files
+- **IDE Performance**: Better code navigation and analysis with logical component separation
+
+### Technical
+- Split large home screen into 6 focused components following single responsibility principle
+- Maintained backward compatibility through clean widget extraction
+- Improved testability by separating concerns into distinct, testable components
+- Enhanced code reusability with dedicated widget components
+- Applied clean architecture patterns with proper dependency injection
+
 ## [v0.67.1] - 2025-01-04
 
 ### User Requests

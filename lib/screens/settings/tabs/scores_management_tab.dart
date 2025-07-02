@@ -428,8 +428,16 @@ class _ScoresManagementTabState extends State<ScoresManagementTab> {
                       return ListTile(
                         key: ValueKey(scoreWithUsage.score.id),
                         title: Text(
-                          '${scoreWithUsage.score.name} • ${scoreWithUsage.usageCount} dances',
+                          scoreWithUsage.score.name,
                           style: const TextStyle(fontSize: 16),
+                        ),
+                        subtitle: Text(
+                          '${scoreWithUsage.usageCount} dances',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
                         ),
                         onTap: () => _showContextMenu(scoreWithUsage),
                       );

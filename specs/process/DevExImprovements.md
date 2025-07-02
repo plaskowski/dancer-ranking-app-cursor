@@ -2,8 +2,8 @@
 ## Cursor based development improvements
 
 # Most urgent
-- increase the 25 tool calls limit
 - allow it to delete .dart and .md files
+- autosave?
 
 # Later
 - Ability to run user stories for regression testing
@@ -22,3 +22,14 @@
 - keep a separte human-only todolist file to not lost your toughts chain
 - close all editor windows after commit
 - don't edit dot files directly, write down changes to a separate file I can review first
+
+# Hard ones
+- increase the 25 tool calls limit
+
+# Solved
+
+## Cursor Cheatsheet
+- always open Markdown files in preview
+  - add vscode.markdown.preview.editor in "Preferences: Open Settings (UI)" > "editor assoc"
+- second cursor
+  - https://egghead.io/launch-multiple-cursor-composer-ai-agents-to-work-in-parallel~y1q56

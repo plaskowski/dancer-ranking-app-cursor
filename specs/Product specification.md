@@ -164,19 +164,14 @@ Users can adjust rankings during events for various reasons:
 - Navigate to event details by tapping event
 - Create new event (FAB)
 - Navigate to dancers management (app bar icon)
-- Navigate to ranks management (app bar icon)
-- Navigate to tags management (app bar icon)
-- Import events from JSON files (overflow menu)
-- Manage scores dictionary (overflow menu)
 - Access application settings (overflow menu)
+- Import events from JSON files (overflow menu, positioned last)
 **Navigation**:
 - → Create Event Screen (FAB)
 - → Event Screen (tap event)
 - → Dancers Screen (app bar action)
-  - → Settings Screen → Ranks Tab (popup menu)
-- → Tags Screen (app bar action)
-- → Event Import Dialog (overflow menu action)
 - → Settings Screen (overflow menu action)
+- → Event Import Dialog (overflow menu action)
 
 ### 2. Create Event Screen (`CreateEventScreen`)
 **Purpose**: Form to create new dance events
@@ -379,25 +374,41 @@ Users can adjust rankings during events for various reasons:
 - ← Back to Dancers Screen (cancel merge)
 - → Confirmation Dialog → Back to Dancers Screen (after merge completion)
 
-### 6. Tags Screen (`TagsScreen`)
-**Purpose**: Manage all tags in the system for dancer categorization
+### 6. Tags Management Tab (`TagsManagementTab`)
+**Purpose**: Manage all tags in the system for dancer categorization (within Settings Screen)
+**Access**: Home Screen → Settings Screen → Tags Tab (4th tab)
 **Actions**:
 - View list of all tags (predefined and custom)
 - Add new custom tags via dialog
+- Edit existing tag names via context menu
+- Delete tags with confirmation dialog
 - Simple tag management interface
 **UI Design**:
-- **Simple List Layout**: Clean ListTile showing just tag names
-- **Minimalist Interface**: Focus on tag names without clutter
-- **Icon Indicators**: Label outline icon for each tag
+- **Clean List Layout**: Card-based ListTile showing just tag names without icons
+- **Minimalist Interface**: Focus on tag names without visual clutter
+- **Tap for Context Actions**: Single tap opens modal bottom sheet with Edit and Delete options
 - **Add Tag FAB**: Floating action button to create new tags
+- **Consistent Pattern**: Follows same interaction pattern as other management tabs
+**Context Menu Actions**:
+- **Edit**: Update tag name with validation against duplicates
+- **Delete**: Remove tag with confirmation dialog warning about impact on dancers
 **Add Tag Dialog**:
 - **Simple Text Input**: Enter tag name with validation
 - **Immediate Feedback**: Success/error messages via SnackBar
 - **Duplicate Prevention**: TagService handles duplicate tag creation
 - **Auto-focus**: Text field automatically focused for quick entry
+**Edit Tag Dialog**:
+- **Pre-filled Text**: Current tag name loaded for editing
+- **Validation**: Prevents duplicate names and empty values
+- **Immediate Feedback**: Success/error messages via SnackBar
+**Delete Confirmation**:
+- **Impact Warning**: Explains tag will be removed from all dancers
+- **Permanent Action**: Clear warning that deletion cannot be undone
 **Navigation**:
-- ← Back to Home Screen
+- Access via Settings Screen → Tags Tab
 - → Add Tag Dialog (FAB)
+- → Edit Tag Dialog (context menu)
+- → Delete Confirmation Dialog (context menu)
 
 ### 7. Settings Screen (`SettingsScreen`)
 
@@ -405,14 +416,16 @@ Centralized configuration management with tabbed interface for different setting
 
 ### 7.1 Screen Structure
 - **AppBar**: Title "Settings" with tab bar for navigation
-- **TabController**: Manages three tabs (General, Scores, Ranks)
+- **TabController**: Manages four tabs (General, Ranks, Scores, Tags)
 - **TabBarView**: Contains tab content widgets
+- **Initial Tab Selection**: Optional `initialTabIndex` parameter allows direct navigation to specific tabs
 
 ### 7.2 Tab Configuration
 ```dart
 Tab(icon: Icon(Icons.settings), text: 'General')
 Tab(icon: Icon(Icons.military_tech), text: 'Ranks')
-Tab(icon: Icon(Icons.star_rate), text: 'Scores') 
+Tab(icon: Icon(Icons.star_rate), text: 'Scores')
+Tab(icon: Icon(Icons.label), text: 'Tags')
 ```
 
 ### 7.3 General Settings Tab
@@ -438,7 +451,18 @@ Tab(icon: Icon(Icons.star_rate), text: 'Scores')
 - **Delete with Replacement**: Choose replacement rank when deleting (prevents orphaned rankings)
 - **Floating Action Button**: Positioned within tab for adding new ranks
 
-### 7.6 Actions Available
+### 7.6 Tags Management Tab (`TagsManagementTab`)
+- **Usage Statistics Display**: Clean card-based layout showing tag names with usage counts (e.g., "regular • 5 dancers")
+- **Context Menu**: Edit and delete operations via tap-to-open modal bottom sheet
+- **Add Tag Dialog**: Create new tags with validation and duplicate prevention
+- **Edit Tag Dialog**: Modify existing tag names with validation
+- **Delete Confirmation**: Warning dialog explaining impact on dancers
+- **Floating Action Button**: Positioned within tab for adding new tags
+- **Provider Integration**: Uses TagService from context for data operations with usage statistics
+- **Manual Refresh**: Automatic reload after create, update, and delete operations to keep statistics current
+- **Consistent UI Pattern**: Follows same interaction model as other management tabs with usage display like scores and ranks
+
+### 7.7 Actions Available
 
 #### General Tab Actions:
 - View app information
@@ -459,19 +483,27 @@ Tab(icon: Icon(Icons.star_rate), text: 'Scores')
 - **Delete**: Remove rank with replacement selection
 - **Add New**: Create additional rank
 
-### 7.7 Navigation Flow
+#### Tags Tab Actions:
+- **Tap tag**: Open context menu
+- **Edit**: Update tag name with duplicate validation
+- **Delete**: Remove tag with confirmation and impact warning
+- **Add New**: Create additional tag with validation
+
+### 7.8 Navigation Flow
 ```
-Home Screen → Settings (popup menu)
-Settings Screen → [General | Ranks | Scores] tabs
+Home Screen → Settings (app bar action)
+Settings Screen → [General | Ranks | Scores | Tags] tabs
 Ranks Tab → [Add | Edit | Archive | Delete] → Back to tab
 Scores Tab → [Add | Edit | Delete | Merge] → Back to tab
+Tags Tab → [Add | Edit | Delete] → Back to tab
 ```
 
-### 7.8 Data Management
+### 7.9 Data Management
 - **Scores**: Full CRUD operations with usage tracking and ordinal management
 - **Ranks**: Full CRUD operations with usage tracking, archival system and ordinal management
-- **Usage Statistics**: Both scores and ranks display usage counts for informed management
-- **Real-time Updates**: setState() triggers UI refresh after operations
+- **Tags**: Full CRUD operations with validation and duplicate prevention
+- **Usage Statistics**: Scores and ranks display usage counts for informed management
+- **Real-time Updates**: StreamBuilder and setState() trigger UI refresh after operations
 - **Error Handling**: Toast messages for operation success/failure
 
 ### 8. Dialogs and Modals
