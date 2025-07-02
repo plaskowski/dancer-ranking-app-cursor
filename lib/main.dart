@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'database/database.dart';
-import 'screens/home_screen.dart';
+import 'screens/home/home_screen.dart';
 import 'services/attendance_service.dart';
 import 'services/dancer_import_service.dart';
 import 'services/dancer_service.dart';
