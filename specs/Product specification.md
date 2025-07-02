@@ -1,4 +1,3 @@
-
 # Problem statement
 I am a social dancer. I attend many social dancing parties where I can with a lot of partners.
 I know most of them, some I meet there the first time.
@@ -123,26 +122,49 @@ Material 3 theme implementation with custom dance-specific color extensions.
 
 ### Default Rank Data
 The Ranks table should be pre-populated with:
-1. Ordinal 1: "Really want to dance!" (best rank)
+1. Ordinal 1: "Really want to dance!" (highest priority)
 2. Ordinal 2: "Would like to dance"
-3. Ordinal 3: "Neutral / Default" 
-4. Ordinal 4: "Maybe later"
-5. Ordinal 5: "Not really interested" (lowest rank)
+3. Ordinal 3: "Maybe later"
+4. Ordinal 4: "Not interested" (lowest priority)
 
 ### Default Score Data
 The Scores table should be pre-populated with:
-1. Ordinal 1: "Amazing" (best score)
-2. Ordinal 2: "Great"
-3. Ordinal 3: "Good" (default score)
-4. Ordinal 4: "Okay"
-5. Ordinal 5: "Meh" (lowest score)
+1. Ordinal 1: "Good" (best score)
+2. Ordinal 2: "Okay"
+3. Ordinal 3: "Poor" (lowest score)
 
 ### Default Tag Data
-The Tags table should be pre-populated with:
-- **Frequency tags**: `regular`, `occasional`, `rare`, `new`
-- **Context tags**: `dance-class`, `dance-school`, `workshop`, `social`
+The Tags table should be pre-populated with contextual venue/event tags:
+- **Monday Class**: For dancers met in weekly dance classes
+- **Cuban DC Festival**: For dancers met at specific dance festivals
+- **Friday Social**: For dancers met at regular social dance events
 
-These tags help categorize dancers by how often they attend and where you met them.
+These tags help categorize dancers by where you know them from, enabling venue-based filtering during event planning.
+
+### Sample Data for Testing
+For easier testing and demonstration, the database initialization includes comprehensive sample data:
+
+**Sample Events (4 events with varied timing)**:
+- "Salsa Night at Cuban Bar" (1 week ago)
+- "Weekend Social Dance" (yesterday)
+- "Monthly Bachata Workshop" (next week)
+- "Summer Salsa Festival" (next month)
+
+**Sample Dancers (7 dancers with diverse tag combinations)**:
+- **Alice Rodriguez**: Monday Class + Friday Social (multi-venue dancer)
+- **Bob Martinez**: Cuban DC Festival only (festival-focused)
+- **Carlos Thompson**: Monday Class only (class student)
+- **Diana Chang**: Cuban DC Festival + Friday Social (festival + social)
+- **Elena Volkov**: Friday Social only (pure social dancer)
+- **Frank Kim**: Monday Class only (another class student)
+- **Grace Wilson**: All three tags (attends everywhere - perfect for testing!)
+
+This sample data provides realistic scenarios for testing:
+- Single-tag filtering (Bob, Carlos, Frank, Elena)
+- Multi-tag filtering (Alice, Diana)
+- All-tags filtering (Grace)
+- Event planning across different time periods
+- Complete tag filtering functionality validation
 
 ### Dynamic Ranking Use Cases
 Users can adjust rankings during events for various reasons:
@@ -280,9 +302,18 @@ Users can adjust rankings during events for various reasons:
 **Purpose**: Select multiple existing dancers to add to event ranking (for planning phase)
 **Actions**:
 - View list of unranked dancers only (dancers not yet added to this event)
+- **Tag filtering**: Filter dancers by single tag selection using tag filter chips
+  - Shows only tags that have associated dancers
+  - Single-select behavior with clear button (✕) when tag is selected
+  - Combined with text search for refined filtering
 - Search dancers by name or notes
 - Multi-select dancers using checkboxes
 - Add selected dancers to event with default rank (Neutral)
+**Tag Filtering UI**:
+- **Filter Chips**: Horizontal scrollable row of tag chips above dancer list
+- **Material 3 Design**: Chips change color when selected, clear button appears
+- **Smart Tag Display**: Only shows tags that have associated dancers in database
+- **Memory Aid**: Helps recall dancers by venue/context (e.g., "Monday Class" → class students)
 **Navigation**:
 - ← Back to Event Screen
 
@@ -290,6 +321,10 @@ Users can adjust rankings during events for various reasons:
 **Purpose**: Mark unranked and absent dancers as present when they appear at events
 **Actions**:
 - View list of unranked AND absent dancers only (excludes ranked dancers and already present dancers)
+- **Tag filtering**: Filter dancers by single tag selection using tag filter chips
+  - Shows only tags that have associated dancers
+  - Single-select behavior with clear button (✕) when tag is selected
+  - Combined with text search for refined filtering
 - Search dancers by name or notes
 - One-tap "Mark Present" action for each dancer
 - **Persistent Screen**: Screen stays open after marking dancers to enable bulk operations
@@ -297,6 +332,12 @@ Users can adjust rankings during events for various reasons:
 - Info banner explaining scope and guiding users about present dancers
 - Shows dancer context: notes for identification
 - **Smart filtering**: Automatically excludes dancers who are already present to prevent duplicates
+**Tag Filtering UI**:
+- **Filter Chips**: Horizontal scrollable row of tag chips above dancer list
+- **Material 3 Design**: Chips change color when selected, clear button appears
+- **Smart Tag Display**: Only shows tags that have associated dancers in database
+- **Memory Aid**: Essential for remembering dancers by venue when you forget names
+- **Enhanced Empty States**: Context-aware messages when no dancers match tag filter
 **Navigation**:
 - ← Back to Event Screen
 

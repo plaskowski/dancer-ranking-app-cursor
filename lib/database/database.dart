@@ -165,22 +165,22 @@ class AppDatabase extends _$AppDatabase {
         // Past event (1 week ago)
         EventsCompanion.insert(
           name: 'Salsa Night at Cuban Bar',
-          date: now.subtract(Duration(days: 7)),
+          date: now.subtract(const Duration(days: 7)),
         ),
         // Recent past event (yesterday)
         EventsCompanion.insert(
           name: 'Weekend Social Dance',
-          date: now.subtract(Duration(days: 1)),
+          date: now.subtract(const Duration(days: 1)),
         ),
         // Future event (next week)
         EventsCompanion.insert(
           name: 'Monthly Bachata Workshop',
-          date: now.add(Duration(days: 7)),
+          date: now.add(const Duration(days: 7)),
         ),
         // Future event (next month)
         EventsCompanion.insert(
           name: 'Summer Salsa Festival',
-          date: now.add(Duration(days: 21)),
+          date: now.add(const Duration(days: 21)),
         ),
       ]);
     });
