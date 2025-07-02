@@ -42,15 +42,13 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
               setState(() {
                 _isDragOver = true;
               });
-              ActionLogger.logUserAction(
-                  'EventFileSelectionStep', 'drag_entered', {});
+              ActionLogger.logUserAction('EventFileSelectionStep', 'drag_entered', {});
             },
             onDragExited: (detail) {
               setState(() {
                 _isDragOver = false;
               });
-              ActionLogger.logUserAction(
-                  'EventFileSelectionStep', 'drag_exited', {});
+              ActionLogger.logUserAction('EventFileSelectionStep', 'drag_exited', {});
             },
             child: InkWell(
               onTap: widget.isLoading ? null : _pickFiles,
@@ -61,21 +59,13 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
                 padding: const EdgeInsets.all(32),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: _isDragOver
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.outline,
+                    color: _isDragOver ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outline,
                     width: _isDragOver ? 3 : 2,
                   ),
                   borderRadius: BorderRadius.circular(12),
                   color: _isDragOver
-                      ? Theme.of(context)
-                          .colorScheme
-                          .primaryContainer
-                          .withOpacity(0.5)
-                      : Theme.of(context)
-                          .colorScheme
-                          .surfaceContainerHighest
-                          .withOpacity(0.3),
+                      ? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.5)
+                      : Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.3),
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -83,26 +73,20 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
                     Icon(
                       _isDragOver ? Icons.file_download : Icons.event_note,
                       size: 48,
-                      color: _isDragOver
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.primary,
+                      color:
+                          _isDragOver ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary,
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      _isDragOver
-                          ? 'Drop Event JSON files here'
-                          : 'Select Event JSON files to import',
+                      _isDragOver ? 'Drop Event JSON files here' : 'Select Event JSON files to import',
                       style: Theme.of(context).textTheme.headlineSmall,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      _isDragOver
-                          ? 'Release to upload'
-                          : 'Drag & drop or tap to browse files',
+                      _isDragOver ? 'Release to upload' : 'Drag & drop or tap to browse files',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                       textAlign: TextAlign.center,
                     ),
@@ -140,6 +124,12 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
+                      if (widget.isLoading)
+                        const SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
                       IconButton(
                         onPressed: widget.onFilesClear,
                         icon: const Icon(Icons.close),
@@ -155,9 +145,7 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
                             Icon(
                               Icons.insert_drive_file,
                               size: 16,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                             ),
                             const SizedBox(width: 8),
                             Expanded(
@@ -174,13 +162,8 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
                                 final sizeKB = (size / 1024).round();
                                 return Text(
                                   '$sizeKB KB',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurfaceVariant,
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                                       ),
                                 );
                               },
@@ -214,9 +197,7 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
                     Text(
                       'Event Import Requirements',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimaryContainer,
+                            color: Theme.of(context).colorScheme.onPrimaryContainer,
                           ),
                     ),
                   ],
@@ -263,8 +244,7 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
 
         // Validate file extension
         if (!droppedFile.name.toLowerCase().endsWith('.json')) {
-          throw Exception(
-              'Only JSON files are supported. Please select .json files.');
+          throw Exception('Only JSON files are supported. Please select .json files.');
         }
 
         final file = File(droppedFile.path);
@@ -272,8 +252,7 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
         // Validate file size (5MB limit for events)
         final size = await file.length();
         if (size > 5 * 1024 * 1024) {
-          throw Exception(
-              'File ${droppedFile.name} too large. Maximum size is 5 MB.');
+          throw Exception('File ${droppedFile.name} too large. Maximum size is 5 MB.');
         }
 
         files.add(file);
@@ -289,8 +268,7 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
 
   Future<void> _pickFiles() async {
     try {
-      ActionLogger.logUserAction(
-          'EventFileSelectionStep', 'file_picker_opened', {});
+      ActionLogger.logUserAction('EventFileSelectionStep', 'file_picker_opened', {});
 
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
@@ -307,8 +285,7 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
           // Validate file size (5MB limit for events)
           final size = await file.length();
           if (size > 5 * 1024 * 1024) {
-            throw Exception(
-                'File ${pickedFile.name} too large. Maximum size is 5 MB.');
+            throw Exception('File ${pickedFile.name} too large. Maximum size is 5 MB.');
           }
 
           files.add(file);

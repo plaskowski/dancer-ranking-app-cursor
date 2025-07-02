@@ -14,7 +14,8 @@ Right away:
   - [ ] validate all the new events files can be imported
 
 Small improvements:
-- [ ] events import
+- [x] events import
+  - [x] do the import preview right away after selecting a file (or dropping to drop zone)
   - [ ] ...
 - [x] Add existing dancer dialog
   - [x] move info block into the scroll area to not take vertical space

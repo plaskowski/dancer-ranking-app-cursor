@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.91.0] - 2025-07-03
+
+### User Requests
+- "do the import preview right away after selecting a file (or dropping to drop zone)" - Request to automatically show import preview after file selection
+
+### Added
+- **Automatic Preview**: Import preview now appears immediately after file selection or drop
+  - **Seamless Workflow**: No more manual "Next" button needed after file selection
+  - **Instant Feedback**: Users see preview data as soon as files are selected
+  - **Loading Indicator**: File selection step shows loading spinner while parsing files
+  - **Automatic Advancement**: Valid files automatically advance to preview step
+
+### Changed
+- **Import Workflow**: Streamlined import process by eliminating manual preview step
+  - **Simplified Steps**: File selection step now automatically processes and shows preview
+  - **Better UX**: Reduced number of clicks needed to complete import process
+  - **Immediate Feedback**: Users get instant validation and preview of their files
+
+### Technical
+- Modified `_onFilesSelected` method to automatically trigger file parsing
+- Updated `_parseFiles` method to automatically advance to preview step for valid files
+- Removed manual "Next" button from file selection step
+- Added loading indicator to file selection step during parsing
+- Maintained all existing functionality while improving user experience
+
 ## [v0.90.0] - 2025-01-16
 
 ### User Requests

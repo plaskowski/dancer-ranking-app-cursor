@@ -230,7 +230,8 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
   bool _canProceedFromCurrentStep() {
     switch (_currentStep) {
       case 0:
-        return _selectedFiles.isNotEmpty;
+        // No manual proceed needed - automatically advances after file selection
+        return false;
       case 1:
         return _parseResults.isNotEmpty && _parseResults.every((result) => result.isValid);
       case 2:
@@ -243,13 +244,8 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
   Widget _getNextButtonText() {
     switch (_currentStep) {
       case 0:
-        return _isLoading
-            ? const SizedBox(
-                width: 16,
-                height: 16,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              )
-            : const Text('Preview');
+        // No button needed for file selection step
+        return const SizedBox.shrink();
       case 1:
         return _isLoading
             ? const SizedBox(
@@ -280,6 +276,11 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
       _parseResults = [];
       _importResults = null;
     });
+
+    // Automatically parse files and show preview
+    if (files.isNotEmpty) {
+      _parseFiles();
+    }
   }
 
   void _onFilesClear() {
@@ -327,7 +328,10 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
 
       setState(() {
         _parseResults = results;
-        _currentStep = 1;
+        // Automatically advance to preview step if files are valid
+        if (results.isNotEmpty && results.every((result) => result.isValid)) {
+          _currentStep = 1;
+        }
       });
     } catch (e) {
       ToastHelper.showError(context, 'Error parsing files: $e');

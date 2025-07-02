@@ -621,11 +621,11 @@ Tags Tab → [Add | Edit | Delete] → Back to tab
 - **Automatic Score Assignment**: Assigns scores to attendance records during import
 - **Score Conflict Resolution**: Creates new scores when referenced score names don't exist
 **Workflow**:
-1.  **File Selection**: User selects a JSON file.
-2.  **Parsing & Validation**: The app parses the file and performs a "dry run" to validate the data.
+1.  **File Selection**: User selects or drops JSON files.
+2.  **Automatic Processing**: Files are immediately parsed and validated.
     - It checks for duplicate events and identifies new dancers that will be created.
     - Validates score names and identifies missing scores that will be auto-created.
-3.  **Data Preview**: The user is shown a comprehensive preview of the events to be imported with enhanced statistics and detailed attendance data.
+3.  **Data Preview**: The user is automatically shown a comprehensive preview of the events to be imported with enhanced statistics and detailed attendance data.
     - **Enhanced Statistics**: Shows events, attendances, dancers, and new dancers count
     - Each event in the list displays its name, date, and number of attendees. The new dancer count is appended to the attendance info (e.g., "15 attendances (3 new)").
     - **Duplicate Indication**: Events that already exist in the database are clearly marked and shown as "Skipped".
