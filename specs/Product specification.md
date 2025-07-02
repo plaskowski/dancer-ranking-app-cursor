@@ -431,9 +431,15 @@ Tab(icon: Icon(Icons.label), text: 'Tags')
 ### 7.3 General Settings Tab
 - **App Information Card**: 
   - App name: "Dancer Ranking App"
-  - Version: "v0.65.0"
+  - Version: "v0.65.2"
   - Built for: "Private use"
-- **Future Settings Placeholder**: Space for additional configuration options
+- **Database Reset Option**: 
+  - Red-colored warning action to completely clear all data
+  - Confirmation dialog with comprehensive warning about data loss
+  - Loading state during reset operation
+  - Success/error feedback via toast notifications
+  - Clears all tables (events, dancers, rankings, attendances, tags, scores)
+  - No restoration of default data (complete database wipe)
 
 ### 7.4 Scores Management Tab (`_ScoresManagementTab`)
 - **Drag-to-Reorder List**: ReorderableListView of all scores with usage statistics
@@ -466,6 +472,7 @@ Tab(icon: Icon(Icons.label), text: 'Tags')
 
 #### General Tab Actions:
 - View app information
+- **Reset Database**: Complete data wipe with confirmation dialog
 
 #### Scores Tab Actions:
 - **Drag to reorder**: Update score priority

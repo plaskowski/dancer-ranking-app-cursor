@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.81.0] - 2025-01-16
+
+### User Requests
+- "option to reset DB in settings screen (general tab)" - Request to add database reset functionality
+- "Skip the defaults" - Request to modify reset to not restore default data
+- "Let's commit and test it" - Request to implement and commit the feature
+- "and update the specs" - Request to update specification documentation
+
+### Added
+- **Database Reset Option**: Added complete database reset functionality in General Settings tab
+  - **Warning UI**: Red-colored action with clear warning styling and descriptive text
+  - **Comprehensive Confirmation**: Detailed dialog listing all data that will be permanently deleted
+  - **Complete Data Wipe**: Resets all tables (events, dancers, rankings, attendances, tags, scores)
+  - **No Default Restoration**: Database remains completely empty after reset (no default data re-inserted)
+  - **Loading State**: Progress indicator during reset operation
+  - **User Feedback**: Success/error notifications via toast messages
+
+### Technical
+- **Database Method**: Added `resetDatabase()` method to `AppDatabase` class for complete data clearing
+- **Settings Integration**: Enhanced `GeneralSettingsTab` with reset option and confirmation workflow
+- **Error Handling**: Proper try-catch with loading states and user-friendly error messages
+- **Provider Integration**: Uses existing database provider for consistent data access
+- **Transaction Safety**: Reset operation wrapped in database transaction for data integrity
+
+### Changed
+- **General Settings Tab**: Replaced placeholder content with functional database reset option
+- **Settings Documentation**: Updated Product specification with complete reset functionality details
+
 ## [v0.80.0] - 2024-12-27
 
 ### User Requests
