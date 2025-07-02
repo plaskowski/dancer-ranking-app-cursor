@@ -38,3 +38,4 @@
 - increase the 25 tool calls limit
 - rule to refactor code to new files
 - rule to add actions tracking to new code
+- a way to run flutter run so that it closes the terminal tab when it ends
