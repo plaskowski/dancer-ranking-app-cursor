@@ -25,8 +25,8 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
   bool _isLoading = false;
 
   // Import state
-  File? _selectedFile;
-  EventImportResult? _parseResult;
+  List<File> _selectedFiles = [];
+  List<EventImportResult> _parseResults = [];
   EventImportSummary? _importResults;
 
   // Progress tracking
@@ -61,21 +61,18 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
                 onStepTapped: _canNavigateToStep,
                 steps: [
                   Step(
-                    title: const Text('Select File'),
+                    title: const Text('Select Files'),
                     content: EventFileSelectionStep(
-                      selectedFile: _selectedFile,
-                      onFileSelected: _onFileSelected,
-                      onFileClear: _onFileClear,
+                      selectedFiles: _selectedFiles,
+                      onFilesSelected: _onFilesSelected,
+                      onFilesClear: _onFilesClear,
                       isLoading: _isLoading,
                     ),
                     isActive: _currentStep == 0,
                   ),
                   Step(
                     title: const Text('Preview Data'),
-                    content: EventDataPreviewStep(
-                      parseResult: _parseResult,
-                      isLoading: _isLoading,
-                    ),
+                    content: _buildPreviewContent(),
                     isActive: _currentStep == 1,
                   ),
                   Step(
@@ -94,6 +91,102 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildPreviewContent() {
+    if (_parseResults.isEmpty) {
+      return const Center(
+        child: Text('No data to preview. Please select and parse files first.'),
+      );
+    }
+
+    // Check if all files are valid
+    final allValid = _parseResults.every((result) => result.isValid);
+    if (!allValid) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'File Errors',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 16),
+          ..._parseResults.expand((result) => result.errors.map((error) => Card(
+                color: Theme.of(context).colorScheme.errorContainer,
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        color: Theme.of(context).colorScheme.onErrorContainer,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          error,
+                          style: TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onErrorContainer,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ))),
+        ],
+      );
+    }
+
+    // Combine all events and show combined preview
+    final allEvents = _parseResults.expand((result) => result.events).toList();
+    final combinedResult = EventImportResult(
+      events: allEvents,
+      errors: [],
+      isValid: true,
+      summary: _getCombinedSummary(),
+    );
+
+    return EventDataPreviewStep(
+      parseResult: combinedResult,
+      isLoading: _isLoading,
+    );
+  }
+
+  EventImportSummary? _getCombinedSummary() {
+    if (_parseResults.isEmpty) return null;
+
+    final allEvents = _parseResults.expand((result) => result.events).toList();
+    final allSummaries = _parseResults
+        .where((result) => result.summary != null)
+        .map((result) => result.summary!);
+
+    if (allSummaries.isEmpty) return null;
+
+    return EventImportSummary(
+      eventsProcessed: allEvents.length,
+      eventsCreated:
+          allSummaries.fold(0, (sum, summary) => sum + summary.eventsCreated),
+      eventsSkipped:
+          allSummaries.fold(0, (sum, summary) => sum + summary.eventsSkipped),
+      attendancesCreated: allSummaries.fold(
+          0, (sum, summary) => sum + summary.attendancesCreated),
+      dancersCreated:
+          allSummaries.fold(0, (sum, summary) => sum + summary.dancersCreated),
+      scoresCreated:
+          allSummaries.fold(0, (sum, summary) => sum + summary.scoresCreated),
+      scoreAssignments: allSummaries.fold(
+          0, (sum, summary) => sum + summary.scoreAssignments),
+      errors: 0,
+      errorMessages: [],
+      skippedEvents:
+          allSummaries.expand((summary) => summary.skippedEvents).toList(),
+      createdScoreNames:
+          allSummaries.expand((summary) => summary.createdScoreNames).toList(),
+      eventAnalyses:
+          allSummaries.expand((summary) => summary.eventAnalyses).toList(),
     );
   }
 
@@ -138,7 +231,7 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
       case 0:
         return true;
       case 1:
-        return _selectedFile != null;
+        return _selectedFiles.isNotEmpty;
       case 2:
         return _importResults != null;
       default:
@@ -149,9 +242,10 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
   bool _canProceedFromCurrentStep() {
     switch (_currentStep) {
       case 0:
-        return _selectedFile != null;
+        return _selectedFiles.isNotEmpty;
       case 1:
-        return _parseResult != null && _parseResult!.isValid;
+        return _parseResults.isNotEmpty &&
+            _parseResults.every((result) => result.isValid);
       case 2:
         return false; // Results is final step
       default:
@@ -185,7 +279,7 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
   Future<void> _proceedToNextStep(ControlsDetails details) async {
     switch (_currentStep) {
       case 0:
-        await _parseFile();
+        await _parseFiles();
         break;
       case 1:
         await _performImport();
@@ -193,83 +287,65 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
     }
   }
 
-  void _onFileSelected(File file) {
+  void _onFilesSelected(List<File> files) {
     setState(() {
-      _selectedFile = file;
-      _parseResult = null;
+      _selectedFiles = files;
+      _parseResults = [];
       _importResults = null;
     });
   }
 
-  void _onFileClear() {
+  void _onFilesClear() {
     setState(() {
-      _selectedFile = null;
-      _parseResult = null;
+      _selectedFiles = [];
+      _parseResults = [];
       _importResults = null;
-      _currentStep = 0;
     });
   }
 
   void _resetToFileSelection() {
-    ActionLogger.logUserAction(
-        'ImportEventsDialog', 'import_more_files_clicked', {
-      'previousEventsCreated': _importResults?.eventsCreated ?? 0,
-      'previousEventsSkipped': _importResults?.eventsSkipped ?? 0,
-    });
-
     setState(() {
-      _selectedFile = null;
-      _parseResult = null;
-      _importResults = null;
       _currentStep = 0;
+      _selectedFiles = [];
+      _parseResults = [];
+      _importResults = null;
       _importProgress = 0.0;
       _currentOperation = '';
     });
   }
 
-  Future<void> _parseFile() async {
-    if (_selectedFile == null) return;
+  Future<void> _parseFiles() async {
+    if (_selectedFiles.isEmpty) return;
 
     setState(() {
       _isLoading = true;
-      _currentOperation = 'Parsing JSON file...';
     });
 
     try {
-      ActionLogger.logAction('ImportEventsDialog', 'parse_file_started', {
-        'fileName': _selectedFile!.path.split('/').last,
-        'fileSize': await _selectedFile!.length(),
-      });
+      final eventImportService =
+          Provider.of<EventImportService>(context, listen: false);
+      final results = <EventImportResult>[];
 
-      final jsonContent = await _selectedFile!.readAsString();
-      final result = await context
-          .read<EventImportService>()
-          .parseAndValidateFile(jsonContent);
+      for (final file in _selectedFiles) {
+        try {
+          final jsonContent = await file.readAsString();
+          final result =
+              await eventImportService.parseAndValidateFile(jsonContent);
+          results.add(result);
+        } catch (e) {
+          // Create error result for this file
+          results.add(EventImportResult.failure(
+            errors: [e.toString()],
+          ));
+        }
+      }
 
       setState(() {
-        _parseResult = result;
-        _currentOperation = '';
+        _parseResults = results;
+        _currentStep = 1;
       });
-
-      if (result.isValid) {
-        setState(() {
-          _currentStep = 1;
-        });
-        ActionLogger.logAction('ImportEventsDialog', 'parse_file_success', {
-          'eventsCount': result.events.length,
-        });
-      } else {
-        ToastHelper.showError(
-          context,
-          'Invalid file format: ${result.errors.first}',
-        );
-        ActionLogger.logAction('ImportEventsDialog', 'parse_file_failed', {
-          'errors': result.errors,
-        });
-      }
     } catch (e) {
-      ToastHelper.showError(context, 'Failed to parse file: $e');
-      ActionLogger.logError('ImportEventsDialog.parseFile', e.toString());
+      ToastHelper.showError(context, 'Error parsing files: $e');
     } finally {
       setState(() {
         _isLoading = false;
@@ -278,65 +354,70 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
   }
 
   Future<void> _performImport() async {
-    if (_parseResult == null || !_parseResult!.isValid) return;
+    if (_parseResults.isEmpty) return;
 
     setState(() {
       _isLoading = true;
-      _currentOperation = 'Importing events...';
       _importProgress = 0.0;
+      _currentOperation = 'Starting import...';
     });
 
     try {
-      ActionLogger.logAction('ImportEventsDialog', 'import_started', {
-        'eventsCount': _parseResult!.events.length,
-      });
+      final eventImportService =
+          Provider.of<EventImportService>(context, listen: false);
 
-      final jsonContent = await _selectedFile!.readAsString();
-      final service = context.read<EventImportService>();
+      // Combine all valid events from all files
+      final allEvents = <ImportableEvent>[];
+      final allErrors = <String>[];
 
-      // Simulate progress updates
-      _updateProgress(0.2, 'Validating data...');
-      await Future.delayed(const Duration(milliseconds: 200));
+      for (final result in _parseResults) {
+        if (result.isValid) {
+          allEvents.addAll(result.events);
+        } else {
+          allErrors.addAll(result.errors);
+        }
+      }
 
-      _updateProgress(0.4, 'Processing events...');
-      await Future.delayed(const Duration(milliseconds: 200));
+      if (allEvents.isEmpty) {
+        throw Exception('No valid events found in any of the selected files.');
+      }
 
-      final summary = await service.importEventsFromJson(
-        jsonContent,
+      // Import all events
+      final totalEvents = allEvents.length;
+
+      // Convert events to JSON structure that the import service expects
+      final eventsJson = allEvents.map((event) => event.toJson()).toList();
+      final combinedJson = {
+        'events': eventsJson,
+      };
+
+      final importResult = await eventImportService.importEventsFromJson(
+        combinedJson.toString(),
         const EventImportOptions(),
       );
 
-      _updateProgress(1.0, 'Import completed');
-
       setState(() {
-        _importResults = summary;
+        _importResults = importResult;
         _currentStep = 2;
-        _currentOperation = '';
+        _importProgress = 1.0;
+        _currentOperation = 'Import completed';
       });
 
-      // Note: Removed toast messages to avoid obscuring the summary view
-      // The summary view provides all necessary import result information
-
-      ActionLogger.logAction('ImportEventsDialog', 'import_completed', {
-        'eventsCreated': summary.eventsCreated,
-        'errors': summary.errors,
+      ActionLogger.logUserAction('ImportEventsDialog', 'import_completed', {
+        'totalFiles': _selectedFiles.length,
+        'totalEvents': totalEvents,
+        'importedEvents': importResult.eventsCreated,
+        'skippedEvents': importResult.eventsSkipped,
+        'newDancers': importResult.dancersCreated,
       });
     } catch (e) {
-      ToastHelper.showError(context, 'Import failed: $e');
-      ActionLogger.logError('ImportEventsDialog.performImport', e.toString());
+      ToastHelper.showError(context, 'Error importing events: $e');
+      ActionLogger.logError('ImportEventsDialog._performImport', e.toString());
     } finally {
       setState(() {
         _isLoading = false;
-        _importProgress = 0.0;
       });
     }
-  }
-
-  void _updateProgress(double progress, String operation) {
-    setState(() {
-      _importProgress = progress;
-      _currentOperation = operation;
-    });
   }
 
   void _showHelpDialog() {
@@ -346,58 +427,36 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
         title: const Text('Event Import Help'),
         content: const SingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text('JSON File Structure:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              Text('• Root object must contain "events" array'),
-              Text('• Each event requires "name" and "date" (YYYY-MM-DD)'),
-              Text('• "attendances" array is optional but recommended'),
-              SizedBox(height: 16),
-              Text('Attendance Fields:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              Text('• "dancer_name": Required full name of dancer'),
-              Text('• "status": Required - "present", "served", or "left"'),
-              Text('• "impression": Optional note (only for "served" status)'),
-              Text('• "score": Optional score name (e.g., "Amazing", "Great")'),
-              SizedBox(height: 16),
-              Text('Status Meanings:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              Text('• "present": Dancer attended the event'),
-              Text('• "served": Dancer was served/danced with'),
-              Text('• "left": Dancer left the event early'),
-              SizedBox(height: 16),
-              Text('Automatic Features:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              Text('• New dancers are automatically created'),
-              Text('• New scores are automatically created'),
-              Text('• Duplicate events (same name & date) are skipped'),
-              Text('• Import happens immediately after validation'),
-              SizedBox(height: 16),
-              Text('Example File:',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
               Text(
-                  'See "example_events_import.json" in the app directory for a complete example with proper formatting.'),
-              SizedBox(height: 16),
-              Text('Tips:', style: TextStyle(fontWeight: FontWeight.bold)),
+                'How to import events:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               SizedBox(height: 8),
-              Text('• Keep impressions under 500 characters'),
-              Text('• Use consistent dancer names across events'),
-              Text('• Ensure valid JSON format (no trailing commas)'),
-              Text('• Use descriptive event names'),
+              Text('1. Select one or more JSON files containing event data'),
+              Text('2. Review the preview to ensure data is correct'),
+              Text('3. Click Import to add events to your database'),
+              SizedBox(height: 16),
+              Text(
+                'File format requirements:',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Text('• JSON format only'),
+              Text('• Maximum 5 MB per file'),
+              Text('• Required fields: name, date, attendances'),
+              Text('• Date format: YYYY-MM-DD'),
+              Text('• Duplicate events are automatically skipped'),
+              Text('• Missing dancers are automatically created'),
             ],
           ),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
           ),
         ],
       ),

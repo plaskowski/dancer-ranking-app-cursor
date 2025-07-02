@@ -9,16 +9,16 @@ import '../../utils/action_logger.dart';
 /// Step 1: Event File Selection Component
 /// Handles file picking and validation for event JSON import files
 class EventFileSelectionStep extends StatefulWidget {
-  final File? selectedFile;
-  final Function(File) onFileSelected;
-  final VoidCallback onFileClear;
+  final List<File> selectedFiles;
+  final Function(List<File>) onFilesSelected;
+  final VoidCallback onFilesClear;
   final bool isLoading;
 
   const EventFileSelectionStep({
     super.key,
-    required this.selectedFile,
-    required this.onFileSelected,
-    required this.onFileClear,
+    required this.selectedFiles,
+    required this.onFilesSelected,
+    required this.onFilesClear,
     required this.isLoading,
   });
 
@@ -34,7 +34,7 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.selectedFile == null) ...[
+        if (widget.selectedFiles.isEmpty) ...[
           // File drop area with drag and drop support
           DropTarget(
             onDragDone: (detail) => _handleDrop(detail),
@@ -53,7 +53,7 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
                   'EventFileSelectionStep', 'drag_exited', {});
             },
             child: InkWell(
-              onTap: widget.isLoading ? null : _pickFile,
+              onTap: widget.isLoading ? null : _pickFiles,
               borderRadius: BorderRadius.circular(12),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
@@ -90,8 +90,8 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
                     const SizedBox(height: 16),
                     Text(
                       _isDragOver
-                          ? 'Drop Event JSON file here'
-                          : 'Select Event JSON file to import',
+                          ? 'Drop Event JSON files here'
+                          : 'Select Event JSON files to import',
                       style: Theme.of(context).textTheme.headlineSmall,
                       textAlign: TextAlign.center,
                     ),
@@ -114,13 +114,13 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
           const SizedBox(height: 16),
           Center(
             child: ElevatedButton.icon(
-              onPressed: widget.isLoading ? null : _pickFile,
+              onPressed: widget.isLoading ? null : _pickFiles,
               icon: const Icon(Icons.folder_open),
               label: const Text('Browse Files'),
             ),
           ),
         ] else ...[
-          // Selected file info
+          // Selected files info
           Card(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -136,34 +136,58 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          widget.selectedFile!.path.split('/').last,
+                          '${widget.selectedFiles.length} file${widget.selectedFiles.length == 1 ? '' : 's'} selected',
                           style: Theme.of(context).textTheme.titleMedium,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       IconButton(
-                        onPressed: widget.onFileClear,
+                        onPressed: widget.onFilesClear,
                         icon: const Icon(Icons.close),
                         tooltip: 'Clear selection',
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
-                  FutureBuilder<int>(
-                    future: widget.selectedFile!.length(),
-                    builder: (context, snapshot) {
-                      final size = snapshot.data ?? 0;
-                      final sizeKB = (size / 1024).round();
-                      return Text(
-                        'Size: $sizeKB KB',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  ...widget.selectedFiles.map((file) => Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.insert_drive_file,
+                              size: 16,
                               color: Theme.of(context)
                                   .colorScheme
                                   .onSurfaceVariant,
                             ),
-                      );
-                    },
-                  ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                file.path.split('/').last,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            FutureBuilder<int>(
+                              future: file.length(),
+                              builder: (context, snapshot) {
+                                final size = snapshot.data ?? 0;
+                                final sizeKB = (size / 1024).round();
+                                return Text(
+                                  '$sizeKB KB',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurfaceVariant,
+                                      ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      )),
                 ],
               ),
             ),
@@ -200,12 +224,13 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
                 const SizedBox(height: 8),
                 Text(
                   '• JSON file format only\n'
-                  '• Maximum file size: 5 MB\n'
+                  '• Maximum file size: 5 MB per file\n'
                   '• Required fields: name, date, attendances\n'
                   '• Date format: YYYY-MM-DD\n'
                   '• Attendance statuses: present, served, left\n'
                   '• Duplicate events automatically skipped\n'
-                  '• Missing dancers automatically created',
+                  '• Missing dancers automatically created\n'
+                  '• Multiple files processed in sequence',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
@@ -228,27 +253,33 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
         return;
       }
 
-      final droppedFile = detail.files.first;
-      ActionLogger.logUserAction('EventFileSelectionStep', 'file_dropped', {
-        'fileName': droppedFile.name,
-        'filePath': droppedFile.path,
-      });
+      final files = <File>[];
 
-      // Validate file extension
-      if (!droppedFile.name.toLowerCase().endsWith('.json')) {
-        throw Exception(
-            'Only JSON files are supported. Please select a .json file.');
+      for (final droppedFile in detail.files) {
+        ActionLogger.logUserAction('EventFileSelectionStep', 'file_dropped', {
+          'fileName': droppedFile.name,
+          'filePath': droppedFile.path,
+        });
+
+        // Validate file extension
+        if (!droppedFile.name.toLowerCase().endsWith('.json')) {
+          throw Exception(
+              'Only JSON files are supported. Please select .json files.');
+        }
+
+        final file = File(droppedFile.path);
+
+        // Validate file size (5MB limit for events)
+        final size = await file.length();
+        if (size > 5 * 1024 * 1024) {
+          throw Exception(
+              'File ${droppedFile.name} too large. Maximum size is 5 MB.');
+        }
+
+        files.add(file);
       }
 
-      final file = File(droppedFile.path);
-
-      // Validate file size (5MB limit for events)
-      final size = await file.length();
-      if (size > 5 * 1024 * 1024) {
-        throw Exception('File too large. Maximum size is 5 MB.');
-      }
-
-      widget.onFileSelected(file);
+      widget.onFilesSelected(files);
     } catch (e) {
       ActionLogger.logError('EventFileSelectionStep._handleDrop', e.toString());
       // Note: Error handling will be done by parent widget
@@ -256,7 +287,7 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
     }
   }
 
-  Future<void> _pickFile() async {
+  Future<void> _pickFiles() async {
     try {
       ActionLogger.logUserAction(
           'EventFileSelectionStep', 'file_picker_opened', {});
@@ -264,21 +295,29 @@ class _EventFileSelectionStepState extends State<EventFileSelectionStep> {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['json'],
+        allowMultiple: true,
       );
 
       if (result != null && result.files.isNotEmpty) {
-        final file = File(result.files.first.path!);
+        final files = <File>[];
 
-        // Validate file size (5MB limit for events)
-        final size = await file.length();
-        if (size > 5 * 1024 * 1024) {
-          throw Exception('File too large. Maximum size is 5 MB.');
+        for (final pickedFile in result.files) {
+          final file = File(pickedFile.path!);
+
+          // Validate file size (5MB limit for events)
+          final size = await file.length();
+          if (size > 5 * 1024 * 1024) {
+            throw Exception(
+                'File ${pickedFile.name} too large. Maximum size is 5 MB.');
+          }
+
+          files.add(file);
         }
 
-        widget.onFileSelected(file);
+        widget.onFilesSelected(files);
       }
     } catch (e) {
-      ActionLogger.logError('EventFileSelectionStep._pickFile', e.toString());
+      ActionLogger.logError('EventFileSelectionStep._pickFiles', e.toString());
       // Note: Error handling will be done by parent widget
       rethrow;
     }

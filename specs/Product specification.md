@@ -187,7 +187,7 @@ Users can adjust rankings during events for various reasons:
 - Create new event (FAB)
 - Navigate to dancers management (app bar icon)
 - Access application settings (overflow menu)
-- Import events from JSON files (overflow menu, positioned last)
+- Import events from JSON files (single or multiple files, overflow menu, positioned last)
 **Navigation**:
 - → Create Event Screen (FAB)
 - → Event Screen (tap event)

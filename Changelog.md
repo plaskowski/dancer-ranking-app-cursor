@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.90.0] - 2025-01-16
+
+### User Requests
+- "import many files at once" - Request to add support for importing multiple event files simultaneously
+
+### Added
+- **Multiple File Import**: Added support for importing multiple event files at once
+  - **Multi-File Selection**: Users can now select multiple JSON files in a single import session
+  - **Drag & Drop Support**: Multiple files can be dropped simultaneously
+  - **Combined Preview**: All files are parsed and shown in a unified preview
+  - **Bulk Import**: All valid events from all files are imported in a single operation
+  - **Error Handling**: Individual file errors are shown while valid files proceed
+  - **Progress Tracking**: Import progress shows combined operation across all files
+
+### Improved
+- **File Selection UI**: Updated file selection step to show multiple selected files
+  - **File List Display**: Shows count and details of all selected files
+  - **Individual File Info**: Each file shows name and size
+  - **Clear All Option**: Easy way to clear all selected files at once
+  - **Updated Help Text**: Clarified that multiple files are supported
+
+### Technical
+- Enhanced `EventFileSelectionStep` to support multiple file selection
+- Updated `ImportEventsDialog` to handle multiple parse results
+- Added combined preview logic to merge results from multiple files
+- Modified import logic to combine events from all files into single JSON structure
+- Maintained backward compatibility with single file imports
+- Added proper error handling for individual file failures
+
 ## [v0.89.0] - 2025-01-16
 
 ### User Requests

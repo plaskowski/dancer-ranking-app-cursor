@@ -8,7 +8,7 @@ The app has all I need to start using it. :celebrate:
 
 Right away:
 - [x] add action to events import summary - "Import more files"
-- [ ] import many files at once
+- [x] import many files at once
 - [ ] (in progress) import more history
   - [ ] validate the counts against Diary text  <--- diary agent
   - [ ] validate all the new events files can be imported
