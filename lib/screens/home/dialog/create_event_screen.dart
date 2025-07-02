@@ -139,7 +139,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 controller: _nameController,
                 autofocus: true,
                 keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
+                textInputAction: TextInputAction.done,
                 decoration: const InputDecoration(
                   labelText: 'Event Name *',
                   border: OutlineInputBorder(),
@@ -152,6 +152,11 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   return null;
                 },
                 textCapitalization: TextCapitalization.words,
+                onFieldSubmitted: (_) {
+                  if (_formKey.currentState?.validate() == true) {
+                    _createEvent();
+                  }
+                },
               ),
 
               const SizedBox(height: 24),

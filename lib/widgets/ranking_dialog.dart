@@ -286,6 +286,12 @@ class _RankingDialogState extends State<RankingDialog> {
               ),
               maxLines: 3,
               textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) {
+                if (_selectedRank != null) {
+                  _saveRanking();
+                }
+              },
             ),
 
             const SizedBox(height: 16),

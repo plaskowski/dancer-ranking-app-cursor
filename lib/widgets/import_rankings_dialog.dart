@@ -7,6 +7,7 @@ import '../services/event_service.dart';
 import '../services/ranking_service.dart';
 import '../theme/theme_extensions.dart';
 import '../utils/action_logger.dart';
+import '../utils/event_status_helper.dart';
 
 class ImportRankingsDialog extends StatefulWidget {
   final int targetEventId;
@@ -217,16 +218,29 @@ class _ImportRankingsDialogState extends State<ImportRankingsDialog> {
                     children: _availableEvents.map((event) {
                       final formattedDate =
                           DateFormat('MMM d, y').format(event.date);
-                      final isPast = event.date.isBefore(DateTime.now());
+                      final isOld = EventStatusHelper.isOldEvent(event.date);
+                      final isCurrent =
+                          EventStatusHelper.isCurrentEvent(event.date);
+
+                      // Determine date color based on event status
+                      Color dateColor;
+                      if (isOld) {
+                        // Old events (2+ days ago) - gray color
+                        dateColor = Colors.grey;
+                      } else if (isCurrent) {
+                        // Current events (within 6-day window) - white color
+                        dateColor = Colors.white;
+                      } else {
+                        // Future events - primary color
+                        dateColor = Theme.of(context).colorScheme.primary;
+                      }
 
                       return RadioListTile<Event>(
                         title: Text(event.name),
                         subtitle: Text(
                           formattedDate,
                           style: TextStyle(
-                            color: isPast
-                                ? Theme.of(context).colorScheme.onSurfaceVariant
-                                : Theme.of(context).colorScheme.primary,
+                            color: dateColor,
                           ),
                         ),
                         value: event,

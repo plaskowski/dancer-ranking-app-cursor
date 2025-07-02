@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../database/database.dart';
 import '../../../services/event_service.dart';
 import '../../../utils/action_logger.dart';
+import '../../../utils/event_status_helper.dart';
 import '../../../utils/toast_helper.dart';
 import '../../event/event_screen.dart';
 
@@ -319,7 +320,21 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formattedDate = DateFormat('MMM d, y').format(event.date);
-    final isPast = event.date.isBefore(DateTime.now());
+    final isOld = EventStatusHelper.isOldEvent(event.date);
+    final isCurrent = EventStatusHelper.isCurrentEvent(event.date);
+
+    // Determine date color based on event status
+    Color dateColor;
+    if (isOld) {
+      // Old events (2+ days ago) - gray color
+      dateColor = Colors.grey;
+    } else if (isCurrent) {
+      // Current events (within 6-day window) - white color
+      dateColor = Colors.white;
+    } else {
+      // Future events - primary color
+      dateColor = Theme.of(context).colorScheme.primary;
+    }
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -344,17 +359,14 @@ class EventCard extends StatelessWidget {
             event.name,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : null,
+              color:
+                  isOld ? Theme.of(context).colorScheme.onSurfaceVariant : null,
             ),
           ),
           subtitle: Text(
             formattedDate,
             style: TextStyle(
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : Theme.of(context).colorScheme.primary,
+              color: dateColor,
             ),
           ),
         ),
