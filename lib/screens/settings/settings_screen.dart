@@ -4,9 +4,12 @@ import '../../utils/action_logger.dart';
 import 'tabs/general_settings_tab.dart';
 import 'tabs/ranks_management_tab.dart';
 import 'tabs/scores_management_tab.dart';
+import 'tabs/tags_management_tab.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  final int initialTabIndex;
+
+  const SettingsScreen({super.key, this.initialTabIndex = 0});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -19,7 +22,11 @@ class _SettingsScreenState extends State<SettingsScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(
+      length: 4,
+      vsync: this,
+      initialIndex: widget.initialTabIndex,
+    );
     ActionLogger.logAction('UI_SettingsScreen', 'screen_initialized', {});
   }
 
@@ -52,6 +59,10 @@ class _SettingsScreenState extends State<SettingsScreen>
               icon: Icon(Icons.star_rate),
               text: 'Scores',
             ),
+            Tab(
+              icon: Icon(Icons.label),
+              text: 'Tags',
+            ),
           ],
         ),
       ),
@@ -61,6 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen>
           GeneralSettingsTab(),
           RanksManagementTab(),
           ScoresManagementTab(),
+          TagsManagementTab(),
         ],
       ),
     );
