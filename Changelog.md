@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.71.0] - 2025-01-08
+
+### User Requests
+- "do this" - Complete events import help text and example file improvements
+
+### Added
+- **Events Import Example File**: Created comprehensive `example_events_import.json` showing proper JSON format
+  - **Complete Examples**: Demonstrates all attendance types (present, served, left)
+  - **Multiple Events**: Shows different event types with varied attendance records
+  - **Full Feature Coverage**: Examples include impressions, scores, and different status combinations
+  - **Clean JSON Format**: Valid JSON without comments for direct use as template
+
+### Improved  
+- **Events Import Help Text**: Completely redesigned help dialog with comprehensive guidance
+  - **Structured Information**: Organized into clear sections (JSON Structure, Attendance Fields, Status Meanings, etc.)
+  - **Detailed Field Explanations**: Complete description of all required and optional fields
+  - **Status Clarification**: Clear explanations of "present", "served", and "left" status meanings
+  - **Automatic Features**: Detailed explanation of auto-creation behavior for dancers and scores
+  - **Best Practices**: Tips for successful imports including character limits and naming conventions
+  - **Example Reference**: Points users to example file for practical guidance
+  - **Scrollable Content**: SingleChildScrollView for better dialog usability with extensive help content
+
+### Enhanced
+- **User Experience**: Import process now provides comprehensive guidance before users attempt import
+- **Error Prevention**: Detailed help reduces likelihood of malformed JSON files
+- **Self-Service Support**: Users have complete reference material without needing external documentation
+
+### Technical
+- Updated `ImportEventsDialog._showHelpDialog()` with comprehensive help content
+- Applied proper Dart formatting to maintain code quality standards
+- Maintained existing dialog functionality while expanding help content
+
 ## [v0.70.0] - 2025-01-08
 
 ### User Requests
