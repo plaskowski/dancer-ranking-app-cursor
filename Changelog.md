@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.66.0] - 2025-01-04
+
+### User Requests
+- "Review the classes and report me their sizes distribution" - Requested analysis of file sizes to identify large files needing refactoring
+- "Great, save this report to a file" - Asked to save the file size analysis for future reference
+- "Great, go refactor the biggest file" - Requested refactoring of the largest file (settings_screen.dart)
+
+### Improved
+- **Major Code Refactoring**: Broke down the largest file (1,147 lines) into manageable, focused components
+  - **Settings Screen**: Reduced from 1,147 lines to 68 lines (94% reduction) - now serves as clean coordinator
+  - **Modular Architecture**: Split functionality into separate files for better maintainability and testing
+  - **Single Responsibility**: Each extracted component now has a clear, focused purpose
+
+### Added
+- **File Size Analysis Report**: Created comprehensive codebase analysis at `specs/technical/file_size_analysis.md`
+  - **Distribution Analysis**: Categorized all 54 Dart files by size (Very Large, Large, Medium, Small)
+  - **Refactoring Recommendations**: Detailed priority action plan with specific file targets
+  - **Implementation Guidelines**: Best practices and file size targets for future development
+  - **Monitoring Strategy**: Framework for maintaining code health over time
+
+### Technical
+- **Extracted Components**:
+  - `lib/screens/settings/tabs/general_settings_tab.dart` (86 lines) - App information and general settings
+  - `lib/screens/settings/tabs/ranks_management_tab.dart` (487 lines) - Complete ranks management functionality
+  - `lib/screens/settings/tabs/scores_management_tab.dart` (443 lines) - Complete scores management functionality
+  - `lib/screens/settings/widgets/info_row.dart` (39 lines) - Reusable labeled information display widget
+  - `lib/screens/settings/widgets/rank_card.dart` (82 lines) - Rank display and interaction widget
+
+### Enhanced
+- **Code Organization**: Established clean directory structure for settings components
+- **Maintainability**: Each file now has single responsibility and focused functionality
+- **Development Experience**: Faster compilation, better IDE performance, easier code reviews
+- **Reusability**: Extracted widgets can be reused in other parts of the application
+- **Testing**: Smaller components are easier to unit test and maintain
+
+### Fixed
+- **Code Quality**: Eliminated the largest technical debt item in the codebase
+- **Navigation**: All imports properly updated to use new component structure
+- **Formatting**: Applied consistent dart formatting to all extracted files
+
 ## [v0.65.2] - 2025-01-02
 
 ### User Requests
