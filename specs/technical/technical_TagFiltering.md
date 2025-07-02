@@ -7,31 +7,17 @@ Technical specification for implementing tag-based filtering in the "Select Danc
 
 ### 1. Service Layer Extensions
 
-#### TagService Extensions
-**File**: `lib/services/tag_service.dart`
+#### DancerTagService Extensions
+**File**: `lib/services/dancer/dancer_tag_service.dart`
 
 New methods required:
 ```dart
 // Get dancers by multiple tags with OR logic
 Future<List<Dancer>> getDancersByTags(List<int> tagIds) async
 
-// Get tags that have associated dancers (for filter chip display)
-Future<List<Tag>> getTagsWithDancers() async
+// Get dancers by multiple tags with DancerWithTags info
+Future<List<DancerWithTags>> getDancersWithTagsByTags(List<int> tagIds) async
 
-// Get dancers by single tag (already exists)
-Future<List<Dancer>> getDancersByTag(int tagId) async
-```
-
-**Implementation Notes**:
-- `getDancersByTags()`: Use SQL `IN` clause or `OR` conditions for multiple tag filtering
-- `getTagsWithDancers()`: Join with dancer_tags table to only return tags that have associated dancers
-- Optimize queries with proper indexing on dancer_tags table
-
-#### DancerService Extensions
-**File**: `lib/services/dancer_service.dart`
-
-New methods required:
-```dart
 // Get unranked dancers for event filtered by tags
 Future<List<DancerWithEventInfo>> getUnrankedDancersForEventByTags(
   int eventId, 
@@ -46,9 +32,23 @@ Stream<List<DancerWithEventInfo>> watchAvailableDancersForEventByTags(
 ```
 
 **Implementation Notes**:
+- `getDancersByTags()`: Use SQL `IN` clause or `OR` conditions for multiple tag filtering
 - Combine existing event filtering logic with tag filtering
 - Use database joins for efficient querying
 - Maintain reactive streams for real-time updates
+
+#### TagService Extensions
+**File**: `lib/services/tag_service.dart`
+
+New methods required:
+```dart
+// Get tags that have associated dancers (for filter chip display)
+Future<List<Tag>> getTagsWithDancers() async
+```
+
+**Implementation Notes**:
+- `getTagsWithDancers()`: Join with dancer_tags table to only return tags that have associated dancers
+- Optimize queries with proper indexing on dancer_tags table
 
 ### 2. UI Component Architecture
 
@@ -157,9 +157,9 @@ Ensure proper indexing for performance:
 
 #### Phase 1: Core Infrastructure
 1. **Service Layer**:
-   - Add `getDancersByTags()` to TagService
+   - Add `getDancersByTags()` and event filtering methods to DancerTagService
    - Add `getTagsWithDancers()` to TagService
-   - Extend DancerService methods for tag filtering
+   - Extend existing methods to support tag-based filtering
 
 2. **Shared Widget**:
    - Create `TagFilterChips` widget
@@ -197,8 +197,8 @@ Ensure proper indexing for performance:
 
 #### Files to Modify
 1. **Service Layer**:
-   - `lib/services/tag_service.dart` - Add new filtering methods
-   - `lib/services/dancer_service.dart` - Add tag-aware event queries
+   - `lib/services/dancer/dancer_tag_service.dart` - Add tag-based dancer filtering methods
+   - `lib/services/tag_service.dart` - Add `getTagsWithDancers()` method
 
 2. **UI Components**:
    - `lib/screens/event/dialogs/select_dancers_screen.dart` - Add tag filtering
