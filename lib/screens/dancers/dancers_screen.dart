@@ -7,6 +7,7 @@ import '../../services/dancer_service.dart';
 import '../../utils/toast_helper.dart';
 import '../../widgets/add_dancer_dialog.dart';
 import '../../widgets/dancer_card_with_tags.dart';
+import '../../widgets/tag_filter_chips.dart';
 import 'dialogs/select_merge_target_screen.dart';
 
 class DancersScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class DancersScreen extends StatefulWidget {
 class _DancersScreenState extends State<DancersScreen> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
+  int? _selectedTagId;
 
   @override
   void dispose() {
@@ -32,23 +34,40 @@ class _DancersScreenState extends State<DancersScreen> {
     });
   }
 
+  void _onTagChanged(int? tagId) {
+    setState(() {
+      _selectedTagId = tagId;
+    });
+  }
+
   List<DancerWithTags> _filterDancers(List<DancerWithTags> dancers) {
-    if (_searchQuery.isEmpty) {
-      return dancers;
+    List<DancerWithTags> filteredDancers = dancers;
+
+    // Apply search filter
+    if (_searchQuery.isNotEmpty) {
+      final query = _searchQuery.toLowerCase();
+      filteredDancers = filteredDancers.where((dancer) {
+        // Search in dancer name
+        if (dancer.name.toLowerCase().contains(query)) {
+          return true;
+        }
+        // Search in notes
+        if (dancer.notes != null &&
+            dancer.notes!.toLowerCase().contains(query)) {
+          return true;
+        }
+        return false;
+      }).toList();
     }
 
-    final query = _searchQuery.toLowerCase();
-    return dancers.where((dancer) {
-      // Search in dancer name
-      if (dancer.name.toLowerCase().contains(query)) {
-        return true;
-      }
-      // Search in notes
-      if (dancer.notes != null && dancer.notes!.toLowerCase().contains(query)) {
-        return true;
-      }
-      return false;
-    }).toList();
+    // Apply tag filter
+    if (_selectedTagId != null) {
+      filteredDancers = filteredDancers.where((dancer) {
+        return dancer.tags.any((tag) => tag.id == _selectedTagId);
+      }).toList();
+    }
+
+    return filteredDancers;
   }
 
   @override
@@ -61,17 +80,30 @@ class _DancersScreenState extends State<DancersScreen> {
       ),
       body: Column(
         children: [
-          // Search bar
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                hintText: 'Search dancers...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: _onSearchChanged,
+          // Filter section in scrollable container
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                // Search bar
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: const InputDecoration(
+                      hintText: 'Search dancers...',
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: _onSearchChanged,
+                  ),
+                ),
+
+                // Tag filter
+                TagFilterChips(
+                  selectedTagId: _selectedTagId,
+                  onTagChanged: _onTagChanged,
+                ),
+              ],
             ),
           ),
 
@@ -105,7 +137,7 @@ class _DancersScreenState extends State<DancersScreen> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          _searchQuery.isEmpty
+                          _searchQuery.isEmpty && _selectedTagId == null
                               ? 'No dancers yet'
                               : 'No dancers found',
                           style: TextStyle(
@@ -116,9 +148,9 @@ class _DancersScreenState extends State<DancersScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          _searchQuery.isEmpty
+                          _searchQuery.isEmpty && _selectedTagId == null
                               ? 'Tap + to add your first dancer'
-                              : 'Try a different search',
+                              : 'Try adjusting your filters',
                           style: TextStyle(
                             color:
                                 Theme.of(context).colorScheme.onSurfaceVariant,

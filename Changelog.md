@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.88.0] - 2025-01-16
+
+### User Requests
+- "dancers screen - add tag filter" - Request to add tag filtering functionality to dancers screen
+- "add both filter fields into scrollview so they don't take space" - Request to make filter fields scrollable to save vertical space
+
+### Added
+- **Tag Filtering**: Added tag filter functionality to dancers screen
+  - **Tag Filter Chips**: Users can now filter dancers by selecting specific tags
+  - **Combined Filtering**: Search and tag filters work together for precise dancer filtering
+  - **Clear Filter Option**: Easy way to clear tag selection with close button
+  - **Visual Feedback**: Selected tags are highlighted with primary container color
+  - **Smart Empty State**: Empty state messages now consider both search and tag filters
+
+### Improved
+- **Scrollable Filter Section**: Both search field and tag filter are now in a scrollable container
+  - **Space Efficient**: Filter fields don't take up fixed vertical space
+  - **Better UX**: Users can scroll through filters when needed, especially on smaller screens
+  - **Flexible Layout**: Filter section adapts to content without blocking dancer list
+  - **Consistent Design**: Maintains Material Design principles with proper spacing
+
+### Technical
+- Added `_selectedTagId` state variable to track selected tag filter
+- Enhanced `_filterDancers()` method to handle both search and tag filtering
+- Integrated `TagFilterChips` widget for consistent tag filtering UI
+- Wrapped filter fields in `SingleChildScrollView` for space efficiency
+- Updated empty state logic to consider both filter types
+- Maintained existing search functionality while adding tag filtering
+
 ## [v0.87.0] - 2025-01-16
 
 ### User Requests
