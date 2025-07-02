@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.63.0] - 2025-01-16
+
+### User Requests
+- "Let's introduce a settings screen. It should have a tabbed interface. For now add only a single tab for general settings."
+
+### Added
+- **Settings Screen**: New comprehensive settings interface with tabbed design for future extensibility
+  - **Tabbed Interface**: Professional tab-based navigation using `TabController` and `TabBarView`
+  - **General Settings Tab**: First tab containing app information and placeholder for future settings
+  - **App Information Section**: Displays app name, current version (v0.62.0), and usage purpose
+  - **Scalable Architecture**: Foundation ready for additional tabs (appearance, data, privacy, etc.)
+  - **Material Design**: Consistent theming and styling following app design patterns
+
+### Navigation
+- **Home Screen Integration**: Added "Settings" option to main popup menu with settings icon
+- **Accessible Placement**: Settings positioned in three-dot menu for easy discovery
+- **Action Logging**: Complete navigation tracking for settings access and screen lifecycle
+
+### Technical
+- **Proper Tab Management**: `TickerProviderStateMixin` for smooth tab animations
+- **Lifecycle Management**: Proper initialization and disposal of tab controllers
+- **Code Organization**: Clean separation with dedicated tab widgets for maintainability
+- **Future-Ready**: Architecture designed to easily accommodate new settings categories
+
 ## [v0.62.0] - 2025-01-16
 
 ### User Requests

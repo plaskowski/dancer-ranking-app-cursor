@@ -14,6 +14,7 @@ import 'dancers_screen.dart';
 import 'event_screen.dart';
 import 'rank_editor_screen.dart';
 import 'scores_dictionary_screen.dart';
+import 'settings_screen.dart';
 import 'tags_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -87,6 +88,9 @@ class HomeScreen extends StatelessWidget {
                 case 'manage_scores':
                   _navigateToScoresDictionary(context);
                   break;
+                case 'settings':
+                  _navigateToSettings(context);
+                  break;
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -103,6 +107,14 @@ class HomeScreen extends StatelessWidget {
                 child: ListTile(
                   leading: Icon(Icons.star_rate),
                   title: Text('Manage Scores'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'settings',
+                child: ListTile(
+                  leading: Icon(Icons.settings),
+                  title: Text('Settings'),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
@@ -224,6 +236,19 @@ class HomeScreen extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => const ScoresDictionaryScreen(),
+      ),
+    );
+  }
+
+  void _navigateToSettings(BuildContext context) {
+    ActionLogger.logUserAction('HomeScreen', 'navigate_to_settings', {
+      'destination': 'SettingsScreen',
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SettingsScreen(),
       ),
     );
   }

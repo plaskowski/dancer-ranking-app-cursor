@@ -157,6 +157,7 @@ Users can adjust rankings during events for various reasons:
 - Navigate to tags management (app bar icon)
 - Import events from JSON files (overflow menu)
 - Manage scores dictionary (overflow menu)
+- Access application settings (overflow menu)
 **Navigation**:
 - → Create Event Screen (FAB)
 - → Event Screen (tap event)
@@ -165,6 +166,7 @@ Users can adjust rankings during events for various reasons:
 - → Tags Screen (app bar action)
 - → Event Import Dialog (overflow menu action)
 - → Scores Dictionary Screen (overflow menu action)
+- → Settings Screen (overflow menu action)
 
 ### 2. Create Event Screen (`CreateEventScreen`)
 **Purpose**: Form to create new dance events
@@ -424,7 +426,26 @@ Users can adjust rankings during events for various reasons:
 - → Merge Confirmation Dialog (contextual action)
 - → Add Score Dialog (FAB)
 
-  ### 8. Dialogs and Modals
+### 8. Settings Screen (`SettingsScreen`)
+**Purpose**: Application settings and configuration with tabbed interface for future extensibility
+**Access**: Available through Home Screen's overflow menu → "Settings"
+**UI Design**:
+- **Tabbed Interface**: Professional tab-based navigation using `TabController` and `TabBarView`
+- **Material Design**: Consistent theming and styling following app design patterns
+- **Scalable Architecture**: Foundation ready for additional tabs (appearance, data, privacy, etc.)
+**Current Tabs**:
+- **General Settings Tab**: Primary configuration and app information
+  - **App Information Section**: Displays app name, current version, and usage purpose
+  - **Future Settings Placeholder**: Reserved area for upcoming configuration options
+**Technical Features**:
+- **Proper Tab Management**: `TickerProviderStateMixin` for smooth tab animations
+- **Lifecycle Management**: Proper initialization and disposal of tab controllers
+- **Action Logging**: Complete navigation tracking for settings access and screen lifecycle
+- **Future-Ready**: Architecture designed to easily accommodate new settings categories
+**Navigation**:
+- ← Back to Home Screen
+
+  ### 9. Dialogs and Modals
 
 **Ranking Dialog (`RankingDialog`)**:
 - Interactive rank selection from predefined options
@@ -474,7 +495,7 @@ Users can adjust rankings during events for various reasons:
 - Prevents duplicate dance records
 - Save/cancel actions
 
-### 11. Event Import Dialog (`ImportEventsDialog`)
+### 10. Event Import Dialog (`ImportEventsDialog`)
 **Purpose**: Full-screen dialog for importing events from a JSON file with comprehensive attendance and score data.
 **Enhanced Features**:
 - **Score Import Support**: Automatic creation of missing scores referenced in import data
