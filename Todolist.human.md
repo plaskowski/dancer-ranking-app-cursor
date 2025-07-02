@@ -7,9 +7,15 @@ The app has all I need to start using it. :celebrate:
 ## Tasks list
 
 ### Line #1
-- [X] option to reset DB in settings screen (general tab)
-- [X] add new “Dancer history” screen
-- [ ] use native android toasts
+- [ ] move the sample data in DB init code to separate file
+- [ ] ...
+
+### Line #2
+- [ ] ...?
+
+## Backlog
+
+Small improvements:
 - [ ] Add existing dancer dialog
   - [ ] move info block into the scroll area to not take vertical space
 - [ ] "Add new dancer" dialog
@@ -17,12 +23,9 @@ The app has all I need to start using it. :celebrate:
 - [ ] move the import actions to the settings screen
 - [ ] home screen
   - [ ] move the settings action to AppBar and remove dots
-- [ ] ...
-
-### Line #2
-- [ ] ...?
-
-## Backlog
+- [ ] Android
+  - [ ] the FAB button is covered with bottom system bar
+  - [ ] use native android toasts
 
 Extract more historical data:
 - [ ] regenerate file for 2024-08

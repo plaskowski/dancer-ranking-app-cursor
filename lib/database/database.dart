@@ -9,16 +9,7 @@ import 'tables.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [
-  Events,
-  Dancers,
-  Ranks,
-  Rankings,
-  Attendances,
-  Tags,
-  DancerTags,
-  Scores
-])
+@DriftDatabase(tables: [Events, Dancers, Ranks, Rankings, Attendances, Tags, DancerTags, Scores])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
@@ -41,6 +32,12 @@ class AppDatabase extends _$AppDatabase {
 
           // Insert default scores
           await _insertDefaultScores();
+
+          // Insert sample events for easier testing
+          await _insertSampleEvents();
+
+          // Insert sample dancers for easier testing
+          await _insertSampleDancers();
         },
         onUpgrade: (Migrator m, int from, int to) async {
           if (from < 2) {
@@ -96,16 +93,12 @@ class AppDatabase extends _$AppDatabase {
     final now = DateTime.now().millisecondsSinceEpoch;
 
     // Add new columns to existing ranks table
-    await customStatement(
-        'ALTER TABLE ranks ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0');
-    await customStatement(
-        'ALTER TABLE ranks ADD COLUMN created_at INTEGER NOT NULL DEFAULT $now');
-    await customStatement(
-        'ALTER TABLE ranks ADD COLUMN updated_at INTEGER NOT NULL DEFAULT $now');
+    await customStatement('ALTER TABLE ranks ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0');
+    await customStatement('ALTER TABLE ranks ADD COLUMN created_at INTEGER NOT NULL DEFAULT $now');
+    await customStatement('ALTER TABLE ranks ADD COLUMN updated_at INTEGER NOT NULL DEFAULT $now');
 
     // Update existing ranks to have proper timestamps
-    await customStatement(
-        'UPDATE ranks SET created_at = $now, updated_at = $now WHERE created_at = $now');
+    await customStatement('UPDATE ranks SET created_at = $now, updated_at = $now WHERE created_at = $now');
   }
 
   // Migration helper to add Tags and DancerTags tables
@@ -123,12 +116,10 @@ class AppDatabase extends _$AppDatabase {
     await m.createTable(scores);
 
     // Add new columns to attendances table
-    await customStatement(
-        'ALTER TABLE attendances ADD COLUMN score_id INTEGER REFERENCES scores(id)');
+    await customStatement('ALTER TABLE attendances ADD COLUMN score_id INTEGER REFERENCES scores(id)');
 
     // Add new column to dancers table
-    await customStatement(
-        'ALTER TABLE dancers ADD COLUMN first_met_date INTEGER');
+    await customStatement('ALTER TABLE dancers ADD COLUMN first_met_date INTEGER');
 
     // Insert default scores
     await _insertDefaultScores();
@@ -165,14 +156,130 @@ class AppDatabase extends _$AppDatabase {
     });
   }
 
-  // Insert the default rank option
+  // Insert sample events with different dates for testing
+  Future<void> _insertSampleEvents() async {
+    final now = DateTime.now();
+
+    await batch((batch) {
+      batch.insertAll(events, [
+        // Past event (1 week ago)
+        EventsCompanion.insert(
+          name: 'Salsa Night at Cuban Bar',
+          date: now.subtract(Duration(days: 7)),
+        ),
+        // Recent past event (yesterday)
+        EventsCompanion.insert(
+          name: 'Weekend Social Dance',
+          date: now.subtract(Duration(days: 1)),
+        ),
+        // Future event (next week)
+        EventsCompanion.insert(
+          name: 'Monthly Bachata Workshop',
+          date: now.add(Duration(days: 7)),
+        ),
+        // Future event (next month)
+        EventsCompanion.insert(
+          name: 'Summer Salsa Festival',
+          date: now.add(Duration(days: 21)),
+        ),
+      ]);
+    });
+  }
+
+  // Insert practical ranking options
   Future<void> _insertDefaultRanks() async {
     await batch((batch) {
       batch.insertAll(ranks, [
         RanksCompanion.insert(
-          name: 'Not decided yet',
+          name: 'Really want to dance!',
           ordinal: 1,
         ),
+        RanksCompanion.insert(
+          name: 'Would like to dance',
+          ordinal: 2,
+        ),
+        RanksCompanion.insert(
+          name: 'Maybe later',
+          ordinal: 3,
+        ),
+        RanksCompanion.insert(
+          name: 'Not interested',
+          ordinal: 4,
+        ),
+      ]);
+    });
+  }
+
+  // Insert sample dancers with different tag combinations for testing
+  Future<void> _insertSampleDancers() async {
+    // Insert sample dancers individually to get their IDs
+    final aliceId = await into(dancers).insert(DancersCompanion.insert(
+      name: 'Alice Rodriguez',
+      notes: const Value('Great leader, loves salsa'),
+    ));
+
+    final bobId = await into(dancers).insert(DancersCompanion.insert(
+      name: 'Bob Martinez',
+      notes: const Value('Excellent follower, bachata specialist'),
+    ));
+
+    final carlosId = await into(dancers).insert(DancersCompanion.insert(
+      name: 'Carlos Thompson',
+      notes: const Value('New to partner dancing'),
+    ));
+
+    final dianaId = await into(dancers).insert(DancersCompanion.insert(
+      name: 'Diana Chang',
+      notes: const Value('Festival regular, loves complex patterns'),
+    ));
+
+    final elenaId = await into(dancers).insert(DancersCompanion.insert(
+      name: 'Elena Volkov',
+      notes: const Value('Social dancer, great energy'),
+    ));
+
+    final frankId = await into(dancers).insert(DancersCompanion.insert(
+      name: 'Frank Kim',
+      notes: const Value('Monday class student'),
+    ));
+
+    final graceId = await into(dancers).insert(DancersCompanion.insert(
+      name: 'Grace Wilson',
+      notes: const Value('Attends multiple venues'),
+    ));
+
+    // Get the tag IDs for tag assignments
+    final mondayClassTag = await (select(tags)..where((t) => t.name.equals('Monday Class'))).getSingle();
+    final festivalTag = await (select(tags)..where((t) => t.name.equals('Cuban DC Festival'))).getSingle();
+    final socialTag = await (select(tags)..where((t) => t.name.equals('Friday Social'))).getSingle();
+
+    // Assign tags to dancers for variety in testing
+    await batch((batch) {
+      batch.insertAll(dancerTags, [
+        // Alice: Monday Class + Friday Social (multi-venue)
+        DancerTagsCompanion.insert(dancerId: aliceId, tagId: mondayClassTag.id),
+        DancerTagsCompanion.insert(dancerId: aliceId, tagId: socialTag.id),
+
+        // Bob: Cuban DC Festival only (festival dancer)
+        DancerTagsCompanion.insert(dancerId: bobId, tagId: festivalTag.id),
+
+        // Carlos: Monday Class only (class student)
+        DancerTagsCompanion.insert(dancerId: carlosId, tagId: mondayClassTag.id),
+
+        // Diana: Cuban DC Festival + Friday Social (festival + social)
+        DancerTagsCompanion.insert(dancerId: dianaId, tagId: festivalTag.id),
+        DancerTagsCompanion.insert(dancerId: dianaId, tagId: socialTag.id),
+
+        // Elena: Friday Social only (social dancer)
+        DancerTagsCompanion.insert(dancerId: elenaId, tagId: socialTag.id),
+
+        // Frank: Monday Class only (class student)
+        DancerTagsCompanion.insert(dancerId: frankId, tagId: mondayClassTag.id),
+
+        // Grace: All three tags (attends everywhere)
+        DancerTagsCompanion.insert(dancerId: graceId, tagId: mondayClassTag.id),
+        DancerTagsCompanion.insert(dancerId: graceId, tagId: festivalTag.id),
+        DancerTagsCompanion.insert(dancerId: graceId, tagId: socialTag.id),
       ]);
     });
   }
@@ -196,6 +303,10 @@ class AppDatabase extends _$AppDatabase {
       await _insertDefaultRanks();
       await _insertDefaultTags();
       await _insertDefaultScores();
+
+      // Restore sample data for easier testing
+      await _insertSampleEvents();
+      await _insertSampleDancers();
     });
   }
 }

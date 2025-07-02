@@ -12,26 +12,21 @@ class TagService {
   Stream<List<Tag>> watchAllTags() {
     ActionLogger.logServiceCall('TagService', 'watchAllTags');
 
-    return (_database.select(_database.tags)
-          ..orderBy([(t) => OrderingTerm.asc(t.name)]))
-        .watch();
+    return (_database.select(_database.tags)..orderBy([(t) => OrderingTerm.asc(t.name)])).watch();
   }
 
   // Get a specific tag by ID
   Future<Tag?> getTag(int id) {
     ActionLogger.logServiceCall('TagService', 'getTag', {'tagId': id});
 
-    return (_database.select(_database.tags)..where((t) => t.id.equals(id)))
-        .getSingleOrNull();
+    return (_database.select(_database.tags)..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
   // Get tag by name
   Future<Tag?> getTagByName(String name) {
     ActionLogger.logServiceCall('TagService', 'getTagByName', {'name': name});
 
-    return (_database.select(_database.tags)
-          ..where((t) => t.name.equals(name.trim())))
-        .getSingleOrNull();
+    return (_database.select(_database.tags)..where((t) => t.name.equals(name.trim()))).getSingleOrNull();
   }
 
   // Create a new tag
@@ -87,8 +82,7 @@ class TagService {
       // Check if another tag already exists with this name
       final existingTag = await getTagByName(trimmedName);
       if (existingTag != null && existingTag.id != id) {
-        ActionLogger.logError(
-            'TagService.updateTag', 'tag_name_already_exists', {
+        ActionLogger.logError('TagService.updateTag', 'tag_name_already_exists', {
           'id': id,
           'name': trimmedName,
           'existingId': existingTag.id,
@@ -142,12 +136,9 @@ class TagService {
       }
 
       // Get usage count before deletion for logging
-      final usageCount =
-          await getDancersByTag(id).then((dancers) => dancers.length);
+      final usageCount = await getDancersByTag(id).then((dancers) => dancers.length);
 
-      final result = await (_database.delete(_database.tags)
-            ..where((t) => t.id.equals(id)))
-          .go();
+      final result = await (_database.delete(_database.tags)..where((t) => t.id.equals(id))).go();
 
       ActionLogger.logDbOperation('DELETE', 'tags', {
         'id': id,
@@ -230,8 +221,7 @@ class TagService {
 
     try {
       final result = await (_database.delete(_database.dancerTags)
-            ..where(
-                (dt) => dt.dancerId.equals(dancerId) & dt.tagId.equals(tagId)))
+            ..where((dt) => dt.dancerId.equals(dancerId) & dt.tagId.equals(tagId)))
           .go();
 
       ActionLogger.logDbOperation('DELETE', 'dancer_tags', {
@@ -258,9 +248,7 @@ class TagService {
     try {
       await _database.transaction(() async {
         // Remove all existing tags for this dancer
-        await (_database.delete(_database.dancerTags)
-              ..where((dt) => dt.dancerId.equals(dancerId)))
-            .go();
+        await (_database.delete(_database.dancerTags)..where((dt) => dt.dancerId.equals(dancerId))).go();
 
         // Add the new tags
         if (tagIds.isNotEmpty) {
@@ -344,8 +332,29 @@ class TagService {
         );
       }).toList();
     } catch (e) {
-      ActionLogger.logError(
-          'TagService.getAllTagsWithUsageCount', e.toString());
+      ActionLogger.logError('TagService.getAllTagsWithUsageCount', e.toString());
+      rethrow;
+    }
+  }
+
+  // Get tags that have associated dancers (for filter chip display)
+  Future<List<Tag>> getTagsWithDancers() async {
+    ActionLogger.logServiceCall('TagService', 'getTagsWithDancers');
+
+    try {
+      final query = _database.select(_database.tags).join([
+        innerJoin(
+          _database.dancerTags,
+          _database.tags.id.equalsExp(_database.dancerTags.tagId),
+        ),
+      ])
+        ..groupBy([_database.tags.id])
+        ..orderBy([OrderingTerm.asc(_database.tags.name)]);
+
+      final results = await query.get();
+      return results.map((row) => row.readTable(_database.tags)).toList();
+    } catch (e) {
+      ActionLogger.logError('TagService.getTagsWithDancers', e.toString());
       rethrow;
     }
   }

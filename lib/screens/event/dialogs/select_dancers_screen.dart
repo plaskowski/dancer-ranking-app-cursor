@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../services/dancer/dancer_tag_service.dart';
 import '../../../services/dancer_service.dart';
 import '../../../services/ranking_service.dart';
 import '../../../theme/theme_extensions.dart';
+import '../../../widgets/tag_filter_chips.dart';
 
 class SelectDancersScreen extends StatefulWidget {
   final int eventId;
@@ -25,10 +27,19 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
   String _searchQuery = '';
   bool _isLoading = false;
 
+  // New tag filtering state
+  int? _selectedTagId; // null = show all
+
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  void _onTagChanged(int? tagId) {
+    setState(() {
+      _selectedTagId = tagId;
+    });
   }
 
   Future<void> _addSelectedDancers() async {
@@ -47,8 +58,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
     });
 
     try {
-      final rankingService =
-          Provider.of<RankingService>(context, listen: false);
+      final rankingService = Provider.of<RankingService>(context, listen: false);
 
       // Get the default rank (Neutral - ordinal 3)
       final defaultRank = await rankingService.getDefaultRank();
@@ -69,8 +79,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
         Navigator.pop(context, true); // Return true to indicate success
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-                'Added ${_selectedDancerIds.length} dancers to event ranking'),
+            content: Text('Added ${_selectedDancerIds.length} dancers to event ranking'),
             backgroundColor: context.danceTheme.success,
           ),
         );
@@ -103,8 +112,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
             const Text('Select Dancers'),
             Text(
               widget.eventName,
-              style:
-                  const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
             ),
           ],
         ),
@@ -123,6 +131,12 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
       ),
       body: Column(
         children: [
+          // Tag Filters Section
+          TagFilterChips(
+            selectedTagId: _selectedTagId,
+            onTagChanged: _onTagChanged,
+          ),
+
           // Search Section
           Padding(
             padding: const EdgeInsets.all(16.0),
@@ -162,20 +176,13 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.people,
-                            size: 64,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant),
+                        Icon(Icons.people, size: 64, color: Theme.of(context).colorScheme.onSurfaceVariant),
                         const SizedBox(height: 16),
                         Text(
-                          _searchQuery.isNotEmpty
-                              ? 'No dancers found matching "$_searchQuery"'
+                          _searchQuery.isNotEmpty || _selectedTagId != null
+                              ? 'No dancers found with current filters'
                               : 'All dancers are already ranked for this event',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant),
+                          style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onSurfaceVariant),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -197,17 +204,12 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                           dancer.name,
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
-                        subtitle:
-                            dancer.notes != null && dancer.notes!.isNotEmpty
-                                ? Text(
-                                    dancer.notes!,
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurfaceVariant),
-                                  )
-                                : null,
+                        subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
+                            ? Text(
+                                dancer.notes!,
+                                style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                              )
+                            : null,
                         value: isSelected,
                         onChanged: (bool? value) {
                           setState(() {
@@ -237,8 +239,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                       height: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            Theme.of(context).colorScheme.onPrimary),
+                        valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                       ),
                     )
                   : const Icon(Icons.check),
@@ -250,13 +251,22 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
 
   Future<List<DancerWithEventInfo>> _getDancersForSelection() async {
     final dancerService = Provider.of<DancerService>(context, listen: false);
-    return dancerService.getUnrankedDancersForEvent(widget.eventId);
+    final dancerTagService = Provider.of<DancerTagService>(context, listen: false);
+
+    // If tag is selected, use tag-filtered method
+    if (_selectedTagId != null) {
+      return dancerTagService.getUnrankedDancersForEventByTag(widget.eventId, _selectedTagId!);
+    } else {
+      // Use existing method for all unranked dancers
+      return dancerService.getUnrankedDancersForEvent(widget.eventId);
+    }
   }
 
   List<DancerWithEventInfo> _filterDancers(List<DancerWithEventInfo> dancers) {
     var filtered = dancers;
 
-    // No need to filter by ranking since getUnrankedDancersForEvent() already returns only unranked dancers
+    // Tag filtering is handled in _getDancersForSelection()
+    // Only apply text search here
 
     // Filter by search query
     if (_searchQuery.isNotEmpty) {

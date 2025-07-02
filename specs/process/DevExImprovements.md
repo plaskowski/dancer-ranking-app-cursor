@@ -24,6 +24,8 @@
 - don't edit dot files directly, write down changes to a separate file I can review first
 - save the reasoning I provided for decisions
 - split the impl work to front and backend tasks and use two agents?
+- make the second-line started apps in different color (same for IDE)
+- don't open modified files (I don't read them either way)
 
 # Hard ones
 - increase the 25 tool calls limit
