@@ -160,8 +160,7 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete Score'),
-        content: Text(
-            'Are you sure you want to delete "${scoreWithUsage.score.name}"?'),
+        content: Text('Are you sure you want to delete "${scoreWithUsage.score.name}"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -194,10 +193,7 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
   }
 
   Future<void> _showMergeDialog(Score sourceScore) async {
-    final targetScores = _scoresWithUsage
-        .where((s) => s.score.id != sourceScore.id)
-        .map((s) => s.score)
-        .toList();
+    final targetScores = _scoresWithUsage.where((s) => s.score.id != sourceScore.id).map((s) => s.score).toList();
 
     if (targetScores.isEmpty) {
       ToastHelper.showError(context, 'No other scores available for merging');
@@ -235,14 +231,9 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
     }
   }
 
-  Future<void> _showMergeConfirmationDialog(
-      Score sourceScore, Score targetScore) async {
-    final sourceUsage = _scoresWithUsage
-        .firstWhere((s) => s.score.id == sourceScore.id)
-        .usageCount;
-    final targetUsage = _scoresWithUsage
-        .firstWhere((s) => s.score.id == targetScore.id)
-        .usageCount;
+  Future<void> _showMergeConfirmationDialog(Score sourceScore, Score targetScore) async {
+    final sourceUsage = _scoresWithUsage.firstWhere((s) => s.score.id == sourceScore.id).usageCount;
+    final targetUsage = _scoresWithUsage.firstWhere((s) => s.score.id == targetScore.id).usageCount;
 
     final confirmed = await showDialog<bool>(
       context: context,
@@ -255,8 +246,7 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
             Text('Source: "${sourceScore.name}" ($sourceUsage dances)'),
             Text('Target: "${targetScore.name}" ($targetUsage dances)'),
             const SizedBox(height: 16),
-            Text(
-                'All dances scored "${sourceScore.name}" will become "${targetScore.name}"'),
+            Text('All dances scored "${sourceScore.name}" will become "${targetScore.name}"'),
           ],
         ),
         actions: [
@@ -327,11 +317,8 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
     if (result != null) {
       try {
         // Find the next ordinal (worst rank + 1)
-        final maxOrdinal = _scoresWithUsage.isEmpty
-            ? 0
-            : _scoresWithUsage
-                .map((s) => s.score.ordinal)
-                .reduce((a, b) => a > b ? a : b);
+        final maxOrdinal =
+            _scoresWithUsage.isEmpty ? 0 : _scoresWithUsage.map((s) => s.score.ordinal).reduce((a, b) => a > b ? a : b);
 
         final scoreService = Provider.of<ScoreService>(context, listen: false);
         await scoreService.createScore(
@@ -414,14 +401,11 @@ class _ScoresDictionaryScreenState extends State<ScoresDictionaryScreen> {
                       key: ValueKey(scoreWithUsage.score.id),
                       leading: const Icon(Icons.drag_handle),
                       title: Text(scoreWithUsage.score.name),
-                      subtitle:
-                          Text('Used in ${scoreWithUsage.usageCount} dances'),
+                      subtitle: Text('Used in ${scoreWithUsage.usageCount} dances'),
                       trailing: Text(
                         '#${scoreWithUsage.score.ordinal}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                             ),
                       ),
                       onTap: () => _showContextMenu(scoreWithUsage),
