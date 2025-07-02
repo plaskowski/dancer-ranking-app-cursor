@@ -29,8 +29,8 @@ Small improvements:
 - [ ] Android
   - [ ] the FAB button is covered with bottom system bar
   - [ ] use native android toasts
-- [ ] event screen
-  - [ ] future events (in 1+ days should only have planning tab)
+- [x] event screen
+  - [x] future events (in 1+ days) should only have planning tab
 - [ ] docs
   - preambula o moim szacunku dla partnerek
 - [ ] dancers screen

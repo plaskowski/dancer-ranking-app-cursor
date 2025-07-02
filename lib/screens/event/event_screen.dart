@@ -30,6 +30,8 @@ class _EventScreenState extends State<EventScreen> {
 
   bool get _isOldEvent => _event != null && EventStatusHelper.isOldEvent(_event!.date);
 
+  bool get _isFarFutureEvent => _event != null && EventStatusHelper.isFarFutureEvent(_event!.date);
+
   @override
   void initState() {
     super.initState();
@@ -43,10 +45,10 @@ class _EventScreenState extends State<EventScreen> {
 
   @override
   void dispose() {
-    final tabNames = ['planning', 'present', 'summary'];
+    final tabNames = EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
     ActionLogger.logAction('UI_EventScreen', 'screen_disposed', {
       'eventId': widget.eventId,
-      'lastTab': tabNames[_currentPage],
+      'lastTab': tabNames.isNotEmpty ? tabNames[_currentPage] : 'unknown',
     });
 
     _pageController.dispose();
@@ -60,12 +62,13 @@ class _EventScreenState extends State<EventScreen> {
       setState(() {
         _event = event;
 
-        // For old events (2+ days ago), start directly on Summary tab (index 0 since it's the only tab)
-        // For past events, start on Present tab (index 0)
-        // For future events, start on Planning tab (index 0)
+        // Determine initial page based on event type
         int initialPage = 0;
         if (_isOldEvent) {
           // Old events only have Summary tab, so start at index 0
+          initialPage = 0;
+        } else if (_isFarFutureEvent) {
+          // Far future events only have Planning tab, so start at index 0
           initialPage = 0;
         }
 
@@ -96,14 +99,9 @@ class _EventScreenState extends State<EventScreen> {
       _currentPage = index;
     });
 
-    final tabNames = _isOldEvent
-        ? ['summary'] // Old events only have Summary tab
-        : _isPastEvent
-            ? ['present', 'summary'] // Past events have Present and Summary
-            : ['planning', 'present', 'summary']; // Future events have all tabs
-
-    final fromTab = tabNames[_currentPage];
-    final toTab = tabNames[index];
+    final tabNames = EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
+    final fromTab = tabNames.isNotEmpty ? tabNames[_currentPage] : 'unknown';
+    final toTab = tabNames.isNotEmpty ? tabNames[index] : 'unknown';
 
     ActionLogger.logAction('UI_EventScreen', 'tab_changed', {
       'eventId': widget.eventId,
@@ -116,15 +114,11 @@ class _EventScreenState extends State<EventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tabNames = _isOldEvent
-        ? ['summary'] // Old events only have Summary tab
-        : _isPastEvent
-            ? ['present', 'summary'] // Past events have Present and Summary
-            : ['planning', 'present', 'summary']; // Future events have all tabs
+    final tabNames = EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
 
     ActionLogger.logAction('UI_EventScreen', 'build_called', {
       'eventId': widget.eventId,
-      'currentTab': tabNames[_currentPage],
+      'currentTab': tabNames.isNotEmpty ? tabNames[_currentPage] : 'unknown',
     });
 
     if (_event == null) {
@@ -138,20 +132,26 @@ class _EventScreenState extends State<EventScreen> {
         ? [
             SummaryTab(eventId: widget.eventId) // Only Summary tab for old events
           ]
-        : _isPastEvent
-            ? [PresentTab(eventId: widget.eventId), SummaryTab(eventId: widget.eventId)]
-            : [
-                PlanningTab(eventId: widget.eventId),
-                PresentTab(eventId: widget.eventId),
-                SummaryTab(eventId: widget.eventId)
-              ];
+        : _isFarFutureEvent
+            ? [
+                PlanningTab(eventId: widget.eventId) // Only Planning tab for far future events
+              ]
+            : _isPastEvent
+                ? [PresentTab(eventId: widget.eventId), SummaryTab(eventId: widget.eventId)]
+                : [
+                    PlanningTab(eventId: widget.eventId),
+                    PresentTab(eventId: widget.eventId),
+                    SummaryTab(eventId: widget.eventId)
+                  ];
 
     // Get the correct tab actions based on event type and current page
     final currentTabActions = _isOldEvent
         ? _tabActions[2] // Always Summary actions for old events
-        : _isPastEvent
-            ? (_currentPage == 0 ? _tabActions[1] : _tabActions[2]) // Present or Summary
-            : _tabActions[_currentPage]; // Planning, Present, or Summary
+        : _isFarFutureEvent
+            ? _tabActions[0] // Always Planning actions for far future events
+            : _isPastEvent
+                ? (_currentPage == 0 ? _tabActions[1] : _tabActions[2]) // Present or Summary
+                : _tabActions[_currentPage]; // Planning, Present, or Summary
 
     return Scaffold(
       appBar: AppBar(
@@ -165,6 +165,15 @@ class _EventScreenState extends State<EventScreen> {
             if (_isOldEvent)
               Text(
                 'Summary', // Only Summary tab for old events
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              )
+            else if (_isFarFutureEvent)
+              Text(
+                'Planning', // Only Planning tab for far future events
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.normal,

@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.85.0] - 2025-01-16
+
+### User Requests
+- "future events (in 1+ days) should only have planning tab" - Request to simplify UI for distant future events
+
+### Changed
+- **Event Screen Tab Logic**: Enhanced tab visibility based on event timing
+  - **Far Future Events**: Events 1+ days in the future now show only the Planning tab
+  - **Current Events**: Events today/within 1 day continue to show all 3 tabs (Planning, Present, Summary)
+  - **Past Events**: Events before today show Present and Summary tabs
+  - **Old Events**: Events 2+ days ago show only Summary tab
+  - **Cleaner UI**: Distant future events focus users on planning tasks only
+  - **Better UX**: Simplified interface for events that don't need immediate action
+
+### Technical
+- **EventStatusHelper Enhancement**: Added `isFarFutureEvent()` method to detect events 1+ days in the future
+- **Centralized Logic**: Updated `getAvailableTabs()` method to handle all event timing scenarios
+- **EventScreen Refactoring**: Updated all tab logic to use centralized `EventStatusHelper` methods
+- **Dynamic Tab Names**: Improved logging to use actual available tab names instead of hardcoded values
+- **Performance**: Single tab events no longer use PageView, improving performance
+
 ## [v0.84.0] - 2025-01-16
 
 ### User Requests
