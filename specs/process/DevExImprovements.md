@@ -21,3 +21,4 @@
 - after coming up with the design ask it to validate it against existing UX patterns in the app
 - keep a separte human-only todolist file to not lost your toughts chain
 - close all editor windows after commit
+- don't edit dot files directly, write down changes to a separate file I can review first

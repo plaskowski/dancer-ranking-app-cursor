@@ -20,3 +20,7 @@ Nice to haves:
 
 Bugs:
 - when I edit impression the text field should contain current impression text
+
+How to - VS Code:
+- always open Markdown files in preview
+  - add vscode.markdown.preview.editor in "Preferences: Open Settings (UI)" > "editor assoc"

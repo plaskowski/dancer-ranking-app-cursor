@@ -33,18 +33,43 @@
 - Modifying user workflow → Update event workflow section
 - Adding database fields → Update schema section
 
-## Code Quality Rules
+## Technical Architecture Rules
+
+### Flutter Framework
+- **Cross-platform focus**: Build for macOS and Android using Flutter framework
+- **Material 3 design**: Use Material 3 design system for consistent experience across platforms
+- Follow Flutter/Dart best practices and conventions
+
+### Database & Data Management
+- **SQLite with Drift**: Use SQLite database with Drift library for data persistence
+- **Drift expressions**: Always use Drift expressions instead of raw SQL queries
+- **Type safety**: Leverage Drift's type-safe query generation
+- Follow Drift best practices for schema management and migrations
+
+### Code Organization Rules
+
+#### File Structure
+- **One class per file**: Put each component class into a separate file
+- **Descriptive naming**: Use clear, descriptive names for files that match the class name
+- **Logical grouping**: Organize related files into appropriate directories (models/, services/, screens/, widgets/, etc.)
+
+#### Code Quality
+- **File size limit**: When a file becomes longer than 300 lines, refactor it into smaller classes
+- **Single responsibility**: Each class should have a single, well-defined responsibility
+- **Separation of concerns**: Keep UI logic separate from business logic and data access
 - Use descriptive variable and method names
 - Add comments for complex business logic
 - Follow Flutter/Dart conventions
 - Use proper error handling with user-friendly messages
 - Implement loading states for async operations
+- Use proper async/await patterns for asynchronous operations
 
 ## UI/UX Consistency
-- Use consistent color schemes (blue for primary actions, green for success, red for errors)
-- Provide visual feedback for user actions (snackbars, loading indicators)
-- Follow Material Design principles
-- Ensure accessibility with proper semantic labels
+- **Material Design**: Follow Material Design principles consistently
+- **Color schemes**: Use consistent color schemes (blue for primary actions, green for success, red for errors)
+- **Visual feedback**: Provide visual feedback for user actions (snackbars, loading indicators)
+- **Accessibility**: Ensure accessibility with proper semantic labels
+- Use consistent color schemes throughout the app
 
 ## Development Workflow Rules
 
@@ -67,6 +92,8 @@
 ### Linter Error Handling
 - Fix linter errors directly related to your changes
 - If const expression errors occur, immediately remove `const` keyword rather than trying to work around it
+- Handle linter errors related to your changes
+- Test changes thoroughly before committing
 
 ### Changelog & Commit Workflow Rule
 **MANDATORY**: After implementing any improvement, feature, or fix, follow this exact sequence:
@@ -97,3 +124,8 @@
 - Use semantic versioning (patch for fixes, minor for features, major for breaking changes)
 - Include technical details in Technical section when relevant
 - Cross-reference relevant files/components changed
+
+### Documentation
+- Keep technical specifications updated when making architectural changes
+- Document complex business logic and data relationships
+- Maintain clear README and setup instructions 
