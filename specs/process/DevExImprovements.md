@@ -27,7 +27,8 @@
 - make the second-line started apps in different color (same for IDE)
 - don't open modified files (I don't read them either way)
 - auto-commit todo files after 1 minute of inactivity
-- keep up-to-date wireframes 
+- keep up-to-date wireframes
+- auto-save todo file 
 
 # Hard ones
 - increase the 25 tool calls limit

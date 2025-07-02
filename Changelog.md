@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### User Requests
 - "Move import actions to general settings tab" - Request to relocate import functionality from home screen to settings
+- "Great, remove import button from Dancers screen too" - Request to remove import functionality from dancers screen as well
 
 ### Changed
 - **Import Actions Location**: Moved import functionality from home screen overflow menu to general settings tab
@@ -18,15 +19,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Cleaner Home Screen**: Removed overflow menu entirely since import events was the only action
   - **Better Organization**: Data import actions now logically grouped with other data management features
   - **Consistent Navigation**: Import actions now follow same pattern as other settings actions
+- **Dancers Screen Cleanup**: Removed import button from dancers screen app bar
+  - **Centralized Import**: All import functionality now consolidated in settings
+  - **Cleaner Interface**: Simplified dancers screen by removing redundant import button
+  - **Single Import Location**: Users now have one consistent place to find all import actions
 
 ### Improved
 - **Action Logging**: Enhanced logging to track source location of import actions (settings vs home)
 - **Error Handling**: Added proper context mounting checks for async operations to prevent build context warnings
 - **UI Consistency**: Import actions now use consistent styling with other settings tiles
+- **Navigation Simplicity**: Reduced UI complexity by consolidating import functionality
 
 ### Technical
 - Enhanced `GeneralSettingsTab` with new data import section and action handlers
 - Removed PopupMenuButton from `HomeAppBar` since it was empty after moving import events
+- Removed import button and `_showImportDialog` method from `DancersScreen`
+- Removed unused import statement for `import_dancers_dialog.dart` from dancers screen
 - Added proper async/await patterns with context.mounted checks to prevent linter warnings
 - Maintained existing import dialog functionality while changing access location
 - Updated action logging to distinguish between settings and home screen sources

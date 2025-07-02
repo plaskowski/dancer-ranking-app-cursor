@@ -27,6 +27,11 @@ Small improvements:
   - [ ] use native android toasts
 - [ ] event screen
   - [ ] future events (in 1+ days should only have planning tab)
+- [ ] docs
+  - preambula o moim szacunku dla partnerek
+- [ ] dancers screen
+  - [ ] add tag filter
+  - [ ] add both filter fields into scrollview so they don't take space
 
 Extract more historical data:
 - [ ] regenerate file for 2024-08
