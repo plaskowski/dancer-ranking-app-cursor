@@ -4,13 +4,15 @@
 ## Status
 The app has all I need to start using it. :celebrate:
 
-## Tasks list
+## Tasks list (take one at a time)
+Next:
+- settings screen
+  - remove tag icon from tag screen rows
+  - migrate tags screen
 
-### Line #1
-- [ ] ...
-
-### Line #2
-- [ ] ...?
+Nice to haves:
+- move all main screen actions (except Dancers) under the three dots, Import events should be the last
+- (bug) when I edit impression the text field should contain current impression text
 
 ## Backlog
 
@@ -43,3 +45,7 @@ Extract more historical data:
 ### Milestone 3
 - filter people by tags. Eg. tag about where I know them from in case I don't know or remember the name or #longTimeNoSee or #comesRarely
 - smart suggestions in add dancers dialog
+
+## Cursor Cheatsheet
+- always open Markdown files in preview
+  - add vscode.markdown.preview.editor in "Preferences: Open Settings (UI)" > "editor assoc"
