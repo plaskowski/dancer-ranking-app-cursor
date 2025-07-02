@@ -85,7 +85,6 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
                       progress: _importProgress,
                       currentOperation: _currentOperation,
                       isImporting: _isLoading,
-                      onImportAnother: _onImportAnother,
                     ),
                     isActive: _currentStep == 2,
                   ),
@@ -321,17 +320,6 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
     setState(() {
       _importProgress = progress;
       _currentOperation = operation;
-    });
-  }
-
-  void _onImportAnother() {
-    setState(() {
-      _selectedFile = null;
-      _parseResult = null;
-      _importResults = null;
-      _currentStep = 0;
-      _importProgress = 0.0;
-      _currentOperation = '';
     });
   }
 

@@ -4,14 +4,12 @@ import '../../models/import_models.dart';
 import '../../theme/theme_extensions.dart';
 
 /// Step 4: Results Component
-/// Shows import progress, results summary, and action buttons
+/// Shows import progress, results summary
 class ResultsStep extends StatelessWidget {
   final DancerImportSummary? results;
   final double progress;
   final String currentOperation;
   final bool isImporting;
-  final VoidCallback onViewImportedDancers;
-  final VoidCallback onImportAnother;
 
   const ResultsStep({
     super.key,
@@ -19,8 +17,6 @@ class ResultsStep extends StatelessWidget {
     required this.progress,
     required this.currentOperation,
     required this.isImporting,
-    required this.onViewImportedDancers,
-    required this.onImportAnother,
   });
 
   @override
@@ -201,26 +197,6 @@ class ResultsStep extends StatelessWidget {
             ),
           ),
         ],
-
-        const SizedBox(height: 24),
-
-        // Action buttons
-        Wrap(
-          spacing: 16,
-          runSpacing: 8,
-          children: [
-            ElevatedButton.icon(
-              onPressed: onViewImportedDancers,
-              icon: const Icon(Icons.list),
-              label: const Text('View Dancers'),
-            ),
-            OutlinedButton.icon(
-              onPressed: onImportAnother,
-              icon: const Icon(Icons.add),
-              label: const Text('Import Another'),
-            ),
-          ],
-        ),
       ],
     );
   }

@@ -98,8 +98,6 @@ class _ImportDancersDialogState extends State<ImportDancersDialog> {
                       progress: _importProgress,
                       currentOperation: _currentOperation,
                       isImporting: _isLoading,
-                      onViewImportedDancers: _onViewImportedDancers,
-                      onImportAnother: _onImportAnother,
                     ),
                     isActive: _currentStep == 3,
                   ),
@@ -351,24 +349,6 @@ class _ImportDancersDialogState extends State<ImportDancersDialog> {
         _isLoading = false;
       });
     }
-  }
-
-  void _onViewImportedDancers() {
-    Navigator.of(context).pop(true);
-    // The parent screen should refresh to show new dancers
-  }
-
-  void _onImportAnother() {
-    setState(() {
-      _selectedFile = null;
-      _parseResult = null;
-      _conflicts = [];
-      _options = const DancerImportOptions();
-      _importResults = null;
-      _currentStep = 0;
-      _importProgress = 0.0;
-      _currentOperation = '';
-    });
   }
 
   void _showHelpDialog() {

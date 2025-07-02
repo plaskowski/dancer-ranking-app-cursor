@@ -4,13 +4,12 @@ import '../../models/import_models.dart';
 import '../../theme/theme_extensions.dart';
 
 /// Step 3: Event Results Component
-/// Shows import progress, results summary, and action buttons
+/// Shows import progress, results summary
 class EventResultsStep extends StatelessWidget {
   final EventImportSummary? results;
   final double progress;
   final String currentOperation;
   final bool isImporting;
-  final VoidCallback onImportAnother;
 
   const EventResultsStep({
     super.key,
@@ -18,7 +17,6 @@ class EventResultsStep extends StatelessWidget {
     required this.progress,
     required this.currentOperation,
     required this.isImporting,
-    required this.onImportAnother,
   });
 
   @override
@@ -281,24 +279,6 @@ class EventResultsStep extends StatelessWidget {
         ],
 
         const SizedBox(height: 24),
-
-        // Action buttons
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            OutlinedButton.icon(
-              onPressed: onImportAnother,
-              icon: const Icon(Icons.add),
-              label: const Text('Import Another'),
-            ),
-            if (results!.eventsCreated > 0)
-              ElevatedButton.icon(
-                onPressed: () => Navigator.of(context).pop(true),
-                icon: const Icon(Icons.check),
-                label: const Text('View Events'),
-              ),
-          ],
-        ),
       ],
     );
   }

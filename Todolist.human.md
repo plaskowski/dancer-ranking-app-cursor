@@ -15,6 +15,8 @@ The app has all I need to start using it. :celebrate:
 ## Backlog
 
 Small improvements:
+- [ ] events import
+  - [ ] Update help text, add an example file
 - [ ] Add existing dancer dialog
   - [ ] move info block into the scroll area to not take vertical space
 - [ ] "Add new dancer" dialog
