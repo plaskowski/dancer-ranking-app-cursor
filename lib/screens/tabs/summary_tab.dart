@@ -59,8 +59,6 @@ class SummaryTab extends StatelessWidget {
           'eventId': eventId,
           'totalDancers': allDancers.length,
           'attendedDancers': attendedDancers.length,
-          'scoredDancers': attendedDancers.where((d) => d.hasScore).length,
-          'unscoredDancers': attendedDancers.where((d) => !d.hasScore).length,
           'firstMetCount':
               attendedDancers.where((d) => d.isFirstMetHere).length,
         });
@@ -156,31 +154,7 @@ class SummaryTab extends StatelessWidget {
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
-                            text: ' dances total, with ',
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurfaceVariant),
-                          ),
-                          TextSpan(
-                            text:
-                                '${attendedDancers.where((d) => d.hasScore).length}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: ' scored and ',
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurfaceVariant),
-                          ),
-                          TextSpan(
-                            text:
-                                '${attendedDancers.where((d) => !d.hasScore).length}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: ' unscored. Met ',
+                            text: ' dances total. Met ',
                             style: TextStyle(
                                 color: Theme.of(context)
                                     .colorScheme

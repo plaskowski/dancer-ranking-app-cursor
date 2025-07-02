@@ -249,6 +249,8 @@ Users can adjust rankings during events for various reasons:
 - View complete event attendance with dance completion status
 - Edit scores for any attendee regardless of dance status
 - Review and modify impressions from recorded dances
+- **Statistics Display**: Simple header showing "Recorded X dances total. Met Y people for the first time."
+- **Score Groupings**: Dancers organized by score with count badges
 - **Primary use case**: Post-event reflection and score refinement
 - **Optimized for Old Events**: Only tab shown for events 2+ days ago to focus on historical review
 

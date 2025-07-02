@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.60.1] - 2025-01-16
+
+### User Requests
+- "Remove scored/unscored stats from summary"
+- "and update spec"
+
+### Changed
+- **Summary Tab Statistics**: Simplified header statistics by removing scored/unscored breakdown
+  - **Before**: "Recorded X dances total, with Y scored and Z unscored. Met W people for the first time."
+  - **After**: "Recorded X dances total. Met W people for the first time."
+  - **Cleaner Interface**: Focused on essential statistics without unnecessary complexity
+  - **Updated Logging**: Removed scored/unscored counts from filtering complete logs
+
+### Technical
+- Simplified RichText spans in Summary tab header
+- Maintained score groupings below statistics unchanged
+- Updated Implementation specification with simplified Summary tab description
+
 ## [v0.60.0] - 2025-01-16
 
 ### User Requests
