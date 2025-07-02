@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../database/database.dart';
-import '../services/ranking_service.dart';
-import '../services/score_service.dart';
-import '../utils/action_logger.dart';
-import '../utils/toast_helper.dart';
+import '../../database/database.dart';
+import '../../services/ranking_service.dart';
+import '../../services/score_service.dart';
+import '../../utils/action_logger.dart';
+import '../../utils/toast_helper.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

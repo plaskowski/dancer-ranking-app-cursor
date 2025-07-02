@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../database/database.dart';
-import '../services/tag_service.dart';
-import '../utils/action_logger.dart';
+import '../../../database/database.dart';
+import '../../../services/tag_service.dart';
+import '../../../utils/action_logger.dart';
 
 class TagsScreen extends StatefulWidget {
   final TagService tagService;
@@ -47,16 +47,14 @@ class _TagsScreenState extends State<TagsScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              ActionLogger.logAction(
-                  'UI_TagsScreen', 'add_tag_dialog_cancelled');
+              ActionLogger.logAction('UI_TagsScreen', 'add_tag_dialog_cancelled');
               Navigator.of(context).pop(false);
             },
             child: const Text('Cancel'),
           ),
           FilledButton(
             onPressed: () {
-              ActionLogger.logAction(
-                  'UI_TagsScreen', 'add_tag_dialog_confirmed', {
+              ActionLogger.logAction('UI_TagsScreen', 'add_tag_dialog_confirmed', {
                 'tagName': controller.text.trim(),
               });
               Navigator.of(context).pop(true);
@@ -133,16 +131,14 @@ class _TagsScreenState extends State<TagsScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              ActionLogger.logAction(
-                  'UI_TagsScreen', 'edit_tag_dialog_cancelled');
+              ActionLogger.logAction('UI_TagsScreen', 'edit_tag_dialog_cancelled');
               Navigator.of(context).pop(false);
             },
             child: const Text('Cancel'),
           ),
           FilledButton(
             onPressed: () {
-              ActionLogger.logAction(
-                  'UI_TagsScreen', 'edit_tag_dialog_confirmed', {
+              ActionLogger.logAction('UI_TagsScreen', 'edit_tag_dialog_confirmed', {
                 'tagId': tag.id,
                 'oldName': tag.name,
                 'newName': controller.text.trim(),
@@ -254,8 +250,8 @@ class _TagsScreenState extends State<TagsScreen> {
 
           final tags = snapshot.data ?? [];
 
-          ActionLogger.logListRendering('UI_TagsScreen', 'tags',
-              tags.map((tag) => {'id': tag.id, 'name': tag.name}).toList());
+          ActionLogger.logListRendering(
+              'UI_TagsScreen', 'tags', tags.map((tag) => {'id': tag.id, 'name': tag.name}).toList());
 
           if (tags.isEmpty) {
             return const Center(
@@ -319,8 +315,7 @@ class _TagsScreenState extends State<TagsScreen> {
                 ),
                 title: const Text('Edit'),
                 onTap: () {
-                  ActionLogger.logAction(
-                      'UI_TagsScreen', 'context_edit_tapped', {
+                  ActionLogger.logAction('UI_TagsScreen', 'context_edit_tapped', {
                     'tagId': tag.id,
                     'tagName': tag.name,
                   });
@@ -336,8 +331,7 @@ class _TagsScreenState extends State<TagsScreen> {
                 ),
                 title: const Text('Delete'),
                 onTap: () {
-                  ActionLogger.logAction(
-                      'UI_TagsScreen', 'context_delete_tapped', {
+                  ActionLogger.logAction('UI_TagsScreen', 'context_delete_tapped', {
                     'tagId': tag.id,
                     'tagName': tag.name,
                   });
@@ -369,16 +363,14 @@ class _TagsScreenState extends State<TagsScreen> {
         actions: [
           TextButton(
             onPressed: () {
-              ActionLogger.logAction(
-                  'UI_TagsScreen', 'delete_tag_dialog_cancelled');
+              ActionLogger.logAction('UI_TagsScreen', 'delete_tag_dialog_cancelled');
               Navigator.of(context).pop(false);
             },
             child: const Text('Cancel'),
           ),
           FilledButton(
             onPressed: () {
-              ActionLogger.logAction(
-                  'UI_TagsScreen', 'delete_tag_dialog_confirmed', {
+              ActionLogger.logAction('UI_TagsScreen', 'delete_tag_dialog_confirmed', {
                 'tagId': tag.id,
                 'tagName': tag.name,
               });

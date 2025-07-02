@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../database/database.dart';
-import '../services/event_service.dart';
-import '../utils/action_logger.dart';
-import 'event_tab_actions.dart';
+import '../../database/database.dart';
+import '../../services/event_service.dart';
+import '../../utils/action_logger.dart';
+import 'dialogs/event_tab_actions.dart';
 import 'tabs/planning_tab.dart';
 import 'tabs/present_tab.dart';
 import 'tabs/summary_tab.dart';

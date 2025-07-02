@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../database/database.dart';
-import '../services/event_import_service.dart';
-import '../services/event_service.dart';
-import '../services/tag_service.dart';
-import '../utils/action_logger.dart';
-import '../utils/toast_helper.dart';
-import '../widgets/import_events_dialog.dart';
-import 'create_event_screen.dart';
-import 'dancers_screen.dart';
-import 'event_screen.dart';
-import 'settings_screen.dart';
-import 'tags_screen.dart';
+import '../../database/database.dart';
+import '../../services/event_import_service.dart';
+import '../../services/event_service.dart';
+import '../../services/tag_service.dart';
+import '../../utils/action_logger.dart';
+import '../../utils/toast_helper.dart';
+import '../../widgets/import_events_dialog.dart';
+import '../dancers/dancers_screen.dart';
+import '../event/event_screen.dart';
+import '../settings/settings_screen.dart';
+import '../settings/tabs/tags_screen.dart';
+import 'dialog/create_event_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

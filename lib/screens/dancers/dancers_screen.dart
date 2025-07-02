@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../database/database.dart';
-import '../models/dancer_with_tags.dart';
-import '../services/dancer_service.dart';
-import '../utils/toast_helper.dart';
-import '../widgets/add_dancer_dialog.dart';
-import '../widgets/dancer_card_with_tags.dart';
-import '../widgets/import/import_dancers_dialog.dart';
-import 'select_merge_target_screen.dart';
+import '../../database/database.dart';
+import '../../models/dancer_with_tags.dart';
+import '../../services/dancer_service.dart';
+import '../../utils/toast_helper.dart';
+import '../../widgets/add_dancer_dialog.dart';
+import '../../widgets/dancer_card_with_tags.dart';
+import '../../widgets/import/import_dancers_dialog.dart';
+import 'dialogs/select_merge_target_screen.dart';
 
 class DancersScreen extends StatefulWidget {
   const DancersScreen({super.key});

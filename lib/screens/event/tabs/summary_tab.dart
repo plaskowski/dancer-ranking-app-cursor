@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../services/dancer_service.dart';
-import '../../utils/action_logger.dart';
-import '../../widgets/add_dancer_dialog.dart';
-import '../../widgets/dancer_card.dart';
-import '../add_existing_dancer_screen.dart';
-import '../event_tab_actions.dart';
+import '../../../services/dancer_service.dart';
+import '../../../utils/action_logger.dart';
+import '../../../widgets/add_dancer_dialog.dart';
+import '../../../widgets/dancer_card.dart';
+import '../dialogs/add_existing_dancer_screen.dart';
+import '../dialogs/event_tab_actions.dart';
 
 // Summary Tab - Shows all dancers who have danced, grouped by score
 class SummaryTab extends StatelessWidget {

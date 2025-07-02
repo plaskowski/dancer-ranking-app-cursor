@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../database/database.dart';
-import '../services/dancer_service.dart';
-import '../utils/action_logger.dart';
-import '../utils/toast_helper.dart';
+import '../../../database/database.dart';
+import '../../../services/dancer_service.dart';
+import '../../../utils/action_logger.dart';
+import '../../../utils/toast_helper.dart';
 
 class SelectMergeTargetScreen extends StatefulWidget {
   final Dancer sourceDancer;

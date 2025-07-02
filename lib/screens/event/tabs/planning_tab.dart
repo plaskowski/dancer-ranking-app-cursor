@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../services/dancer_service.dart';
-import '../../services/event_service.dart';
-import '../../theme/theme_extensions.dart';
-import '../../utils/action_logger.dart';
-import '../../widgets/dancer_card.dart';
-import '../../widgets/import_rankings_dialog.dart';
-import '../event_tab_actions.dart';
-import '../select_dancers_screen.dart';
+import '../../../services/dancer_service.dart';
+import '../../../services/event_service.dart';
+import '../../../theme/theme_extensions.dart';
+import '../../../utils/action_logger.dart';
+import '../../../widgets/dancer_card.dart';
+import '../../../widgets/import_rankings_dialog.dart';
+import '../dialogs/event_tab_actions.dart';
+import '../dialogs/select_dancers_screen.dart';
 
 // Planning Tab - Shows all dancers grouped by rank
 class PlanningTab extends StatefulWidget {
