@@ -134,45 +134,31 @@ class AppDatabase extends _$AppDatabase {
     await _insertDefaultScores();
   }
 
-  // Insert the predefined tags
+  // Insert minimal essential tags
   Future<void> _insertDefaultTags() async {
     await batch((batch) {
       batch.insertAll(tags, [
-        TagsCompanion.insert(name: 'regular'),
-        TagsCompanion.insert(name: 'occasional'),
-        TagsCompanion.insert(name: 'rare'),
         TagsCompanion.insert(name: 'new'),
-        TagsCompanion.insert(name: 'dance-class'),
-        TagsCompanion.insert(name: 'dance-school'),
-        TagsCompanion.insert(name: 'workshop'),
-        TagsCompanion.insert(name: 'social'),
+        TagsCompanion.insert(name: 'regular'),
       ]);
     });
   }
 
-  // Insert the predefined scores
+  // Insert minimal essential scores
   Future<void> _insertDefaultScores() async {
     await batch((batch) {
       batch.insertAll(scores, [
         ScoresCompanion.insert(
-          name: 'Amazing',
+          name: 'Good',
           ordinal: 1,
         ),
         ScoresCompanion.insert(
-          name: 'Great',
+          name: 'Okay',
           ordinal: 2,
         ),
         ScoresCompanion.insert(
-          name: 'Good',
+          name: 'Poor',
           ordinal: 3,
-        ),
-        ScoresCompanion.insert(
-          name: 'Okay',
-          ordinal: 4,
-        ),
-        ScoresCompanion.insert(
-          name: 'Meh',
-          ordinal: 5,
         ),
       ]);
     });
