@@ -1,536 +1,114 @@
-import 'package:drift/drift.dart';
-
 import '../database/database.dart';
-import '../utils/action_logger.dart';
+import 'attendance/attendance_crud_service.dart';
+import 'attendance/attendance_dance_service.dart';
+import 'attendance/attendance_models.dart';
+import 'attendance/attendance_query_service.dart';
+import 'attendance/attendance_score_service.dart';
+import 'attendance/attendance_stats_service.dart';
+
+// Re-export models for backward compatibility
+export 'attendance/attendance_models.dart';
 
 class AttendanceService {
   final AppDatabase _database;
 
-  AttendanceService(this._database);
+  // Specialized services
+  late final AttendanceCrudService _crudService;
+  late final AttendanceDanceService _danceService;
+  late final AttendanceScoreService _scoreService;
+  late final AttendanceQueryService _queryService;
+  late final AttendanceStatsService _statsService;
 
-  // Mark a dancer as present at an event
-  Future<int> markPresent(int eventId, int dancerId) async {
-    ActionLogger.logServiceCall('AttendanceService', 'markPresent', {
-      'eventId': eventId,
-      'dancerId': dancerId,
-    });
-
-    try {
-      // Check if attendance already exists
-      final existingAttendance = await (_database.select(_database.attendances)
-            ..where(
-                (a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
-          .getSingleOrNull();
-
-      if (existingAttendance != null) {
-        ActionLogger.logAction(
-            'AttendanceService.markPresent', 'already_present', {
-          'eventId': eventId,
-          'dancerId': dancerId,
-          'attendanceId': existingAttendance.id,
-        });
-        return existingAttendance.id;
-      }
-
-      // Create new attendance record
-      final id = await _database.into(_database.attendances).insert(
-            AttendancesCompanion.insert(
-              eventId: eventId,
-              dancerId: dancerId,
-            ),
-          );
-
-      ActionLogger.logDbOperation('INSERT', 'attendances', {
-        'id': id,
-        'eventId': eventId,
-        'dancerId': dancerId,
-        'status': 'present',
-      });
-
-      return id;
-    } catch (e) {
-      ActionLogger.logError('AttendanceService.markPresent', e.toString(), {
-        'eventId': eventId,
-        'dancerId': dancerId,
-      });
-      rethrow;
-    }
+  AttendanceService(this._database) {
+    // Initialize specialized services with dependency injection
+    _crudService = AttendanceCrudService(_database);
+    _danceService = AttendanceDanceService(_database, _crudService);
+    _scoreService = AttendanceScoreService(_database, _crudService);
+    _queryService = AttendanceQueryService(_database);
+    _statsService = AttendanceStatsService(_database);
   }
 
-  // Remove a dancer from the present list
-  Future<int> removeFromPresent(int eventId, int dancerId) async {
-    ActionLogger.logServiceCall('AttendanceService', 'removeFromPresent', {
-      'eventId': eventId,
-      'dancerId': dancerId,
-    });
+  // CRUD Operations - delegated to AttendanceCrudService
+  Future<int> markPresent(int eventId, int dancerId) =>
+      _crudService.markPresent(eventId, dancerId);
 
-    try {
-      final result = await (_database.delete(_database.attendances)
-            ..where(
-                (a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
-          .go();
+  Future<int> removeFromPresent(int eventId, int dancerId) =>
+      _crudService.removeFromPresent(eventId, dancerId);
 
-      ActionLogger.logDbOperation('DELETE', 'attendances', {
-        'eventId': eventId,
-        'dancerId': dancerId,
-        'affected_rows': result,
-      });
+  Future<bool> markAsLeft(int eventId, int dancerId) =>
+      _crudService.markAsLeft(eventId, dancerId);
 
-      return result;
-    } catch (e) {
-      ActionLogger.logError(
-          'AttendanceService.removeFromPresent', e.toString(), {
-        'eventId': eventId,
-        'dancerId': dancerId,
-      });
-      rethrow;
-    }
-  }
+  Future<Attendance?> getAttendance(int eventId, int dancerId) =>
+      _crudService.getAttendance(eventId, dancerId);
 
-  // Mark a dancer as left (they left before dancing)
-  Future<bool> markAsLeft(int eventId, int dancerId) async {
-    ActionLogger.logServiceCall('AttendanceService', 'markAsLeft', {
-      'eventId': eventId,
-      'dancerId': dancerId,
-    });
+  Future<bool> isPresent(int eventId, int dancerId) =>
+      _crudService.isPresent(eventId, dancerId);
 
-    try {
-      final attendance = await getAttendance(eventId, dancerId);
-      if (attendance == null) {
-        ActionLogger.logAction(
-            'AttendanceService.markAsLeft', 'no_attendance_record', {
-          'eventId': eventId,
-          'dancerId': dancerId,
-        });
-        return false;
-      }
+  Future<bool> hasDanced(int eventId, int dancerId) =>
+      _crudService.hasDanced(eventId, dancerId);
 
-      // Only allow marking as left if they haven't danced yet
-      if (attendance.status == 'served') {
-        ActionLogger.logAction(
-            'AttendanceService.markAsLeft', 'already_danced', {
-          'eventId': eventId,
-          'dancerId': dancerId,
-          'currentStatus': attendance.status,
-        });
-        return false;
-      }
+  Stream<List<Attendance>> watchPresentDancers(int eventId) =>
+      _crudService.watchPresentDancers(eventId);
 
-      final result = await _database.update(_database.attendances).replace(
-            attendance.copyWith(
-              status: 'left',
-            ),
-          );
-
-      ActionLogger.logDbOperation('UPDATE', 'attendances', {
-        'id': attendance.id,
-        'eventId': eventId,
-        'dancerId': dancerId,
-        'oldStatus': attendance.status,
-        'newStatus': 'left',
-        'success': result,
-      });
-
-      return result;
-    } catch (e) {
-      ActionLogger.logError('AttendanceService.markAsLeft', e.toString(), {
-        'eventId': eventId,
-        'dancerId': dancerId,
-      });
-      rethrow;
-    }
-  }
-
-  // Record a dance with impression
+  // Dance Operations - delegated to AttendanceDanceService
   Future<bool> recordDance({
     required int eventId,
     required int dancerId,
     String? impression,
-  }) async {
-    ActionLogger.logServiceCall('AttendanceService', 'recordDance', {
-      'eventId': eventId,
-      'dancerId': dancerId,
-      'hasImpression': impression != null,
-    });
-
-    try {
-      final attendance = await (_database.select(_database.attendances)
-            ..where(
-                (a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
-          .getSingleOrNull();
-
-      if (attendance == null) {
-        ActionLogger.logAction(
-            'AttendanceService.recordDance', 'creating_attendance_first', {
-          'eventId': eventId,
-          'dancerId': dancerId,
-        });
-
-        // Dancer not marked as present, mark them first
-        await markPresent(eventId, dancerId);
-
-        // Get the newly created attendance record
-        final newAttendance = await (_database.select(_database.attendances)
-              ..where((a) =>
-                  a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
-            .getSingle();
-
-        // Update with dance info
-        final result = await _database.update(_database.attendances).replace(
-              newAttendance.copyWith(
-                status: 'served',
-                dancedAt: Value(DateTime.now()),
-                impression: Value(impression),
-              ),
-            );
-
-        ActionLogger.logDbOperation('UPDATE', 'attendances', {
-          'id': newAttendance.id,
-          'eventId': eventId,
-          'dancerId': dancerId,
-          'action': 'record_dance_new',
-          'status': 'served',
-          'success': result,
-        });
-
-        return result;
-      } else {
-        ActionLogger.logAction(
-            'AttendanceService.recordDance', 'updating_existing', {
-          'eventId': eventId,
-          'dancerId': dancerId,
-          'currentStatus': attendance.status,
-        });
-
-        // Update existing attendance record
-        final result = await _database.update(_database.attendances).replace(
-              attendance.copyWith(
-                status: 'served',
-                dancedAt: Value(DateTime.now()),
-                impression: Value(impression),
-              ),
-            );
-
-        ActionLogger.logDbOperation('UPDATE', 'attendances', {
-          'id': attendance.id,
-          'eventId': eventId,
-          'dancerId': dancerId,
-          'action': 'record_dance_existing',
-          'oldStatus': attendance.status,
-          'newStatus': 'served',
-          'success': result,
-        });
-
-        return result;
-      }
-    } catch (e) {
-      ActionLogger.logError('AttendanceService.recordDance', e.toString(), {
-        'eventId': eventId,
-        'dancerId': dancerId,
-      });
-      rethrow;
-    }
-  }
-
-  // Get attendance record for a dancer at an event
-  Future<Attendance?> getAttendance(int eventId, int dancerId) {
-    return (_database.select(_database.attendances)
-          ..where(
-              (a) => a.eventId.equals(eventId) & a.dancerId.equals(dancerId)))
-        .getSingleOrNull();
-  }
-
-  // Check if dancer is present at event
-  Future<bool> isPresent(int eventId, int dancerId) async {
-    final attendance = await getAttendance(eventId, dancerId);
-    return attendance != null;
-  }
-
-  // Check if danced with dancer at event
-  Future<bool> hasDanced(int eventId, int dancerId) async {
-    final attendance = await getAttendance(eventId, dancerId);
-    return attendance?.status == 'served';
-  }
-
-  // Get all present dancers for an event
-  Stream<List<Attendance>> watchPresentDancers(int eventId) {
-    return (_database.select(_database.attendances)
-          ..where((a) => a.eventId.equals(eventId))
-          ..orderBy([(a) => OrderingTerm.desc(a.markedAt)]))
-        .watch();
-  }
-
-  // Helper method to create attendance-dancer join query
-  JoinedSelectStatement<HasResultSet, dynamic>
-      _createAttendanceDancerJoinQuery() {
-    return _database.select(_database.attendances).join([
-      innerJoin(_database.dancers,
-          _database.dancers.id.equalsExp(_database.attendances.dancerId)),
-    ]);
-  }
-
-  // Helper method to map join results to AttendanceWithDancerInfo
-  List<AttendanceWithDancerInfo> _mapJoinResultsToAttendanceWithDancerInfo(
-      List<TypedResult> results) {
-    return results.map((row) {
-      final attendance = row.readTable(_database.attendances);
-      final dancer = row.readTable(_database.dancers);
-
-      return AttendanceWithDancerInfo(
-        id: attendance.id,
-        eventId: attendance.eventId,
-        dancerId: attendance.dancerId,
-        markedAt: attendance.markedAt,
-        status: attendance.status,
-        dancedAt: attendance.dancedAt,
-        impression: attendance.impression,
-        scoreId: attendance.scoreId,
-        dancerName: dancer.name,
-        dancerNotes: dancer.notes,
+  }) =>
+      _danceService.recordDance(
+        eventId: eventId,
+        dancerId: dancerId,
+        impression: impression,
       );
-    }).toList();
-  }
 
-  // Get present dancers with their info
-  Future<List<AttendanceWithDancerInfo>> getPresentDancersWithInfo(
-      int eventId) async {
-    final query = _createAttendanceDancerJoinQuery()
-      ..where(_database.attendances.eventId.equals(eventId))
-      ..orderBy([OrderingTerm.desc(_database.attendances.markedAt)]);
-
-    final results = await query.get();
-    return _mapJoinResultsToAttendanceWithDancerInfo(results);
-  }
-
-  // Get danced dancers for an event
-  Future<List<AttendanceWithDancerInfo>> getDancedDancers(int eventId) async {
-    final query = _createAttendanceDancerJoinQuery()
-      ..where(_database.attendances.eventId.equals(eventId) &
-          _database.attendances.status.equals('served'))
-      ..orderBy([OrderingTerm.desc(_database.attendances.dancedAt)]);
-
-    final results = await query.get();
-    return _mapJoinResultsToAttendanceWithDancerInfo(results);
-  }
-
-  // Get present count for an event
-  Future<int> getPresentCount(int eventId) async {
-    final query = _database.selectOnly(_database.attendances)
-      ..addColumns([_database.attendances.id.count()])
-      ..where(_database.attendances.eventId.equals(eventId));
-
-    final result = await query.getSingle();
-    return result.read(_database.attendances.id.count()) ?? 0;
-  }
-
-  // Get danced count for an event
-  Future<int> getDancedCount(int eventId) async {
-    final query = _database.selectOnly(_database.attendances)
-      ..addColumns([_database.attendances.id.count()])
-      ..where(_database.attendances.eventId.equals(eventId) &
-          _database.attendances.status.equals('served'));
-
-    final result = await query.getSingle();
-    return result.read(_database.attendances.id.count()) ?? 0;
-  }
-
-  // Create attendance with dance completion (for "already danced" option)
   Future<int> createAttendanceWithDance({
     required int eventId,
     required int dancerId,
     String? impression,
-  }) {
-    return _database.into(_database.attendances).insert(
-          AttendancesCompanion.insert(
-            eventId: eventId,
-            dancerId: dancerId,
-            status: const Value('served'),
-            dancedAt: Value(DateTime.now()),
-            impression: Value(impression),
-          ),
-        );
-  }
+  }) =>
+      _danceService.createAttendanceWithDance(
+        eventId: eventId,
+        dancerId: dancerId,
+        impression: impression,
+      );
 
-  // Update dance impression
   Future<bool> updateDanceImpression({
     required int eventId,
     required int dancerId,
     String? impression,
-  }) async {
-    final attendance = await getAttendance(eventId, dancerId);
-    if (attendance == null) return false;
+  }) =>
+      _danceService.updateDanceImpression(
+        eventId: eventId,
+        dancerId: dancerId,
+        impression: impression,
+      );
 
-    return _database.update(_database.attendances).replace(
-          attendance.copyWith(
-            impression: Value(impression),
-          ),
-        );
-  }
+  // Score Operations - delegated to AttendanceScoreService
+  Future<bool> assignScore(int eventId, int dancerId, int scoreId) =>
+      _scoreService.assignScore(eventId, dancerId, scoreId);
 
-  // Get attendance statistics for an event
-  Future<AttendanceStats> getAttendanceStats(int eventId) async {
-    final presentCount = await getPresentCount(eventId);
-    final dancedCount = await getDancedCount(eventId);
+  Future<bool> removeScore(int eventId, int dancerId) =>
+      _scoreService.removeScore(eventId, dancerId);
 
-    return AttendanceStats(
-      presentCount: presentCount,
-      dancedCount: dancedCount,
-      notDancedCount: presentCount - dancedCount,
-    );
-  }
+  Future<int?> getAttendanceScore(int eventId, int dancerId) =>
+      _scoreService.getAttendanceScore(eventId, dancerId);
 
-  // Assign a score to an attendance record
-  Future<bool> assignScore(int eventId, int dancerId, int scoreId) async {
-    ActionLogger.logServiceCall('AttendanceService', 'assignScore', {
-      'eventId': eventId,
-      'dancerId': dancerId,
-      'scoreId': scoreId,
-    });
+  // Query Operations - delegated to AttendanceQueryService
+  Future<List<AttendanceWithDancerInfo>> getPresentDancersWithInfo(
+          int eventId) =>
+      _queryService.getPresentDancersWithInfo(eventId);
 
-    try {
-      final attendance = await getAttendance(eventId, dancerId);
-      if (attendance == null) {
-        ActionLogger.logError(
-            'AttendanceService.assignScore', 'attendance_not_found', {
-          'eventId': eventId,
-          'dancerId': dancerId,
-        });
-        return false;
-      }
+  Future<List<AttendanceWithDancerInfo>> getDancedDancers(int eventId) =>
+      _queryService.getDancedDancers(eventId);
 
-      final result = await _database.update(_database.attendances).replace(
-            attendance.copyWith(
-              scoreId: Value(scoreId),
-            ),
-          );
+  // Statistics Operations - delegated to AttendanceStatsService
+  Future<int> getPresentCount(int eventId) =>
+      _statsService.getPresentCount(eventId);
 
-      ActionLogger.logDbOperation('UPDATE', 'attendances', {
-        'id': attendance.id,
-        'eventId': eventId,
-        'dancerId': dancerId,
-        'scoreId': scoreId,
-        'success': result,
-      });
+  Future<int> getDancedCount(int eventId) =>
+      _statsService.getDancedCount(eventId);
 
-      return result;
-    } catch (e) {
-      ActionLogger.logError('AttendanceService.assignScore', e.toString(), {
-        'eventId': eventId,
-        'dancerId': dancerId,
-        'scoreId': scoreId,
-      });
-      return false;
-    }
-  }
-
-  // Remove score assignment from an attendance record
-  Future<bool> removeScore(int eventId, int dancerId) async {
-    ActionLogger.logServiceCall('AttendanceService', 'removeScore', {
-      'eventId': eventId,
-      'dancerId': dancerId,
-    });
-
-    try {
-      final attendance = await getAttendance(eventId, dancerId);
-      if (attendance == null) {
-        ActionLogger.logError(
-            'AttendanceService.removeScore', 'attendance_not_found', {
-          'eventId': eventId,
-          'dancerId': dancerId,
-        });
-        return false;
-      }
-
-      final result = await _database.update(_database.attendances).replace(
-            attendance.copyWith(
-              scoreId: const Value(null),
-            ),
-          );
-
-      ActionLogger.logDbOperation('UPDATE', 'attendances', {
-        'id': attendance.id,
-        'eventId': eventId,
-        'dancerId': dancerId,
-        'action': 'remove_score',
-        'success': result,
-      });
-
-      return result;
-    } catch (e) {
-      ActionLogger.logError('AttendanceService.removeScore', e.toString(), {
-        'eventId': eventId,
-        'dancerId': dancerId,
-      });
-      return false;
-    }
-  }
-
-  // Get current score for an attendance record
-  Future<int?> getAttendanceScore(int eventId, int dancerId) async {
-    final attendance = await getAttendance(eventId, dancerId);
-    return attendance?.scoreId;
-  }
-}
-
-// Helper class for attendance with dancer info
-class AttendanceWithDancerInfo {
-  final int id;
-  final int eventId;
-  final int dancerId;
-  final DateTime markedAt;
-  final String status;
-  final DateTime? dancedAt;
-  final String? impression;
-  final int? scoreId;
-  final String dancerName;
-  final String? dancerNotes;
-
-  AttendanceWithDancerInfo({
-    required this.id,
-    required this.eventId,
-    required this.dancerId,
-    required this.markedAt,
-    required this.status,
-    this.dancedAt,
-    this.impression,
-    this.scoreId,
-    required this.dancerName,
-    this.dancerNotes,
-  });
-
-  // Backward compatibility getter
-  bool get hasDanced => status == 'served';
-
-  factory AttendanceWithDancerInfo.fromRow(Map<String, dynamic> row) {
-    return AttendanceWithDancerInfo(
-      id: row['id'] as int,
-      eventId: row['event_id'] as int,
-      dancerId: row['dancer_id'] as int,
-      markedAt: DateTime.parse(row['marked_at'] as String),
-      status: row['status'] as String,
-      dancedAt: row['danced_at'] != null
-          ? DateTime.parse(row['danced_at'] as String)
-          : null,
-      impression: row['impression'] as String?,
-      scoreId: row['score_id'] as int?,
-      dancerName: row['dancer_name'] as String,
-      dancerNotes: row['dancer_notes'] as String?,
-    );
-  }
-}
-
-// Attendance statistics
-class AttendanceStats {
-  final int presentCount;
-  final int dancedCount;
-  final int notDancedCount;
-
-  AttendanceStats({
-    required this.presentCount,
-    required this.dancedCount,
-    required this.notDancedCount,
-  });
-
-  double get dancedPercentage =>
-      presentCount > 0 ? (dancedCount / presentCount) * 100 : 0;
+  Future<AttendanceStats> getAttendanceStats(int eventId) =>
+      _statsService.getAttendanceStats(eventId);
 }

@@ -94,12 +94,18 @@ lib/screens/settings/
 - ✅ `HomeNavigationService` (56 lines): Import events and navigation functionality
 - ✅ Total: 855 lines across 6 files vs original 557 lines (improved organization)
 
-#### 5. `lib/services/attendance_service.dart` - **536 lines** ⚠️ **MEDIUM PRIORITY**
-**Issues**:
-- Large service class
+#### 5. ~~`lib/services/attendance_service.dart`~~ - ~~**536 lines**~~ ✅ **COMPLETED**
+**Original Issues** (RESOLVED):
+- ~~Large service class~~
 
-**Recommended action**:
-- Review for potential split based on functionality groups
+**Refactoring COMPLETED** (Dec 2024):
+- ✅ Split into 6 focused services (coordinator: 109 lines, 80% reduction)
+- ✅ `AttendanceCrudService` (171 lines): Basic CRUD operations and presence management
+- ✅ `AttendanceDanceService` (137 lines): Dance recording and impression management
+- ✅ `AttendanceScoreService` (106 lines): Score assignment and management operations
+- ✅ `AttendanceQueryService` (63 lines): Complex queries and data retrieval with joins
+- ✅ `AttendanceStatsService` (43 lines): Statistics and counting operations
+- ✅ `AttendanceModels` (62 lines): Helper classes and data models
 
 #### 6. `lib/services/event_import_service.dart` - **527 lines** ⚠️ **MEDIUM PRIORITY**
 **Issues**:
