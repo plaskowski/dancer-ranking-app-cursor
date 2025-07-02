@@ -10,8 +10,6 @@ Tag-based filtering in dancer selection dialogs allows users to quickly find and
 - **Context-based**: "Invite all the workshop participants"
 - **Venue reunion**: "Invite everyone from Monday Class to this special event"
 
-> **Note**: Frequency-based filtering (#frequent, #longTimeNoSee, #comesRarely) will be handled by smart suggestions that automatically analyze attendance patterns from event data.
-
 ## UI Design
 
 ### 1. Integration Points
@@ -188,7 +186,7 @@ Event Screen
 ### Data Organization
 - **Tag hierarchy**: Support nested tags (venues > classes > Monday Class)
 - **Venue categorization**: Auto-group by venue type (classes, socials, festivals, workshops)
-- **Smart grouping**: Auto-detect venue/context tags vs. custom descriptive tags
+- **Tag grouping**: Group venue/context tags by category for better organization
 
 ### Accessibility
 - **Screen reader**: Announce filter changes and result counts
@@ -203,20 +201,12 @@ Event Screen
 - **Planning Tab**: Quick actions like "Add all Monday Class dancers"
 
 ### Future Event Features
-- **Smart Group Suggestions**: "Invite usual Friday Social crowd?" (combines venue tags with smart attendance analysis)
 - **Event Templates**: Save venue tag combinations for recurring events
 - **Venue Analytics**: "Monday Class dancers have 80% attendance rate at socials"
 - **Cross-venue Insights**: "Dancers from Cuban DC Festival also frequent Friday Social"
-
-## Relationship to Smart Suggestions
-
-Tag filtering and smart suggestions work together:
-- **Tag filtering**: User-controlled filtering by venue/context ("Show dancers from Monday Class")
-- **Smart suggestions**: Automatic analysis of patterns ("Show dancers you haven't seen recently", "Show frequent attendees")
-- **Combined power**: "Show frequent attendees from Monday Class" (tag filter + smart analysis)
 
 ## Success Metrics
 - **Event setup speed**: Time from opening event to finishing dancer invitations
 - **Group invitation efficiency**: How often bulk tag selection is used vs. individual selection
 - **Venue-based discovery**: % of event invitations that use venue tag filtering vs. search
-- **Forgotten dancer recovery**: Success rate of finding dancers using venue/context tags 
+- **Tag filtering adoption**: How often users create and use venue/context tags 
