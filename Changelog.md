@@ -5,6 +5,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.67.0] - 2025-01-04
+
+### User Requests
+- "Do this" - Referring to todo item "mark current events dates green (with the same logic as for showing tabs in event screen, have the logic reused)"
+
+### Added
+- **Current Events Green Marking**: Event dates are now marked green for current events (not old events)
+  - **EventStatusHelper Utility**: New centralized utility class for consistent event date logic across the app
+  - **Visual Status Indicators**: Events within 2 days (current) show green dates, old events (2+ days ago) show muted dates
+  - **Consistent Logic**: Same date logic used for event screen tab visibility now determines date coloring
+  - **Comprehensive Coverage**: Green marking applied to all event lists (home screen, import dialogs, etc.)
+
+### Improved
+- **Code Reusability**: Centralized event status logic prevents duplication and ensures consistency
+- **Visual Clarity**: Users can instantly identify current/active events vs. historical events
+- **User Experience**: Color-coded dates provide immediate visual feedback on event relevance
+
+### Technical
+- **EventStatusHelper Class**: Added `lib/utils/event_status_helper.dart` with methods:
+  - `isPastEvent()`: Checks if event is before today
+  - `isOldEvent()`: Checks if event is 2+ days ago (old events)
+  - `isCurrentEvent()`: Checks if event is not old (current events)
+  - `getAvailableTabs()`: Returns appropriate tabs based on event status
+- **Refactored Components**: Updated EventScreen, EventCard, and ImportRankingsDialog to use centralized logic
+- **Color Logic**: Green for current events, muted for old events, primary for future events
+- **Code Quality**: Removed duplicate date logic and unused variables
+
+### Fixed
+- **Logic Consistency**: Event screen tab visibility and date marking now use identical logic
+- **Maintainability**: Single source of truth for event status determinations
+
 ## [v0.66.0] - 2025-01-04
 
 ### User Requests

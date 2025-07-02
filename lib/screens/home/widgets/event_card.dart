@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../database/database.dart';
 import '../../../services/event_service.dart';
 import '../../../utils/action_logger.dart';
+import '../../../utils/event_status_helper.dart';
 import '../../../utils/toast_helper.dart';
 import '../../event/event_screen.dart';
 
@@ -43,8 +44,7 @@ class EventCard extends StatelessWidget {
                 ),
                 title: const Text('Rename'),
                 onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_rename_tapped', {
+                  ActionLogger.logUserAction('EventCard', 'context_rename_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                   });
@@ -60,8 +60,7 @@ class EventCard extends StatelessWidget {
                 ),
                 title: const Text('Change Date'),
                 onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_change_date_tapped', {
+                  ActionLogger.logUserAction('EventCard', 'context_change_date_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                     'currentDate': event.date.toIso8601String(),
@@ -78,8 +77,7 @@ class EventCard extends StatelessWidget {
                 ),
                 title: const Text('Delete'),
                 onTap: () {
-                  ActionLogger.logUserAction(
-                      'EventCard', 'context_delete_tapped', {
+                  ActionLogger.logUserAction('EventCard', 'context_delete_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                   });
@@ -162,8 +160,7 @@ class EventCard extends StatelessWidget {
     }
   }
 
-  void _performDateChange(
-      BuildContext context, DateTime newDate, EventService eventService) async {
+  void _performDateChange(BuildContext context, DateTime newDate, EventService eventService) async {
     ActionLogger.logUserAction('EventCard', 'date_change_started', {
       'eventId': event.id,
       'newDate': newDate.toIso8601String(),
@@ -181,11 +178,9 @@ class EventCard extends StatelessWidget {
           });
 
           final formattedDate = DateFormat('MMM d, y').format(newDate);
-          ToastHelper.showSuccess(
-              context, 'Event date changed to $formattedDate');
+          ToastHelper.showSuccess(context, 'Event date changed to $formattedDate');
         } else {
-          ActionLogger.logError(
-              'EventCard.performDateChange', 'update_failed', {
+          ActionLogger.logError('EventCard.performDateChange', 'update_failed', {
             'eventId': event.id,
             'newDate': newDate.toIso8601String(),
           });
@@ -203,8 +198,7 @@ class EventCard extends StatelessWidget {
     }
   }
 
-  void _performRename(
-      BuildContext context, TextEditingController controller) async {
+  void _performRename(BuildContext context, TextEditingController controller) async {
     final newName = controller.text.trim();
     if (newName.isEmpty) {
       ActionLogger.logUserAction('EventCard', 'rename_validation_failed', {
@@ -319,7 +313,21 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formattedDate = DateFormat('MMM d, y').format(event.date);
-    final isPast = event.date.isBefore(DateTime.now());
+    final isOld = EventStatusHelper.isOldEvent(event.date);
+    final isCurrent = EventStatusHelper.isCurrentEvent(event.date);
+
+    // Determine date color based on event status
+    Color dateColor;
+    if (isOld) {
+      // Old events (2+ days ago) - muted color
+      dateColor = Theme.of(context).colorScheme.onSurfaceVariant;
+    } else if (isCurrent) {
+      // Current events (within 2 days) - green color
+      dateColor = Colors.green;
+    } else {
+      // Future events - primary color (this case shouldn't happen with current logic)
+      dateColor = Theme.of(context).colorScheme.primary;
+    }
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -344,17 +352,13 @@ class EventCard extends StatelessWidget {
             event.name,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : null,
+              color: isOld ? Theme.of(context).colorScheme.onSurfaceVariant : null,
             ),
           ),
           subtitle: Text(
             formattedDate,
             style: TextStyle(
-              color: isPast
-                  ? Theme.of(context).colorScheme.onSurfaceVariant
-                  : Theme.of(context).colorScheme.primary,
+              color: dateColor,
             ),
           ),
         ),
