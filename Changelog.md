@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.82.0] - 2025-01-16
+
+### User Requests
+- "Hmm, ok, but in such care let's have just one default rank - 'Not decided yet'" - Request to simplify default ranks
+
+### Changed
+- **Simplified Default Ranks**: Reduced from 5 default ranks to single "Not decided yet" rank
+  - **Cleaner Start**: More appropriate for minimal database setup after reset
+  - **User Freedom**: Easier for users to start with clean slate and create their own ranking system
+  - **Reduced Complexity**: Simpler database initialization with less predefined data
+
+### Technical
+- Modified `_insertDefaultRanks()` method to only insert one default rank with ordinal 1
+- Reduced database initialization overhead and complexity
+- Maintained backward compatibility with existing rank functionality
+
 ## [v0.81.0] - 2025-01-16
 
 ### User Requests
