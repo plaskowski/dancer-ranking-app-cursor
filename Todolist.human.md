@@ -4,10 +4,16 @@
 ## Status
 The app has all I need to start using it. :celebrate:
 
-## Tasks list (take one at a time)
-Next:
+## Tasks list
+
+### Line #1
+- [ ] <in progress> (bug) when I edit impression the text field should contain current impression text
 - [ ] ...
 
+### Line #2
+- [ ] merge branches
+
+## Backlog
+
 Nice to haves:
-- [TAKEN by #2] enter in edit name dialog should confirm it
-- (bug) when I edit impression the text field should contain current impression text
+- [ ] ...
