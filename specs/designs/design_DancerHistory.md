@@ -9,14 +9,13 @@
 ## Feature Requirements
 
 ### Core Functionality
-1. **Recent Events**: Show last 5-6 events where dancer was involved
-2. **Quick Context**: Display dance status, scores, and rankings for each event
-3. **Ranking Reference**: Help users recall past ranking decisions and reasoning
+1. **Recent Events**: Show last 5-6 events where dancer attended
+2. **Quick Context**: Simple one-line format with essential info only
+3. **Minimal UI**: No stats, headers, or extra visual elements
 
 ### Data Presentation
-- **Recent Event List**: Simple list of recent events with key details
-- **Quick Summary**: Basic stats at the top (total dances, last event)
-- **Ranking Context**: Previous rankings and reasons to maintain consistency
+- **Compact List**: One line per event with all essential info
+- **Essential Only**: Date, event, dance status, score (if danced), notes
 
 ## UI Design
 
@@ -24,55 +23,36 @@
 
 **Primary Navigation**: Event Screen (Planning Tab) → Tap dancer → "View History"
 
-### Simple Single Screen Layout
+### Minimal Single Screen Layout
 
 ```
 ┌─────────────────────────────────────┐
-│ ← Dancer History                    │
-├─────────────────────────────────────┤
-│        👤 Magda K.                  │
-│   🏷️ Regular • Social • Follower    │
-│                                     │
-│ 💃 Last danced: Dec 15, 2024       │
-│ 🎯 Total dances: 12                 │
-│ ⭐ Recent scores: Amazing, Great, Great │
-└─────────────────────────────────────┘
-│                                     │
-│ 📅 Recent Events                    │
+│ ← Magda K.                          │
 ├─────────────────────────────────────┤
 │                                     │
-│ Dec 15, 2024 - Christmas Party     │
-│ ✅ Danced  ⭐ Amazing                │
-│ 💭 "Excellent lead and flow"       │
+│ Dec 15 - Christmas Party           │
+│ Danced • Amazing • "Excellent lead"│
 │                                     │
-│ Nov 28, 2024 - Weekly Social       │
-│ ✅ Present  ❌ No dance             │
-│ 💭 "Too crowded, left early"       │
+│ Nov 28 - Weekly Social             │
+│ Present • "Too crowded"             │
 │                                     │
-│ Nov 14, 2024 - Practice Session    │
-│ ✅ Danced  ⭐ Great                 │
-│ 💭 "Good improvement on turns"     │
+│ Nov 14 - Practice Session          │
+│ Danced • Great • "Good turns"      │
 │                                     │
-│ Oct 30, 2024 - Halloween Dance     │
-│ ✅ Danced  ⭐ Great                 │
-│ 💭 "Consistent performance"        │
+│ Oct 30 - Halloween Dance           │
+│ Danced • Great • "Consistent"      │
 │                                     │
-│ Oct 16, 2024 - Workshop Night      │
-│ ✅ Present  ❌ No dance             │
-│ 💭 "Very busy night"               │
-│                                     │
-│                                     │
+│ Oct 16 - Workshop Night            │
+│ Present • "Very busy night"         │
 │                                     │
 └─────────────────────────────────────┘
 ```
 
 ### Key Information
 
-Each event shows:
-- **Date & Event Name**: When and where
-- **Status**: Danced (✅) or Present only (✅)
-- **Score**: If they danced (⭐ Amazing/Great/Good/Okay/Meh)
-- **Notes**: Brief impression from that event (💭)
+Each line shows: **Date - Event • Status • Score • "Notes"**
+- **Danced**: Shows score (Amazing/Great/Good/Okay/Meh)
+- **Present**: Shows only notes (no score since no dance)
 
 ## Database Design
 

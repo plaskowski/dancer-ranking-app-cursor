@@ -31,6 +31,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Simplified Status**: Only "Danced" vs "Present only" - removed rankings, absent, and left early as irrelevant
 - **Context-Driven**: Designed specifically for ranking decision support during event planning
 
+### Simplified
+- **Minimal UI Design**: Further simplified interface based on user feedback
+  - **Removed Header Stats**: Eliminated summary section with total dances and recent scores
+  - **Compact Event List**: One line per event showing "Date - Event • Status • Score • Notes"
+  - **No Visual Clutter**: Removed icons, separators, and extra formatting elements
+  - **Essential Only**: Shows just the core information needed for ranking decisions
+
 ### Technical
 - Design specification saved at `specs/designs/design_DancerHistory.md`
 - Database query design using existing tables (events, attendances, scores)
