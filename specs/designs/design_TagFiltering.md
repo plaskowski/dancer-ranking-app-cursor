@@ -42,7 +42,7 @@ Event Screen
 #### Enhancement: Add Tag Filtering to Dialogs
 - **"Add Existing Dancer" Dialog** → Add tag filter chips above dancer list
 - **"Select Dancers" Dialog** → New bulk selection dialog with tag-based groups
-- **Planning Tab Quick Actions** → Add "Select by tag" options
+- **Planning Tab Quick Actions** → Add "Select by tags" options
 
 ### 2. Enhanced Dancer Selection Dialogs
 
@@ -55,7 +55,7 @@ Event Screen
 │ │ Search dancers... 🔍                       │ │
 │ └─────────────────────────────────────────────┘ │
 │                                                 │
-│ 🏷️ Filter by venue/context:                    │
+│ 🏷️ Filter by tags:                             │
 │ [Monday Class (12)] [Cuban DC Festival (8)]     │
 │ [Friday Social (18)] [Workshop Miami (5)]       │
 │                                                 │
@@ -75,13 +75,10 @@ Event Screen
 ┌─────────────────────────────────────────────────┐
 │ Select Dancers for Event                  [×]   │
 ├─────────────────────────────────────────────────┤
-│ 🏷️ Select by venue/context:                    │
+│ 🏷️ Select by tags:                             │
 │                                                 │
-│ Classes & Venues:                               │
 │ [Monday Class (12)] [Friday Social (18)]        │
 │ [Tuesday Workshop (6)] [Studio Downtown (15)]   │
-│                                                 │  
-│ Events & Festivals:                             │
 │ [Cuban DC Festival (8)] [Summer Intensive (4)]  │
 │ [Workshop Miami (5)] [Salsa Congress (12)]      │
 │                                                 │
@@ -164,7 +161,7 @@ Event Screen
 ### Bulk Group Invitation Flow  
 1. User is planning event and wants to invite entire groups
 2. Taps "Select Dancers" for bulk selection
-3. Dialog shows venue/context categories with "Select All" options
+3. Dialog shows tag categories with "Select All" options
 4. User taps "Select All [Monday Class]" to invite entire class
 5. Adds "Select All [Friday Social]" to also invite social dancers
 6. Reviews total count and taps "Add All (30)"
@@ -185,8 +182,8 @@ Event Screen
 
 ### Data Organization
 - **Tag hierarchy**: Support nested tags (venues > classes > Monday Class)
-- **Venue categorization**: Auto-group by venue type (classes, socials, festivals, workshops)
-- **Tag grouping**: Group venue/context tags by category for better organization
+- **Tag categorization**: Auto-group by tag type (classes, socials, festivals, workshops)
+- **Tag grouping**: Group tags by category for better organization
 
 ### Accessibility
 - **Screen reader**: Announce filter changes and result counts
@@ -201,12 +198,12 @@ Event Screen
 - **Planning Tab**: Quick actions like "Add all Monday Class dancers"
 
 ### Future Event Features
-- **Event Templates**: Save venue tag combinations for recurring events
-- **Venue Analytics**: "Monday Class dancers have 80% attendance rate at socials"
-- **Cross-venue Insights**: "Dancers from Cuban DC Festival also frequent Friday Social"
+- **Event Templates**: Save tag combinations for recurring events
+- **Tag Analytics**: "Monday Class dancers have 80% attendance rate at socials"
+- **Cross-tag Insights**: "Dancers from Cuban DC Festival also frequent Friday Social"
 
 ## Success Metrics
 - **Event setup speed**: Time from opening event to finishing dancer invitations
 - **Group invitation efficiency**: How often bulk tag selection is used vs. individual selection
-- **Venue-based discovery**: % of event invitations that use venue tag filtering vs. search
-- **Tag filtering adoption**: How often users create and use venue/context tags 
+- **Tag-based discovery**: % of event invitations that use tag filtering vs. search
+- **Tag filtering adoption**: How often users create and use tags for event planning 
