@@ -359,7 +359,8 @@ class EventCard extends StatelessWidget {
             event.name,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: isOld ? Colors.grey : null,
+              color:
+                  isOld ? Theme.of(context).colorScheme.onSurfaceVariant : null,
             ),
           ),
           subtitle: Text(
