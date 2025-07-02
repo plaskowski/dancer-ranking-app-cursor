@@ -10,20 +10,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### User Requests
 - "Hmm, ok, but in such care let's have just one default rank - 'Not decided yet'" - Request to simplify default ranks
 - "Let's minimize other default entries so it is less work to clean them up after reset" - Request to reduce all default data
+- "As I plan the smart suggestions these example tags makes little sense" - Request to improve tag quality
+- "option 2" - Choose contextual tags over no defaults
+- "Nope, provide 3 related to where I can know them from" - Request location-based tags
+- "These sounds too generic, use like 'Monday Class', 'Cuban DC Festiaval'" - Request specific examples
 
 ### Changed
 - **Minimized All Default Data**: Dramatically reduced default entries across the system
   - **Default Ranks**: Reduced from 5 → 1 ("Not decided yet")
-  - **Default Tags**: Reduced from 8 → 2 ("new", "regular") 
+  - **Default Tags**: Reduced from 8 → 3 with specific contextual examples ("Monday Class", "Cuban DC Festival", "Friday Social")
   - **Default Scores**: Reduced from 5 → 3 ("Good", "Okay", "Poor")
   - **Cleaner Reset**: Much less cleanup work needed after database reset
+  - **Smart Suggestions Ready**: Tags now demonstrate proper context for filtering and suggestions
   - **User Freedom**: Easier for users to start with clean slate and build their own system
-  - **Simpler Setup**: Minimal predefined data that still allows app to function
+  - **Practical Examples**: Tags show specific venues/events where dancers are known from
 
 ### Technical
 - Modified `_insertDefaultRanks()` method to only insert one default rank
-- Simplified `_insertDefaultTags()` from 8 tags to 2 essential tags
+- Redesigned `_insertDefaultTags()` from 8 generic tags to 3 specific contextual examples
 - Streamlined `_insertDefaultScores()` from 5 scores to 3 basic scores
+- Contextual tags demonstrate proper tagging for smart suggestions and filtering
 - Maintained backward compatibility with existing functionality
 - Reduced database initialization overhead significantly
 
