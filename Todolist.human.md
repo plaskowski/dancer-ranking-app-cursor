@@ -12,7 +12,7 @@ Right away:
 - [ ] (in progress) import more history
   - [ ] validate the counts against Diary text  <--- diary agent
   - [ ] validate all the new events files can be imported
-  - [ ] have a summary of my impression on event itself
+  - [ ] extract a summary of my impression on event itself
 
 Small improvements:
 - events import
@@ -33,6 +33,7 @@ Small improvements:
   - [x] use native android toasts
 -  event screen
   - [x] future events (in 1+ days should only have planning tab)
+  - [ ] edit ranking action does not make sense for past events
   - [ ] ...
 - docs
   - [ ] preambula o moim szacunku dla partnerek
