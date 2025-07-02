@@ -14,26 +14,31 @@ Right away:
   - [ ] validate all the new events files can be imported
 
 Small improvements:
-- [x] events import
+- events import
   - [x] do the import preview right away after selecting a file (or dropping to drop zone)
   - [ ] ...
-- [x] Add existing dancer dialog
+- Add existing dancer dialog
   - [x] move info block into the scroll area to not take vertical space
-- [ ] "Add new dancer" dialog
-  - [ ] move "already danced" checkbox in above the tags section so I don't have to scroll through tags for it
-- [x] move the import actions to the settings screen
-- [x] home screen
+  - [ ] ...
+- "Add new dancer" dialog
+  - [x] move "already danced" checkbox in above the tags section so I don't have to scroll through tags for it
+  - [ ] ...
+- home screen
   - [x] move the settings action to AppBar and remove dots
-- [ ] Android
+  - [ ] ...
+-  Android
   - [ ] the FAB button is covered with bottom system bar
   - [ ] use native android toasts
-- [x] event screen
+-  event screen
   - [x] future events (in 1+ days should only have planning tab)
-- [ ] docs
-  - preambula o moim szacunku dla partnerek
-- [x] dancers screen
+  - [ ] ...
+- docs
+  - [ ] preambula o moim szacunku dla partnerek
+  - [ ] ...
+-  dancers screen
   - [x] add tag filter
   - [x] add both filter fields into scrollview so they don't take space
+  - [ ] ...
 
 Extract more historical data:
 - [ ] regenerate file for 2024-08
