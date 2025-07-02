@@ -7,13 +7,15 @@ The app has all I need to start using it. :celebrate:
 ## Tasks list
 
 ### Line #1
-- [ ] <in progress> (bug) when I edit impression the text field should contain current impression text
+- [ ] add new “Dancer history” screen
+  - purpose: review our dances history to aid ranking decisions
 - [ ] ...
 
 ### Line #2
 - [ ] merge branches
 
 ## Backlog
+- [ ] ...
 
 Nice to haves:
 - [ ] ...
