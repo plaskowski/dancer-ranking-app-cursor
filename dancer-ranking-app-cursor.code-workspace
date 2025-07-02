@@ -8,5 +8,11 @@
 		"files.associations": {
 			"*.dart": "dart"
 		}
+	},
+	"extensions": {
+		"recommendations": [
+			"dart-code.dart-code",
+			"dart-code.flutter"
+		]
 	}
 }

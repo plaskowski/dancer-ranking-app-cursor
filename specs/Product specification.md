@@ -18,15 +18,6 @@ Sometimes I meet new people, so I want to add a new person.
 I may want to add a comment why I am eager to dance with given person.
 Later I may want to add a comment on my impression on given person that night.
 
-# General principles
-- Cross-platform application using Flutter framework (supports macOS and Android)
-- save the data into SQLite using Drift library
-- Material 3 design system ensures consistent experience across platforms
-
-# Coding guidelines
-- put each component class into separate file
-- use Drift expressions instead of raw SQL queries
-
 # Development workflow
 - Follow 5-step workflow: Implement → Update Changelog → Update Specification → Update Next Steps → Commit
 - Each improvement gets immediate version bump with complete documentation
