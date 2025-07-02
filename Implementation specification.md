@@ -297,17 +297,71 @@ Users can adjust rankings during events for various reasons:
 - Add new dancer (FAB)
 - Edit existing dancer (tap → context menu)
 - Delete dancer (tap → context menu, with confirmation)
+- **Merge dancers** (tap → context menu → "Merge into...")
 **UI Design**:
 - **Enhanced Card Layout**: Name with notes and tags displayed below
 - **Tag Display**: Colored chip badges under dancer name showing assigned tags
 - **Clean Organization**: Tags appear only on main Dancers screen, not on event screens
-- **Tap for Context Actions**: Single tap on any dancer card opens modal bottom sheet with Edit and Delete options
+- **Tap for Context Actions**: Single tap on any dancer card opens modal bottom sheet with Edit, Merge, and Delete options
+- **Context Menu Options**: 
+  - **Edit**: Opens Add/Edit Dancer Dialog for name, notes, and tag modifications
+  - **Merge into...**: Opens target selection screen for consolidating duplicate dancer records
+  - **Delete**: Confirms deletion with warning about related data removal
 - **Consistent Interaction**: Follows same pattern as Tags, Ranks, and Events screens
 - **Clean Design**: No visual clutter with hidden context menus
 - **Tag Chips Styling**: Small rounded containers with primary container color
+**Merge Workflow**:
+1. **Initiate Merge**: Tap source dancer → Select "Merge into..." from context menu
+2. **Target Selection**: Navigate to dedicated screen with search functionality
+3. **Choose Target**: Browse/search all other dancers (excluding source dancer)
+4. **Confirmation**: Review merge details with clear warning about data transfer
+5. **Execute**: Complete merge with transaction safety and success feedback
+**Merge Process**:
+- **Data Preservation**: All dance history, rankings, attendances, tags, and notes transferred to target dancer
+- **Conflict Resolution**: Duplicate attendances handled intelligently (keeps target's record)
+- **Tag Combination**: All unique tags from both dancers preserved
+- **Notes Merging**: Combined with separator (target | source) when both exist
+- **First Met Date**: Preserves earliest date between source and target dancers
+- **Transaction Safety**: All operations wrapped in database transaction with rollback on errors
 **Navigation**:
 - ← Back to previous screen
 - → Add/Edit Dancer Dialog (modal) with tag selection
+- → Select Merge Target Screen (for dancer consolidation)
+
+### 5a. Select Merge Target Screen (`SelectMergeTargetScreen`)
+**Purpose**: Select target dancer for merging duplicate records with comprehensive preview
+**Access**: From Dancers Screen → tap dancer → context menu → "Merge into..."
+**Actions**:
+- Search available dancers by name or notes  
+- View all dancers except the source dancer being merged
+- Tap any dancer to initiate merge confirmation
+- Clear indication of merge operation in progress
+**UI Design**:
+- **Search Functionality**: Text field at top for filtering dancers by name or notes
+- **Info Banner**: Clear explanation of merge operation and data transfer
+- **Dancer List**: Card-based layout showing all available target dancers
+- **Alphabetical Sorting**: Dancers sorted by name for easy navigation
+- **Avatar Indicators**: Circle avatars with first letter of dancer name
+- **Notes Display**: Subtitle showing dancer notes when available
+- **Empty States**: Helpful messages when no dancers available or no search results
+**Merge Confirmation Dialog**:
+- **Clear Summary**: Shows source dancer merging into target dancer
+- **Operation Preview**: Bullet points explaining what will happen after merge
+- **Data Transfer Details**: 
+  - All dance history will be transferred
+  - All tags will be combined  
+  - Notes will be merged
+  - Source dancer will be deleted
+- **Warning Notice**: Prominent warning that action cannot be undone
+- **Action Buttons**: Cancel (safe exit) and Confirm Merge (proceed with operation)
+**Error Handling**:
+- **Transaction Safety**: Database operations wrapped in transactions
+- **User Feedback**: Success and error messages via toast notifications
+- **Graceful Failure**: Rollback on errors with clear error reporting
+- **Loading States**: Visual feedback during merge operation
+**Navigation**:
+- ← Back to Dancers Screen (cancel merge)
+- → Confirmation Dialog → Back to Dancers Screen (after merge completion)
 
 ### 6. Tags Screen (`TagsScreen`)
 **Purpose**: Manage all tags in the system for dancer categorization

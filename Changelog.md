@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.61.0] - 2025-01-16
+
+### User Requests
+- "I like it, let's implement it, update the main impl spec and commit" (referring to the dancer merge design)
+
+### Added
+- **Dancer Merge Feature**: Manual merge functionality to consolidate duplicate dancer records
+  - **Service Layer**: Added `mergeDancers()` method to DancerService with transaction safety
+  - **Target Selection Screen**: New screen for selecting which dancer to merge into with search functionality
+  - **Context Menu Integration**: Added "Merge into..." option to dancer context menu
+  - **Data Preservation**: All dance history, rankings, attendances, tags, and notes transferred safely
+  - **Conflict Resolution**: Smart handling of duplicate attendances and tags during merge
+  - **Confirmation Dialog**: Clear merge preview with warning about irreversible action
+
+### Technical
+- **Transaction Safety**: All merge operations wrapped in database transactions with rollback on errors
+- **Foreign Key Updates**: Comprehensive SQL updates for all related tables (rankings, attendances, dancer_tags)
+- **Data Merging**: Notes combined with separator, earliest first-met date preserved
+- **User Experience**: Search functionality, loading states, success/error feedback with toast messages
+- **Action Logging**: Complete audit trail for merge operations and user interactions
+
 ## [v0.60.2] - 2025-01-16
 
 ### User Requests

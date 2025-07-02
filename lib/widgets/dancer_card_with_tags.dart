@@ -7,12 +7,14 @@ class DancerCardWithTags extends StatelessWidget {
   final DancerWithTags dancerWithTags;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final VoidCallback onMerge;
 
   const DancerCardWithTags({
     super.key,
     required this.dancerWithTags,
     required this.onEdit,
     required this.onDelete,
+    required this.onMerge,
   });
 
   @override
@@ -105,8 +107,7 @@ class DancerCardWithTags extends StatelessWidget {
                 ),
                 title: const Text('Edit'),
                 onTap: () {
-                  ActionLogger.logAction(
-                      'UI_DancerCard', 'context_edit_tapped', {
+                  ActionLogger.logAction('UI_DancerCard', 'context_edit_tapped', {
                     'dancerId': dancer.id,
                     'dancerName': dancer.name,
                   });
@@ -117,13 +118,28 @@ class DancerCardWithTags extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(
+                  Icons.merge_type,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                title: const Text('Merge into...'),
+                onTap: () {
+                  ActionLogger.logAction('UI_DancerCard', 'context_merge_tapped', {
+                    'dancerId': dancer.id,
+                    'dancerName': dancer.name,
+                  });
+
+                  Navigator.pop(context);
+                  onMerge();
+                },
+              ),
+              ListTile(
+                leading: Icon(
                   Icons.delete,
                   color: Theme.of(context).colorScheme.error,
                 ),
                 title: const Text('Delete'),
                 onTap: () {
-                  ActionLogger.logAction(
-                      'UI_DancerCard', 'context_delete_tapped', {
+                  ActionLogger.logAction('UI_DancerCard', 'context_delete_tapped', {
                     'dancerId': dancer.id,
                     'dancerName': dancer.name,
                   });

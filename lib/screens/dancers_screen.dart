@@ -8,6 +8,7 @@ import '../utils/toast_helper.dart';
 import '../widgets/add_dancer_dialog.dart';
 import '../widgets/dancer_card_with_tags.dart';
 import '../widgets/import/import_dancers_dialog.dart';
+import 'select_merge_target_screen.dart';
 
 class DancersScreen extends StatefulWidget {
   const DancersScreen({super.key});
@@ -112,23 +113,17 @@ class _DancersScreenState extends State<DancersScreen> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          _searchQuery.isEmpty
-                              ? 'No dancers yet'
-                              : 'No dancers found',
+                          _searchQuery.isEmpty ? 'No dancers yet' : 'No dancers found',
                           style: TextStyle(
                             fontSize: 18,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          _searchQuery.isEmpty
-                              ? 'Tap + to add your first dancer'
-                              : 'Try a different search',
+                          _searchQuery.isEmpty ? 'Tap + to add your first dancer' : 'Try a different search',
                           style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -145,6 +140,7 @@ class _DancersScreenState extends State<DancersScreen> {
                       dancerWithTags: dancerWithTags,
                       onEdit: () => _editDancer(dancerWithTags.dancer),
                       onDelete: () => _deleteDancer(dancerWithTags.dancer),
+                      onMerge: () => _mergeDancer(dancerWithTags.dancer),
                     );
                   },
                 );
@@ -189,8 +185,7 @@ class _DancersScreenState extends State<DancersScreen> {
           TextButton(
             onPressed: () async {
               try {
-                final dancerService =
-                    Provider.of<DancerService>(context, listen: false);
+                final dancerService = Provider.of<DancerService>(context, listen: false);
                 await dancerService.deleteDancer(dancer.id);
 
                 if (mounted) {
@@ -204,13 +199,28 @@ class _DancersScreenState extends State<DancersScreen> {
                 }
               }
             },
-            style: TextButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.error),
+            style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
             child: const Text('Delete'),
           ),
         ],
       ),
     );
+  }
+
+  void _mergeDancer(Dancer dancer) async {
+    final result = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SelectMergeTargetScreen(sourceDancer: dancer),
+      ),
+    );
+
+    // If merge was successful, the screen will automatically refresh via streams
+    // The SelectMergeTargetScreen already shows success/error messages
+    if (result == true && mounted) {
+      // Additional refresh can be added here if needed
+      // The StreamBuilder will automatically update
+    }
   }
 
   void _showImportDialog() async {

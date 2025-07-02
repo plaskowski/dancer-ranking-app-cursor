@@ -13,17 +13,14 @@ class DancerService {
   Stream<List<Dancer>> watchAllDancers() {
     ActionLogger.logServiceCall('DancerService', 'watchAllDancers');
 
-    return (_database.select(_database.dancers)
-          ..orderBy([(d) => OrderingTerm.asc(d.name)]))
-        .watch();
+    return (_database.select(_database.dancers)..orderBy([(d) => OrderingTerm.asc(d.name)])).watch();
   }
 
   // Get a specific dancer by ID
   Future<Dancer?> getDancer(int id) {
     ActionLogger.logServiceCall('DancerService', 'getDancer', {'dancerId': id});
 
-    return (_database.select(_database.dancers)..where((d) => d.id.equals(id)))
-        .getSingleOrNull();
+    return (_database.select(_database.dancers)..where((d) => d.id.equals(id))).getSingleOrNull();
   }
 
   // Search dancers by name
@@ -85,8 +82,7 @@ class DancerService {
     try {
       final dancer = await getDancer(id);
       if (dancer == null) {
-        ActionLogger.logAction(
-            'DancerService.updateDancer', 'dancer_not_found', {
+        ActionLogger.logAction('DancerService.updateDancer', 'dancer_not_found', {
           'dancerId': id,
         });
         return false;
@@ -129,8 +125,7 @@ class DancerService {
     try {
       final dancer = await getDancer(id);
       if (dancer == null) {
-        ActionLogger.logError(
-            'DancerService.updateFirstMetDate', 'dancer_not_found', {
+        ActionLogger.logError('DancerService.updateFirstMetDate', 'dancer_not_found', {
           'dancerId': id,
         });
         return false;
@@ -166,9 +161,7 @@ class DancerService {
     });
 
     try {
-      final result = await (_database.delete(_database.dancers)
-            ..where((d) => d.id.equals(id)))
-          .go();
+      final result = await (_database.delete(_database.dancers)..where((d) => d.id.equals(id))).go();
 
       ActionLogger.logDbOperation('DELETE', 'dancers', {
         'id': id,
@@ -190,14 +183,12 @@ class DancerService {
 
     try {
       final countExp = countAll();
-      final query = _database.selectOnly(_database.dancers)
-        ..addColumns([countExp]);
+      final query = _database.selectOnly(_database.dancers)..addColumns([countExp]);
 
       final result = await query.getSingle();
       final count = result.read(countExp)!;
 
-      ActionLogger.logAction(
-          'DancerService.getDancersCount', 'count_retrieved', {
+      ActionLogger.logAction('DancerService.getDancersCount', 'count_retrieved', {
         'count': count,
       });
 
@@ -218,8 +209,7 @@ class DancerService {
       // LEFT JOIN rankings ON dancers.id = rankings.dancer_id AND rankings.event_id = eventId
       leftOuterJoin(
         _database.rankings,
-        _database.dancers.id.equalsExp(_database.rankings.dancerId) &
-            _database.rankings.eventId.equals(eventId),
+        _database.dancers.id.equalsExp(_database.rankings.dancerId) & _database.rankings.eventId.equals(eventId),
       ),
       // LEFT JOIN ranks ON rankings.rank_id = ranks.id
       leftOuterJoin(
@@ -229,8 +219,7 @@ class DancerService {
       // LEFT JOIN attendances ON dancers.id = attendances.dancer_id AND attendances.event_id = eventId
       leftOuterJoin(
         _database.attendances,
-        _database.dancers.id.equalsExp(_database.attendances.dancerId) &
-            _database.attendances.eventId.equals(eventId),
+        _database.dancers.id.equalsExp(_database.attendances.dancerId) & _database.attendances.eventId.equals(eventId),
       ),
       // LEFT JOIN scores ON attendances.score_id = scores.id
       leftOuterJoin(
@@ -255,36 +244,29 @@ class DancerService {
         bool isFirstMetHere = false;
         if (attendance != null) {
           // Get current event date for comparison
-          final currentEvent = await (_database.select(_database.events)
-                ..where((e) => e.id.equals(eventId)))
-              .getSingleOrNull();
+          final currentEvent =
+              await (_database.select(_database.events)..where((e) => e.id.equals(eventId))).getSingleOrNull();
 
           if (currentEvent != null) {
             // Check if firstMetDate is before current event date
-            final bool hasEarlierFirstMet = dancer.firstMetDate != null &&
-                dancer.firstMetDate!.isBefore(currentEvent.date);
+            final bool hasEarlierFirstMet =
+                dancer.firstMetDate != null && dancer.firstMetDate!.isBefore(currentEvent.date);
 
             if (hasEarlierFirstMet) {
               // If firstMetDate is before this event, not first met here
               isFirstMetHere = false;
             } else {
               // Get earliest attendance for this dancer across all events (exclude 'absent' status)
-              final earliestAttendance =
-                  await (_database.select(_database.attendances).join([
-                innerJoin(
-                    _database.events,
-                    _database.attendances.eventId
-                        .equalsExp(_database.events.id)),
+              final earliestAttendance = await (_database.select(_database.attendances).join([
+                innerJoin(_database.events, _database.attendances.eventId.equalsExp(_database.events.id)),
               ])
-                        ..where(_database.attendances.dancerId
-                                .equals(dancer.id) &
-                            _database.attendances.status.isNotValue('absent'))
-                        ..orderBy([OrderingTerm.asc(_database.events.date)])
-                        ..limit(1))
-                      .getSingleOrNull();
+                    ..where(_database.attendances.dancerId.equals(dancer.id) &
+                        _database.attendances.status.isNotValue('absent'))
+                    ..orderBy([OrderingTerm.asc(_database.events.date)])
+                    ..limit(1))
+                  .getSingleOrNull();
 
-              final earliestAttendanceRecord =
-                  earliestAttendance?.readTable(_database.attendances);
+              final earliestAttendanceRecord = earliestAttendance?.readTable(_database.attendances);
 
               // This is first met if this attendance is the earliest attendance
               isFirstMetHere = earliestAttendanceRecord?.eventId == eventId;
@@ -318,54 +300,40 @@ class DancerService {
   }
 
   // Get only dancers that don't have rankings for a specific event AND are not present (for selection dialog)
-  Future<List<DancerWithEventInfo>> getUnrankedDancersForEvent(
-      int eventId) async {
+  Future<List<DancerWithEventInfo>> getUnrankedDancersForEvent(int eventId) async {
     ActionLogger.logServiceCall('DancerService', 'getUnrankedDancersForEvent', {
       'eventId': eventId,
     });
 
     try {
       // Get all ranked dancer IDs for this event
-      final rankedDancerIdsDebug = await (_database.select(_database.rankings)
-            ..where((r) => r.eventId.equals(eventId)))
-          .get();
+      final rankedDancerIdsDebug =
+          await (_database.select(_database.rankings)..where((r) => r.eventId.equals(eventId))).get();
 
       // Get all present dancer IDs for this event
-      final presentDancerIds = await (_database.select(_database.attendances)
-            ..where((a) => a.eventId.equals(eventId)))
-          .get();
+      final presentDancerIds =
+          await (_database.select(_database.attendances)..where((a) => a.eventId.equals(eventId))).get();
 
-      print(
-          'DEBUG: Ranked dancer IDs for event $eventId: ${rankedDancerIdsDebug.map((r) => r.dancerId).toList()}');
-      print(
-          'DEBUG: Present dancer IDs for event $eventId: ${presentDancerIds.map((a) => a.dancerId).toList()}');
+      print('DEBUG: Ranked dancer IDs for event $eventId: ${rankedDancerIdsDebug.map((r) => r.dancerId).toList()}');
+      print('DEBUG: Present dancer IDs for event $eventId: ${presentDancerIds.map((a) => a.dancerId).toList()}');
 
       // Get all dancers
-      final allDancers = await (_database.select(_database.dancers)
-            ..orderBy([(d) => OrderingTerm.asc(d.name)]))
-          .get();
+      final allDancers = await (_database.select(_database.dancers)..orderBy([(d) => OrderingTerm.asc(d.name)])).get();
 
       // Filter out dancers that have rankings OR are present for this event
-      final rankedDancerIds =
-          rankedDancerIdsDebug.map((r) => r.dancerId).toSet();
-      final presentDancerIdSet =
-          presentDancerIds.map((a) => a.dancerId).toSet();
+      final rankedDancerIds = rankedDancerIdsDebug.map((r) => r.dancerId).toSet();
+      final presentDancerIdSet = presentDancerIds.map((a) => a.dancerId).toSet();
       final availableDancers = allDancers
-          .where((dancer) =>
-              !rankedDancerIds.contains(dancer.id) &&
-              !presentDancerIdSet.contains(dancer.id))
+          .where((dancer) => !rankedDancerIds.contains(dancer.id) && !presentDancerIdSet.contains(dancer.id))
           .toList();
 
       print('DEBUG: All dancers count: ${allDancers.length}');
       print('DEBUG: Ranked dancers count: ${rankedDancerIds.length}');
       print('DEBUG: Present dancers count: ${presentDancerIdSet.length}');
-      print(
-          'DEBUG: Available (unranked + absent) dancers count: ${availableDancers.length}');
-      print(
-          'DEBUG: Available dancer names: ${availableDancers.map((d) => d.name).toList()}');
+      print('DEBUG: Available (unranked + absent) dancers count: ${availableDancers.length}');
+      print('DEBUG: Available dancer names: ${availableDancers.map((d) => d.name).toList()}');
 
-      ActionLogger.logAction(
-          'DancerService.getUnrankedDancersForEvent', 'filtering_complete', {
+      ActionLogger.logAction('DancerService.getUnrankedDancersForEvent', 'filtering_complete', {
         'eventId': eventId,
         'totalDancers': allDancers.length,
         'rankedDancers': rankedDancerIds.length,
@@ -384,8 +352,7 @@ class DancerService {
         );
       }).toList();
     } catch (e) {
-      ActionLogger.logError(
-          'DancerService.getUnrankedDancersForEvent', e.toString(), {
+      ActionLogger.logError('DancerService.getUnrankedDancersForEvent', e.toString(), {
         'eventId': eventId,
       });
       rethrow;
@@ -397,9 +364,7 @@ class DancerService {
     ActionLogger.logServiceCall('DancerService', 'getDancersWithTags');
 
     try {
-      final dancers = await (_database.select(_database.dancers)
-            ..orderBy([(d) => OrderingTerm.asc(d.name)]))
-          .get();
+      final dancers = await (_database.select(_database.dancers)..orderBy([(d) => OrderingTerm.asc(d.name)])).get();
 
       final dancersWithTags = <DancerWithTags>[];
 
@@ -415,8 +380,7 @@ class DancerService {
           ..orderBy([OrderingTerm.asc(_database.tags.name)]);
 
         final tagResults = await tagQuery.get();
-        final tags =
-            tagResults.map((row) => row.readTable(_database.tags)).toList();
+        final tags = tagResults.map((row) => row.readTable(_database.tags)).toList();
 
         dancersWithTags.add(DancerWithTags(
           dancer: dancer,
@@ -438,6 +402,114 @@ class DancerService {
     // Use the existing watchAllDancers stream and transform it
     return watchAllDancers().asyncMap((_) async {
       return await getDancersWithTags();
+    });
+  }
+
+  // Merge one dancer into another
+  Future<bool> mergeDancers(int sourceDancerId, int targetDancerId) async {
+    ActionLogger.logUserAction('DancerService', 'mergeDancers', {
+      'sourceDancerId': sourceDancerId,
+      'targetDancerId': targetDancerId,
+    });
+
+    return await _database.transaction(() async {
+      try {
+        // 1. Get source and target dancer data
+        final sourceDancer = await getDancer(sourceDancerId);
+        final targetDancer = await getDancer(targetDancerId);
+
+        if (sourceDancer == null || targetDancer == null) {
+          return false;
+        }
+
+        // 2. Update all foreign key references to point to target dancer
+
+        // Update rankings
+        await _database.customUpdate(
+          'UPDATE rankings SET dancer_id = ? WHERE dancer_id = ?',
+          variables: [Variable.withInt(targetDancerId), Variable.withInt(sourceDancerId)],
+        );
+
+        // Update attendances (handle duplicates by keeping target's record)
+        await _database.customUpdate(
+          '''UPDATE attendances SET dancer_id = ? 
+             WHERE dancer_id = ? 
+             AND NOT EXISTS (
+               SELECT 1 FROM attendances a2 
+               WHERE a2.dancer_id = ? AND a2.event_id = attendances.event_id
+             )''',
+          variables: [
+            Variable.withInt(targetDancerId),
+            Variable.withInt(sourceDancerId),
+            Variable.withInt(targetDancerId)
+          ],
+        );
+
+        // Delete duplicate attendances for events where target already exists
+        await _database.customUpdate(
+          '''DELETE FROM attendances 
+             WHERE dancer_id = ? 
+             AND EXISTS (
+               SELECT 1 FROM attendances a2 
+               WHERE a2.dancer_id = ? AND a2.event_id = attendances.event_id
+             )''',
+          variables: [Variable.withInt(sourceDancerId), Variable.withInt(targetDancerId)],
+        );
+
+        // Update dancer_tags (duplicates will be ignored due to unique constraint)
+        await _database.customUpdate(
+          '''INSERT OR IGNORE INTO dancer_tags (dancer_id, tag_id, created_at)
+             SELECT ?, tag_id, created_at FROM dancer_tags WHERE dancer_id = ?''',
+          variables: [Variable.withInt(targetDancerId), Variable.withInt(sourceDancerId)],
+        );
+
+        // Delete source dancer's tags
+        await _database.customUpdate(
+          'DELETE FROM dancer_tags WHERE dancer_id = ?',
+          variables: [Variable.withInt(sourceDancerId)],
+        );
+
+        // 3. Merge notes and first met date into target dancer
+        String? mergedNotes;
+        if (targetDancer.notes != null && sourceDancer.notes != null) {
+          mergedNotes = '${targetDancer.notes} | ${sourceDancer.notes}';
+        } else {
+          mergedNotes = targetDancer.notes ?? sourceDancer.notes;
+        }
+
+        DateTime? earliestFirstMet;
+        if (targetDancer.firstMetDate != null && sourceDancer.firstMetDate != null) {
+          earliestFirstMet = targetDancer.firstMetDate!.isBefore(sourceDancer.firstMetDate!)
+              ? targetDancer.firstMetDate
+              : sourceDancer.firstMetDate;
+        } else {
+          earliestFirstMet = targetDancer.firstMetDate ?? sourceDancer.firstMetDate;
+        }
+
+        await (_database.update(_database.dancers)..where((t) => t.id.equals(targetDancerId))).write(DancersCompanion(
+          notes: Value(mergedNotes),
+          firstMetDate: Value(earliestFirstMet),
+        ));
+
+        // 4. Delete source dancer
+        await (_database.delete(_database.dancers)..where((t) => t.id.equals(sourceDancerId))).go();
+
+        ActionLogger.logUserAction('DancerService', 'mergeDancers_success', {
+          'sourceDancerId': sourceDancerId,
+          'targetDancerId': targetDancerId,
+          'mergedNotes': mergedNotes != null,
+          'mergedFirstMet': earliestFirstMet != null,
+        });
+
+        return true;
+      } catch (e) {
+        ActionLogger.logError('DancerService', 'mergeDancers_failed', {
+          'sourceDancerId': sourceDancerId,
+          'targetDancerId': targetDancerId,
+          'error': e.toString(),
+        });
+        return false;
+      }
     });
   }
 }
