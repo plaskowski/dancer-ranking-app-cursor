@@ -93,7 +93,7 @@ class GeneralSettingsTab extends StatelessWidget {
         style: TextStyle(fontWeight: FontWeight.w500),
       ),
       subtitle: Text(
-        'Import dancers from CSV file',
+        'Import dancers from JSON file',
         style: TextStyle(
           color: Theme.of(context).colorScheme.onSurfaceVariant,
           fontSize: 12,
@@ -115,7 +115,7 @@ class GeneralSettingsTab extends StatelessWidget {
         style: TextStyle(fontWeight: FontWeight.w500),
       ),
       subtitle: Text(
-        'Import events from CSV file',
+        'Import events from JSON file',
         style: TextStyle(
           color: Theme.of(context).colorScheme.onSurfaceVariant,
           fontSize: 12,

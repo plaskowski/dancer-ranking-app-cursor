@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - "Move import actions to general settings tab" - Request to relocate import functionality from home screen to settings
 - "Great, remove import button from Dancers screen too" - Request to remove import functionality from dancers screen as well
 - "merge settings section into data management" - Request to consolidate data-related settings into single section
+- "the import actions say about CSV but we use JSON format" - Request to fix incorrect file format descriptions
 
 ### Changed
 - **Import Actions Location**: Moved import functionality from home screen overflow menu to general settings tab
@@ -43,6 +44,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added proper async/await patterns with context.mounted checks to prevent linter warnings
 - Maintained existing import dialog functionality while changing access location
 - Updated action logging to distinguish between settings and home screen sources
+
+### Fixed
+- **Import Descriptions**: Corrected import action subtitles to show "JSON file" instead of "CSV file"
+  - **Accurate Information**: Import dancers and events descriptions now correctly indicate JSON format
+  - **User Clarity**: Prevents confusion about expected file format for imports
 
 ## [v0.82.0] - 2025-01-16
 
