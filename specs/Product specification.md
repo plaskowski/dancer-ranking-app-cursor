@@ -452,15 +452,15 @@ Tab(icon: Icon(Icons.label), text: 'Tags')
 - **Floating Action Button**: Positioned within tab for adding new ranks
 
 ### 7.6 Tags Management Tab (`TagsManagementTab`)
-- **Simple List View**: Clean card-based layout displaying tag names without icons
+- **Usage Statistics Display**: Clean card-based layout showing tag names with usage counts (e.g., "regular • 5 dancers")
 - **Context Menu**: Edit and delete operations via tap-to-open modal bottom sheet
 - **Add Tag Dialog**: Create new tags with validation and duplicate prevention
 - **Edit Tag Dialog**: Modify existing tag names with validation
 - **Delete Confirmation**: Warning dialog explaining impact on dancers
 - **Floating Action Button**: Positioned within tab for adding new tags
-- **Provider Integration**: Uses TagService from context for data operations
-- **Real-time Updates**: StreamBuilder automatically refreshes when tags change
-- **Consistent UI Pattern**: Follows same interaction model as other management tabs
+- **Provider Integration**: Uses TagService from context for data operations with usage statistics
+- **Manual Refresh**: Automatic reload after create, update, and delete operations to keep statistics current
+- **Consistent UI Pattern**: Follows same interaction model as other management tabs with usage display like scores and ranks
 
 ### 7.7 Actions Available
 

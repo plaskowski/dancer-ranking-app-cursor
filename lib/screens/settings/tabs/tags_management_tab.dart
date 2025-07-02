@@ -14,18 +14,47 @@ class TagsManagementTab extends StatefulWidget {
 
 class _TagsManagementTabState extends State<TagsManagementTab> {
   late TagService tagService;
+  List<TagWithUsageCount> _tagsWithUsage = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     tagService = Provider.of<TagService>(context, listen: false);
     ActionLogger.logAction('UI_TagsManagementTab', 'tab_initialized');
+    _loadTags();
   }
 
   @override
   void dispose() {
     ActionLogger.logAction('UI_TagsManagementTab', 'tab_disposed');
     super.dispose();
+  }
+
+  Future<void> _loadTags() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final tagsWithUsage = await tagService.getAllTagsWithUsageCount();
+      setState(() {
+        _tagsWithUsage = tagsWithUsage;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to load tags: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _showAddTagDialog() async {
@@ -49,16 +78,14 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
         actions: [
           TextButton(
             onPressed: () {
-              ActionLogger.logAction(
-                  'UI_TagsManagementTab', 'add_tag_dialog_cancelled');
+              ActionLogger.logAction('UI_TagsManagementTab', 'add_tag_dialog_cancelled');
               Navigator.of(context).pop(false);
             },
             child: const Text('Cancel'),
           ),
           FilledButton(
             onPressed: () {
-              ActionLogger.logAction(
-                  'UI_TagsManagementTab', 'add_tag_dialog_confirmed', {
+              ActionLogger.logAction('UI_TagsManagementTab', 'add_tag_dialog_confirmed', {
                 'tagName': controller.text.trim(),
               });
               Navigator.of(context).pop(true);
@@ -81,6 +108,7 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
       });
 
       await tagService.createTag(name);
+      await _loadTags(); // Reload to show updated usage stats
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -135,16 +163,14 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
         actions: [
           TextButton(
             onPressed: () {
-              ActionLogger.logAction(
-                  'UI_TagsManagementTab', 'edit_tag_dialog_cancelled');
+              ActionLogger.logAction('UI_TagsManagementTab', 'edit_tag_dialog_cancelled');
               Navigator.of(context).pop(false);
             },
             child: const Text('Cancel'),
           ),
           FilledButton(
             onPressed: () {
-              ActionLogger.logAction(
-                  'UI_TagsManagementTab', 'edit_tag_dialog_confirmed', {
+              ActionLogger.logAction('UI_TagsManagementTab', 'edit_tag_dialog_confirmed', {
                 'tagId': tag.id,
                 'oldName': tag.name,
                 'newName': controller.text.trim(),
@@ -177,6 +203,7 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
 
       if (mounted) {
         if (success) {
+          await _loadTags(); // Reload to show updated stats
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Tag updated to "$newName"'),
@@ -184,8 +211,7 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
             ),
           );
 
-          ActionLogger.logAction(
-              'UI_TagsManagementTab', 'tag_updated_success', {
+          ActionLogger.logAction('UI_TagsManagementTab', 'tag_updated_success', {
             'tagId': tag.id,
             'oldName': tag.name,
             'newName': newName,
@@ -221,67 +247,41 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<List<Tag>>(
-        stream: tagService.watchAllTags(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (snapshot.hasError) {
-            ActionLogger.logError(
-                'UI_TagsManagementTab', snapshot.error.toString());
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline, size: 48),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Failed to load tags',
-                    style: Theme.of(context).textTheme.headlineSmall,
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _tagsWithUsage.isEmpty
+              ? const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.label_outline, size: 64, color: Colors.grey),
+                      SizedBox(height: 16),
+                      Text('No tags found', style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 8),
+                      Text(
+                        'Tap + to add your first tag',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    snapshot.error.toString(),
-                    style: Theme.of(context).textTheme.bodySmall,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            );
-          }
-
-          final tags = snapshot.data ?? [];
-
-          ActionLogger.logListRendering('UI_TagsManagementTab', 'tags',
-              tags.map((tag) => {'id': tag.id, 'name': tag.name}).toList());
-
-          if (tags.isEmpty) {
-            return const Center(
-              child: Text(
-                'No tags found',
-                style: TextStyle(fontSize: 16),
-              ),
-            );
-          }
-
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: tags.length,
-            itemBuilder: (context, index) {
-              final tag = tags[index];
-              return Card(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: ListTile(
-                  title: Text(tag.name),
-                  onTap: () => _showTagContextMenu(context, tag),
+                )
+              : ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: _tagsWithUsage.length,
+                  itemBuilder: (context, index) {
+                    final tagWithUsage = _tagsWithUsage[index];
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      child: ListTile(
+                        title: Text(
+                          '${tagWithUsage.tag.name} • ${tagWithUsage.usageCount} dancers',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                        onTap: () => _showTagContextMenu(context, tagWithUsage.tag),
+                      ),
+                    );
+                  },
                 ),
-              );
-            },
-          );
-        },
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddTagDialog,
         tooltip: 'Add Tag',
@@ -319,8 +319,7 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
                 ),
                 title: const Text('Edit'),
                 onTap: () {
-                  ActionLogger.logAction(
-                      'UI_TagsManagementTab', 'context_edit_tapped', {
+                  ActionLogger.logAction('UI_TagsManagementTab', 'context_edit_tapped', {
                     'tagId': tag.id,
                     'tagName': tag.name,
                   });
@@ -336,8 +335,7 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
                 ),
                 title: const Text('Delete'),
                 onTap: () {
-                  ActionLogger.logAction(
-                      'UI_TagsManagementTab', 'context_delete_tapped', {
+                  ActionLogger.logAction('UI_TagsManagementTab', 'context_delete_tapped', {
                     'tagId': tag.id,
                     'tagName': tag.name,
                   });
@@ -369,16 +367,14 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
         actions: [
           TextButton(
             onPressed: () {
-              ActionLogger.logAction(
-                  'UI_TagsManagementTab', 'delete_tag_dialog_cancelled');
+              ActionLogger.logAction('UI_TagsManagementTab', 'delete_tag_dialog_cancelled');
               Navigator.of(context).pop(false);
             },
             child: const Text('Cancel'),
           ),
           FilledButton(
             onPressed: () {
-              ActionLogger.logAction(
-                  'UI_TagsManagementTab', 'delete_tag_dialog_confirmed', {
+              ActionLogger.logAction('UI_TagsManagementTab', 'delete_tag_dialog_confirmed', {
                 'tagId': tag.id,
                 'tagName': tag.name,
               });
@@ -410,6 +406,7 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
 
       if (mounted) {
         if (success) {
+          await _loadTags(); // Reload to show updated stats
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Tag "${tag.name}" deleted'),
@@ -417,8 +414,7 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
             ),
           );
 
-          ActionLogger.logAction(
-              'UI_TagsManagementTab', 'tag_deleted_success', {
+          ActionLogger.logAction('UI_TagsManagementTab', 'tag_deleted_success', {
             'tagId': tag.id,
             'tagName': tag.name,
           });
