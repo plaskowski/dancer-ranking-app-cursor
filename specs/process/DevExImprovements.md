@@ -22,6 +22,7 @@
 - keep a separte human-only todolist file to not lost your toughts chain
 - close all editor windows after commit
 - don't edit dot files directly, write down changes to a separate file I can review first
+- save the reasoning I provided for decisions
 
 # Hard ones
 - increase the 25 tool calls limit

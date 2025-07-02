@@ -11,7 +11,6 @@ The app has all I need to start using it. :celebrate:
 - [X] add new “Dancer history” screen
 - [ ] regenerate file for 2024-08
 - [ ] AloCubano z 2024-10
-- [ ] (potential regression) add new person did not work
 - [ ] extract earlier months
 - [ ] ...
 
