@@ -7,12 +7,14 @@
 The app has all I need to start using it. 
 
 ## Optional improvements
-- scrolling grouping header in summary tab
 - ...
 
 ## RTB work
-Nice to haves:
+Next:
+- check file sizes and suggest classes to be extracted to reduce big files
 - settings screen
+
+Nice to haves:
 - move all main screen actions (except Dancers) under the three dots, Import events should be the last
 - reorganize code into sub-dirs per screen (plus common for shared things)
 - mark current events dates green (with the same logic as for showing tabs in event screen, have the logic reused)
