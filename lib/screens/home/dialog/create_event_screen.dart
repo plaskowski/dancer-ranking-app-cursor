@@ -54,7 +54,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         _selectedDate = picked;
       });
     } else {
-      ActionLogger.logUserAction('CreateEventScreen', 'date_selection_cancelled');
+      ActionLogger.logUserAction(
+          'CreateEventScreen', 'date_selection_cancelled');
     }
   }
 
@@ -83,7 +84,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       );
 
       if (mounted) {
-        ActionLogger.logUserAction('CreateEventScreen', 'create_event_completed', {
+        ActionLogger.logUserAction(
+            'CreateEventScreen', 'create_event_completed', {
           'eventId': eventId,
           'eventName': _nameController.text.trim(),
           'eventDate': _selectedDate.toIso8601String(),
@@ -160,7 +162,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Theme.of(context).colorScheme.outline),
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.outline),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Row(
@@ -174,7 +177,9 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                             'Event Date',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
                             ),
                           ),
                           Text(
@@ -215,7 +220,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                         width: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Theme.of(context).colorScheme.onPrimary),
                         ),
                       )
                     : const Text(
