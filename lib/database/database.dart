@@ -178,29 +178,13 @@ class AppDatabase extends _$AppDatabase {
     });
   }
 
-  // Insert the predefined rank options
+  // Insert the default rank option
   Future<void> _insertDefaultRanks() async {
     await batch((batch) {
       batch.insertAll(ranks, [
         RanksCompanion.insert(
-          name: 'Really want to dance!',
+          name: 'Not decided yet',
           ordinal: 1,
-        ),
-        RanksCompanion.insert(
-          name: 'Would like to dance',
-          ordinal: 2,
-        ),
-        RanksCompanion.insert(
-          name: 'Neutral / Default',
-          ordinal: 3,
-        ),
-        RanksCompanion.insert(
-          name: 'Maybe later',
-          ordinal: 4,
-        ),
-        RanksCompanion.insert(
-          name: 'Not really interested',
-          ordinal: 5,
         ),
       ]);
     });
