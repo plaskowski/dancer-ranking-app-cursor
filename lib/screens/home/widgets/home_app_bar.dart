@@ -33,21 +33,23 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             );
           },
         ),
+        IconButton(
+          icon: const Icon(Icons.settings),
+          tooltip: 'Settings',
+          onPressed: () {
+            ActionLogger.logUserAction('HomeScreen', 'navigate_to_settings', {
+              'destination': 'SettingsScreen',
+              'source': 'app_bar',
+            });
+            navigationService.navigateToSettings(context);
+          },
+        ),
         PopupMenuButton<String>(
           tooltip: 'More options',
           onSelected: (value) {
             switch (value) {
-              case 'settings':
-                ActionLogger.logUserAction(
-                    'HomeScreen', 'navigate_to_settings', {
-                  'destination': 'SettingsScreen',
-                  'source': 'overflow_menu',
-                });
-                navigationService.navigateToSettings(context);
-                break;
               case 'import_events':
-                ActionLogger.logUserAction(
-                    'HomeScreen', 'import_events_opened', {
+                ActionLogger.logUserAction('HomeScreen', 'import_events_opened', {
                   'source': 'overflow_menu',
                 });
                 navigationService.importEvents(context);
@@ -55,14 +57,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
             }
           },
           itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 'settings',
-              child: ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Settings'),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
             const PopupMenuItem(
               value: 'import_events',
               child: ListTile(

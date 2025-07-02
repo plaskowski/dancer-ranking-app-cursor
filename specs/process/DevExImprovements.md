@@ -26,7 +26,8 @@
 - split the impl work to front and backend tasks and use two agents?
 - make the second-line started apps in different color (same for IDE)
 - don't open modified files (I don't read them either way)
-- auto-commit todo files after 1 minute of inactivity 
+- auto-commit todo files after 1 minute of inactivity
+- keep up-to-date wireframes 
 
 # Hard ones
 - increase the 25 tool calls limit
