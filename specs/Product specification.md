@@ -347,19 +347,21 @@ Users can adjust rankings during events for various reasons:
 **Purpose**: Manage all dancers in the database with comprehensive tag display and filtering
 **Actions**:
 - View list of all dancers with their tags
-- **Search dancers** by name or notes (text search field)
+- **Search dancers** by name or notes (intelligent word-start matching)
 - **Filter dancers by tags** (tag filter chips with clear option)
 - Add new dancer (FAB)
 - Edit existing dancer (tap → context menu)
 - Delete dancer (tap → context menu, with confirmation)
 - **Merge dancers** (tap → context menu → "Merge into...")
 **UI Design**:
-- **Scrollable Filter Section**: Both search field and tag filter in scrollable container to save vertical space
+- **Unified Scrolling**: Filter fields and dancers list scroll together as one cohesive unit
 - **Enhanced Card Layout**: Name with notes and tags displayed below
 - **Tag Display**: Colored chip badges under dancer name showing assigned tags
 - **Tag Filtering**: Horizontal scrollable tag chips with selection highlighting
 - **Combined Filtering**: Search and tag filters work together for precise dancer filtering
 - **Clear Filter Option**: Easy way to clear tag selection with close button
+- **Intelligent Search**: Word-start matching for precise name and notes searching
+- **Stable Focus**: Search field maintains focus while typing for smooth user experience
 - **Clean Organization**: Tags appear only on main Dancers screen, not on event screens
 - **Tap for Context Actions**: Single tap on any dancer card opens modal bottom sheet with Edit, Merge, and Delete options
 - **Context Menu Options**: 

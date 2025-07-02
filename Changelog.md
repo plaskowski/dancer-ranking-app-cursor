@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.89.0] - 2025-01-16
+
+### User Requests
+- "The filter fields on dancers screen do not scroll with the dancers list" - Request to fix scrolling behavior
+- "Why the search field looses focus after every key press?" - Request to fix search field focus issue
+- "Make search more inteligent, it should only match a start of word in the dancer name" - Request to improve search precision
+
+### Fixed
+- **Unified Scrolling**: Fixed filter fields and dancers list to scroll together as one unit
+  - **Single Scroll Area**: Replaced separate scrollable areas with unified `CustomScrollView`
+  - **Sliver Components**: Used `SliverToBoxAdapter` for filters and `SliverList` for dancers
+  - **Natural Scrolling**: Filter fields now scroll away smoothly with the rest of content
+  - **Better UX**: Consistent scrolling behavior like other screens in the app
+
+- **Search Field Focus**: Fixed search field losing focus after every keystroke
+  - **Stable Filter Section**: Moved `StreamBuilder` to only wrap dancers list, not entire body
+  - **Preserved Focus**: Search field maintains focus while typing
+  - **Smooth Typing**: No more focus loss after each keystroke
+  - **Better Performance**: Only necessary parts rebuild when data changes
+
+### Improved
+- **Intelligent Word-Start Search**: Enhanced search to only match start of words
+  - **Word Boundary Matching**: Split names and notes into words, match query against word starts
+  - **More Precise**: Only matches meaningful word beginnings, not substrings anywhere
+  - **Intuitive Behavior**: Matches how users naturally think about names
+  - **Professional Quality**: Similar to how most search engines work
+  - **Case Insensitive**: Still ignores case for better usability
+
+### Technical
+- Restructured widget hierarchy to separate stable filter section from dynamic dancers list
+- Enhanced `_filterDancers()` method with word-start matching logic
+- Used `CustomScrollView` with slivers for unified scrolling experience
+- Maintained all existing functionality while improving UX
+- Improved search precision with `split(' ')` and `startsWith()` logic
+
 ## [v0.88.0] - 2025-01-16
 
 ### User Requests

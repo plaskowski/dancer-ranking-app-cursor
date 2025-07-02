@@ -47,15 +47,20 @@ class _DancersScreenState extends State<DancersScreen> {
     if (_searchQuery.isNotEmpty) {
       final query = _searchQuery.toLowerCase();
       filteredDancers = filteredDancers.where((dancer) {
-        // Search in dancer name
-        if (dancer.name.toLowerCase().contains(query)) {
+        // Search in dancer name - match start of words only
+        final nameWords = dancer.name.toLowerCase().split(' ');
+        if (nameWords.any((word) => word.startsWith(query))) {
           return true;
         }
-        // Search in notes
-        if (dancer.notes != null &&
-            dancer.notes!.toLowerCase().contains(query)) {
-          return true;
+
+        // Search in notes - match start of words only
+        if (dancer.notes != null) {
+          final noteWords = dancer.notes!.toLowerCase().split(' ');
+          if (noteWords.any((word) => word.startsWith(query))) {
+            return true;
+          }
         }
+
         return false;
       }).toList();
     }
@@ -78,10 +83,10 @@ class _DancersScreenState extends State<DancersScreen> {
       appBar: AppBar(
         title: const Text('Dancers'),
       ),
-      body: Column(
-        children: [
-          // Filter section in scrollable container
-          SingleChildScrollView(
+      body: CustomScrollView(
+        slivers: [
+          // Filter section
+          SliverToBoxAdapter(
             child: Column(
               children: [
                 // Search bar
@@ -108,25 +113,29 @@ class _DancersScreenState extends State<DancersScreen> {
           ),
 
           // Dancers list
-          Expanded(
-            child: StreamBuilder<List<DancerWithTags>>(
-              stream: dancerService.watchDancersWithTags(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+          StreamBuilder<List<DancerWithTags>>(
+            stream: dancerService.watchDancersWithTags(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const SliverToBoxAdapter(
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
 
-                if (snapshot.hasError) {
-                  return Center(
+              if (snapshot.hasError) {
+                return SliverToBoxAdapter(
+                  child: Center(
                     child: Text('Error: ${snapshot.error}'),
-                  );
-                }
+                  ),
+                );
+              }
 
-                final allDancers = snapshot.data ?? [];
-                final dancers = _filterDancers(allDancers);
+              final allDancers = snapshot.data ?? [];
+              final dancers = _filterDancers(allDancers);
 
-                if (dancers.isEmpty) {
-                  return Center(
+              if (dancers.isEmpty) {
+                return SliverToBoxAdapter(
+                  child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -158,24 +167,28 @@ class _DancersScreenState extends State<DancersScreen> {
                         ),
                       ],
                     ),
-                  );
-                }
-
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: dancers.length,
-                  itemBuilder: (context, index) {
-                    final dancerWithTags = dancers[index];
-                    return DancerCardWithTags(
-                      dancerWithTags: dancerWithTags,
-                      onEdit: () => _editDancer(dancerWithTags.dancer),
-                      onDelete: () => _deleteDancer(dancerWithTags.dancer),
-                      onMerge: () => _mergeDancer(dancerWithTags.dancer),
-                    );
-                  },
+                  ),
                 );
-              },
-            ),
+              }
+
+              return SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final dancerWithTags = dancers[index];
+                      return DancerCardWithTags(
+                        dancerWithTags: dancerWithTags,
+                        onEdit: () => _editDancer(dancerWithTags.dancer),
+                        onDelete: () => _deleteDancer(dancerWithTags.dancer),
+                        onMerge: () => _mergeDancer(dancerWithTags.dancer),
+                      );
+                    },
+                    childCount: dancers.length,
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
