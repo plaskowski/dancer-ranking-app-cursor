@@ -75,20 +75,21 @@ Event Screen
 ┌─────────────────────────────────────────────────┐
 │ Select Dancers for Event                  [×]   │
 ├─────────────────────────────────────────────────┤
-│ 🏷️ Select by tags:                             │
+│ 🏷️ Filter by tags:                             │
 │                                                 │
 │ [Monday Class (12)] [Friday Social (18)]        │
 │ [Tuesday Workshop (6)] [Studio Downtown (15)]   │
 │ [Cuban DC Festival (8)] [Summer Intensive (4)]  │
 │ [Workshop Miami (5)] [Salsa Congress (12)]      │
 │                                                 │
-│ ──────────────────────────────────────────────  │
-│ ☑️ Select All [Monday Class]     (12 dancers)   │
-│ ☑️ Select All [Friday Social]    (18 dancers)   │
-│ ☐ Select All [Cuban DC Festival] (8 dancers)   │
+│ ┌─────────────────────────────────────────────┐ │
+│ │ ☐ Maria Rodriguez  [Monday Class]           │ │
+│ │ ☐ Carlos Santos    [Cuban DC Festival]      │ │
+│ │ ☐ Ana Garcia       [Friday Social]          │ │
+│ │ ...                                         │ │
+│ └─────────────────────────────────────────────┘ │
 │                                                 │
-│ Total selected: 30 dancers                     │
-│                        [Cancel] [Add All (30)] │
+│ Selected: 3 dancers    [Cancel] [Add Selected] │
 └─────────────────────────────────────────────────┘
 ```
 
@@ -145,9 +146,8 @@ Event Screen
 - **Smart suggestions**: "Try: dancers you haven't seen recently"
 
 #### Bulk Actions
-- **Select all filtered**: Checkbox to select all filtered results
-- **Bulk tag operations**: Add/remove tags to all selected dancers
-- **Event invitation**: "Invite all filtered dancers to event"
+- **Multiple selection**: Select multiple dancers from filtered results
+- **Bulk tag operations**: Add/remove tags to selected dancers
 
 ## Interaction Flows
 
@@ -159,12 +159,12 @@ Event Screen
 5. User selects specific dancers and taps "Add Selected"
 
 ### Bulk Group Invitation Flow  
-1. User is planning event and wants to invite entire groups
+1. User is planning event and wants to invite specific groups
 2. Taps "Select Dancers" for bulk selection
-3. Dialog shows tag categories with "Select All" options
-4. User taps "Select All [Monday Class]" to invite entire class
-5. Adds "Select All [Friday Social]" to also invite social dancers
-6. Reviews total count and taps "Add All (30)"
+3. Dialog shows tag filters and dancer list
+4. User taps [Monday Class] tag to filter dancers from that class
+5. Selects multiple dancers from the filtered list
+6. Reviews selected count and taps "Add Selected"
 
 ### Memory-Aid Flow
 1. User remembers someone from Cuban DC Festival but forgot name
@@ -204,6 +204,6 @@ Event Screen
 
 ## Success Metrics
 - **Event setup speed**: Time from opening event to finishing dancer invitations
-- **Group invitation efficiency**: How often bulk tag selection is used vs. individual selection
+- **Tag filtering usage**: How often tag filtering is used vs. search for dancer selection
 - **Tag-based discovery**: % of event invitations that use tag filtering vs. search
 - **Tag filtering adoption**: How often users create and use tags for event planning 
