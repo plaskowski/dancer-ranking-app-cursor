@@ -174,4 +174,23 @@ ListTile(
 - Quick reference, then back to ranking workflow
 - Focused on helping with the immediate ranking decision
 
-This simplified design supports the specific need of recalling actual dance experiences and impressions during event ranking, focusing on dance quality rather than past planning preferences. 
+This simplified design supports the specific need of recalling actual dance experiences and impressions during event ranking, focusing on dance quality rather than past planning preferences.
+
+## Implementation Status
+
+✅ **IMPLEMENTED** (v0.80.0 - 2024-12-27)
+
+### Implementation Details
+- **Screen**: `lib/screens/dancer_history_screen.dart` - Minimal UI with list of recent events
+- **Service**: Added `getRecentHistory` method to `DancerEventService` 
+- **Model**: Added `DancerRecentHistory` data class in `dancer_models.dart`
+- **Navigation**: Integrated into `DancerActionsDialog` as "View History" action
+- **Database**: Uses INNER JOIN to only show events where dancer actually attended
+- **UI Format**: Displays "Date - Event • ☑/☐ Score • 'Impression'" as designed
+
+### Technical Notes
+- Query correctly excludes events where dancer was absent (INNER JOIN)
+- Uses checkbox characters (☑/☐) to distinguish danced vs present-only
+- Shows scores for both danced events and assessment scores for present-only events  
+- Limited to last 6 events with proper date ordering
+- Properly integrated with existing action logging and error handling 

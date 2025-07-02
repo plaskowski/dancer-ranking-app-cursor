@@ -193,4 +193,49 @@ class DancerEventService {
       rethrow;
     }
   }
+
+  // Get recent history for a dancer (last 6 events where they attended)
+  Future<List<DancerRecentHistory>> getRecentHistory(int dancerId) async {
+    ActionLogger.logServiceCall('DancerEventService', 'getRecentHistory', {
+      'dancerId': dancerId,
+    });
+
+    try {
+      final query = _database.select(_database.events).join([
+        innerJoin(
+          _database.attendances,
+          _database.events.id.equalsExp(_database.attendances.eventId) &
+              _database.attendances.dancerId.equals(dancerId),
+        ),
+        leftOuterJoin(
+          _database.scores,
+          _database.attendances.scoreId.equalsExp(_database.scores.id),
+        ),
+      ])
+        ..orderBy([OrderingTerm.desc(_database.events.date)])
+        ..limit(6);
+
+      final results = await query.get();
+
+      return results.map((row) {
+        final event = row.readTable(_database.events);
+        final attendance = row.readTable(_database.attendances);
+        final score = row.readTableOrNull(_database.scores);
+
+        return DancerRecentHistory(
+          eventName: event.name,
+          eventDate: event.date,
+          status: attendance.status,
+          impression: attendance.impression,
+          scoreName: score?.name,
+        );
+      }).toList();
+    } catch (e) {
+      ActionLogger.logError(
+          'DancerEventService.getRecentHistory', e.toString(), {
+        'dancerId': dancerId,
+      });
+      rethrow;
+    }
+  }
 }

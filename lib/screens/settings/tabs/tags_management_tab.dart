@@ -78,14 +78,16 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
         actions: [
           TextButton(
             onPressed: () {
-              ActionLogger.logAction('UI_TagsManagementTab', 'add_tag_dialog_cancelled');
+              ActionLogger.logAction(
+                  'UI_TagsManagementTab', 'add_tag_dialog_cancelled');
               Navigator.of(context).pop(false);
             },
             child: const Text('Cancel'),
           ),
           FilledButton(
             onPressed: () {
-              ActionLogger.logAction('UI_TagsManagementTab', 'add_tag_dialog_confirmed', {
+              ActionLogger.logAction(
+                  'UI_TagsManagementTab', 'add_tag_dialog_confirmed', {
                 'tagName': controller.text.trim(),
               });
               Navigator.of(context).pop(true);
@@ -163,14 +165,16 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
         actions: [
           TextButton(
             onPressed: () {
-              ActionLogger.logAction('UI_TagsManagementTab', 'edit_tag_dialog_cancelled');
+              ActionLogger.logAction(
+                  'UI_TagsManagementTab', 'edit_tag_dialog_cancelled');
               Navigator.of(context).pop(false);
             },
             child: const Text('Cancel'),
           ),
           FilledButton(
             onPressed: () {
-              ActionLogger.logAction('UI_TagsManagementTab', 'edit_tag_dialog_confirmed', {
+              ActionLogger.logAction(
+                  'UI_TagsManagementTab', 'edit_tag_dialog_confirmed', {
                 'tagId': tag.id,
                 'oldName': tag.name,
                 'newName': controller.text.trim(),
@@ -211,7 +215,8 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
             ),
           );
 
-          ActionLogger.logAction('UI_TagsManagementTab', 'tag_updated_success', {
+          ActionLogger.logAction(
+              'UI_TagsManagementTab', 'tag_updated_success', {
             'tagId': tag.id,
             'oldName': tag.name,
             'newName': newName,
@@ -281,10 +286,12 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
                           '${tagWithUsage.usageCount} dancers',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
-                        onTap: () => _showTagContextMenu(context, tagWithUsage.tag),
+                        onTap: () =>
+                            _showTagContextMenu(context, tagWithUsage.tag),
                       ),
                     );
                   },
@@ -326,7 +333,8 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
                 ),
                 title: const Text('Edit'),
                 onTap: () {
-                  ActionLogger.logAction('UI_TagsManagementTab', 'context_edit_tapped', {
+                  ActionLogger.logAction(
+                      'UI_TagsManagementTab', 'context_edit_tapped', {
                     'tagId': tag.id,
                     'tagName': tag.name,
                   });
@@ -342,7 +350,8 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
                 ),
                 title: const Text('Delete'),
                 onTap: () {
-                  ActionLogger.logAction('UI_TagsManagementTab', 'context_delete_tapped', {
+                  ActionLogger.logAction(
+                      'UI_TagsManagementTab', 'context_delete_tapped', {
                     'tagId': tag.id,
                     'tagName': tag.name,
                   });
@@ -374,14 +383,16 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
         actions: [
           TextButton(
             onPressed: () {
-              ActionLogger.logAction('UI_TagsManagementTab', 'delete_tag_dialog_cancelled');
+              ActionLogger.logAction(
+                  'UI_TagsManagementTab', 'delete_tag_dialog_cancelled');
               Navigator.of(context).pop(false);
             },
             child: const Text('Cancel'),
           ),
           FilledButton(
             onPressed: () {
-              ActionLogger.logAction('UI_TagsManagementTab', 'delete_tag_dialog_confirmed', {
+              ActionLogger.logAction(
+                  'UI_TagsManagementTab', 'delete_tag_dialog_confirmed', {
                 'tagId': tag.id,
                 'tagName': tag.name,
               });
@@ -421,7 +432,8 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
             ),
           );
 
-          ActionLogger.logAction('UI_TagsManagementTab', 'tag_deleted_success', {
+          ActionLogger.logAction(
+              'UI_TagsManagementTab', 'tag_deleted_success', {
             'tagId': tag.id,
             'tagName': tag.name,
           });

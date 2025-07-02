@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../database/database.dart';
+import '../screens/dancer_history_screen.dart';
 import '../services/attendance_service.dart';
 import '../services/dancer_service.dart';
 import '../theme/theme_extensions.dart';
@@ -150,6 +151,28 @@ class DancerActionsDialog extends StatelessWidget {
                 );
               },
             ),
+
+          // View History
+          ListTile(
+            leading: Icon(Icons.history,
+                color: Theme.of(context).colorScheme.onSurfaceVariant),
+            title: const Text('View History'),
+            onTap: () {
+              ActionLogger.logUserAction(
+                  'DancerActionsDialog', 'view_history_tapped', {
+                'dancerId': dancer.id,
+                'eventId': eventId,
+              });
+
+              Navigator.pop(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => DancerHistoryScreen(
+                  dancerId: dancer.id,
+                  dancerName: dancer.name,
+                ),
+              ));
+            },
+          ),
 
           // Edit General Notes
           ListTile(

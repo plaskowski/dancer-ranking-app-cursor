@@ -48,7 +48,8 @@ class _ScoreDialogState extends State<ScoreDialog> {
 
     final scoreService = Provider.of<ScoreService>(context, listen: false);
     final dancerService = Provider.of<DancerService>(context, listen: false);
-    final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+    final attendanceService =
+        Provider.of<AttendanceService>(context, listen: false);
 
     try {
       // Load active scores
@@ -58,7 +59,8 @@ class _ScoreDialogState extends State<ScoreDialog> {
       final dancer = await dancerService.getDancer(widget.dancerId);
 
       // Load existing score if any
-      final currentScoreId = await attendanceService.getAttendanceScore(widget.eventId, widget.dancerId);
+      final currentScoreId = await attendanceService.getAttendanceScore(
+          widget.eventId, widget.dancerId);
 
       if (mounted) {
         ActionLogger.logUserAction('ScoreDialog', 'data_loaded', {
@@ -102,7 +104,8 @@ class _ScoreDialogState extends State<ScoreDialog> {
     });
 
     try {
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
 
       await attendanceService.assignScore(
         widget.eventId,
@@ -120,7 +123,8 @@ class _ScoreDialogState extends State<ScoreDialog> {
         });
 
         Navigator.pop(context, true); // Return true to indicate success
-        ToastHelper.showSuccess(context, 'Score "${score.name}" set for $_dancerName');
+        ToastHelper.showSuccess(
+            context, 'Score "${score.name}" set for $_dancerName');
       }
     } catch (e) {
       ActionLogger.logError('ScoreDialog._selectScore', e.toString(), {
@@ -159,15 +163,21 @@ class _ScoreDialogState extends State<ScoreDialog> {
 
                         return ListTile(
                           leading: Icon(
-                            isCurrentScore ? Icons.check_circle : Icons.circle_outlined,
+                            isCurrentScore
+                                ? Icons.check_circle
+                                : Icons.circle_outlined,
                             color: isCurrentScore
                                 ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context).colorScheme.onSurfaceVariant,
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
                           ),
                           title: Text(
                             score.name,
                             style: TextStyle(
-                              fontWeight: isCurrentScore ? FontWeight.bold : FontWeight.normal,
+                              fontWeight: isCurrentScore
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                             ),
                           ),
                           onTap: () => _selectScore(score),

@@ -15,7 +15,8 @@ class SelectMergeTargetScreen extends StatefulWidget {
   });
 
   @override
-  State<SelectMergeTargetScreen> createState() => _SelectMergeTargetScreenState();
+  State<SelectMergeTargetScreen> createState() =>
+      _SelectMergeTargetScreenState();
 }
 
 class _SelectMergeTargetScreenState extends State<SelectMergeTargetScreen> {
@@ -73,7 +74,8 @@ class _SelectMergeTargetScreenState extends State<SelectMergeTargetScreen> {
 
       if (mounted) {
         if (success) {
-          ActionLogger.logUserAction('SelectMergeTargetScreen', 'merge_success', {
+          ActionLogger.logUserAction(
+              'SelectMergeTargetScreen', 'merge_success', {
             'sourceDancerId': widget.sourceDancer.id,
             'targetDancerId': targetDancer.id,
           });
@@ -100,7 +102,8 @@ class _SelectMergeTargetScreenState extends State<SelectMergeTargetScreen> {
           'error': e.toString(),
         });
 
-        ToastHelper.showError(context, 'Error merging dancers: ${e.toString()}');
+        ToastHelper.showError(
+            context, 'Error merging dancers: ${e.toString()}');
       }
     }
   }
@@ -167,10 +170,14 @@ class _SelectMergeTargetScreenState extends State<SelectMergeTargetScreen> {
                 // Filter out the source dancer and apply search
                 final availableDancers = allDancers
                     .where((dancer) =>
-                        dancer.id != widget.sourceDancer.id && // Can't merge into self
+                        dancer.id !=
+                            widget.sourceDancer.id && // Can't merge into self
                         (_searchQuery.isEmpty ||
                             dancer.name.toLowerCase().contains(_searchQuery) ||
-                            (dancer.notes?.toLowerCase().contains(_searchQuery) ?? false)))
+                            (dancer.notes
+                                    ?.toLowerCase()
+                                    .contains(_searchQuery) ??
+                                false)))
                     .toList();
 
                 availableDancers.sort((a, b) => a.name.compareTo(b.name));
@@ -187,7 +194,9 @@ class _SelectMergeTargetScreenState extends State<SelectMergeTargetScreen> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          _searchQuery.isEmpty ? 'No other dancers available' : 'No dancers match your search',
+                          _searchQuery.isEmpty
+                              ? 'No other dancers available'
+                              : 'No dancers match your search',
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.grey[600],
@@ -209,7 +218,9 @@ class _SelectMergeTargetScreenState extends State<SelectMergeTargetScreen> {
                       child: ListTile(
                         leading: CircleAvatar(
                           child: Text(
-                            dancer.name.isNotEmpty ? dancer.name[0].toUpperCase() : '?',
+                            dancer.name.isNotEmpty
+                                ? dancer.name[0].toUpperCase()
+                                : '?',
                           ),
                         ),
                         title: Text(dancer.name),

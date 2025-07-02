@@ -49,3 +49,23 @@ class DancerWithEventInfo {
   bool get hasLeft => status == 'left';
   bool get isAbsent => status == 'absent';
 }
+
+class DancerRecentHistory {
+  final String eventName;
+  final DateTime eventDate;
+  final String status; // 'present', 'served', 'left'
+  final String? impression;
+  final String? scoreName;
+
+  DancerRecentHistory({
+    required this.eventName,
+    required this.eventDate,
+    required this.status,
+    this.impression,
+    this.scoreName,
+  });
+
+  // Simple computed properties
+  bool get danced => status == 'served';
+  // Note: For UI, we only care if they danced or not
+}

@@ -10,17 +10,22 @@ class ScoreService {
 
   // Get all available scores ordered by ordinal (best first)
   Future<List<Score>> getAllScores() {
-    return (_database.select(_database.scores)..orderBy([(s) => OrderingTerm.asc(s.ordinal)])).get();
+    return (_database.select(_database.scores)
+          ..orderBy([(s) => OrderingTerm.asc(s.ordinal)]))
+        .get();
   }
 
   // Get a specific score by ID
   Future<Score?> getScore(int id) {
-    return (_database.select(_database.scores)..where((s) => s.id.equals(id))).getSingleOrNull();
+    return (_database.select(_database.scores)..where((s) => s.id.equals(id)))
+        .getSingleOrNull();
   }
 
   // Get default score (Good - ordinal 3)
   Future<Score?> getDefaultScore() {
-    return (_database.select(_database.scores)..where((s) => s.ordinal.equals(3))).getSingleOrNull();
+    return (_database.select(_database.scores)
+          ..where((s) => s.ordinal.equals(3)))
+        .getSingleOrNull();
   }
 
   // Get all non-archived scores for use in score dropdowns
@@ -33,7 +38,9 @@ class ScoreService {
 
   // Get score by name (for imports)
   Future<Score?> getScoreByName(String name) {
-    return (_database.select(_database.scores)..where((s) => s.name.equals(name.trim()))).getSingleOrNull();
+    return (_database.select(_database.scores)
+          ..where((s) => s.name.equals(name.trim())))
+        .getSingleOrNull();
   }
 
   // Create a new score
@@ -158,21 +165,25 @@ class ScoreService {
 
     try {
       // First, get all attendances that need to be reassigned
-      final attendancesToUpdate =
-          await (_database.select(_database.attendances)..where((a) => a.scoreId.equals(id))).get();
+      final attendancesToUpdate = await (_database.select(_database.attendances)
+            ..where((a) => a.scoreId.equals(id)))
+          .get();
 
       // Start a transaction for atomic operation
       await _database.transaction(() async {
         // Reassign all existing score assignments to the replacement score
         for (final attendance in attendancesToUpdate) {
-          await (_database.update(_database.attendances)..where((a) => a.id.equals(attendance.id)))
+          await (_database.update(_database.attendances)
+                ..where((a) => a.id.equals(attendance.id)))
               .write(AttendancesCompanion(
             scoreId: Value(replacementScoreId),
           ));
         }
 
         // Delete the score
-        await (_database.delete(_database.scores)..where((s) => s.id.equals(id))).go();
+        await (_database.delete(_database.scores)
+              ..where((s) => s.id.equals(id)))
+            .go();
       });
 
       ActionLogger.logDbOperation('DELETE', 'scores', {
@@ -229,21 +240,25 @@ class ScoreService {
 
     try {
       // Get all attendances that need to be reassigned
-      final attendancesToUpdate =
-          await (_database.select(_database.attendances)..where((a) => a.scoreId.equals(sourceScoreId))).get();
+      final attendancesToUpdate = await (_database.select(_database.attendances)
+            ..where((a) => a.scoreId.equals(sourceScoreId)))
+          .get();
 
       // Start a transaction for atomic operation
       await _database.transaction(() async {
         // Reassign all existing score assignments to the target score
         for (final attendance in attendancesToUpdate) {
-          await (_database.update(_database.attendances)..where((a) => a.id.equals(attendance.id)))
+          await (_database.update(_database.attendances)
+                ..where((a) => a.id.equals(attendance.id)))
               .write(AttendancesCompanion(
             scoreId: Value(targetScoreId),
           ));
         }
 
         // Delete the source score
-        await (_database.delete(_database.scores)..where((s) => s.id.equals(sourceScoreId))).go();
+        await (_database.delete(_database.scores)
+              ..where((s) => s.id.equals(sourceScoreId)))
+            .go();
       });
 
       ActionLogger.logDbOperation('MERGE', 'scores', {
@@ -266,7 +281,8 @@ class ScoreService {
   // Update ordinals for multiple scores (for reordering)
   Future<bool> updateScoreOrder(List<ScoreOrderUpdate> updates) async {
     ActionLogger.logServiceCall('ScoreService', 'updateScoreOrder', {
-      'updates': updates.map((u) => {'id': u.id, 'ordinal': u.ordinal}).toList(),
+      'updates':
+          updates.map((u) => {'id': u.id, 'ordinal': u.ordinal}).toList(),
     });
 
     try {
@@ -284,7 +300,8 @@ class ScoreService {
       return true;
     } catch (e) {
       ActionLogger.logError('ScoreService.updateScoreOrder', e.toString(), {
-        'updates': updates.map((u) => {'id': u.id, 'ordinal': u.ordinal}).toList(),
+        'updates':
+            updates.map((u) => {'id': u.id, 'ordinal': u.ordinal}).toList(),
       });
       return false;
     }

@@ -14,7 +14,11 @@ class ImportableDancer {
     return ImportableDancer(
       name: (json['name'] as String).trim(),
       tags: json['tags'] != null
-          ? (json['tags'] as List).cast<String>().map((tag) => tag.trim()).where((tag) => tag.isNotEmpty).toList()
+          ? (json['tags'] as List)
+              .cast<String>()
+              .map((tag) => tag.trim())
+              .where((tag) => tag.isNotEmpty)
+              .toList()
           : [],
       notes: json['notes'] as String?,
     );
@@ -29,7 +33,8 @@ class ImportableDancer {
   }
 
   @override
-  String toString() => 'ImportableDancer(name: $name, tags: $tags, notes: $notes)';
+  String toString() =>
+      'ImportableDancer(name: $name, tags: $tags, notes: $notes)';
 
   @override
   bool operator ==(Object other) {
@@ -63,7 +68,9 @@ class ImportMetadata {
   factory ImportMetadata.fromJson(Map<String, dynamic> json) {
     return ImportMetadata(
       version: json['version'] as String? ?? '1.0',
-      createdAt: json['created_at'] != null ? DateTime.tryParse(json['created_at'] as String) : null,
+      createdAt: json['created_at'] != null
+          ? DateTime.tryParse(json['created_at'] as String)
+          : null,
       totalCount: json['total_count'] as int?,
       source: json['source'] as String?,
       description: json['description'] as String?,
@@ -243,11 +250,14 @@ class ImportableEvent {
     }
 
     final attendancesJson = json['attendances'] as List? ?? [];
-    final attendances = attendancesJson.map((a) => ImportableAttendance.fromJson(a as Map<String, dynamic>)).toList();
+    final attendances = attendancesJson
+        .map((a) => ImportableAttendance.fromJson(a as Map<String, dynamic>))
+        .toList();
 
     return ImportableEvent(
       name: (json['name'] as String).trim(),
-      date: DateTime(date.year, date.month, date.day), // Date only, time set to start of day
+      date: DateTime(date.year, date.month,
+          date.day), // Date only, time set to start of day
       attendances: attendances,
     );
   }
@@ -262,7 +272,8 @@ class ImportableEvent {
   }
 
   @override
-  String toString() => 'ImportableEvent(name: $name, date: $date, attendances: ${attendances.length})';
+  String toString() =>
+      'ImportableEvent(name: $name, date: $date, attendances: ${attendances.length})';
 
   @override
   bool operator ==(Object other) {
@@ -295,7 +306,8 @@ class ImportableAttendance {
     final status = json['status'] as String;
     const validStatuses = ['present', 'served', 'left'];
     if (!validStatuses.contains(status)) {
-      throw FormatException('Invalid status: $status. Must be one of: ${validStatuses.join(', ')}');
+      throw FormatException(
+          'Invalid status: $status. Must be one of: ${validStatuses.join(', ')}');
     }
 
     return ImportableAttendance(
@@ -316,7 +328,8 @@ class ImportableAttendance {
   }
 
   @override
-  String toString() => 'ImportableAttendance(dancerName: $dancerName, status: $status, scoreName: $scoreName)';
+  String toString() =>
+      'ImportableAttendance(dancerName: $dancerName, status: $status, scoreName: $scoreName)';
 
   @override
   bool operator ==(Object other) {
@@ -423,7 +436,8 @@ class EventImportSummary {
     this.eventAnalyses = const [],
   });
 
-  int get totalSuccessful => eventsCreated + attendancesCreated + dancersCreated + scoresCreated;
+  int get totalSuccessful =>
+      eventsCreated + attendancesCreated + dancersCreated + scoresCreated;
   bool get hasErrors => errors > 0;
   bool get hasSkipped => eventsSkipped > 0;
   bool get isSuccessful => errors == 0;

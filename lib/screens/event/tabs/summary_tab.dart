@@ -16,7 +16,8 @@ class SummaryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ActionLogger.logAction('UI_SummaryTab', 'build_called', {'eventId': eventId});
+    ActionLogger.logAction(
+        'UI_SummaryTab', 'build_called', {'eventId': eventId});
 
     final dancerService = Provider.of<DancerService>(context);
 
@@ -24,7 +25,8 @@ class SummaryTab extends StatelessWidget {
       stream: dancerService.watchDancersForEvent(eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          ActionLogger.logAction('UI_SummaryTab', 'loading_state', {'eventId': eventId});
+          ActionLogger.logAction(
+              'UI_SummaryTab', 'loading_state', {'eventId': eventId});
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -37,7 +39,8 @@ class SummaryTab extends StatelessWidget {
         }
 
         final allDancers = snapshot.data ?? [];
-        final attendedDancers = allDancers.where((d) => d.isPresent || d.hasLeft).toList();
+        final attendedDancers =
+            allDancers.where((d) => d.isPresent || d.hasLeft).toList();
 
         ActionLogger.logListRendering(
             'UI_SummaryTab',
@@ -58,7 +61,8 @@ class SummaryTab extends StatelessWidget {
           'eventId': eventId,
           'totalDancers': allDancers.length,
           'attendedDancers': attendedDancers.length,
-          'firstMetCount': attendedDancers.where((d) => d.isFirstMetHere).length,
+          'firstMetCount':
+              attendedDancers.where((d) => d.isFirstMetHere).length,
         });
 
         if (attendedDancers.isEmpty) {
@@ -103,7 +107,8 @@ class SummaryTab extends StatelessWidget {
             final dancerA = groupedDancers[a]!.first;
             final dancerB = groupedDancers[b]!.first;
 
-            return (dancerA.scoreOrdinal ?? 999).compareTo(dancerB.scoreOrdinal ?? 999);
+            return (dancerA.scoreOrdinal ?? 999)
+                .compareTo(dancerB.scoreOrdinal ?? 999);
           });
 
         ActionLogger.logAction('UI_SummaryTab', 'grouping_complete', {
@@ -142,23 +147,36 @@ class SummaryTab extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: 'Recorded ',
-                                style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant),
                               ),
                               TextSpan(
-                                text: '${attendedDancers.where((d) => d.hasDanced).length}',
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                text:
+                                    '${attendedDancers.where((d) => d.hasDanced).length}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                               TextSpan(
                                 text: ' dances total. Met ',
-                                style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant),
                               ),
                               TextSpan(
-                                text: '${attendedDancers.where((d) => d.isFirstMetHere).length}',
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                text:
+                                    '${attendedDancers.where((d) => d.isFirstMetHere).length}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                               TextSpan(
                                 text: ' people for the first time.',
-                                style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant),
                               ),
                             ],
                           ),
@@ -187,18 +205,25 @@ class SummaryTab extends StatelessWidget {
                           color: Theme.of(context).colorScheme.surface,
                           border: Border(
                             bottom: BorderSide(
-                              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .outline
+                                  .withValues(alpha: 0.2),
                             ),
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .shadow
+                                  .withValues(alpha: 0.1),
                               offset: const Offset(0, 2),
                               blurRadius: 4,
                             ),
                           ],
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
                         child: Row(
                           children: [
                             Text(
@@ -211,9 +236,12 @@ class SummaryTab extends StatelessWidget {
                             ),
                             const SizedBox(width: 8),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 2),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.primaryContainer,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primaryContainer,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
@@ -221,7 +249,9 @@ class SummaryTab extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer,
                                 ),
                               ),
                             ),
@@ -285,13 +315,16 @@ class _StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => maxHeight;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return SizedBox.expand(child: child);
   }
 
   @override
   bool shouldRebuild(_StickyHeaderDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight || minHeight != oldDelegate.minHeight || child != oldDelegate.child;
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
   }
 }
 
@@ -312,7 +345,8 @@ class SummaryTabActions implements EventTabActions {
   IconData get fabIcon => Icons.add;
 
   @override
-  Future<void> onFabPressed(BuildContext context, VoidCallback onRefresh) async {
+  Future<void> onFabPressed(
+      BuildContext context, VoidCallback onRefresh) async {
     // Show speed dial menu with two options
     _showSummaryTabSpeedDial(context, onRefresh);
   }

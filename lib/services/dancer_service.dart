@@ -37,22 +37,27 @@ class DancerService {
   Future<bool> updateDancer(int id, {String? name, String? notes}) =>
       _crudService.updateDancer(id, name: name, notes: notes);
 
-  Future<bool> updateFirstMetDate(int id, DateTime? firstMetDate) => _crudService.updateFirstMetDate(id, firstMetDate);
+  Future<bool> updateFirstMetDate(int id, DateTime? firstMetDate) =>
+      _crudService.updateFirstMetDate(id, firstMetDate);
 
   Future<int> deleteDancer(int id) => _crudService.deleteDancer(id);
 
   Future<int> getDancersCount() => _crudService.getDancersCount();
 
   // Search Methods
-  Stream<List<Dancer>> searchDancers(String query) => _searchService.searchDancers(query);
+  Stream<List<Dancer>> searchDancers(String query) =>
+      _searchService.searchDancers(query);
 
   // Tag Methods
-  Future<List<DancerWithTags>> getDancersWithTags() => _tagService.getDancersWithTags();
+  Future<List<DancerWithTags>> getDancersWithTags() =>
+      _tagService.getDancersWithTags();
 
-  Stream<List<DancerWithTags>> watchDancersWithTags() => _tagService.watchDancersWithTags();
+  Stream<List<DancerWithTags>> watchDancersWithTags() =>
+      _tagService.watchDancersWithTags();
 
   // Event Methods
-  Stream<List<DancerWithEventInfo>> watchDancersForEvent(int eventId) => _eventService.watchDancersForEvent(eventId);
+  Stream<List<DancerWithEventInfo>> watchDancersForEvent(int eventId) =>
+      _eventService.watchDancersForEvent(eventId);
 
   Future<List<DancerWithEventInfo>> getUnrankedDancersForEvent(int eventId) =>
       _eventService.getUnrankedDancersForEvent(eventId);

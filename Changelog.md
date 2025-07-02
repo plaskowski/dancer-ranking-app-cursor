@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.80.0] - 2024-12-27
+
+### User Requests
+- "Looks great, let's implement it" - implement the Dancer History screen
+
+### Added
+- **Dancer History Screen**: Added new screen to view recent dance history for any dancer
+- **History Navigation**: Added "View History" action to dancer actions dialog 
+- **Recent History Service**: Added `getRecentHistory` method to `DancerEventService`
+- **History Data Model**: Added `DancerRecentHistory` model for displaying event history
+
+### Technical
+- Created `DancerHistoryScreen` with minimal UI design showing last 6 events
+- Added database query to fetch events where dancer attended (INNER JOIN on attendances)
+- Integrated navigation from Event Planning Tab → Dancer Actions → "View History"
+- Screen displays: event date/name, danced status (☑/☐), scores, and impressions
+- Uses checkbox characters to distinguish between danced vs present-only events
+- Shows assessment scores for present-only events to explain why no dance occurred
+
 ## [v0.71.0] - 2025-01-16
 
 ### User Requests

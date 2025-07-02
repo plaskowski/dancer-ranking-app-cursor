@@ -23,7 +23,8 @@ class PlanningTab extends StatefulWidget {
 class _PlanningTabState extends State<PlanningTab> {
   @override
   Widget build(BuildContext context) {
-    ActionLogger.logAction('UI_PlanningTab', 'build_called', {'eventId': widget.eventId});
+    ActionLogger.logAction(
+        'UI_PlanningTab', 'build_called', {'eventId': widget.eventId});
 
     final dancerService = Provider.of<DancerService>(context);
 
@@ -31,7 +32,8 @@ class _PlanningTabState extends State<PlanningTab> {
       stream: dancerService.watchDancersForEvent(widget.eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          ActionLogger.logAction('UI_PlanningTab', 'loading_state', {'eventId': widget.eventId});
+          ActionLogger.logAction(
+              'UI_PlanningTab', 'loading_state', {'eventId': widget.eventId});
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -45,7 +47,8 @@ class _PlanningTabState extends State<PlanningTab> {
 
         final allDancers = snapshot.data ?? [];
         // Only show dancers that have been explicitly added to the event (have rankings) AND are not present yet
-        final dancers = allDancers.where((d) => d.hasRanking && !d.isPresent).toList();
+        final dancers =
+            allDancers.where((d) => d.hasRanking && !d.isPresent).toList();
 
         ActionLogger.logListRendering(
             'UI_PlanningTab',
@@ -72,7 +75,8 @@ class _PlanningTabState extends State<PlanningTab> {
 
         if (dancers.isEmpty) {
           // Check if there are any ranked dancers at all for this event
-          final totalRankedDancers = allDancers.where((d) => d.hasRanking).length;
+          final totalRankedDancers =
+              allDancers.where((d) => d.hasRanking).length;
 
           return Center(
             child: Column(
@@ -87,7 +91,9 @@ class _PlanningTabState extends State<PlanningTab> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  totalRankedDancers > 0 ? 'All ranked dancers are present!' : 'No dancers added yet',
+                  totalRankedDancers > 0
+                      ? 'All ranked dancers are present!'
+                      : 'No dancers added yet',
                   style: TextStyle(
                     fontSize: 18,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -109,7 +115,8 @@ class _PlanningTabState extends State<PlanningTab> {
                     icon: const Icon(Icons.file_download),
                     label: const Text('Import Rankings'),
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 12),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -130,7 +137,8 @@ class _PlanningTabState extends State<PlanningTab> {
         final Map<String, List<DancerWithEventInfo>> groupedDancers = {};
 
         for (final dancer in dancers) {
-          final rankName = dancer.rankName!; // Safe since we filtered for hasRanking
+          final rankName =
+              dancer.rankName!; // Safe since we filtered for hasRanking
           if (!groupedDancers.containsKey(rankName)) {
             groupedDancers[rankName] = [];
           }
@@ -148,7 +156,8 @@ class _PlanningTabState extends State<PlanningTab> {
             final dancerA = groupedDancers[a]!.first;
             final dancerB = groupedDancers[b]!.first;
 
-            return (dancerA.rankOrdinal ?? 999).compareTo(dancerB.rankOrdinal ?? 999);
+            return (dancerA.rankOrdinal ?? 999)
+                .compareTo(dancerB.rankOrdinal ?? 999);
           });
 
         ActionLogger.logAction('UI_PlanningTab', 'grouping_complete', {
@@ -225,7 +234,8 @@ class _PlanningTabState extends State<PlanningTab> {
         });
       }
     } catch (e) {
-      ActionLogger.logError('PlanningTab._showImportRankingsDialog', e.toString(), {
+      ActionLogger.logError(
+          'PlanningTab._showImportRankingsDialog', e.toString(), {
         'eventId': widget.eventId,
       });
       ScaffoldMessenger.of(context).showSnackBar(
@@ -246,7 +256,8 @@ class PlanningTabActions implements EventTabActions {
   });
 
   @override
-  Future<void> onFabPressed(BuildContext context, VoidCallback onRefresh) async {
+  Future<void> onFabPressed(
+      BuildContext context, VoidCallback onRefresh) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(

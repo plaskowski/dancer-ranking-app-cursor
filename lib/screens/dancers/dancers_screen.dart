@@ -113,17 +113,23 @@ class _DancersScreenState extends State<DancersScreen> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          _searchQuery.isEmpty ? 'No dancers yet' : 'No dancers found',
+                          _searchQuery.isEmpty
+                              ? 'No dancers yet'
+                              : 'No dancers found',
                           style: TextStyle(
                             fontSize: 18,
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          _searchQuery.isEmpty ? 'Tap + to add your first dancer' : 'Try a different search',
+                          _searchQuery.isEmpty
+                              ? 'Tap + to add your first dancer'
+                              : 'Try a different search',
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -185,7 +191,8 @@ class _DancersScreenState extends State<DancersScreen> {
           TextButton(
             onPressed: () async {
               try {
-                final dancerService = Provider.of<DancerService>(context, listen: false);
+                final dancerService =
+                    Provider.of<DancerService>(context, listen: false);
                 await dancerService.deleteDancer(dancer.id);
 
                 if (mounted) {
@@ -199,7 +206,8 @@ class _DancersScreenState extends State<DancersScreen> {
                 }
               }
             },
-            style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
+            style: TextButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.error),
             child: const Text('Delete'),
           ),
         ],
