@@ -113,11 +113,19 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
               onPressed: _isLoading ? null : () => _proceedToNextStep(details),
               child: _getNextButtonText(),
             ),
-          if (_currentStep == 2) // Results step
+          if (_currentStep == 2) ...[
+            // Results step - show both "Import more files" and "Close" buttons
+            ElevatedButton.icon(
+              onPressed: () => _resetToFileSelection(),
+              icon: const Icon(Icons.file_upload),
+              label: const Text('Import more files'),
+            ),
+            const SizedBox(width: 8),
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(true),
               child: const Text('Close'),
             ),
+          ],
         ],
       ),
     );
@@ -199,6 +207,23 @@ class _ImportEventsDialogState extends State<ImportEventsDialog> {
       _parseResult = null;
       _importResults = null;
       _currentStep = 0;
+    });
+  }
+
+  void _resetToFileSelection() {
+    ActionLogger.logUserAction(
+        'ImportEventsDialog', 'import_more_files_clicked', {
+      'previousEventsCreated': _importResults?.eventsCreated ?? 0,
+      'previousEventsSkipped': _importResults?.eventsSkipped ?? 0,
+    });
+
+    setState(() {
+      _selectedFile = null;
+      _parseResult = null;
+      _importResults = null;
+      _currentStep = 0;
+      _importProgress = 0.0;
+      _currentOperation = '';
     });
   }
 

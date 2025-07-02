@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.85.0] - 2025-01-16
+
+### User Requests
+- "add action to events import summary - 'Import more files'" - Request to add ability to import additional files after completing an import
+
+### Added
+- **Import More Files Action**: Added "Import more files" button to events import summary screen
+  - **Seamless Workflow**: Users can now import multiple event files without closing and reopening the dialog
+  - **Reset Functionality**: Button resets the dialog to file selection step, clearing previous import data
+  - **Action Logging**: Tracks when users choose to import additional files for analytics
+  - **Better UX**: Eliminates need to close and reopen import dialog for multiple imports
+
+### Technical
+- Enhanced `_buildStepControls` method in `ImportEventsDialog` to show "Import more files" button on results step
+- Added `_resetToFileSelection` method to clear import state and return to step 0
+- Added action logging to track user behavior when importing multiple files
+- Maintained existing "Close" button functionality alongside new import action
+
 ## [v0.84.0] - 2025-01-16
 
 ### User Requests

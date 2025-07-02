@@ -6,6 +6,12 @@ The app has all I need to start using it. :celebrate:
 
 ## Backlog
 
+Right away:
+- [x] add action to events import summary - "Import more files"
+- [ ] validate all the new events files can be imported
+  - 22 września
+  - ...
+
 Small improvements:
 - [ ] events import
   - [ ] ...

@@ -632,6 +632,10 @@ Tags Tab → [Add | Edit | Delete] → Back to tab
     - New dancers are automatically created.
     - Missing scores are automatically created with appropriate ordinal values.
     - Score assignments are applied to attendance records for "served" status dancers.
+6.  **Results Summary**: Shows comprehensive import results with statistics and any errors.
+    - **Import More Files**: Button to reset dialog and import additional files without closing
+    - **Seamless Workflow**: Users can import multiple event files in sequence
+    - **Action Logging**: Tracks when users choose to import additional files
 **Enhanced JSON Format**:
 ```json
 {
