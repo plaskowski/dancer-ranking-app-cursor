@@ -137,12 +137,12 @@ class EventImportService {
         await _validator.getExistingScoresByNames(allScoreNames);
     final missingScoreNames = await _validator.getMissingScoreNames(events);
 
-    // Count score assignments (only for served status dancers)
+    // Count score assignments (for any present dancers, not just served)
     for (final event in events) {
       if (!duplicateEventNames.contains(event.name)) {
         for (final attendance in event.attendances) {
           if (attendance.scoreName != null &&
-              attendance.status == 'served' &&
+              attendance.status != 'absent' &&
               attendance.scoreName!.trim().isNotEmpty) {
             scoreAssignments++;
           }
@@ -340,9 +340,9 @@ class EventImportService {
 
                 attendancesCreated++;
 
-                // Assign score if provided and status is 'served'
+                // Assign score if provided and dancer is present (not absent)
                 if (attendance.scoreName != null &&
-                    attendance.status == 'served' &&
+                    attendance.status != 'absent' &&
                     attendance.scoreName!.trim().isNotEmpty) {
                   final scoreName = attendance.scoreName!.trim();
                   final score = existingScores[scoreName];

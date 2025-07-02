@@ -223,14 +223,13 @@ class EventImportValidator {
           }
         }
 
-        // Validate that scores are only assigned to 'served' status
-        if (attendance.scoreName != null && attendance.status != 'served') {
+        // Validate that scores are only assigned to present dancers (present, served, left - not absent)
+        if (attendance.scoreName != null && attendance.status == 'absent') {
           conflicts.add(EventImportConflict(
             type: EventImportConflictType.invalidData,
             eventName: event.name,
             dancerName: attendance.dancerName,
-            message:
-                'Score can only be assigned to dancers with "served" status, but dancer has "${attendance.status}" status',
+            message: 'Score cannot be assigned to dancers with "absent" status',
           ));
         }
 
