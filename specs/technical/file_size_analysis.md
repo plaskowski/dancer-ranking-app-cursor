@@ -67,14 +67,19 @@ lib/screens/settings/
 - ✅ `RankingUsageService` (82 lines): Usage statistics
 - ✅ `RankingModels` (85 lines): Shared data models
 
-#### 3. `lib/services/dancer_service.dart` - **567 lines** ⚠️ **HIGH PRIORITY**
-**Issues**:
-- Large service with mixed responsibilities
-- Search functionality could be extracted
+#### 3. ~~`lib/services/dancer_service.dart`~~ - ~~**567 lines**~~ ✅ **COMPLETED**
+**Original Issues** (RESOLVED):
+- ~~Large service with mixed responsibilities~~
+- ~~Search functionality could be extracted~~
 
-**Recommended refactoring**:
-- Keep core CRUD operations in `DancerService`
-- Extract search functionality into `DancerSearchService`
+**Refactoring COMPLETED** (Dec 2024):
+- ✅ Split into 7 focused services (coordinator: 63 lines, 89% reduction)
+- ✅ `DancerCrudService` (183 lines): Basic CRUD operations
+- ✅ `DancerEventService` (196 lines): Event-specific queries and operations
+- ✅ `DancerMergeService` (137 lines): Complex merge functionality
+- ✅ `DancerTagService` (63 lines): Tag-related operations
+- ✅ `DancerSearchService` (29 lines): Search and filtering
+- ✅ `DancerModels` (51 lines): Helper classes and data models
 
 #### 4. `lib/screens/home/home_screen.dart` - **557 lines** ⚠️ **HIGH PRIORITY**
 **Issues**:
@@ -136,8 +141,8 @@ These files are approaching the threshold for refactoring consideration but are 
 1. ~~**Refactor `ranking_service.dart`**~~ ✅ **COMPLETED**
    - ~~Split core CRUD operations vs. management operations~~
    
-2. **Refactor `dancer_service.dart`** (567 lines)
-   - Extract search functionality
+2. ~~**Refactor `dancer_service.dart`**~~ ✅ **COMPLETED**
+   - ~~Extract search functionality~~
    
 3. **Refactor `home_screen.dart`** (557 lines)
    - Extract event card widget
