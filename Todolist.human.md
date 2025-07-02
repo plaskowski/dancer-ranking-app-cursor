@@ -4,14 +4,6 @@
 ## Status
 The app has all I need to start using it. :celebrate:
 
-## Tasks list
-
-### Line #1
-- [ ] ...
-
-### Line #2
-- [ ] ...?
-
 ## Backlog
 
 Small improvements:

@@ -31,6 +31,7 @@
 - auto-save todo file 
 - a way to instruct the macOS app to auto-navigate to given screen (to test faster, via CMD arg)
 - auto-close non-pinned editors after 2 min idle time
+- need better way to sync two lines
 
 # Hard ones
 - increase the 25 tool calls limit
