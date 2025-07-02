@@ -12,7 +12,6 @@ Next:
 
 Nice to haves:
 - move all main screen actions (except Dancers) under the three dots, Import events should be the last
-- enter in edit name dialog should confirm it
 - (bug) when I edit impression the text field should contain current impression text
 
 ## Cursor Cheatsheet

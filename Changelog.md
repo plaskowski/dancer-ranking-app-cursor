@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.67.1] - 2025-01-04
+
+### User Requests
+- "pressing enter in edit name dialog should confirm it"
+
+### Improved
+- **Enter Key Confirmation**: All edit name dialogs now support enter key to confirm/save
+  - **Scores Rename Dialog**: Press enter to confirm score rename
+  - **Add Dancer Dialog**: Press enter in name field to move to notes, enter in notes field to save dancer
+  - **Ranking Dialog**: Press enter in reason field to save ranking (if rank selected)
+  - **Dance Recording Dialog**: Press enter in impression field to record dance
+  - **Create Event Dialog**: Press enter in name field to create event (if valid)
+  - **Better Input Actions**: Added proper `textInputAction` values (next/done) for better keyboard experience
+
+### Enhanced
+- **User Experience**: Faster data entry with keyboard shortcuts
+- **Workflow Efficiency**: No need to manually click save buttons for text-only dialogs
+- **Mobile Optimization**: Better soft keyboard handling with appropriate action buttons
+
+### Technical
+- **onSubmitted/onFieldSubmitted**: Added to all text input fields in dialogs
+- **Form Validation**: Enter key properly validates forms before submitting
+- **Focus Management**: Smart focus navigation between fields in multi-field dialogs
+- **Input Actions**: Consistent use of TextInputAction.next and TextInputAction.done
+
 ## [v0.67.0] - 2025-01-04
 
 ### User Requests
