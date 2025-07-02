@@ -274,8 +274,15 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
                       margin: const EdgeInsets.only(bottom: 8),
                       child: ListTile(
                         title: Text(
-                          '${tagWithUsage.tag.name} • ${tagWithUsage.usageCount} dancers',
+                          tagWithUsage.tag.name,
                           style: const TextStyle(fontSize: 16),
+                        ),
+                        subtitle: Text(
+                          '${tagWithUsage.usageCount} dancers',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
                         ),
                         onTap: () => _showTagContextMenu(context, tagWithUsage.tag),
                       ),

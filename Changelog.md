@@ -22,12 +22,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Data Loading**: Tags now load with usage statistics on screen initialization and after operations
 - **Empty State**: Improved empty state with label icon and helpful guidance text
 
+### Improved
+- **Subtle Statistics Styling**: Made usage counts less prominent across all dictionary screens
+  - **Title/Subtitle Layout**: Split item names and statistics into separate lines for better hierarchy
+  - **Muted Statistics**: Usage counts now display in smaller, muted text as subtitles
+  - **Consistent Pattern**: Applied uniform styling across tags, scores, and ranks management tabs
+  - **Better Focus**: Main item names now stand out more prominently without visual clutter from stats
+
 ### Technical
 - Leveraged existing `TagService.getAllTagsWithUsageCount()` method for statistics
 - Replaced reactive stream with manual refresh pattern for consistency with other dictionary screens  
 - Added automatic reload after create, update, and delete operations to keep statistics current
 - Updated state management from stream-based to local state with loading indicators
 - Maintained all existing tag management functionality while adding usage insights
+- Applied consistent title/subtitle styling pattern across all dictionary management screens
 
 ## [v0.69.0] - 2024-12-30
 

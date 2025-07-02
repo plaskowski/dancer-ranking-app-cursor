@@ -6,7 +6,6 @@ The app has all I need to start using it. :celebrate:
 
 ## Tasks list (take one at a time)
 Next:
-- [ ] add stats on tags rows similar to what other dictionary screens have
 - [ ] style stats so that they are standing out less
 
 Nice to haves:
