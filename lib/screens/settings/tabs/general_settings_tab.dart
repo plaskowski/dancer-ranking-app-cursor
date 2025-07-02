@@ -53,7 +53,7 @@ class GeneralSettingsTab extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
-        // Data Import Section
+        // Data Management Section
         Card(
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -61,7 +61,7 @@ class GeneralSettingsTab extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Data Import',
+                  'Data Management',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -72,28 +72,7 @@ class GeneralSettingsTab extends StatelessWidget {
                 _buildImportDancersTile(context),
                 const Divider(height: 24),
                 _buildImportEventsTile(context),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        // General Settings Section
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'General Settings',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-                const SizedBox(height: 16),
+                const Divider(height: 24),
                 _buildResetDatabaseTile(context),
               ],
             ),

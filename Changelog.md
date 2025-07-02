@@ -10,10 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### User Requests
 - "Move import actions to general settings tab" - Request to relocate import functionality from home screen to settings
 - "Great, remove import button from Dancers screen too" - Request to remove import functionality from dancers screen as well
+- "merge settings section into data management" - Request to consolidate data-related settings into single section
 
 ### Changed
 - **Import Actions Location**: Moved import functionality from home screen overflow menu to general settings tab
-  - **New Data Import Section**: Added dedicated "Data Import" section in general settings tab
+  - **New Data Management Section**: Added dedicated "Data Management" section in general settings tab
   - **Import Dancers**: Moved from home screen, now accessible via settings with icon and descriptive text
   - **Import Events**: Moved from home screen, now accessible via settings with icon and descriptive text
   - **Cleaner Home Screen**: Removed overflow menu entirely since import events was the only action
@@ -23,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Centralized Import**: All import functionality now consolidated in settings
   - **Cleaner Interface**: Simplified dancers screen by removing redundant import button
   - **Single Import Location**: Users now have one consistent place to find all import actions
+- **Settings Organization**: Merged "Data Import" and "General Settings" sections into unified "Data Management"
+  - **Logical Grouping**: All data-related operations (import dancers, import events, reset database) in one section
+  - **Cleaner Layout**: Reduced number of cards in settings for better visual organization
+  - **Consistent Terminology**: "Data Management" better describes the combined functionality
 
 ### Improved
 - **Action Logging**: Enhanced logging to track source location of import actions (settings vs home)
