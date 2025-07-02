@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../database/database.dart';
+import '../../../services/event_import_service.dart';
+import '../../../utils/action_logger.dart';
 import '../../../utils/toast_helper.dart';
+import '../../../widgets/import/import_dancers_dialog.dart';
+import '../../../widgets/import_events_dialog.dart';
 import '../widgets/info_row.dart';
 
 class GeneralSettingsTab extends StatelessWidget {
@@ -49,6 +53,31 @@ class GeneralSettingsTab extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
+        // Data Import Section
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Data Import',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                _buildImportDancersTile(context),
+                const Divider(height: 24),
+                _buildImportEventsTile(context),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+
         // General Settings Section
         Card(
           child: Padding(
@@ -72,6 +101,118 @@ class GeneralSettingsTab extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildImportDancersTile(BuildContext context) {
+    return ListTile(
+      leading: Icon(
+        Icons.person_add,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      title: const Text(
+        'Import Dancers',
+        style: TextStyle(fontWeight: FontWeight.w500),
+      ),
+      subtitle: Text(
+        'Import dancers from CSV file',
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+          fontSize: 12,
+        ),
+      ),
+      contentPadding: EdgeInsets.zero,
+      onTap: () => _importDancers(context),
+    );
+  }
+
+  Widget _buildImportEventsTile(BuildContext context) {
+    return ListTile(
+      leading: Icon(
+        Icons.file_upload,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+      title: const Text(
+        'Import Events',
+        style: TextStyle(fontWeight: FontWeight.w500),
+      ),
+      subtitle: Text(
+        'Import events from CSV file',
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+          fontSize: 12,
+        ),
+      ),
+      contentPadding: EdgeInsets.zero,
+      onTap: () => _importEvents(context),
+    );
+  }
+
+  void _importDancers(BuildContext context) {
+    ActionLogger.logUserAction(
+        'GeneralSettingsTab', 'import_dancers_dialog_opened', {
+      'source': 'settings',
+    });
+
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'Close',
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          const Dialog.fullscreen(
+        child: ImportDancersDialog(),
+      ),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: animation.drive(Tween(begin: 0.9, end: 1.0)),
+            child: child,
+          ),
+        );
+      },
+    ).then((result) {
+      if (result == true && context.mounted) {
+        ActionLogger.logUserAction(
+            'GeneralSettingsTab', 'import_dancers_completed', {});
+        ToastHelper.showSuccess(context, 'Dancers imported successfully');
+      }
+    });
+  }
+
+  void _importEvents(BuildContext context) {
+    ActionLogger.logUserAction(
+        'GeneralSettingsTab', 'import_events_dialog_opened', {
+      'source': 'settings',
+    });
+
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'Close',
+      pageBuilder: (context, animation, secondaryAnimation) => Provider(
+        create: (context) => EventImportService(
+          Provider.of<AppDatabase>(context, listen: false),
+        ),
+        child: const Dialog.fullscreen(
+          child: ImportEventsDialog(),
+        ),
+      ),
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: animation.drive(Tween(begin: 0.9, end: 1.0)),
+            child: child,
+          ),
+        );
+      },
+    ).then((result) {
+      if (result == true && context.mounted) {
+        ActionLogger.logUserAction(
+            'GeneralSettingsTab', 'import_events_completed', {});
+        ToastHelper.showSuccess(context, 'Events imported successfully');
+      }
+    });
   }
 
   Widget _buildResetDatabaseTile(BuildContext context) {
