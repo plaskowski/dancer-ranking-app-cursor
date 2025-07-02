@@ -16,3 +16,4 @@
 - a way to run flutter run so that it closes the terminal tab when it ends
 - after coming up with the design ask it to validate it against existing UX patterns in the app
 - keep a separte human-only todolist file to not lost your toughts chain
+- close all editor windows after commit
