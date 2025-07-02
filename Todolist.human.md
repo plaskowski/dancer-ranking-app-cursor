@@ -12,6 +12,7 @@ Right away:
 - [ ] (in progress) import more history
   - [ ] validate the counts against Diary text  <--- diary agent
   - [ ] validate all the new events files can be imported
+  - [ ] have a summary of my impression on event itself
 
 Small improvements:
 - events import
@@ -22,13 +23,14 @@ Small improvements:
   - [ ] ...
 - "Add new dancer" dialog
   - [x] move "already danced" checkbox in above the tags section so I don't have to scroll through tags for it
+  - [ ] "Tags" label collides with the impression field
   - [ ] ...
 - home screen
   - [x] move the settings action to AppBar and remove dots
   - [ ] ...
 -  Android
   - [ ] the FAB button is covered with bottom system bar
-  - [ ] use native android toasts
+  - [x] use native android toasts
 -  event screen
   - [x] future events (in 1+ days should only have planning tab)
   - [ ] ...

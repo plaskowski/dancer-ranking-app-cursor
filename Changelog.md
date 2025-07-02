@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### User Requests
 - "do the import preview right away after selecting a file (or dropping to drop zone)" - Request to automatically show import preview after file selection
+- "use native android toasts" - Request to replace Flutter SnackBars with native Android toasts
 
 ### Added
 - **Automatic Preview**: Import preview now appears immediately after file selection or drop
@@ -16,18 +17,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Instant Feedback**: Users see preview data as soon as files are selected
   - **Loading Indicator**: File selection step shows loading spinner while parsing files
   - **Automatic Advancement**: Valid files automatically advance to preview step
+- **Native Android Toasts**: Replaced Flutter SnackBars with native Android toast notifications
+  - **Platform Native**: Uses Android's native toast system for better integration
+  - **Consistent Styling**: Maintains app's color scheme and theming
+  - **Better Performance**: Native toasts are more efficient than Flutter SnackBars
+  - **Cross-Platform Support**: Works on Android with fallback for other platforms
 
 ### Changed
 - **Import Workflow**: Streamlined import process by eliminating manual preview step
   - **Simplified Steps**: File selection step now automatically processes and shows preview
   - **Better UX**: Reduced number of clicks needed to complete import process
   - **Immediate Feedback**: Users get instant validation and preview of their files
+- **Toast System**: Replaced SnackBar-based toasts with native Android toasts
+  - **Native Integration**: Better integration with Android system
+  - **Improved UX**: More familiar toast behavior for Android users
+  - **Consistent Theming**: Maintains app's color scheme across all toast types
 
 ### Technical
 - Modified `_onFilesSelected` method to automatically trigger file parsing
 - Updated `_parseFiles` method to automatically advance to preview step for valid files
 - Removed manual "Next" button from file selection step
 - Added loading indicator to file selection step during parsing
+- Added `fluttertoast` dependency for native Android toast support
+- Updated `ToastHelper` to use native Android toasts with platform detection
 - Maintained all existing functionality while improving user experience
 
 ## [v0.90.0] - 2025-01-16

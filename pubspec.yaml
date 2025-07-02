@@ -29,6 +29,9 @@ dependencies:
   # UI & Date/Time
   flutter_datetime_picker: ^1.5.1
 
+  # Native toasts
+  fluttertoast: ^8.2.4
+
   # Icons
   cupertino_icons: ^1.0.6
 

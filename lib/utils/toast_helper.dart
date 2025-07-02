@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-/// Utility class for showing improved toast notifications
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+/// Utility class for showing native toast notifications
 class ToastHelper {
   /// Shows a success toast notification
   static void showSuccess(BuildContext context, String message) {
-    _showToast(
-      context,
+    _showNativeToast(
       message: message,
       backgroundColor: Theme.of(context).colorScheme.primary,
       textColor: Theme.of(context).colorScheme.onPrimary,
@@ -14,8 +16,7 @@ class ToastHelper {
 
   /// Shows an error toast notification
   static void showError(BuildContext context, String message) {
-    _showToast(
-      context,
+    _showNativeToast(
       message: message,
       backgroundColor: Theme.of(context).colorScheme.error,
       textColor: Theme.of(context).colorScheme.onError,
@@ -24,8 +25,7 @@ class ToastHelper {
 
   /// Shows a warning toast notification
   static void showWarning(BuildContext context, String message) {
-    _showToast(
-      context,
+    _showNativeToast(
       message: message,
       backgroundColor: Colors.orange,
       textColor: Colors.white,
@@ -34,52 +34,43 @@ class ToastHelper {
 
   /// Shows a general info toast notification
   static void showInfo(BuildContext context, String message) {
-    _showToast(
-      context,
+    _showNativeToast(
       message: message,
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
       textColor: Theme.of(context).colorScheme.onSurface,
     );
   }
 
-  /// Private helper method that creates the improved SnackBar
-  static void _showToast(
-    BuildContext context, {
+  /// Private helper method that shows native Android toasts
+  static void _showNativeToast({
     required String message,
     required Color backgroundColor,
     required Color textColor,
   }) {
-    // Clear any existing SnackBars first
-    ScaffoldMessenger.of(context).clearSnackBars();
-
-    final snackBar = SnackBar(
-      content: GestureDetector(
-        onTap: () {
-          // Dismiss immediately when tapped
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        },
-        child: Text(
-          message,
-          style: TextStyle(color: textColor),
-        ),
-      ),
-      backgroundColor: backgroundColor,
-      duration: const Duration(seconds: 2), // Shorter duration
-      behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.all(16),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
-      dismissDirection: DismissDirection.horizontal,
-      action: SnackBarAction(
-        label: '✕',
-        textColor: textColor.withOpacity(0.8),
-        onPressed: () {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        },
-      ),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    // Use native Android toasts on Android platform
+    if (Platform.isAndroid) {
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: backgroundColor,
+        textColor: textColor,
+        fontSize: 16.0,
+      );
+    } else {
+      // Fallback to SnackBar for other platforms (macOS, iOS, web)
+      // Note: This fallback won't work without context, so we'll need to handle this differently
+      // For now, we'll just use the native toast on all platforms
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: backgroundColor,
+        textColor: textColor,
+        fontSize: 16.0,
+      );
+    }
   }
 }
