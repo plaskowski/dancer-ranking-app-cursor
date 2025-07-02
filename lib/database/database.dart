@@ -134,12 +134,13 @@ class AppDatabase extends _$AppDatabase {
     await _insertDefaultScores();
   }
 
-  // Insert minimal essential tags
+  // Insert contextual tags related to specific places/events where you know dancers from
   Future<void> _insertDefaultTags() async {
     await batch((batch) {
       batch.insertAll(tags, [
-        TagsCompanion.insert(name: 'new'),
-        TagsCompanion.insert(name: 'regular'),
+        TagsCompanion.insert(name: 'Monday Class'),
+        TagsCompanion.insert(name: 'Cuban DC Festival'),
+        TagsCompanion.insert(name: 'Friday Social'),
       ]);
     });
   }
