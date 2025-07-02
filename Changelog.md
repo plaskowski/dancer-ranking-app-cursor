@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.87.0] - 2025-01-16
+
+### User Requests
+- "Event preview list should not be scrollable as it conflicts with overall scrolling of the screen" - Request to fix scrolling conflicts in events import preview
+
+### Improved
+- **Events Import Preview**: Fixed scrolling conflicts by making event preview list non-scrollable
+  - **No More Scrolling Conflicts**: Removed fixed-height ListView that was conflicting with overall screen scrolling
+  - **Better UX**: Users can now scroll through the entire preview naturally without nested scroll areas
+  - **Cleaner Layout**: Event preview cards now flow naturally in the main scroll area
+  - **Maintained Functionality**: All event details and expansion tiles still work as expected
+
+### Technical
+- Replaced `SizedBox(height: 300, child: ListView.builder)` with `Column` using `map()` spread operator
+- Added margin to event cards for proper spacing
+- Maintained all existing functionality including expansion tiles and attendance details
+- Improved code readability with better formatting
+
 ## [v0.86.0] - 2025-01-16
 
 ### User Requests
