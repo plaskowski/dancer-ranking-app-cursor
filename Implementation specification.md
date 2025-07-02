@@ -250,7 +250,11 @@ Users can adjust rankings during events for various reasons:
 - Edit scores for any attendee regardless of dance status
 - Review and modify impressions from recorded dances
 - **Statistics Display**: Simple header showing "Recorded X dances total. Met Y people for the first time."
-- **Score Groupings**: Dancers organized by score with count badges
+- **Score Groupings**: Dancers organized by score with count badges and sticky headers
+- **Sticky Group Headers**: Score group headers remain pinned at top while scrolling through each group's dancers
+  - **Always Visible Context**: Current group name and dancer count visible during scroll
+  - **Visual Design**: Headers feature subtle shadows and borders for clear separation
+  - **Smooth Performance**: Custom scroll view optimized for large dancer lists
 - **Primary use case**: Post-event reflection and score refinement
 - **Optimized for Old Events**: Only tab shown for events 2+ days ago to focus on historical review
 

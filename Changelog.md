@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.62.0] - 2025-01-16
+
+### User Requests
+- "Add scrolling grouping header in summary tab so I can see the current group when scrolling through long list"
+
+### Enhanced
+- **Summary Tab Scrolling Headers**: Added sticky group headers that remain visible while scrolling through long dancer lists
+  - **Sticky Headers**: Score group headers now pin to top when scrolling through each group's dancers
+  - **Visual Feedback**: Headers include subtle shadow and border styling for clear separation
+  - **Group Context**: Always visible current group name and dancer count while scrolling
+  - **Optimized Performance**: Used `CustomScrollView` with `SliverPersistentHeader` for smooth scrolling performance
+  - **Material Design**: Headers follow Material Design principles with proper theme integration
+
+### Technical
+- **Architecture**: Replaced `ListView` with `CustomScrollView` using sliver widgets for enhanced scrolling control
+- **Custom Delegate**: Implemented `_StickyHeaderDelegate` extending `SliverPersistentHeaderDelegate` for header behavior
+- **Performance**: Used `SliverMainAxisGroup` to group headers with their content for optimal rendering
+- **Styling**: Headers feature themed background color, borders, and drop shadows for visual hierarchy
+- **Accessibility**: Maintained proper contrast and semantic structure for screen readers
+
+### Improved
+- **User Experience**: Long dancer lists are now easier to navigate with persistent group context
+- **Visual Clarity**: Clear separation between score groups with always-visible headers
+- **Scrolling Behavior**: Smooth, native iOS/Android scrolling experience with pinned headers
+
 ## [v0.61.0] - 2025-01-16
 
 ### User Requests

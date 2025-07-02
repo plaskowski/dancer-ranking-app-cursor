@@ -112,104 +112,150 @@ class SummaryTab extends StatelessWidget {
           'groupSizes': groupedDancers.map((k, v) => MapEntry(k, v.length)),
         });
 
-        return ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
+        return CustomScrollView(
+          slivers: [
             // Summary header
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Dance Summary',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).colorScheme.onSurface,
+            SliverPadding(
+              padding: const EdgeInsets.all(16),
+              sliver: SliverToBoxAdapter(
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Dance Summary',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
-                        children: [
-                          TextSpan(
-                            text: 'Recorded ',
-                            style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                        const SizedBox(height: 8),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: 'Recorded ',
+                                style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                              ),
+                              TextSpan(
+                                text: '${attendedDancers.where((d) => d.hasDanced).length}',
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text: ' dances total. Met ',
+                                style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                              ),
+                              TextSpan(
+                                text: '${attendedDancers.where((d) => d.isFirstMetHere).length}',
+                                style: const TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text: ' people for the first time.',
+                                style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                              ),
+                            ],
                           ),
-                          TextSpan(
-                            text: '${attendedDancers.where((d) => d.hasDanced).length}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: ' dances total. Met ',
-                            style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
-                          ),
-                          TextSpan(
-                            text: '${attendedDancers.where((d) => d.isFirstMetHere).length}',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: ' people for the first time.',
-                            style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 16),
 
-            // Score groups
+            // Score groups with sticky headers
             ...sortedKeys.map((scoreName) {
               final scoreDancers = groupedDancers[scoreName]!;
 
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(
-                        scoreName,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              return SliverMainAxisGroup(
+                slivers: [
+                  // Sticky header for each score group
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: _StickyHeaderDelegate(
+                      minHeight: 60,
+                      maxHeight: 60,
+                      child: Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          '${scoreDancers.length}',
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                          color: Theme.of(context).colorScheme.surface,
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                            ),
                           ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+                              offset: const Offset(0, 2),
+                              blurRadius: 4,
+                            ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        child: Row(
+                          children: [
+                            Text(
+                              scoreName,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.primaryContainer,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                '${scoreDancers.length}',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  const SizedBox(height: 8),
-                  ...scoreDancers.map((dancer) => DancerCard(
-                        dancer: dancer,
-                        eventId: eventId,
-                        isPlanningMode: false,
-                        hideScorePill: true,
-                      )),
-                  const SizedBox(height: 16),
+
+                  // Dancers in this score group
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: DancerCard(
+                              dancer: scoreDancers[index],
+                              eventId: eventId,
+                              isPlanningMode: false,
+                              hideScorePill: true,
+                            ),
+                          );
+                        },
+                        childCount: scoreDancers.length,
+                      ),
+                    ),
+                  ),
+
+                  // Spacing after each group
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 16),
+                  ),
                 ],
               );
             }),
@@ -217,6 +263,35 @@ class SummaryTab extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+// Custom delegate for sticky headers
+class _StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+
+  _StickyHeaderDelegate({
+    required this.minHeight,
+    required this.maxHeight,
+    required this.child,
+  });
+
+  @override
+  double get minExtent => minHeight;
+
+  @override
+  double get maxExtent => maxHeight;
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return SizedBox.expand(child: child);
+  }
+
+  @override
+  bool shouldRebuild(_StickyHeaderDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight || minHeight != oldDelegate.minHeight || child != oldDelegate.child;
   }
 }
 
