@@ -10,7 +10,8 @@ The app has all I need to start using it. :celebrate:
 - [X] option to reset DB in settings screen (general tab)
 - [X] add new “Dancer history” screen
 - [ ] use native android toasts
-- [ ] move info block in Add dancer dialog into the scroll area to not take vertical space
+- [ ] Add existing dancer dialog
+  - [ ] move info block into the scroll area to not take vertical space
 - [ ] "Add new dancer" dialog
   - [ ] move "already danced" checkbox in above the tags section so I don't have to scroll through tags for it
 - [ ] move the import actions to the settings screen

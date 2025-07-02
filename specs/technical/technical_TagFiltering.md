@@ -1,0 +1,270 @@
+# Tag Filtering Technical Design
+
+## Overview
+Technical specification for implementing tag-based filtering in the "Select Dancers" and "Add Existing Dancer" dialogs. This document outlines the architecture, implementation approach, and code changes required.
+
+## Architecture Components
+
+### 1. Service Layer Extensions
+
+#### TagService Extensions
+**File**: `lib/services/tag_service.dart`
+
+New methods required:
+```dart
+// Get dancers by multiple tags with OR logic
+Future<List<Dancer>> getDancersByTags(List<int> tagIds) async
+
+// Get tags that have associated dancers (for filter chip display)
+Future<List<Tag>> getTagsWithDancers() async
+
+// Get dancers by single tag (already exists)
+Future<List<Dancer>> getDancersByTag(int tagId) async
+```
+
+**Implementation Notes**:
+- `getDancersByTags()`: Use SQL `IN` clause or `OR` conditions for multiple tag filtering
+- `getTagsWithDancers()`: Join with dancer_tags table to only return tags that have associated dancers
+- Optimize queries with proper indexing on dancer_tags table
+
+#### DancerService Extensions
+**File**: `lib/services/dancer_service.dart`
+
+New methods required:
+```dart
+// Get unranked dancers for event filtered by tags
+Future<List<DancerWithEventInfo>> getUnrankedDancersForEventByTags(
+  int eventId, 
+  List<int> tagIds
+) async
+
+// Get available dancers for add existing dialog filtered by tags
+Stream<List<DancerWithEventInfo>> watchAvailableDancersForEventByTags(
+  int eventId,
+  List<int> tagIds
+) async
+```
+
+**Implementation Notes**:
+- Combine existing event filtering logic with tag filtering
+- Use database joins for efficient querying
+- Maintain reactive streams for real-time updates
+
+### 2. UI Component Architecture
+
+#### Shared Tag Filter Widget
+**New File**: `lib/widgets/tag_filter_chips.dart`
+
+```dart
+class TagFilterChips extends StatefulWidget {
+  final Set<int> selectedTagIds;
+  final Function(Set<int>) onTagsChanged;
+  final bool showAllChip;
+  
+  const TagFilterChips({
+    required this.selectedTagIds,
+    required this.onTagsChanged,
+    this.showAllChip = true,
+  });
+}
+```
+
+**Features**:
+- Horizontal scrollable row of FilterChip widgets
+- "All" chip for clearing filters
+- Material 3 design with proper theming
+- Loading state during tag fetch
+- Empty state when no tags available
+
+#### Enhanced Dialog State Management
+
+**Select Dancers Screen State Extensions**:
+```dart
+class _SelectDancersScreenState extends State<SelectDancersScreen> {
+  // Existing state
+  final Set<int> _selectedDancerIds = <int>{};
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  bool _isLoading = false;
+  
+  // New tag filtering state
+  Set<int> _selectedTagIds = <int>{};
+  List<Tag> _availableTags = [];
+  bool _isLoadingTags = false;
+  bool _showAllDancers = true;
+}
+```
+
+**Add Existing Dancer Screen State Extensions**:
+```dart
+class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
+  // Existing state
+  final _searchController = TextEditingController();
+  String _searchQuery = '';
+  
+  // New tag filtering state
+  Set<int> _selectedTagIds = <int>{};
+  List<Tag> _availableTags = [];
+  bool _isLoadingTags = false;
+  bool _showAllDancers = true;
+}
+```
+
+### 3. Database Query Optimization
+
+#### Enhanced Filtering Queries
+
+**Tag-based Dancer Filtering**:
+```sql
+-- Get dancers by multiple tags (OR logic)
+SELECT DISTINCT d.* 
+FROM dancers d
+INNER JOIN dancer_tags dt ON d.id = dt.dancer_id
+WHERE dt.tag_id IN (?, ?, ?)
+ORDER BY d.name
+
+-- Get unranked dancers for event with tag filtering
+SELECT d.*, 
+       r.name as rank_name,
+       a.marked_at as attendance_marked_at,
+       a.status as status
+FROM dancers d
+LEFT JOIN rankings rk ON d.id = rk.dancer_id AND rk.event_id = ?
+LEFT JOIN ranks r ON rk.rank_id = r.id
+LEFT JOIN attendances a ON d.id = a.dancer_id AND a.event_id = ?
+INNER JOIN dancer_tags dt ON d.id = dt.dancer_id
+WHERE rk.id IS NULL 
+  AND dt.tag_id IN (?, ?, ?)
+ORDER BY d.name
+```
+
+**Tags with Dancers Query**:
+```sql
+-- Get only tags that have associated dancers
+SELECT DISTINCT t.*
+FROM tags t
+INNER JOIN dancer_tags dt ON t.id = dt.tag_id
+ORDER BY t.name
+```
+
+#### Database Indexes
+Ensure proper indexing for performance:
+- `dancer_tags(tag_id)` - for tag-based filtering
+- `dancer_tags(dancer_id)` - for dancer's tags lookup
+- `dancer_tags(tag_id, dancer_id)` - composite index for joins
+
+### 4. Implementation Plan
+
+#### Phase 1: Core Infrastructure
+1. **Service Layer**:
+   - Add `getDancersByTags()` to TagService
+   - Add `getTagsWithDancers()` to TagService
+   - Extend DancerService methods for tag filtering
+
+2. **Shared Widget**:
+   - Create `TagFilterChips` widget
+   - Implement Material 3 styling
+   - Add loading and empty states
+
+3. **Database Optimization**:
+   - Verify database indexes
+   - Test query performance
+
+#### Phase 2: Dialog Integration
+1. **Select Dancers Screen**:
+   - Add tag filtering state management
+   - Integrate TagFilterChips widget
+   - Update filtering logic to combine tags + search
+   - Update UI layout with proper spacing
+
+2. **Add Existing Dancer Screen**:
+   - Mirror tag filtering implementation
+   - Adapt for single-selection interaction pattern
+   - Maintain existing info banner functionality
+
+#### Phase 3: Polish & Optimization
+1. **Performance**:
+   - Optimize database queries
+   - Add query result caching
+   - Minimize UI rebuilds during filtering
+
+2. **UX Enhancements**:
+   - Add filter memory across sessions
+   - Improve empty state messaging
+   - Add filter clear functionality
+
+### 5. Code Changes Required
+
+#### Files to Modify
+1. **Service Layer**:
+   - `lib/services/tag_service.dart` - Add new filtering methods
+   - `lib/services/dancer_service.dart` - Add tag-aware event queries
+
+2. **UI Components**:
+   - `lib/screens/event/dialogs/select_dancers_screen.dart` - Add tag filtering
+   - `lib/screens/event/dialogs/add_existing_dancer_screen.dart` - Add tag filtering
+
+3. **New Files**:
+   - `lib/widgets/tag_filter_chips.dart` - Shared tag filter component
+
+#### Files to Test
+- Both dialog screens with various tag combinations
+- Database queries with large datasets
+- UI responsiveness during filtering operations
+
+### 6. Technical Considerations
+
+#### Performance Optimization
+- **Query Efficiency**: Use JOIN operations instead of multiple queries
+- **UI Responsiveness**: Debounce filter operations to avoid excessive rebuilds
+- **Memory Management**: Dispose of controllers and streams properly
+- **Caching**: Cache tag list to avoid repeated database calls
+
+#### Error Handling
+- **Database Errors**: Graceful fallback to text-only search
+- **Empty States**: Clear messaging when no tags or dancers available
+- **Network Independence**: All filtering happens locally with cached data
+
+#### Testing Strategy
+- **Unit Tests**: Service layer methods for tag filtering
+- **Widget Tests**: TagFilterChips component behavior
+- **Integration Tests**: End-to-end dialog filtering workflows
+- **Performance Tests**: Large dataset filtering performance
+
+### 7. Data Flow Architecture
+
+#### Tag Filter Selection Flow
+1. User opens dialog → Load available tags
+2. User taps tag chip → Update selected tags state
+3. State change triggers → Filter dancers by tags
+4. Optional text search → Further filter results
+5. Display filtered list → User makes selections
+
+#### Database Query Flow
+```
+User Selection → TagService.getDancersByTags() → 
+Database Query → Join with Event Data → 
+Filter by Text Search → Return Filtered Results →
+Update UI
+```
+
+#### State Synchronization
+- Tag selection state managed locally in each dialog
+- Filter results computed reactively from state changes
+- Database queries triggered only when tag selection changes
+- Text search applied to tag-filtered results in memory
+
+### 8. Future Extensions
+
+#### Advanced Filtering (Phase 4)
+- **AND/OR Logic Toggle**: Allow users to choose between AND/OR tag combinations
+- **Tag Hierarchies**: Support for grouped tags (venue type > specific venue)
+- **Recent Tags**: Show most recently used tags first
+- **Custom Tag Sets**: Allow users to save common tag combinations
+
+#### Smart Integration (Phase 5)
+- **Tag Suggestions**: Suggest relevant tags based on event context
+- **Learning**: Remember frequently used tag combinations per user
+- **Auto-tagging**: Suggest tags for new dancers based on patterns
+
+This technical design provides a comprehensive roadmap for implementing tag filtering while maintaining the existing functionality and ensuring optimal performance. 
