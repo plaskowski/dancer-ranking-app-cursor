@@ -9,32 +9,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### User Requests
 - "Do this" - Referring to todo item "mark current events dates green (with the same logic as for showing tabs in event screen, have the logic reused)"
+- "It does not work, future events are green too" - Fixed issue where distant future events incorrectly showed green
 
 ### Added
 - **Current Events Green Marking**: Event dates are now marked green for current events (not old events)
   - **EventStatusHelper Utility**: New centralized utility class for consistent event date logic across the app
-  - **Visual Status Indicators**: Events within 2 days (current) show green dates, old events (2+ days ago) show muted dates
+  - **Visual Status Indicators**: Events within 6-day window (2 days ago to 3 days future) show green dates, old events (2+ days ago) show muted dates
   - **Consistent Logic**: Same date logic used for event screen tab visibility now determines date coloring
   - **Comprehensive Coverage**: Green marking applied to all event lists (home screen, import dialogs, etc.)
 
 ### Improved
 - **Code Reusability**: Centralized event status logic prevents duplication and ensures consistency
-- **Visual Clarity**: Users can instantly identify current/active events vs. historical events
+- **Visual Clarity**: Users can instantly identify current/active events vs. historical events vs. distant future events
 - **User Experience**: Color-coded dates provide immediate visual feedback on event relevance
 
 ### Technical
 - **EventStatusHelper Class**: Added `lib/utils/event_status_helper.dart` with methods:
   - `isPastEvent()`: Checks if event is before today
   - `isOldEvent()`: Checks if event is 2+ days ago (old events)
-  - `isCurrentEvent()`: Checks if event is not old (current events)
+  - `isCurrentEvent()`: Checks if event is within 6-day current window (2 days ago to 3 days future)
+  - `hasMultipleTabs()`: Preserves original tab logic for EventScreen
   - `getAvailableTabs()`: Returns appropriate tabs based on event status
 - **Refactored Components**: Updated EventScreen, EventCard, and ImportRankingsDialog to use centralized logic
-- **Color Logic**: Green for current events, muted for old events, primary for future events
+- **Color Logic**: Green for current events (within 6-day window), muted for old events, primary for distant future events
 - **Code Quality**: Removed duplicate date logic and unused variables
 
 ### Fixed
 - **Logic Consistency**: Event screen tab visibility and date marking now use identical logic
 - **Maintainability**: Single source of truth for event status determinations
+- **Future Events Coloring**: Fixed issue where distant future events incorrectly showed green dates
 
 ## [v0.66.0] - 2025-01-04
 
