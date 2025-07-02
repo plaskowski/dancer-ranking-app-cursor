@@ -44,7 +44,8 @@ class EventCard extends StatelessWidget {
                 ),
                 title: const Text('Rename'),
                 onTap: () {
-                  ActionLogger.logUserAction('EventCard', 'context_rename_tapped', {
+                  ActionLogger.logUserAction(
+                      'EventCard', 'context_rename_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                   });
@@ -60,7 +61,8 @@ class EventCard extends StatelessWidget {
                 ),
                 title: const Text('Change Date'),
                 onTap: () {
-                  ActionLogger.logUserAction('EventCard', 'context_change_date_tapped', {
+                  ActionLogger.logUserAction(
+                      'EventCard', 'context_change_date_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                     'currentDate': event.date.toIso8601String(),
@@ -77,7 +79,8 @@ class EventCard extends StatelessWidget {
                 ),
                 title: const Text('Delete'),
                 onTap: () {
-                  ActionLogger.logUserAction('EventCard', 'context_delete_tapped', {
+                  ActionLogger.logUserAction(
+                      'EventCard', 'context_delete_tapped', {
                     'eventId': event.id,
                     'eventName': event.name,
                   });
@@ -160,7 +163,8 @@ class EventCard extends StatelessWidget {
     }
   }
 
-  void _performDateChange(BuildContext context, DateTime newDate, EventService eventService) async {
+  void _performDateChange(
+      BuildContext context, DateTime newDate, EventService eventService) async {
     ActionLogger.logUserAction('EventCard', 'date_change_started', {
       'eventId': event.id,
       'newDate': newDate.toIso8601String(),
@@ -178,9 +182,11 @@ class EventCard extends StatelessWidget {
           });
 
           final formattedDate = DateFormat('MMM d, y').format(newDate);
-          ToastHelper.showSuccess(context, 'Event date changed to $formattedDate');
+          ToastHelper.showSuccess(
+              context, 'Event date changed to $formattedDate');
         } else {
-          ActionLogger.logError('EventCard.performDateChange', 'update_failed', {
+          ActionLogger.logError(
+              'EventCard.performDateChange', 'update_failed', {
             'eventId': event.id,
             'newDate': newDate.toIso8601String(),
           });
@@ -198,7 +204,8 @@ class EventCard extends StatelessWidget {
     }
   }
 
-  void _performRename(BuildContext context, TextEditingController controller) async {
+  void _performRename(
+      BuildContext context, TextEditingController controller) async {
     final newName = controller.text.trim();
     if (newName.isEmpty) {
       ActionLogger.logUserAction('EventCard', 'rename_validation_failed', {
@@ -319,13 +326,13 @@ class EventCard extends StatelessWidget {
     // Determine date color based on event status
     Color dateColor;
     if (isOld) {
-      // Old events (2+ days ago) - muted color
-      dateColor = Theme.of(context).colorScheme.onSurfaceVariant;
+      // Old events (2+ days ago) - gray color
+      dateColor = Colors.grey;
     } else if (isCurrent) {
-      // Current events (within 2 days) - green color
-      dateColor = Colors.green;
+      // Current events (within 6-day window) - white color
+      dateColor = Colors.white;
     } else {
-      // Future events - primary color (this case shouldn't happen with current logic)
+      // Future events - primary color
       dateColor = Theme.of(context).colorScheme.primary;
     }
 
@@ -352,7 +359,7 @@ class EventCard extends StatelessWidget {
             event.name,
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: isOld ? Theme.of(context).colorScheme.onSurfaceVariant : null,
+              color: isOld ? Colors.grey : null,
             ),
           ),
           subtitle: Text(

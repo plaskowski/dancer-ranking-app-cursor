@@ -225,12 +225,11 @@ class _ImportRankingsDialogState extends State<ImportRankingsDialog> {
                       // Determine date color based on event status
                       Color dateColor;
                       if (isOld) {
-                        // Old events (2+ days ago) - muted color
-                        dateColor =
-                            Theme.of(context).colorScheme.onSurfaceVariant;
+                        // Old events (2+ days ago) - gray color
+                        dateColor = Colors.grey;
                       } else if (isCurrent) {
-                        // Current events (within 2 days) - green color
-                        dateColor = Colors.green;
+                        // Current events (within 6-day window) - white color
+                        dateColor = Colors.white;
                       } else {
                         // Future events - primary color
                         dateColor = Theme.of(context).colorScheme.primary;
