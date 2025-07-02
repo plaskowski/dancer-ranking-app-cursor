@@ -6,8 +6,8 @@ The app has all I need to start using it. :celebrate:
 
 ## Tasks list (take one at a time)
 Next:
-- [X] settings screen
-- [X] how to run second cursor agent on separate branch of the same repo
+- [ ] add stats on tags rows similar to what other dictionary screens have
+- [ ] style stats so that they are standing out less
 
 Nice to haves:
 - move all main screen actions (except Dancers) under the three dots, Import events should be the last

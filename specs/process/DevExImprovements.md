@@ -2,8 +2,8 @@
 ## Cursor based development improvements
 
 # Most urgent
-- increase the 25 tool calls limit
 - allow it to delete .dart and .md files
+- autosave?
 
 # Later
 - Ability to run user stories for regression testing
@@ -22,6 +22,9 @@
 - keep a separte human-only todolist file to not lost your toughts chain
 - close all editor windows after commit
 - don't edit dot files directly, write down changes to a separate file I can review first
+
+# Hard ones
+- increase the 25 tool calls limit
 
 # Solved
 
