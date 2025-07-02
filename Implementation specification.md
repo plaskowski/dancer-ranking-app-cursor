@@ -178,16 +178,19 @@ Users can adjust rankings during events for various reasons:
 - → Home Screen (after successful creation)
 
 ### 3. Event Screen (`EventScreen`)
-**Purpose**: Main event management with swipe-based navigation
+**Purpose**: Main event management with intelligent tab behavior based on event age
 **AppBar Design**:
 - **Title**: Event name with bullet separator and compact date format (e.g., "Salsa Night • Dec 15")
 - **Subtitle**: 
-  - For current/future events: Dynamic tab indicator showing both tabs with active one in brackets (e.g., "[Planning] • Present")
-  - For past events: Static text "Event Concluded"
-- **Navigation**: Pure swipe-based using PageController for current/future events. Swiping is disabled for past events.
+  - For old events (2+ days ago): Static text "Summary" 
+  - For recent past events: Dynamic tab indicator showing available tabs with active one in brackets (e.g., "[Present] • Summary")
+  - For current/future events: Dynamic tab indicator showing all tabs with active one in brackets (e.g., "[Planning] • Present • Summary")
+**Smart Tab Navigation**: Automatically determines tab configuration based on event age for optimal user experience
+- **Navigation**: Pure swipe-based using PageController for multi-tab views. Single-tab view for old events eliminates unnecessary navigation.
 **Conditional View**:
-- **Current/Future Events**: Shows a two-tab view with "Planning" and "Present" tabs.
-- **Past Events**: Shows a simplified single-page view containing only the "Present" tab to review attendance.
+- **Old Events (2+ days ago)**: Shows only Summary tab with direct focus on reviewing scores and impressions
+- **Recent Past Events**: Shows Present + Summary tabs for attendance review and scoring
+- **Current/Future Events**: Shows full Planning + Present + Summary tabs functionality
 **Pages**:
 
 **Planning Tab** (Only for current/future events):
@@ -241,6 +244,21 @@ Users can adjust rankings during events for various reasons:
 - **Planning Tab Actions** → Ranking Dialog, Notes editing only
 - **Present Tab Actions** → Full Actions Dialog → Ranking, Dance Recording, Attendance
 
+**Summary Tab**:
+- Review and edit post-event scores and impressions for all attendees
+- View complete event attendance with dance completion status
+- Edit scores for any attendee regardless of dance status
+- Review and modify impressions from recorded dances
+- **Primary use case**: Post-event reflection and score refinement
+- **Optimized for Old Events**: Only tab shown for events 2+ days ago to focus on historical review
+
+**Summary Tab Actions**:
+- **FAB**: Opens Add Existing Dancer Screen to add missed attendees to event records
+- **Tap dancer**: Opens context-aware actions dialog:
+  - **Edit Score** → Opens Score Dialog for any attendee (context-aware text)
+  - **Edit Impression** → Quick text editing for dance impressions
+  - **Mark as Danced With** → Record dance completion for missed recordings
+  - **Attendance Management** → Mark present/absent, mark as left
 
 ### 4. Select Dancers Screen (`SelectDancersScreen`)
 **Purpose**: Select multiple existing dancers to add to event ranking (for planning phase)

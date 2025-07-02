@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.60.0] - 2025-01-16
+
+### User Requests
+- "Great now, open past events (those from +2 days ago) with summary tab active"
+- "It should be the event screen to decide which tab to show as the initial one. Plus, we don't need other tabs for such past events."
+- "great, commit and let me test it"
+
+### Added
+- **Smart Event Tab Navigation**: Intelligent tab behavior based on event age for optimal user experience
+  - **Old Events (2+ days ago)**: Show only Summary tab with direct navigation to review scores and impressions
+  - **Recent Past Events**: Standard Present + Summary tabs behavior  
+  - **Future Events**: Full Planning + Present + Summary tabs functionality
+  - **Single Tab View**: Old events use optimized single-tab layout without PageView navigation
+
+### Enhanced
+- **EventScreen Logic**: Internal event age detection for automatic tab configuration
+  - `_isOldEvent` getter: Identifies events older than 2 days for Summary-only mode
+  - Dynamic tab array creation based on event age and status
+  - Optimized UI rendering with single-tab view when only Summary is relevant
+  - Smart FAB actions mapping for appropriate tab functionality
+
+### User Experience
+- **Focused Experience**: Old events bypass irrelevant tabs and open directly to what matters
+- **Contextual Navigation**: Different tab behaviors for different event types automatically
+- **Clean Interface**: Simplified app bar for old events showing just "Summary" 
+- **Performance**: Single tab view eliminates unnecessary PageView for old events
+
+### Technical
+- EventScreen automatically determines tab behavior without external parameters
+- Conditional PageView rendering based on available tabs count
+- Proper tab actions mapping for different event configurations
+- Enhanced logging for different tab navigation scenarios
+
 ## [v0.59.0] - 2025-01-16
 
 ### User Requests

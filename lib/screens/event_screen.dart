@@ -29,10 +29,13 @@ class _EventScreenState extends State<EventScreen> {
       _event != null &&
       _event!.date.isBefore(DateUtils.dateOnly(DateTime.now()));
 
+  bool get _isOldEvent =>
+      _event != null &&
+      _event!.date.isBefore(DateTime.now().subtract(const Duration(days: 2)));
+
   @override
   void initState() {
     super.initState();
-    _pageController = PageController();
     _loadEvent();
 
     ActionLogger.logAction('UI_EventScreen', 'screen_initialized', {
@@ -59,6 +62,19 @@ class _EventScreenState extends State<EventScreen> {
     if (mounted) {
       setState(() {
         _event = event;
+
+        // For old events (2+ days ago), start directly on Summary tab (index 0 since it's the only tab)
+        // For past events, start on Present tab (index 0)
+        // For future events, start on Planning tab (index 0)
+        int initialPage = 0;
+        if (_isOldEvent) {
+          // Old events only have Summary tab, so start at index 0
+          initialPage = 0;
+        }
+
+        _currentPage = initialPage;
+        _pageController = PageController(initialPage: initialPage);
+
         // Initialize tab actions with event data
         _tabActions = [
           PlanningTabActions(
@@ -83,7 +99,12 @@ class _EventScreenState extends State<EventScreen> {
       _currentPage = index;
     });
 
-    final tabNames = ['planning', 'present', 'summary'];
+    final tabNames = _isOldEvent
+        ? ['summary'] // Old events only have Summary tab
+        : _isPastEvent
+            ? ['present', 'summary'] // Past events have Present and Summary
+            : ['planning', 'present', 'summary']; // Future events have all tabs
+
     final fromTab = tabNames[_currentPage];
     final toTab = tabNames[index];
 
@@ -98,7 +119,12 @@ class _EventScreenState extends State<EventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tabNames = ['planning', 'present', 'summary'];
+    final tabNames = _isOldEvent
+        ? ['summary'] // Old events only have Summary tab
+        : _isPastEvent
+            ? ['present', 'summary'] // Past events have Present and Summary
+            : ['planning', 'present', 'summary']; // Future events have all tabs
+
     ActionLogger.logAction('UI_EventScreen', 'build_called', {
       'eventId': widget.eventId,
       'currentTab': tabNames[_currentPage],
@@ -110,20 +136,31 @@ class _EventScreenState extends State<EventScreen> {
       );
     }
 
-    final pages = _isPastEvent
+    // Different tab configurations based on event age
+    final pages = _isOldEvent
         ? [
-            PresentTab(eventId: widget.eventId),
-            SummaryTab(eventId: widget.eventId)
+            SummaryTab(
+                eventId: widget.eventId) // Only Summary tab for old events
           ]
-        : [
-            PlanningTab(eventId: widget.eventId),
-            PresentTab(eventId: widget.eventId),
-            SummaryTab(eventId: widget.eventId)
-          ];
+        : _isPastEvent
+            ? [
+                PresentTab(eventId: widget.eventId),
+                SummaryTab(eventId: widget.eventId)
+              ]
+            : [
+                PlanningTab(eventId: widget.eventId),
+                PresentTab(eventId: widget.eventId),
+                SummaryTab(eventId: widget.eventId)
+              ];
 
-    final currentTabActions = _isPastEvent
-        ? (_currentPage == 0 ? _tabActions[1] : _tabActions[2])
-        : _tabActions[_currentPage];
+    // Get the correct tab actions based on event type and current page
+    final currentTabActions = _isOldEvent
+        ? _tabActions[2] // Always Summary actions for old events
+        : _isPastEvent
+            ? (_currentPage == 0
+                ? _tabActions[1]
+                : _tabActions[2]) // Present or Summary
+            : _tabActions[_currentPage]; // Planning, Present, or Summary
 
     return Scaffold(
       appBar: AppBar(
@@ -134,18 +171,27 @@ class _EventScreenState extends State<EventScreen> {
               '${_event!.name} • ${DateFormat('MMM d').format(_event!.date)}',
               style: const TextStyle(fontSize: 16),
             ),
-            if (!_isPastEvent)
+            if (_isOldEvent)
               Text(
-                _getTabIndicator(),
+                'Summary', // Only Summary tab for old events
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.normal,
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
-              ),
-            if (_isPastEvent)
+              )
+            else if (_isPastEvent)
               Text(
                 _getPastEventTabIndicator(),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.normal,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+              )
+            else
+              Text(
+                _getTabIndicator(),
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.normal,
@@ -155,11 +201,13 @@ class _EventScreenState extends State<EventScreen> {
           ],
         ),
       ),
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: _onPageChanged,
-        children: pages,
-      ),
+      body: pages.length == 1
+          ? pages[0] // Single tab, no PageView needed
+          : PageView(
+              controller: _pageController,
+              onPageChanged: _onPageChanged,
+              children: pages,
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => currentTabActions.onFabPressed(context, () {
           setState(() {
