@@ -12,28 +12,22 @@ Technical specification for implementing tag-based filtering in the "Select Danc
 
 New methods required:
 ```dart
-// Get dancers by multiple tags with OR logic
-Future<List<Dancer>> getDancersByTags(List<int> tagIds) async
-
-// Get dancers by multiple tags with DancerWithTags info
-Future<List<DancerWithTags>> getDancersWithTagsByTags(List<int> tagIds) async
-
-// Get unranked dancers for event filtered by tags
-Future<List<DancerWithEventInfo>> getUnrankedDancersForEventByTags(
+// Get unranked dancers for event filtered by single tag
+Future<List<DancerWithEventInfo>> getUnrankedDancersForEventByTag(
   int eventId, 
-  List<int> tagIds
+  int tagId
 ) async
 
-// Get available dancers for add existing dialog filtered by tags
-Stream<List<DancerWithEventInfo>> watchAvailableDancersForEventByTags(
+// Get available dancers for add existing dialog filtered by single tag
+Stream<List<DancerWithEventInfo>> watchAvailableDancersForEventByTag(
   int eventId,
-  List<int> tagIds
+  int tagId
 ) async
 ```
 
 **Implementation Notes**:
-- `getDancersByTags()`: Use SQL `IN` clause or `OR` conditions for multiple tag filtering
-- Combine existing event filtering logic with tag filtering
+- Leverage existing `getDancersByTag()` method from TagService for single tag filtering
+- Combine existing event filtering logic with single tag filtering
 - Use database joins for efficient querying
 - Maintain reactive streams for real-time updates
 
@@ -57,13 +51,13 @@ Future<List<Tag>> getTagsWithDancers() async
 
 ```dart
 class TagFilterChips extends StatefulWidget {
-  final Set<int> selectedTagIds;
-  final Function(Set<int>) onTagsChanged;
+  final int? selectedTagId;
+  final Function(int?) onTagChanged;
   final bool showAllChip;
   
   const TagFilterChips({
-    required this.selectedTagIds,
-    required this.onTagsChanged,
+    required this.selectedTagId,
+    required this.onTagChanged,
     this.showAllChip = true,
   });
 }
@@ -88,10 +82,9 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
   bool _isLoading = false;
   
   // New tag filtering state
-  Set<int> _selectedTagIds = <int>{};
+  int? _selectedTagId; // null = show all
   List<Tag> _availableTags = [];
   bool _isLoadingTags = false;
-  bool _showAllDancers = true;
 }
 ```
 
@@ -103,10 +96,9 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
   String _searchQuery = '';
   
   // New tag filtering state
-  Set<int> _selectedTagIds = <int>{};
+  int? _selectedTagId; // null = show all
   List<Tag> _availableTags = [];
   bool _isLoadingTags = false;
-  bool _showAllDancers = true;
 }
 ```
 
@@ -116,14 +108,14 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
 
 **Tag-based Dancer Filtering**:
 ```sql
--- Get dancers by multiple tags (OR logic)
+-- Get dancers by single tag (leverages existing TagService.getDancersByTag)
 SELECT DISTINCT d.* 
 FROM dancers d
 INNER JOIN dancer_tags dt ON d.id = dt.dancer_id
-WHERE dt.tag_id IN (?, ?, ?)
+WHERE dt.tag_id = ?
 ORDER BY d.name
 
--- Get unranked dancers for event with tag filtering
+-- Get unranked dancers for event with single tag filtering
 SELECT d.*, 
        r.name as rank_name,
        a.marked_at as attendance_marked_at,
@@ -134,7 +126,7 @@ LEFT JOIN ranks r ON rk.rank_id = r.id
 LEFT JOIN attendances a ON d.id = a.dancer_id AND a.event_id = ?
 INNER JOIN dancer_tags dt ON d.id = dt.dancer_id
 WHERE rk.id IS NULL 
-  AND dt.tag_id IN (?, ?, ?)
+  AND dt.tag_id = ?
 ORDER BY d.name
 ```
 
@@ -157,9 +149,9 @@ Ensure proper indexing for performance:
 
 #### Phase 1: Core Infrastructure
 1. **Service Layer**:
-   - Add `getDancersByTags()` and event filtering methods to DancerTagService
+   - Add single tag event filtering methods to DancerTagService
    - Add `getTagsWithDancers()` to TagService
-   - Extend existing methods to support tag-based filtering
+   - Leverage existing `getDancersByTag()` method for core filtering
 
 2. **Shared Widget**:
    - Create `TagFilterChips` widget
@@ -235,21 +227,21 @@ Ensure proper indexing for performance:
 
 #### Tag Filter Selection Flow
 1. User opens dialog → Load available tags
-2. User taps tag chip → Update selected tags state
-3. State change triggers → Filter dancers by tags
+2. User taps tag chip → Update selected tag state (single selection)
+3. State change triggers → Filter dancers by single tag
 4. Optional text search → Further filter results
 5. Display filtered list → User makes selections
 
 #### Database Query Flow
 ```
-User Selection → TagService.getDancersByTags() → 
+User Selection → TagService.getDancersByTag() → 
 Database Query → Join with Event Data → 
 Filter by Text Search → Return Filtered Results →
 Update UI
 ```
 
 #### State Synchronization
-- Tag selection state managed locally in each dialog
+- Single tag selection state managed locally in each dialog
 - Filter results computed reactively from state changes
 - Database queries triggered only when tag selection changes
 - Text search applied to tag-filtered results in memory
@@ -257,10 +249,10 @@ Update UI
 ### 8. Future Extensions
 
 #### Advanced Filtering (Phase 4)
-- **AND/OR Logic Toggle**: Allow users to choose between AND/OR tag combinations
+- **Multiple Tag Selection**: Add option for multi-select with AND/OR logic
 - **Tag Hierarchies**: Support for grouped tags (venue type > specific venue)
 - **Recent Tags**: Show most recently used tags first
-- **Custom Tag Sets**: Allow users to save common tag combinations
+- **Quick Tag Switching**: Remember and cycle through recently used tags
 
 #### Smart Integration (Phase 5)
 - **Tag Suggestions**: Suggest relevant tags based on event context

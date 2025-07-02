@@ -21,7 +21,7 @@ Currently, when adding existing dancers to events through the "Select Dancers" d
 
 #### Core Functionality
 1. **Tag Filter Integration**: Add tag filter chips above the existing search field
-2. **Multiple Tag Selection**: Allow filtering by multiple tags simultaneously (AND logic)
+2. **Single Tag Selection**: Allow filtering by one tag at a time for focused results
 3. **Combined Filtering**: Tag filters work together with text search
 4. **Memory Aid**: Help users find dancers by venue/context when names are forgotten
 
@@ -103,14 +103,13 @@ Focus on **venue/context tags** that users manually assign:
 **Behavior**:
 - **"All" chip**: Always visible, selected by default, shows all dancers
 - **Tag chips**: One chip per existing tag, only shows tags that have associated dancers
-- **Multiple selection**: Users can select multiple tag chips (deselects "All")
-- **Selection state**: Selected chips have primary color, unselected chips have neutral color
+- **Single selection**: Users can select one tag chip at a time (deselects others and "All")
+- **Selection state**: Selected chip has primary color, unselected chips have neutral color
 - **Auto-scroll**: Horizontal scrolling for many tags
 
 #### Filter Logic
-- **No tags selected (All)**: Show all unranked dancers
-- **One tag selected**: Show dancers with that tag
-- **Multiple tags selected**: Show dancers with ANY of the selected tags (OR logic)
+- **"All" selected**: Show all unranked dancers
+- **One tag selected**: Show only dancers with that specific tag
 - **Combined with search**: Apply tag filtering first, then text search on results
 
 ### Technical Implementation
@@ -136,9 +135,8 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
   bool _isLoading = false;
   
   // New tag filtering state
-  Set<int> _selectedTagIds = <int>{}; // Empty = show all
+  int? _selectedTagId; // null = show all
   List<Tag> _availableTags = [];
-  bool _showAllDancers = true; // "All" chip selected
 }
 ```
 
@@ -168,7 +166,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
 1. User opens "Select Dancers" dialog from event planning
 2. User sees tag filter chips for available venues/contexts
 3. User taps "Monday Class" chip to see only dancers from Monday classes
-4. User optionally adds more tag filters or uses text search to narrow results
+4. User optionally uses text search to further narrow results
 5. User selects dancers with checkboxes and adds them to event
 
 #### Error Handling
@@ -243,10 +241,10 @@ The same tag filtering functionality applies to the "Add Existing Dancer" dialog
 - **Info banner**: Explains that only unranked/absent dancers are shown
 - **Immediate feedback**: Success toasts show when dancers are marked present
 - **No bulk selection**: No FloatingActionButton, actions are per-dancer
-- **Same tag filtering**: Identical tag filter behavior and layout
+- **Same tag filtering**: Identical single-select tag filter behavior and layout
 
 ### Implementation Priority
-1. **Phase 1**: Basic tag filtering with OR logic for both dialogs
+1. **Phase 1**: Basic single-select tag filtering for both dialogs
 2. **Phase 2**: UI polish and empty state handling
 3. **Phase 3**: Performance optimization and filter memory
 
