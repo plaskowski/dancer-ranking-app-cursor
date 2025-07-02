@@ -8,10 +8,10 @@ The app has all I need to start using it. :celebrate:
 
 ## RTB work
 Next:
-- increase the 25 tool calls limit
-- allow it to delete .dart and .md files
 - check file sizes and suggest classes to be extracted to reduce big files
 - settings screen
+  - remove tag icon from tag screen rows
+  - migrate tags screen
 
 Nice to haves:
 - move all main screen actions (except Dancers) under the three dots, Import events should be the last

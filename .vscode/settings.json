@@ -12,6 +12,13 @@
   ],
   "dart.runPubGetOnPubspecChanges": true,
   "files.associations": {
-    "*.dart": "dart"
+    "*.dart": "dart",
+    "*.cursorrules": "markdown"
+  },
+  "cursor.agent.allowedFileOperations": {
+    "delete": [
+      "**/*.md",
+      "**/*.dart"
+    ]
   }
 }
