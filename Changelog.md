@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.96.0] - 2025-01-16
+
+### User Requests
+- "Do these now" - Request to implement small improvements from todo list
+
+### Fixed
+- **Summary Tab Past Event Actions**: Fixed "mark absent" and "mark as left" actions showing for past events
+  - **Contextual Actions**: These actions are now hidden for past events where they don't make sense
+  - **Better UX**: Prevents confusion by hiding irrelevant actions for past events
+  - **Event Status Aware**: Dialog now checks if event is past using EventStatusHelper
+  - **Maintained Functionality**: All other actions remain available for past events
+
+- **Select Dancers AppBar Subtitle**: Fixed subtitle alignment not being centered
+  - **Proper Centering**: Changed crossAxisAlignment from start to center
+  - **Better Visual Balance**: Event name subtitle now appears centered under "Select Dancers"
+  - **Consistent Design**: Matches the centered alignment pattern used in other screens
+
+### Technical
+- Updated DancerActionsDialog to hide presence toggle and mark as left actions for past events
+- Fixed AppBar title Column alignment in SelectDancersScreen
+- Maintained all existing functionality while improving contextual behavior
+
 ## [v0.95.0] - 2025-01-16
 
 ### User Requests

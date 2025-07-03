@@ -13,9 +13,9 @@ The app has all I need to start using it. :celebrate:
 
 ### Small improvements
 -  event screen - summary tab
-  - [ ] mark absent/mark as left make no sense for past events
+  - [x] mark absent/mark as left make no sense for past events
 - select dancers
-  - [x] does not work (FIXED: Added missing DancerTagService provider and fixed fluttertoast macOS issue)
+  - [x] AppBar subtitle is not centered
 
 ### Big improvements
 - persons import

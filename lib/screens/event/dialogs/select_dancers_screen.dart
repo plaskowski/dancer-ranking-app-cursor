@@ -110,7 +110,6 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Select Dancers'),
             Text(
