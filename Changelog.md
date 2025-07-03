@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.97.0] - 2025-01-16
+
+### User Requests
+- "I still get Error: Provider<DancerTagService> not found for SelectDancersScreen when I open 'Select dancers' on android app" - Request to fix provider error
+
+### Fixed
+- **SelectDancersScreen Provider Error**: Fixed "Provider<DancerTagService> not found" error on Android
+  - **Provider Context Issue**: SelectDancersScreen was being navigated to without proper provider context
+  - **MultiProvider Wrapper**: Added MultiProvider wrapper when navigating to SelectDancersScreen
+  - **Service Dependencies**: Re-provided all necessary services (DancerService, DancerCrudService, DancerTagService, RankingService)
+  - **Android Compatibility**: Fixed provider access issues specific to Android platform
+  - **Tag Filtering**: Tag filtering functionality now works correctly on Android
+
+### Technical
+- Added MultiProvider wrapper in PlanningTabActions.onFabPressed method
+- Added missing imports for database and service classes
+- Maintained all existing functionality while fixing provider context issues
+
 ## [v0.96.0] - 2025-01-16
 
 ### User Requests
