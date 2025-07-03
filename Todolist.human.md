@@ -15,8 +15,12 @@ Right away:
   - [ ] extract a summary of my impression on event itself
 
 Small improvements:
+- persons import
+  - [ ] introduce optional aliases list on dancers
+  - [ ] use AI to extract all dancers names from the JSON files, sort them and deduplicate with aliases
 - events import
   - [x] do the import preview right away after selecting a file (or dropping to drop zone)
+  - [ ] have optional aliases list on dancers to reduce clean up effort after event history import
   - [ ] ...
 - Add existing dancer dialog
   - [x] move info block into the scroll area to not take vertical space
@@ -32,8 +36,10 @@ Small improvements:
   - [ ] the FAB button is covered with bottom system bar
   - [x] use native android toasts
 -  event screen
-  - [x] future events (in 1+ days should only have planning tab)
-  - [ ] edit ranking action does not make sense for past events
+  - [x] edit ranking action does not make sense for past events
+  - [x] summary screen > score group header - move counter as simple text in parenthesis instead of pill
+  - [ ] make "Dance summary" have same style as the score group
+  - [ ] set ranking causes error
   - [ ] ...
 - docs
   - [ ] preambula o moim szacunku dla partnerek

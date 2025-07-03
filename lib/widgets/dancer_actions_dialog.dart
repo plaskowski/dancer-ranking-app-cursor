@@ -5,15 +5,17 @@ import '../database/database.dart';
 import '../screens/dancer_history_screen.dart';
 import '../services/attendance_service.dart';
 import '../services/dancer_service.dart';
+import '../services/event_service.dart';
 import '../theme/theme_extensions.dart';
 import '../utils/action_logger.dart';
+import '../utils/event_status_helper.dart';
 import '../utils/toast_helper.dart';
 import 'add_dancer_dialog.dart';
 import 'dance_recording_dialog.dart';
 import 'ranking_dialog.dart';
 import 'score_dialog.dart';
 
-class DancerActionsDialog extends StatelessWidget {
+class DancerActionsDialog extends StatefulWidget {
   final DancerWithEventInfo dancer;
   final int eventId;
   final bool isPlanningMode;
@@ -26,74 +28,123 @@ class DancerActionsDialog extends StatelessWidget {
   });
 
   @override
+  State<DancerActionsDialog> createState() => _DancerActionsDialogState();
+}
+
+class _DancerActionsDialogState extends State<DancerActionsDialog> {
+  Event? _event;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEvent();
+  }
+
+  Future<void> _loadEvent() async {
+    try {
+      final eventService = Provider.of<EventService>(context, listen: false);
+      final event = await eventService.getEvent(widget.eventId);
+      if (mounted) {
+        setState(() {
+          _event = event;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final isPastEvent =
+        _event != null && EventStatusHelper.isPastEvent(_event!.date);
+
     ActionLogger.logUserAction('DancerActionsDialog', 'dialog_opened', {
-      'dancerId': dancer.id,
-      'dancerName': dancer.name,
-      'eventId': eventId,
-      'isPlanningMode': isPlanningMode,
-      'dancerStatus': dancer.status,
-      'isPresent': dancer.isPresent,
-      'hasRanking': dancer.hasRanking,
+      'dancerId': widget.dancer.id,
+      'dancerName': widget.dancer.name,
+      'eventId': widget.eventId,
+      'isPlanningMode': widget.isPlanningMode,
+      'dancerStatus': widget.dancer.status,
+      'isPresent': widget.dancer.isPresent,
+      'hasRanking': widget.dancer.hasRanking,
+      'isPastEvent': isPastEvent,
     });
 
+    if (_isLoading) {
+      return const AlertDialog(
+        content: SizedBox(
+          height: 100,
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
     return AlertDialog(
-      title: Text(dancer.name),
+      title: Text(widget.dancer.name),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Ranking actions (available in both planning and present modes)
-          ListTile(
-            leading: Icon(
-              dancer.hasRanking ? Icons.edit : Icons.add,
-              color: context.danceTheme.rankingHigh,
-            ),
-            title: Text(dancer.hasRanking ? 'Edit Ranking' : 'Set Ranking'),
-            onTap: () {
-              ActionLogger.logUserAction(
-                  'DancerActionsDialog', 'ranking_action_tapped', {
-                'dancerId': dancer.id,
-                'eventId': eventId,
-                'hasExistingRanking': dancer.hasRanking,
-                'currentRank': dancer.rankName,
-              });
-
-              showDialog<bool>(
-                context: context,
-                builder: (context) => RankingDialog(
-                  dancerId: dancer.id,
-                  eventId: eventId,
-                ),
-              ).then((updated) {
-                if (updated == true && context.mounted) {
-                  Navigator.pop(context); // Close the action dialog
-                }
-              });
-            },
-          ),
-
-          // Score actions (only for present mode and attendants)
-          if (!isPlanningMode && dancer.isPresent)
+          // Ranking actions (available in both planning and present modes, but not for past events)
+          if (!isPastEvent)
             ListTile(
               leading: Icon(
-                dancer.hasScore ? Icons.star : Icons.star_outline,
+                widget.dancer.hasRanking ? Icons.edit : Icons.add,
+                color: context.danceTheme.rankingHigh,
+              ),
+              title: Text(
+                  widget.dancer.hasRanking ? 'Edit Ranking' : 'Set Ranking'),
+              onTap: () {
+                ActionLogger.logUserAction(
+                    'DancerActionsDialog', 'ranking_action_tapped', {
+                  'dancerId': widget.dancer.id,
+                  'eventId': widget.eventId,
+                  'hasExistingRanking': widget.dancer.hasRanking,
+                  'currentRank': widget.dancer.rankName,
+                });
+
+                showDialog<bool>(
+                  context: context,
+                  builder: (context) => RankingDialog(
+                    dancerId: widget.dancer.id,
+                    eventId: widget.eventId,
+                  ),
+                ).then((updated) {
+                  if (updated == true && context.mounted) {
+                    Navigator.pop(context); // Close the action dialog
+                  }
+                });
+              },
+            ),
+
+          // Score actions (only for present mode and attendants)
+          if (!widget.isPlanningMode && widget.dancer.isPresent)
+            ListTile(
+              leading: Icon(
+                widget.dancer.hasScore ? Icons.star : Icons.star_outline,
                 color: context.danceTheme.danceAccent,
               ),
-              title: Text(dancer.hasScore ? 'Edit Score' : 'Assign Score'),
+              title:
+                  Text(widget.dancer.hasScore ? 'Edit Score' : 'Assign Score'),
               onTap: () {
                 ActionLogger.logUserAction(
                     'DancerActionsDialog', 'score_action_tapped', {
-                  'dancerId': dancer.id,
-                  'eventId': eventId,
-                  'hasExistingScore': dancer.hasScore,
-                  'currentScore': dancer.scoreName,
+                  'dancerId': widget.dancer.id,
+                  'eventId': widget.eventId,
+                  'hasExistingScore': widget.dancer.hasScore,
+                  'currentScore': widget.dancer.scoreName,
                 });
 
                 showDialog<bool>(
                   context: context,
                   builder: (context) => ScoreDialog(
-                    dancerId: dancer.id,
-                    eventId: eventId,
+                    dancerId: widget.dancer.id,
+                    eventId: widget.eventId,
                   ),
                 ).then((updated) {
                   if (updated == true && context.mounted) {
@@ -106,17 +157,18 @@ class DancerActionsDialog extends StatelessWidget {
           // Presence toggle
           ListTile(
             leading: Icon(
-              dancer.isPresent ? Icons.location_off : Icons.location_on,
-              color: dancer.isPresent
+              widget.dancer.isPresent ? Icons.location_off : Icons.location_on,
+              color: widget.dancer.isPresent
                   ? context.danceTheme.absent
                   : context.danceTheme.present,
             ),
-            title: Text(dancer.isPresent ? 'Mark absent' : 'Mark Present'),
+            title:
+                Text(widget.dancer.isPresent ? 'Mark absent' : 'Mark Present'),
             onTap: () => _togglePresence(context),
           ),
 
           // Combined action for absent dancers - Mark Present & Record Dance
-          if (!dancer.isPresent && !isPlanningMode)
+          if (!widget.dancer.isPresent && !widget.isPlanningMode)
             ListTile(
               leading: Icon(Icons.music_note_outlined,
                   color: context.danceTheme.danceAccent),
@@ -126,27 +178,27 @@ class DancerActionsDialog extends StatelessWidget {
             ),
 
           // Record Dance / Edit impression - only available for present dancers in Present mode
-          if (!isPlanningMode && dancer.isPresent)
+          if (!widget.isPlanningMode && widget.dancer.isPresent)
             ListTile(
               leading:
                   Icon(Icons.music_note, color: context.danceTheme.danceAccent),
-              title:
-                  Text(dancer.hasDanced ? 'Edit impression' : 'Record Dance'),
+              title: Text(
+                  widget.dancer.hasDanced ? 'Edit impression' : 'Record Dance'),
               onTap: () {
                 ActionLogger.logUserAction(
                     'DancerActionsDialog', 'record_dance_tapped', {
-                  'dancerId': dancer.id,
-                  'eventId': eventId,
-                  'hasAlreadyDanced': dancer.hasDanced,
+                  'dancerId': widget.dancer.id,
+                  'eventId': widget.eventId,
+                  'hasAlreadyDanced': widget.dancer.hasDanced,
                 });
 
                 Navigator.pop(context);
                 showDialog(
                   context: context,
                   builder: (context) => DanceRecordingDialog(
-                    dancerId: dancer.id,
-                    eventId: eventId,
-                    dancerName: dancer.name,
+                    dancerId: widget.dancer.id,
+                    eventId: widget.eventId,
+                    dancerName: widget.dancer.name,
                   ),
                 );
               },
@@ -160,15 +212,15 @@ class DancerActionsDialog extends StatelessWidget {
             onTap: () {
               ActionLogger.logUserAction(
                   'DancerActionsDialog', 'view_history_tapped', {
-                'dancerId': dancer.id,
-                'eventId': eventId,
+                'dancerId': widget.dancer.id,
+                'eventId': widget.eventId,
               });
 
               Navigator.pop(context);
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => DancerHistoryScreen(
-                  dancerId: dancer.id,
-                  dancerName: dancer.name,
+                  dancerId: widget.dancer.id,
+                  dancerName: widget.dancer.name,
                 ),
               ));
             },
@@ -182,18 +234,18 @@ class DancerActionsDialog extends StatelessWidget {
             onTap: () {
               ActionLogger.logUserAction(
                   'DancerActionsDialog', 'edit_notes_tapped', {
-                'dancerId': dancer.id,
-                'eventId': eventId,
+                'dancerId': widget.dancer.id,
+                'eventId': widget.eventId,
               });
 
               Navigator.pop(context);
               // Convert DancerWithEventInfo to Dancer for editing
               final dancerEntity = Dancer(
-                id: dancer.id,
-                name: dancer.name,
-                notes: dancer.notes,
-                createdAt: dancer.createdAt,
-                firstMetDate: dancer.firstMetDate,
+                id: widget.dancer.id,
+                name: widget.dancer.name,
+                notes: widget.dancer.notes,
+                createdAt: widget.dancer.createdAt,
+                firstMetDate: widget.dancer.firstMetDate,
               );
               showDialog(
                 context: context,
@@ -203,7 +255,7 @@ class DancerActionsDialog extends StatelessWidget {
           ),
 
           // Mark as Left - only show for present dancers who haven't danced yet
-          if (dancer.isPresent && !dancer.hasDanced)
+          if (widget.dancer.isPresent && !widget.dancer.hasDanced)
             ListTile(
               leading:
                   Icon(Icons.exit_to_app, color: context.danceTheme.warning),
@@ -217,8 +269,8 @@ class DancerActionsDialog extends StatelessWidget {
           onPressed: () {
             ActionLogger.logUserAction(
                 'DancerActionsDialog', 'dialog_cancelled', {
-              'dancerId': dancer.id,
-              'eventId': eventId,
+              'dancerId': widget.dancer.id,
+              'eventId': widget.eventId,
             });
             Navigator.pop(context);
           },
@@ -231,49 +283,52 @@ class DancerActionsDialog extends StatelessWidget {
   Future<void> _togglePresence(BuildContext context) async {
     ActionLogger.logUserAction(
         'DancerActionsDialog', 'toggle_presence_started', {
-      'dancerId': dancer.id,
-      'eventId': eventId,
-      'currentlyPresent': dancer.isPresent,
-      'action': dancer.isPresent ? 'mark_absent' : 'mark_present',
+      'dancerId': widget.dancer.id,
+      'eventId': widget.eventId,
+      'currentlyPresent': widget.dancer.isPresent,
+      'action': widget.dancer.isPresent ? 'mark_absent' : 'mark_present',
     });
 
     try {
       final attendanceService =
           Provider.of<AttendanceService>(context, listen: false);
 
-      if (dancer.isPresent) {
+      if (widget.dancer.isPresent) {
         // Mark as absent
-        await attendanceService.removeFromPresent(eventId, dancer.id);
+        await attendanceService.removeFromPresent(
+            widget.eventId, widget.dancer.id);
         if (context.mounted) {
           ActionLogger.logUserAction(
               'DancerActionsDialog', 'mark_absent_completed', {
-            'dancerId': dancer.id,
-            'eventId': eventId,
+            'dancerId': widget.dancer.id,
+            'eventId': widget.eventId,
           });
 
           Navigator.pop(context);
-          ToastHelper.showSuccess(context, '${dancer.name} marked as absent');
+          ToastHelper.showSuccess(
+              context, '${widget.dancer.name} marked as absent');
         }
       } else {
         // Mark as present
-        await attendanceService.markPresent(eventId, dancer.id);
+        await attendanceService.markPresent(widget.eventId, widget.dancer.id);
         if (context.mounted) {
           ActionLogger.logUserAction(
               'DancerActionsDialog', 'mark_present_completed', {
-            'dancerId': dancer.id,
-            'eventId': eventId,
+            'dancerId': widget.dancer.id,
+            'eventId': widget.eventId,
           });
 
           Navigator.pop(context);
-          ToastHelper.showSuccess(context, '${dancer.name} marked as present');
+          ToastHelper.showSuccess(
+              context, '${widget.dancer.name} marked as present');
         }
       }
     } catch (e) {
       ActionLogger.logError(
           'DancerActionsDialog._togglePresence', e.toString(), {
-        'dancerId': dancer.id,
-        'eventId': eventId,
-        'action': dancer.isPresent ? 'mark_absent' : 'mark_present',
+        'dancerId': widget.dancer.id,
+        'eventId': widget.eventId,
+        'action': widget.dancer.isPresent ? 'mark_absent' : 'mark_present',
       });
 
       if (context.mounted) {
@@ -285,8 +340,8 @@ class DancerActionsDialog extends StatelessWidget {
 
   Future<void> _markPresentAndRecordDance(BuildContext context) async {
     ActionLogger.logUserAction('DancerActionsDialog', 'combo_action_started', {
-      'dancerId': dancer.id,
-      'eventId': eventId,
+      'dancerId': widget.dancer.id,
+      'eventId': widget.eventId,
       'action': 'mark_present_and_record_dance',
     });
 
@@ -296,26 +351,26 @@ class DancerActionsDialog extends StatelessWidget {
 
       // Mark as present and record dance
       await attendanceService.recordDance(
-        eventId: eventId,
-        dancerId: dancer.id,
+        eventId: widget.eventId,
+        dancerId: widget.dancer.id,
       );
 
       if (context.mounted) {
         ActionLogger.logUserAction(
             'DancerActionsDialog', 'combo_action_completed', {
-          'dancerId': dancer.id,
-          'eventId': eventId,
+          'dancerId': widget.dancer.id,
+          'eventId': widget.eventId,
         });
 
         Navigator.pop(context);
         ToastHelper.showSuccess(
-            context, '${dancer.name} marked present and dance recorded');
+            context, '${widget.dancer.name} marked present and dance recorded');
       }
     } catch (e) {
       ActionLogger.logError(
           'DancerActionsDialog._markPresentAndRecordDance', e.toString(), {
-        'dancerId': dancer.id,
-        'eventId': eventId,
+        'dancerId': widget.dancer.id,
+        'eventId': widget.eventId,
       });
 
       if (context.mounted) {
@@ -327,9 +382,9 @@ class DancerActionsDialog extends StatelessWidget {
 
   Future<void> _markAsLeft(BuildContext context) async {
     ActionLogger.logUserAction('DancerActionsDialog', 'mark_as_left_started', {
-      'dancerId': dancer.id,
-      'eventId': eventId,
-      'currentStatus': dancer.status,
+      'dancerId': widget.dancer.id,
+      'eventId': widget.eventId,
+      'currentStatus': widget.dancer.status,
     });
 
     try {
@@ -337,22 +392,23 @@ class DancerActionsDialog extends StatelessWidget {
           Provider.of<AttendanceService>(context, listen: false);
 
       // Mark the dancer as left
-      await attendanceService.markAsLeft(eventId, dancer.id);
+      await attendanceService.markAsLeft(widget.eventId, widget.dancer.id);
 
       if (context.mounted) {
         ActionLogger.logUserAction(
             'DancerActionsDialog', 'mark_as_left_completed', {
-          'dancerId': dancer.id,
-          'eventId': eventId,
+          'dancerId': widget.dancer.id,
+          'eventId': widget.eventId,
         });
 
         Navigator.pop(context);
-        ToastHelper.showSuccess(context, '${dancer.name} marked as left');
+        ToastHelper.showSuccess(
+            context, '${widget.dancer.name} marked as left');
       }
     } catch (e) {
       ActionLogger.logError('DancerActionsDialog._markAsLeft', e.toString(), {
-        'dancerId': dancer.id,
-        'eventId': eventId,
+        'dancerId': widget.dancer.id,
+        'eventId': widget.eventId,
       });
 
       if (context.mounted) {

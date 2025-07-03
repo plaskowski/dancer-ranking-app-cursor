@@ -281,10 +281,11 @@ Users can adjust rankings during events for various reasons:
 - Edit scores for any attendee regardless of dance status
 - Review and modify impressions from recorded dances
 - **Statistics Display**: Simple header showing "Recorded X dances total. Met Y people for the first time."
-- **Score Groupings**: Dancers organized by score with count badges and sticky headers
+- **Score Groupings**: Dancers organized by score with count display and sticky headers
 - **Sticky Group Headers**: Score group headers remain pinned at top while scrolling through each group's dancers
   - **Always Visible Context**: Current group name and dancer count visible during scroll
   - **Visual Design**: Headers feature subtle shadows and borders for clear separation
+  - **Count Display**: Simple text counter in parentheses "(X)" next to score name
   - **Smooth Performance**: Custom scroll view optimized for large dancer lists
 - **Primary use case**: Post-event reflection and score refinement
 - **Optimized for Old Events**: Only tab shown for events 2+ days ago to focus on historical review
@@ -582,12 +583,13 @@ Tags Tab → [Add | Edit | Delete] → Back to tab
 - **Integration**: Launched from Dancer Actions Dialog for any attendant with flexible rating criteria
 
 **Dancer Actions Dialog (`DancerActionsDialog`)**:
-- Context-aware actions based on dancer state and tab mode
+- Context-aware actions based on dancer state, tab mode, and event timing
 - **Auto-Closing Behavior**: All actions close the dialog after completion for focused workflows
 - **Visual Feedback**: Snackbar notifications provide immediate feedback after dialog closes
 - **Tab-Specific Actions**: Different action sets available based on Planning vs Present mode
+- **Event Timing Awareness**: Ranking actions hidden for past events to prevent confusion
 - **Efficient Navigation**: Quick action → feedback → return to main view for next task
-- **Action Types**: Set/Edit Ranking, Mark/Remove Present, Record Dance, Edit Notes, Remove from Event, Mark as Left, Combo Actions
+- **Action Types**: Set/Edit Ranking (current/future events only), Mark/Remove Present, Record Dance, Edit Notes, Remove from Event, Mark as Left, Combo Actions
 - **Event Management**: "Remove from event" action only appears for ranked dancers in Planning mode, allowing cleanup of event rankings
 - **Left Tracking**: "Mark as left" action only appears for present dancers who haven't been danced with yet, tracking early departures
 

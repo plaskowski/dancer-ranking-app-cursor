@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.92.0] - 2025-01-16
+
+### User Requests
+- "edit ranking action does not make sense for past events" - Request to hide ranking actions for past events
+- "score group header - move counter as simple text in parenthesis instead of pill" - Request to simplify score group counter display
+
+### Changed
+- **Past Event Ranking Actions**: Ranking actions are now hidden for past events
+  - **Contextual Actions**: Edit/Set Ranking options only appear for current and future events
+  - **Better UX**: Prevents confusion by hiding irrelevant actions for past events
+  - **Event Status Aware**: Dialog now loads event data to determine if event is past
+  - **Maintained Functionality**: All other actions remain available for past events
+
+- **Score Group Headers**: Changed counter display from pill to simple text in parentheses
+  - **Cleaner Design**: Removed pill container and styling for simpler appearance
+  - **Better Readability**: Counter now appears as "(X)" next to score name
+  - **Consistent Styling**: Uses onSurfaceVariant color for subtle appearance
+  - **Space Efficient**: Takes up less visual space while maintaining clarity
+
+### Technical
+- Converted `DancerActionsDialog` from StatelessWidget to StatefulWidget to load event data
+- Added event loading logic to check if event is past using `EventStatusHelper.isPastEvent()`
+- Added conditional rendering for ranking actions based on event status
+- Updated score group header in summary tab to use simple text instead of pill container
+- Maintained all existing functionality while improving contextual behavior
+
 ## [v0.91.0] - 2025-07-03
 
 ### User Requests
