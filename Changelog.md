@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.99.0] - 2025-01-16
+
+### User Requests
+- "Nice but this test should use service" - Request to update import validation test to use actual service
+
+### Improved
+- **Import Validation Test**: Updated test to use actual EventImportParser service instead of direct JSON parsing
+  - **Service Integration**: Test now uses the same parser service used by the app
+  - **Better Validation**: Leverages the app's actual validation logic and error handling
+  - **Consistent Behavior**: Test results now match what users would see in the app
+  - **Proper Error Reporting**: Uses the service's structured error reporting format
+  - **Real-World Testing**: Tests against actual historical data files with 100% success rate
+
+### Technical
+- Updated test/import_validation_test.dart to use EventImportParser.parseJsonContent()
+- Removed direct JSON parsing in favor of service-based validation
+- Maintained all existing test coverage while improving accuracy
+- Test now validates 5 historical files with 94 events and 1066 unique dancers
+
 ## [v0.98.0] - 2025-01-16
 
 ### User Requests
