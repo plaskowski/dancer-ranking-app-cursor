@@ -230,7 +230,7 @@ Users can adjust rankings during events for various reasons:
 - Add reasons for rankings (pre-event planning)
 - **Add multiple existing dancers** (FAB → Select Dancers Screen)
   - Select from unranked dancers in database
-  - Bulk add with default "Neutral" ranking
+  - Bulk add without automatic rank assignment
   - Planning-only actions: rank editing, notes editing
 - **Smart empty state**: Shows different messages based on whether all ranked dancers are present
 - **Import Rankings** (when no dancers added yet): Copy rankings from another event
@@ -311,7 +311,7 @@ Users can adjust rankings during events for various reasons:
   - Combined with text search for refined filtering
 - Search dancers by name or notes
 - Multi-select dancers using checkboxes
-- Add selected dancers to event with default rank (Neutral)
+- Add selected dancers to event without automatic rank assignment
 **Tag Filtering UI**:
 - **Filter Chips**: Horizontal scrollable row of tag chips above dancer list
 - **Material 3 Design**: Chips change color when selected, clear button appears

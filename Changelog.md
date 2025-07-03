@@ -5,10 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v1.0.1] - 2025-01-16
+## [v1.0.2] - 2025-01-16
 
 ### User Requests
-- "Reset stopped working" - Request to fix database reset functionality
+- "Don't assign default rank when adding dancers to event" - Request to prevent automatic rank assignment when adding dancers
+
+### Changed
+- **Select Dancers Screen**: Removed automatic default rank assignment when adding dancers to events
+  - **No Auto-Ranking**: Dancers are now added to events without any rank assignment
+  - **Manual Ranking**: Users must manually assign ranks later if desired
+  - **Cleaner Workflow**: Simplifies the process of adding dancers to events
+  - **Better UX**: Users have full control over when and how to rank dancers
+  - **Updated Success Message**: Changed from "Added X dancers to event ranking" to "Added X dancers to event (no rank assigned)"
+
+### Fixed
+- **Database Reset Dialog**: Fixed reset confirmation dialog that stopped working
+  - **StatefulBuilder Issue**: Fixed variable scope issue in StatefulBuilder implementation
+  - **Dialog Return Type**: Changed dialog return type to properly handle both confirmation and test data choice
+  - **Proper State Management**: Fixed checkbox state management within the dialog
+  - **Reliable Reset**: Reset functionality now works correctly with optional test data
+
+### Technical
+- Updated `_showResetConfirmationDialog` to use `Map<String, dynamic>` return type
+- Fixed StatefulBuilder variable scope by moving `includeTestData` inside the builder
+- Updated `_addSelectedDancers` method to use `AttendanceService.markPresent()` instead of `RankingService.setRanking()`
+- Added `AttendanceService` import to `SelectDancersScreen`
 
 ### Fixed
 - **Database Reset Dialog**: Fixed reset confirmation dialog that stopped working

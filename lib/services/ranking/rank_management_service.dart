@@ -11,24 +11,13 @@ class RankManagementService {
   // Get all available ranks ordered by ordinal (best first)
   Future<List<Rank>> getAllRanks() {
     ActionLogger.logServiceCall('RankManagementService', 'getAllRanks', {});
-    return (_database.select(_database.ranks)
-          ..orderBy([(r) => OrderingTerm.asc(r.ordinal)]))
-        .get();
+    return (_database.select(_database.ranks)..orderBy([(r) => OrderingTerm.asc(r.ordinal)])).get();
   }
 
   // Get a specific rank by ID
   Future<Rank?> getRank(int id) {
     ActionLogger.logServiceCall('RankManagementService', 'getRank', {'id': id});
-    return (_database.select(_database.ranks)..where((r) => r.id.equals(id)))
-        .getSingleOrNull();
-  }
-
-  // Get default rank (Neutral / Default - ordinal 3)
-  Future<Rank?> getDefaultRank() {
-    ActionLogger.logServiceCall('RankManagementService', 'getDefaultRank', {});
-    return (_database.select(_database.ranks)
-          ..where((r) => r.ordinal.equals(3)))
-        .getSingleOrNull();
+    return (_database.select(_database.ranks)..where((r) => r.id.equals(id))).getSingleOrNull();
   }
 
   // Get all non-archived ranks for use in ranking dropdowns
@@ -91,8 +80,7 @@ class RankManagementService {
     try {
       final existing = await getRank(id);
       if (existing == null) {
-        ActionLogger.logError(
-            'RankManagementService.updateRank', 'rank_not_found', {
+        ActionLogger.logError('RankManagementService.updateRank', 'rank_not_found', {
           'id': id,
         });
         return false;
@@ -155,9 +143,7 @@ class RankManagementService {
     try {
       await _database.transaction(() async {
         // First, get all rankings that need to be reassigned
-        final rankingsToUpdate = await (_database.select(_database.rankings)
-              ..where((r) => r.rankId.equals(id)))
-            .get();
+        final rankingsToUpdate = await (_database.select(_database.rankings)..where((r) => r.rankId.equals(id))).get();
 
         // Reassign all existing rankings to the replacement rank
         int updateResult = 0;
@@ -178,9 +164,7 @@ class RankManagementService {
         });
 
         // Then delete the rank
-        final deleteResult = await (_database.delete(_database.ranks)
-              ..where((r) => r.id.equals(id)))
-            .go();
+        final deleteResult = await (_database.delete(_database.ranks)..where((r) => r.id.equals(id))).go();
 
         ActionLogger.logDbOperation('DELETE', 'ranks', {
           'id': id,
@@ -231,15 +215,13 @@ class RankManagementService {
         }
       });
 
-      ActionLogger.logAction(
-          'RankManagementService.updateRankOrdinals', 'ordinals_updated', {
+      ActionLogger.logAction('RankManagementService.updateRankOrdinals', 'ordinals_updated', {
         'ranksCount': ranks.length,
       });
 
       return true;
     } catch (e) {
-      ActionLogger.logError(
-          'RankManagementService.updateRankOrdinals', e.toString(), {
+      ActionLogger.logError('RankManagementService.updateRankOrdinals', e.toString(), {
         'ranksCount': ranks.length,
       });
       rethrow;

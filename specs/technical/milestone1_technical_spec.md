@@ -66,7 +66,6 @@ Pre-populate Scores table with standard scoring scale:
 - `createScore({required String name, required int ordinal})` - Create new score
 - `updateScore({required int id, String? name, int? ordinal, bool? isArchived})` - Update score
 - `deleteScore({required int id, required int replacementScoreId})` - Delete with reassignment
-- `getDefaultScore()` - Get middle score (ordinal 3, "Good")
 
 ### 2.2 Enhanced AttendanceService (`lib/services/attendance_service.dart`)
 **New Methods for Score Management**:

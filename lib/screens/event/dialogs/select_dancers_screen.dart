@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../services/attendance_service.dart';
 import '../../../services/dancer/dancer_tag_service.dart';
 import '../../../services/dancer_service.dart';
-import '../../../services/ranking_service.dart';
 import '../../../theme/theme_extensions.dart';
 import '../../../widgets/safe_fab.dart';
 import '../../../widgets/tag_filter_chips.dart';
@@ -59,22 +59,13 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
     });
 
     try {
-      final rankingService =
-          Provider.of<RankingService>(context, listen: false);
+      // Add dancers to event without assigning any rank
+      // Users can manually assign ranks later if desired
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
 
-      // Get the default rank (Neutral - ordinal 3)
-      final defaultRank = await rankingService.getDefaultRank();
-      if (defaultRank == null) {
-        throw Exception('Default rank not found');
-      }
-
-      // Add ranking for each selected dancer
       for (final dancerId in _selectedDancerIds) {
-        await rankingService.setRanking(
-          eventId: widget.eventId,
-          dancerId: dancerId,
-          rankId: defaultRank.id,
-        );
+        await attendanceService.markPresent(widget.eventId, dancerId);
       }
 
       if (mounted) {
@@ -82,7 +73,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-                'Added ${_selectedDancerIds.length} dancers to event ranking'),
+                'Added ${_selectedDancerIds.length} dancers to event (no rank assigned)'),
             backgroundColor: context.danceTheme.success,
           ),
         );
