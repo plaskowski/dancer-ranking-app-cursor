@@ -39,11 +39,6 @@ class GeneralSettingsTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 const InfoRow(
-                  label: 'Version',
-                  value: '0.65.2',
-                ),
-                const SizedBox(height: 8),
-                const InfoRow(
                   label: 'Built for',
                   value: 'Private use',
                 ),

@@ -5,10 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v1.0.3] - 2025-01-16
+## [v1.0.4] - 2025-01-16
 
 ### User Requests
+- "Remove Version info row" - Request to remove version information from settings screen
 - "The default data gets inserted after reset no matter if I select the checkbox" - Request to clarify reset behavior and UI text
+
+### Removed
+- **Version Info Row**: Removed version information display from General Settings tab
+  - **Cleaner UI**: Removed "Version: 0.65.2" row from App Information section
+  - **Simplified Display**: App Information now shows only App Name and Built for information
+  - **Reduced Clutter**: Settings screen is now more focused on functional options
 
 ### Improved
 - **Database Reset Dialog**: Clarified UI text to distinguish between essential defaults and test data

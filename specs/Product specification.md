@@ -483,7 +483,6 @@ Tab(icon: Icon(Icons.label), text: 'Tags')
 ### 7.3 General Settings Tab
 - **App Information Card**: 
   - App name: "Dancer Ranking App"
-  - Version: "v0.65.2"
   - Built for: "Private use"
 - **Database Reset Option**: 
   - Red-colored warning action to completely clear all data
