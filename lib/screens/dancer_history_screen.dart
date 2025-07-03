@@ -23,8 +23,11 @@ class DancerHistoryScreen extends StatefulWidget {
 
 class _DancerHistoryScreenState extends State<DancerHistoryScreen> {
   late DancerEventService _dancerEventService;
-  List<DancerRecentHistory>? _history;
+  List<DancerRecentHistory> _history = [];
   bool _isLoading = true;
+  bool _isLoadingMore = false;
+  bool _hasMoreData = true;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -34,6 +37,9 @@ class _DancerHistoryScreenState extends State<DancerHistoryScreen> {
     );
     _loadHistory();
 
+    // Add scroll listener for load more functionality
+    _scrollController.addListener(_onScroll);
+
     ActionLogger.logUserAction('DancerHistoryScreen', 'screen_opened', {
       'dancerId': widget.dancerId,
       'dancerName': widget.dancerName,
@@ -42,6 +48,8 @@ class _DancerHistoryScreenState extends State<DancerHistoryScreen> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
     ActionLogger.logUserAction('DancerHistoryScreen', 'screen_closed', {
       'dancerId': widget.dancerId,
       'dancerName': widget.dancerName,
@@ -49,15 +57,21 @@ class _DancerHistoryScreenState extends State<DancerHistoryScreen> {
     super.dispose();
   }
 
+  void _onScroll() {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+      _loadMoreHistory();
+    }
+  }
+
   Future<void> _loadHistory() async {
     try {
-      final history =
-          await _dancerEventService.getRecentHistory(widget.dancerId);
+      final history = await _dancerEventService.getRecentHistory(widget.dancerId);
 
       if (mounted) {
         setState(() {
           _history = history;
           _isLoading = false;
+          _hasMoreData = history.length >= 20; // If we got 20 items, there might be more
         });
       }
     } catch (e) {
@@ -76,6 +90,43 @@ class _DancerHistoryScreenState extends State<DancerHistoryScreen> {
     }
   }
 
+  Future<void> _loadMoreHistory() async {
+    if (_isLoadingMore || !_hasMoreData || _history.isEmpty) return;
+
+    setState(() {
+      _isLoadingMore = true;
+    });
+
+    try {
+      final lastEvent = _history.last;
+      final moreHistory = await _dancerEventService.getMoreHistory(
+        widget.dancerId,
+        lastEvent.eventDate,
+      );
+
+      if (mounted) {
+        setState(() {
+          _history.addAll(moreHistory);
+          _isLoadingMore = false;
+          _hasMoreData = moreHistory.length >= 20; // If we got 20 items, there might be more
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoadingMore = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error loading more history: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +135,7 @@ class _DancerHistoryScreenState extends State<DancerHistoryScreen> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : _history == null || _history!.isEmpty
+          : _history.isEmpty
               ? const Center(
                   child: Text(
                     'No event history found',
@@ -92,10 +143,23 @@ class _DancerHistoryScreenState extends State<DancerHistoryScreen> {
                   ),
                 )
               : ListView.builder(
+                  controller: _scrollController,
                   padding: const EdgeInsets.all(16),
-                  itemCount: _history!.length,
+                  itemCount: _history.length + (_hasMoreData ? 1 : 0),
                   itemBuilder: (context, index) {
-                    final event = _history![index];
+                    if (index == _history.length) {
+                      // Show loading indicator at the bottom
+                      return _isLoadingMore
+                          ? const Padding(
+                              padding: EdgeInsets.all(16.0),
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            )
+                          : const SizedBox.shrink();
+                    }
+
+                    final event = _history[index];
                     return _buildEventItem(event);
                   },
                 ),

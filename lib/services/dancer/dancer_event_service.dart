@@ -19,8 +19,7 @@ class DancerEventService {
       // LEFT JOIN rankings ON dancers.id = rankings.dancer_id AND rankings.event_id = eventId
       leftOuterJoin(
         _database.rankings,
-        _database.dancers.id.equalsExp(_database.rankings.dancerId) &
-            _database.rankings.eventId.equals(eventId),
+        _database.dancers.id.equalsExp(_database.rankings.dancerId) & _database.rankings.eventId.equals(eventId),
       ),
       // LEFT JOIN ranks ON rankings.rank_id = ranks.id
       leftOuterJoin(
@@ -30,8 +29,7 @@ class DancerEventService {
       // LEFT JOIN attendances ON dancers.id = attendances.dancer_id AND attendances.event_id = eventId
       leftOuterJoin(
         _database.attendances,
-        _database.dancers.id.equalsExp(_database.attendances.dancerId) &
-            _database.attendances.eventId.equals(eventId),
+        _database.dancers.id.equalsExp(_database.attendances.dancerId) & _database.attendances.eventId.equals(eventId),
       ),
       // LEFT JOIN scores ON attendances.score_id = scores.id
       leftOuterJoin(
@@ -56,36 +54,29 @@ class DancerEventService {
         bool isFirstMetHere = false;
         if (attendance != null) {
           // Get current event date for comparison
-          final currentEvent = await (_database.select(_database.events)
-                ..where((e) => e.id.equals(eventId)))
-              .getSingleOrNull();
+          final currentEvent =
+              await (_database.select(_database.events)..where((e) => e.id.equals(eventId))).getSingleOrNull();
 
           if (currentEvent != null) {
             // Check if firstMetDate is before current event date
-            final bool hasEarlierFirstMet = dancer.firstMetDate != null &&
-                dancer.firstMetDate!.isBefore(currentEvent.date);
+            final bool hasEarlierFirstMet =
+                dancer.firstMetDate != null && dancer.firstMetDate!.isBefore(currentEvent.date);
 
             if (hasEarlierFirstMet) {
               // If firstMetDate is before this event, not first met here
               isFirstMetHere = false;
             } else {
               // Get earliest attendance for this dancer across all events (exclude 'absent' status)
-              final earliestAttendance =
-                  await (_database.select(_database.attendances).join([
-                innerJoin(
-                    _database.events,
-                    _database.attendances.eventId
-                        .equalsExp(_database.events.id)),
+              final earliestAttendance = await (_database.select(_database.attendances).join([
+                innerJoin(_database.events, _database.attendances.eventId.equalsExp(_database.events.id)),
               ])
-                        ..where(_database.attendances.dancerId
-                                .equals(dancer.id) &
-                            _database.attendances.status.isNotValue('absent'))
-                        ..orderBy([OrderingTerm.asc(_database.events.date)])
-                        ..limit(1))
-                      .getSingleOrNull();
+                    ..where(_database.attendances.dancerId.equals(dancer.id) &
+                        _database.attendances.status.isNotValue('absent'))
+                    ..orderBy([OrderingTerm.asc(_database.events.date)])
+                    ..limit(1))
+                  .getSingleOrNull();
 
-              final earliestAttendanceRecord =
-                  earliestAttendance?.readTable(_database.attendances);
+              final earliestAttendanceRecord = earliestAttendance?.readTable(_database.attendances);
 
               // This is first met if this attendance is the earliest attendance
               isFirstMetHere = earliestAttendanceRecord?.eventId == eventId;
@@ -119,55 +110,40 @@ class DancerEventService {
   }
 
   // Get only dancers that don't have rankings for a specific event AND are not present (for selection dialog)
-  Future<List<DancerWithEventInfo>> getUnrankedDancersForEvent(
-      int eventId) async {
-    ActionLogger.logServiceCall(
-        'DancerEventService', 'getUnrankedDancersForEvent', {
+  Future<List<DancerWithEventInfo>> getUnrankedDancersForEvent(int eventId) async {
+    ActionLogger.logServiceCall('DancerEventService', 'getUnrankedDancersForEvent', {
       'eventId': eventId,
     });
 
     try {
       // Get all ranked dancer IDs for this event
-      final rankedDancerIdsDebug = await (_database.select(_database.rankings)
-            ..where((r) => r.eventId.equals(eventId)))
-          .get();
+      final rankedDancerIdsDebug =
+          await (_database.select(_database.rankings)..where((r) => r.eventId.equals(eventId))).get();
 
       // Get all present dancer IDs for this event
-      final presentDancerIds = await (_database.select(_database.attendances)
-            ..where((a) => a.eventId.equals(eventId)))
-          .get();
+      final presentDancerIds =
+          await (_database.select(_database.attendances)..where((a) => a.eventId.equals(eventId))).get();
 
-      print(
-          'DEBUG: Ranked dancer IDs for event $eventId: ${rankedDancerIdsDebug.map((r) => r.dancerId).toList()}');
-      print(
-          'DEBUG: Present dancer IDs for event $eventId: ${presentDancerIds.map((a) => a.dancerId).toList()}');
+      print('DEBUG: Ranked dancer IDs for event $eventId: ${rankedDancerIdsDebug.map((r) => r.dancerId).toList()}');
+      print('DEBUG: Present dancer IDs for event $eventId: ${presentDancerIds.map((a) => a.dancerId).toList()}');
 
       // Get all dancers
-      final allDancers = await (_database.select(_database.dancers)
-            ..orderBy([(d) => OrderingTerm.asc(d.name)]))
-          .get();
+      final allDancers = await (_database.select(_database.dancers)..orderBy([(d) => OrderingTerm.asc(d.name)])).get();
 
       // Filter out dancers that have rankings OR are present for this event
-      final rankedDancerIds =
-          rankedDancerIdsDebug.map((r) => r.dancerId).toSet();
-      final presentDancerIdSet =
-          presentDancerIds.map((a) => a.dancerId).toSet();
+      final rankedDancerIds = rankedDancerIdsDebug.map((r) => r.dancerId).toSet();
+      final presentDancerIdSet = presentDancerIds.map((a) => a.dancerId).toSet();
       final availableDancers = allDancers
-          .where((dancer) =>
-              !rankedDancerIds.contains(dancer.id) &&
-              !presentDancerIdSet.contains(dancer.id))
+          .where((dancer) => !rankedDancerIds.contains(dancer.id) && !presentDancerIdSet.contains(dancer.id))
           .toList();
 
       print('DEBUG: All dancers count: ${allDancers.length}');
       print('DEBUG: Ranked dancers count: ${rankedDancerIds.length}');
       print('DEBUG: Present dancers count: ${presentDancerIdSet.length}');
-      print(
-          'DEBUG: Available (unranked + absent) dancers count: ${availableDancers.length}');
-      print(
-          'DEBUG: Available dancer names: ${availableDancers.map((d) => d.name).toList()}');
+      print('DEBUG: Available (unranked + absent) dancers count: ${availableDancers.length}');
+      print('DEBUG: Available dancer names: ${availableDancers.map((d) => d.name).toList()}');
 
-      ActionLogger.logAction('DancerEventService.getUnrankedDancersForEvent',
-          'filtering_complete', {
+      ActionLogger.logAction('DancerEventService.getUnrankedDancersForEvent', 'filtering_complete', {
         'eventId': eventId,
         'totalDancers': allDancers.length,
         'rankedDancers': rankedDancerIds.length,
@@ -186,18 +162,18 @@ class DancerEventService {
         );
       }).toList();
     } catch (e) {
-      ActionLogger.logError(
-          'DancerEventService.getUnrankedDancersForEvent', e.toString(), {
+      ActionLogger.logError('DancerEventService.getUnrankedDancersForEvent', e.toString(), {
         'eventId': eventId,
       });
       rethrow;
     }
   }
 
-  // Get recent history for a dancer (last 6 events where they attended)
-  Future<List<DancerRecentHistory>> getRecentHistory(int dancerId) async {
+  // Get recent history for a dancer (last 20 events where they attended)
+  Future<List<DancerRecentHistory>> getRecentHistory(int dancerId, {int limit = 20}) async {
     ActionLogger.logServiceCall('DancerEventService', 'getRecentHistory', {
       'dancerId': dancerId,
+      'limit': limit,
     });
 
     try {
@@ -213,7 +189,7 @@ class DancerEventService {
         ),
       ])
         ..orderBy([OrderingTerm.desc(_database.events.date)])
-        ..limit(6);
+        ..limit(limit);
 
       final results = await query.get();
 
@@ -231,9 +207,56 @@ class DancerEventService {
         );
       }).toList();
     } catch (e) {
-      ActionLogger.logError(
-          'DancerEventService.getRecentHistory', e.toString(), {
+      ActionLogger.logError('DancerEventService.getRecentHistory', e.toString(), {
         'dancerId': dancerId,
+      });
+      rethrow;
+    }
+  }
+
+  // Get more history for a dancer (for pagination)
+  Future<List<DancerRecentHistory>> getMoreHistory(int dancerId, DateTime lastEventDate, {int limit = 20}) async {
+    ActionLogger.logServiceCall('DancerEventService', 'getMoreHistory', {
+      'dancerId': dancerId,
+      'lastEventDate': lastEventDate.toIso8601String(),
+      'limit': limit,
+    });
+
+    try {
+      final query = _database.select(_database.events).join([
+        innerJoin(
+          _database.attendances,
+          _database.events.id.equalsExp(_database.attendances.eventId) &
+              _database.attendances.dancerId.equals(dancerId),
+        ),
+        leftOuterJoin(
+          _database.scores,
+          _database.attendances.scoreId.equalsExp(_database.scores.id),
+        ),
+      ])
+        ..where(_database.events.date.isSmallerThanValue(lastEventDate))
+        ..orderBy([OrderingTerm.desc(_database.events.date)])
+        ..limit(limit);
+
+      final results = await query.get();
+
+      return results.map((row) {
+        final event = row.readTable(_database.events);
+        final attendance = row.readTable(_database.attendances);
+        final score = row.readTableOrNull(_database.scores);
+
+        return DancerRecentHistory(
+          eventName: event.name,
+          eventDate: event.date,
+          status: attendance.status,
+          impression: attendance.impression,
+          scoreName: score?.name,
+        );
+      }).toList();
+    } catch (e) {
+      ActionLogger.logError('DancerEventService.getMoreHistory', e.toString(), {
+        'dancerId': dancerId,
+        'lastEventDate': lastEventDate.toIso8601String(),
       });
       rethrow;
     }
