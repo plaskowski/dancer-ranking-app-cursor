@@ -12,25 +12,10 @@ The app has all I need to start using it. :celebrate:
   - [ ] validate all the new events files can be imported
 
 ### Small improvements
-- Add existing dancer dialog
-  - [ ] ...
-- "Add new dancer" dialog
-  - [ ] ...
-- home screen
-  - [ ] ...
 -  event screen - summary tab
   - [ ] mark absent/mark as left make no sense for past events
-  - [ ] ...
-- docs
-  - [ ] ...
 - select dancers
   - [ ] does not work
-  - [ ] ...
-- add existing dancer screen
-  - [x] obscured by system bar on Android
-  - [x] tag filtering does not work for "Cuban DC Festival"
--  dancers screen
-  - [ ] ...
 
 ### Big improvements
 - persons import
