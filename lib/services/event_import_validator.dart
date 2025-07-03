@@ -274,49 +274,53 @@ class EventImportValidator {
 
     if (dancerNames.isEmpty) return {};
 
-    // First try exact matches
-    final exactMatches = await getExistingDancersByNames(dancerNames);
-    final matchedNames = exactMatches.keys.toSet();
-    final unmatchedNames = dancerNames.difference(matchedNames);
+    // First, get all existing dancers
+    final allDancers = await (_database.select(_database.dancers)).get();
 
-    if (unmatchedNames.isEmpty) {
-      return exactMatches;
+    // Create a map of all possible name variants to dancers
+    final nameToDancerMap = <String, Dancer>{};
+
+    for (final dancer in allDancers) {
+      // Generate variants for each existing dancer name
+      final variants = _generateNameVariants(dancer.name);
+      for (final variant in variants) {
+        nameToDancerMap[variant] = dancer;
+      }
     }
 
-    // For unmatched names, try different variants
-    final variantMatches = <String, Dancer>{};
+    // Now match input names against the variant map
+    final result = <String, Dancer>{};
 
-    for (final name in unmatchedNames) {
-      final dancer = await _findDancerByNameVariants(name);
-      if (dancer != null) {
-        variantMatches[name] = dancer;
+    for (final inputName in dancerNames) {
+      // Generate variants for the input name
+      final inputVariants = _generateNameVariants(inputName);
 
-        ActionLogger.logAction('EventImportValidator', 'dancer_name_variant_matched', {
-          'importName': name,
-          'matchedName': dancer.name,
-          'dancerId': dancer.id,
+      // Try to find a match
+      Dancer? matchedDancer;
+      String? matchedVariant;
+
+      for (final variant in inputVariants) {
+        if (nameToDancerMap.containsKey(variant)) {
+          matchedDancer = nameToDancerMap[variant]!;
+          matchedVariant = variant;
+          break;
+        }
+      }
+
+      if (matchedDancer != null) {
+        result[inputName] = matchedDancer;
+
+        // Log the variant match for debugging
+        ActionLogger.logUserAction('EventImportValidator', 'dancer_name_variant_matched', {
+          'importName': inputName,
+          'matchedName': matchedDancer.name,
+          'matchedVariant': matchedVariant,
+          'dancerId': matchedDancer.id,
         });
       }
     }
 
-    // Combine exact and variant matches
-    return {...exactMatches, ...variantMatches};
-  }
-
-  // Find dancer by trying different name variants
-  Future<Dancer?> _findDancerByNameVariants(String name) async {
-    final variants = _generateNameVariants(name);
-
-    for (final variant in variants) {
-      final dancer =
-          await (_database.select(_database.dancers)..where((d) => d.name.equals(variant))).getSingleOrNull();
-
-      if (dancer != null) {
-        return dancer;
-      }
-    }
-
-    return null;
+    return result;
   }
 
   // Generate different name variants for matching

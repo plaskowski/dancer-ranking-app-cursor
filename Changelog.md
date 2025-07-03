@@ -10,29 +10,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### User Requests
 - "when importing event, looking for existing dancer with given name, try lookup few different variants to better match" - Request to improve dancer name matching during event import
 - "try also: switching places of words (for two word names), removing or adding a dot at the and, replacing diacretic characters with their base characters" - Request for additional name matching strategies
+- "Now please write a test that covers this new logic" - Request for comprehensive test coverage
 
 ### Improved
 - **Enhanced Dancer Name Matching**: Improved event import to try different name variants for better dancer matching
   - **Multiple Variants**: Tries exact match, lowercase, title case, and different capitalization patterns
   - **Space Normalization**: Handles extra spaces, single space normalization, and trimming
   - **Case Variations**: Supports different case combinations for multi-word names
-  - **Word Order Switching**: For two-word names, tries switching word order (e.g., "John Doe" ↔ "Doe John")
+  - **Word Order Switching**: For two-word names, tries both word orders (e.g., "John Doe" ↔ "Doe John")
   - **Dot Handling**: Adds/removes trailing dots (e.g., "John Doe" ↔ "John Doe.")
-  - **Diacritic Removal**: Replaces accented characters with base characters (e.g., "José" ↔ "Jose", "François" ↔ "Francois")
-  - **Better Matching**: Reduces duplicate dancer creation when names differ only in formatting
-  - **Action Logging**: Tracks when variant matching succeeds for analytics
-  - **Fallback Behavior**: Still creates new dancers if no variants match
+  - **Diacritic Removal**: Replaces accented characters with base characters (e.g., "José" ↔ "Jose")
+  - **Complex Combinations**: Handles multiple transformations together (e.g., "José García" ↔ "Garcia Jose.")
+  - **Performance Optimized**: Pre-generates all variants for efficient matching
 
 ### Technical
-- Added `getExistingDancersByNamesWithVariants()` method to EventImportValidator
-- Implemented `_findDancerByNameVariants()` for individual name variant lookup
-- Created `_generateNameVariants()` to generate different name formatting options
-- Added `_removeDiacritics()` method with comprehensive diacritic character mapping
-- Enhanced variant generation with word order switching for two-word names
-- Added dot handling logic for trailing punctuation
-- Updated EventImportService to use enhanced matching in both import and summary generation
-- Added comprehensive name variant generation including case, spacing, capitalization, word order, dots, and diacritics
-- Maintained backward compatibility with existing exact matching functionality
+- **Comprehensive Test Coverage**: Added extensive test suite covering all name matching scenarios
+  - **Basic Variants**: Tests exact matches, case variations, and space handling
+  - **Dot Handling**: Tests adding/removing dots with various name formats
+  - **Diacritic Processing**: Tests Polish, Spanish, French, and other accented characters
+  - **Word Order Switching**: Tests two-word name order switching with case variations
+  - **Complex Combinations**: Tests multiple transformations applied together
+  - **Edge Cases**: Tests empty names, single characters, very long names, and non-existent matches
+  - **Performance Tests**: Ensures graceful handling of edge cases and large datasets
+  - **Action Logging**: Verifies proper logging of variant matches for debugging
+- **Algorithm Improvements**: Fixed variant generation to work bidirectionally (input names ↔ database names)
+- **Code Cleanup**: Removed unused helper methods and optimized matching logic
 
 ## [v1.1.0] - 2025-01-16
 
