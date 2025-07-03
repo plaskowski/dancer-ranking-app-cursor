@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../database/database.dart';
 import '../../../services/score_service.dart';
 import '../../../utils/toast_helper.dart';
+import '../../../widgets/safe_fab.dart';
 
 class ScoresManagementTab extends StatefulWidget {
   const ScoresManagementTab({super.key});
@@ -404,54 +405,47 @@ class _ScoresManagementTabState extends State<ScoresManagementTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        _isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : _scoresWithUsage.isEmpty
-                ? const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text(
-                        'No scores available.\nTap + to add your first score.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16),
-                      ),
+    return Scaffold(
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : _scoresWithUsage.isEmpty
+              ? const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Text(
+                      'No scores available.\nTap + to add your first score.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16),
                     ),
-                  )
-                : ReorderableListView.builder(
-                    padding: const EdgeInsets.only(bottom: 80),
-                    itemCount: _scoresWithUsage.length,
-                    onReorder: _onReorder,
-                    itemBuilder: (context, index) {
-                      final scoreWithUsage = _scoresWithUsage[index];
-                      return ListTile(
-                        key: ValueKey(scoreWithUsage.score.id),
-                        title: Text(
-                          scoreWithUsage.score.name,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                        subtitle: Text(
-                          '${scoreWithUsage.usageCount} dances',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                        onTap: () => _showContextMenu(scoreWithUsage),
-                      );
-                    },
                   ),
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: FloatingActionButton(
-            onPressed: _showAddScoreDialog,
-            child: const Icon(Icons.add),
-          ),
-        ),
-      ],
+                )
+              : ReorderableListView.builder(
+                  padding: const EdgeInsets.only(bottom: 80),
+                  itemCount: _scoresWithUsage.length,
+                  onReorder: _onReorder,
+                  itemBuilder: (context, index) {
+                    final scoreWithUsage = _scoresWithUsage[index];
+                    return ListTile(
+                      key: ValueKey(scoreWithUsage.score.id),
+                      title: Text(
+                        scoreWithUsage.score.name,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      subtitle: Text(
+                        '${scoreWithUsage.usageCount} dances',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      onTap: () => _showContextMenu(scoreWithUsage),
+                    );
+                  },
+                ),
+      floatingActionButton: SafeFAB(
+        onPressed: _showAddScoreDialog,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

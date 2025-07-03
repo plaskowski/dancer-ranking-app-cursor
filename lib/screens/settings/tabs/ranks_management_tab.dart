@@ -5,6 +5,7 @@ import '../../../database/database.dart';
 import '../../../services/ranking_service.dart';
 import '../../../utils/action_logger.dart';
 import '../../../utils/toast_helper.dart';
+import '../../../widgets/safe_fab.dart';
 import '../widgets/rank_card.dart';
 
 class RanksManagementTab extends StatefulWidget {
@@ -19,86 +20,69 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
   Widget build(BuildContext context) {
     final rankingService = Provider.of<RankingService>(context);
 
-    return Stack(
-      children: [
-        FutureBuilder<List<RankWithUsage>>(
-          future: rankingService.getAllRanksWithUsage(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
+    return Scaffold(
+      body: FutureBuilder<List<RankWithUsage>>(
+        future: rankingService.getAllRanksWithUsage(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              );
-            }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
 
-            final ranksWithUsage = snapshot.data ?? [];
+          final ranksWithUsage = snapshot.data ?? [];
 
-            if (ranksWithUsage.isEmpty) {
-              return Center(
+          if (ranksWithUsage.isEmpty) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(16),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.star_border,
-                      size: 64,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                    const SizedBox(height: 16),
+                    Icon(Icons.star, size: 64, color: Colors.grey),
+                    SizedBox(height: 16),
                     Text(
-                      'No ranks yet',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Tap + to add your first rank',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
+                      'No ranks available.\nTap + to add your first rank.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                   ],
                 ),
-              );
-            }
-
-            return ReorderableListView.builder(
-              padding: const EdgeInsets.only(
-                  bottom: 80, left: 16, right: 16, top: 16),
-              itemCount: ranksWithUsage.length,
-              onReorder: (oldIndex, newIndex) =>
-                  _reorderRanks(ranksWithUsage, oldIndex, newIndex),
-              itemBuilder: (context, index) {
-                final rankWithUsage = ranksWithUsage[index];
-                return RankCard(
-                  key: ValueKey(rankWithUsage.rank.id),
-                  rankWithUsage: rankWithUsage,
-                  index: index,
-                  onEdit: () =>
-                      _showEditRankDialog(context, rankWithUsage.rank),
-                  onArchive: () =>
-                      _showArchiveRankDialog(context, rankWithUsage.rank),
-                  onDelete: () =>
-                      _showDeleteRankDialog(context, rankWithUsage.rank),
-                );
-              },
+              ),
             );
-          },
-        ),
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: FloatingActionButton(
-            onPressed: () => _showAddRankDialog(context),
-            tooltip: 'Add New Rank',
-            child: const Icon(Icons.add),
-          ),
-        ),
-      ],
+          }
+
+          return ReorderableListView.builder(
+            padding:
+                const EdgeInsets.only(bottom: 80, left: 16, right: 16, top: 16),
+            itemCount: ranksWithUsage.length,
+            onReorder: (oldIndex, newIndex) =>
+                _reorderRanks(ranksWithUsage, oldIndex, newIndex),
+            itemBuilder: (context, index) {
+              final rankWithUsage = ranksWithUsage[index];
+              return RankCard(
+                key: ValueKey(rankWithUsage.rank.id),
+                rankWithUsage: rankWithUsage,
+                index: index,
+                onEdit: () => _showEditRankDialog(context, rankWithUsage.rank),
+                onArchive: () =>
+                    _showArchiveRankDialog(context, rankWithUsage.rank),
+                onDelete: () =>
+                    _showDeleteRankDialog(context, rankWithUsage.rank),
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: SafeFAB(
+        onPressed: () => _showAddRankDialog(context),
+        tooltip: 'Add New Rank',
+        child: const Icon(Icons.add),
+      ),
     );
   }
 

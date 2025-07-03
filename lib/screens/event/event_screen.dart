@@ -6,6 +6,7 @@ import '../../database/database.dart';
 import '../../services/event_service.dart';
 import '../../utils/action_logger.dart';
 import '../../utils/event_status_helper.dart';
+import '../../widgets/safe_fab.dart';
 import 'dialogs/event_tab_actions.dart';
 import 'tabs/planning_tab.dart';
 import 'tabs/present_tab.dart';
@@ -26,11 +27,14 @@ class _EventScreenState extends State<EventScreen> {
   Event? _event;
   late List<EventTabActions> _tabActions;
 
-  bool get _isPastEvent => _event != null && EventStatusHelper.isPastEvent(_event!.date);
+  bool get _isPastEvent =>
+      _event != null && EventStatusHelper.isPastEvent(_event!.date);
 
-  bool get _isOldEvent => _event != null && EventStatusHelper.isOldEvent(_event!.date);
+  bool get _isOldEvent =>
+      _event != null && EventStatusHelper.isOldEvent(_event!.date);
 
-  bool get _isFarFutureEvent => _event != null && EventStatusHelper.isFarFutureEvent(_event!.date);
+  bool get _isFarFutureEvent =>
+      _event != null && EventStatusHelper.isFarFutureEvent(_event!.date);
 
   @override
   void initState() {
@@ -45,7 +49,8 @@ class _EventScreenState extends State<EventScreen> {
 
   @override
   void dispose() {
-    final tabNames = EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
+    final tabNames =
+        EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
     ActionLogger.logAction('UI_EventScreen', 'screen_disposed', {
       'eventId': widget.eventId,
       'lastTab': tabNames.isNotEmpty ? tabNames[_currentPage] : 'unknown',
@@ -99,7 +104,8 @@ class _EventScreenState extends State<EventScreen> {
       _currentPage = index;
     });
 
-    final tabNames = EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
+    final tabNames =
+        EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
     final fromTab = tabNames.isNotEmpty ? tabNames[_currentPage] : 'unknown';
     final toTab = tabNames.isNotEmpty ? tabNames[index] : 'unknown';
 
@@ -114,7 +120,8 @@ class _EventScreenState extends State<EventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tabNames = EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
+    final tabNames =
+        EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
 
     ActionLogger.logAction('UI_EventScreen', 'build_called', {
       'eventId': widget.eventId,
@@ -130,14 +137,20 @@ class _EventScreenState extends State<EventScreen> {
     // Different tab configurations based on event age
     final pages = _isOldEvent
         ? [
-            SummaryTab(eventId: widget.eventId) // Only Summary tab for old events
+            SummaryTab(
+                eventId: widget.eventId) // Only Summary tab for old events
           ]
         : _isFarFutureEvent
             ? [
-                PlanningTab(eventId: widget.eventId) // Only Planning tab for far future events
+                PlanningTab(
+                    eventId: widget
+                        .eventId) // Only Planning tab for far future events
               ]
             : _isPastEvent
-                ? [PresentTab(eventId: widget.eventId), SummaryTab(eventId: widget.eventId)]
+                ? [
+                    PresentTab(eventId: widget.eventId),
+                    SummaryTab(eventId: widget.eventId)
+                  ]
                 : [
                     PlanningTab(eventId: widget.eventId),
                     PresentTab(eventId: widget.eventId),
@@ -150,7 +163,9 @@ class _EventScreenState extends State<EventScreen> {
         : _isFarFutureEvent
             ? _tabActions[0] // Always Planning actions for far future events
             : _isPastEvent
-                ? (_currentPage == 0 ? _tabActions[1] : _tabActions[2]) // Present or Summary
+                ? (_currentPage == 0
+                    ? _tabActions[1]
+                    : _tabActions[2]) // Present or Summary
                 : _tabActions[_currentPage]; // Planning, Present, or Summary
 
     return Scaffold(
@@ -210,7 +225,7 @@ class _EventScreenState extends State<EventScreen> {
             ),
       floatingActionButton: _isOldEvent
           ? null // Hide FAB for old events (2+ days ago)
-          : FloatingActionButton(
+          : SafeFAB(
               onPressed: () => currentTabActions.onFabPressed(context, () {
                 setState(() {
                   // Trigger rebuild to refresh the active tab

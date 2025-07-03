@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.93.0] - 2025-01-16
+
+### User Requests
+- "Android - the FAB button is covered with bottom system bar" - Request to fix FAB positioning on Android
+- "extract this repeated code into single place" - Request to refactor repeated FAB padding code
+
+### Fixed
+- **Android FAB Positioning**: Fixed FAB buttons being covered by Android system navigation bar
+  - **System UI Aware**: FABs now automatically account for Android system navigation bar padding
+  - **Consistent Positioning**: All FABs across the app now have proper bottom spacing
+  - **Cross-Platform**: Works correctly on both Android and other platforms
+  - **Better UX**: FABs are no longer hidden behind system UI elements
+
+### Improved
+- **Code Reusability**: Extracted repeated FAB padding code into reusable `SafeFAB` widget
+  - **Single Source of Truth**: All FABs now use the centralized `SafeFAB` widget
+  - **Consistent Behavior**: Automatic system UI padding handling across all screens
+  - **Easier Maintenance**: Future FAB positioning changes only need to be made in one place
+  - **Type Safety**: Proper parameter handling for both regular and extended FABs
+
+### Technical
+- Created new `SafeFAB` widget in `lib/widgets/safe_fab.dart`
+- Updated all screens to use `SafeFAB` instead of manual padding:
+  - `EventScreen`, `DancersScreen`, `HomeScreen`
+  - `SelectDancersScreen`, `TagsManagementTab`
+  - `ScoresManagementTab`, `RanksManagementTab`
+- Restructured settings tabs to use Scaffold's `floatingActionButton` instead of Stack with Positioned widgets
+- Maintained all existing functionality while improving code organization
+
 ## [v0.92.0] - 2025-01-16
 
 ### User Requests

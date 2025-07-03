@@ -7,6 +7,7 @@ import '../../services/dancer_service.dart';
 import '../../utils/toast_helper.dart';
 import '../../widgets/add_dancer_dialog.dart';
 import '../../widgets/dancer_card_with_tags.dart';
+import '../../widgets/safe_fab.dart';
 import '../../widgets/tag_filter_chips.dart';
 import 'dialogs/select_merge_target_screen.dart';
 
@@ -192,7 +193,7 @@ class _DancersScreenState extends State<DancersScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: SafeFAB(
         onPressed: () => _addDancer(),
         child: const Icon(Icons.add),
       ),

@@ -15,16 +15,14 @@ Small improvements:
 - Add existing dancer dialog
   - [ ] ...
 - "Add new dancer" dialog
-  - [ ] "Tags" label collides with the impression field
   - [ ] ...
 - home screen
   - [ ] ...
 -  Android
-  - [ ] the FAB button is covered with bottom system bar
+  - [x] the FAB button is covered with bottom system bar
 -  event screen
   - [ ] ...
 - docs
-  - [ ] preambula o moim szacunku dla partnerek
   - [ ] ...
 -  dancers screen
   - [ ] ...
@@ -41,3 +39,5 @@ Small improvements:
 ### Milestone 3
 - filter people by tags. Eg. tag about where I know them from in case I don't know or remember the name or #longTimeNoSee or #comesRarely
 - smart suggestions in add dancers dialog
+- public release
+  - preambula o moim szacunku dla partnerek

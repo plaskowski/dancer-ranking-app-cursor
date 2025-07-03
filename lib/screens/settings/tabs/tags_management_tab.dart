@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../database/database.dart';
 import '../../../services/tag_service.dart';
 import '../../../utils/action_logger.dart';
+import '../../../widgets/safe_fab.dart';
 
 class TagsManagementTab extends StatefulWidget {
   const TagsManagementTab({super.key});
@@ -296,7 +297,7 @@ class _TagsManagementTabState extends State<TagsManagementTab> {
                     );
                   },
                 ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: SafeFAB(
         onPressed: _showAddTagDialog,
         tooltip: 'Add Tag',
         child: const Icon(Icons.add),

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../database/database.dart';
 import '../../services/event_service.dart';
 import '../../utils/action_logger.dart';
+import '../../widgets/safe_fab.dart';
 import 'dialog/create_event_screen.dart';
 import 'widgets/empty_events_view.dart';
 import 'widgets/event_card.dart';
@@ -47,7 +48,7 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: SafeFAB(
         onPressed: () {
           ActionLogger.logUserAction('HomeScreen', 'navigate_to_create_event', {
             'destination': 'CreateEventScreen',
