@@ -84,114 +84,119 @@ class _DancersScreenState extends State<DancersScreen> {
       appBar: AppBar(
         title: const Text('Dancers'),
       ),
-      body: CustomScrollView(
-        slivers: [
-          // Filter section
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                // Search bar
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: const InputDecoration(
-                      hintText: 'Search dancers...',
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            // Filter section
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  // Search bar
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: const InputDecoration(
+                        hintText: 'Search dancers...',
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: _onSearchChanged,
                     ),
-                    onChanged: _onSearchChanged,
                   ),
-                ),
 
-                // Tag filter
-                TagFilterChips(
-                  selectedTagId: _selectedTagId,
-                  onTagChanged: _onTagChanged,
-                ),
-              ],
+                  // Tag filter
+                  TagFilterChips(
+                    selectedTagId: _selectedTagId,
+                    onTagChanged: _onTagChanged,
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          // Dancers list
-          StreamBuilder<List<DancerWithTags>>(
-            stream: dancerService.watchDancersWithTags(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const SliverToBoxAdapter(
-                  child: Center(child: CircularProgressIndicator()),
-                );
-              }
+            // Dancers list
+            StreamBuilder<List<DancerWithTags>>(
+              stream: dancerService.watchDancersWithTags(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SliverToBoxAdapter(
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
 
-              if (snapshot.hasError) {
-                return SliverToBoxAdapter(
-                  child: Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  ),
-                );
-              }
+                if (snapshot.hasError) {
+                  return SliverToBoxAdapter(
+                    child: Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    ),
+                  );
+                }
 
-              final allDancers = snapshot.data ?? [];
-              final dancers = _filterDancers(allDancers);
+                final allDancers = snapshot.data ?? [];
+                final dancers = _filterDancers(allDancers);
 
-              if (dancers.isEmpty) {
-                return SliverToBoxAdapter(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.people,
-                          size: 64,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          _searchQuery.isEmpty && _selectedTagId == null
-                              ? 'No dancers yet'
-                              : 'No dancers found',
-                          style: TextStyle(
-                            fontSize: 18,
+                if (dancers.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.people,
+                            size: 64,
                             color:
                                 Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          _searchQuery.isEmpty && _selectedTagId == null
-                              ? 'Tap + to add your first dancer'
-                              : 'Try adjusting your filters',
-                          style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          const SizedBox(height: 16),
+                          Text(
+                            _searchQuery.isEmpty && _selectedTagId == null
+                                ? 'No dancers yet'
+                                : 'No dancers found',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                            ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 8),
+                          Text(
+                            _searchQuery.isEmpty && _selectedTagId == null
+                                ? 'Tap + to add your first dancer'
+                                : 'Try adjusting your filters',
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+
+                return SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  sliver: SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final dancerWithTags = dancers[index];
+                        return DancerCardWithTags(
+                          dancerWithTags: dancerWithTags,
+                          onEdit: () => _editDancer(dancerWithTags.dancer),
+                          onDelete: () => _deleteDancer(dancerWithTags.dancer),
+                          onMerge: () => _mergeDancer(dancerWithTags.dancer),
+                        );
+                      },
+                      childCount: dancers.length,
                     ),
                   ),
                 );
-              }
-
-              return SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                sliver: SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final dancerWithTags = dancers[index];
-                      return DancerCardWithTags(
-                        dancerWithTags: dancerWithTags,
-                        onEdit: () => _editDancer(dancerWithTags.dancer),
-                        onDelete: () => _deleteDancer(dancerWithTags.dancer),
-                        onMerge: () => _mergeDancer(dancerWithTags.dancer),
-                      );
-                    },
-                    childCount: dancers.length,
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
+              },
+            ),
+          ],
+        ),
       ),
       floatingActionButton: SafeFAB(
         onPressed: () => _addDancer(),

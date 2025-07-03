@@ -19,7 +19,8 @@ class SummaryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ActionLogger.logAction('UI_SummaryTab', 'build_called', {'eventId': eventId});
+    ActionLogger.logAction(
+        'UI_SummaryTab', 'build_called', {'eventId': eventId});
 
     final dancerService = Provider.of<DancerService>(context);
 
@@ -27,7 +28,8 @@ class SummaryTab extends StatelessWidget {
       stream: dancerService.watchDancersForEvent(eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          ActionLogger.logAction('UI_SummaryTab', 'loading_state', {'eventId': eventId});
+          ActionLogger.logAction(
+              'UI_SummaryTab', 'loading_state', {'eventId': eventId});
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -40,7 +42,8 @@ class SummaryTab extends StatelessWidget {
         }
 
         final allDancers = snapshot.data ?? [];
-        final attendedDancers = allDancers.where((d) => d.isPresent || d.hasLeft).toList();
+        final attendedDancers =
+            allDancers.where((d) => d.isPresent || d.hasLeft).toList();
 
         ActionLogger.logListRendering(
             'UI_SummaryTab',
@@ -61,7 +64,8 @@ class SummaryTab extends StatelessWidget {
           'eventId': eventId,
           'totalDancers': allDancers.length,
           'attendedDancers': attendedDancers.length,
-          'firstMetCount': attendedDancers.where((d) => d.isFirstMetHere).length,
+          'firstMetCount':
+              attendedDancers.where((d) => d.isFirstMetHere).length,
         });
 
         if (attendedDancers.isEmpty) {
@@ -106,7 +110,8 @@ class SummaryTab extends StatelessWidget {
             final dancerA = groupedDancers[a]!.first;
             final dancerB = groupedDancers[b]!.first;
 
-            return (dancerA.scoreOrdinal ?? 999).compareTo(dancerB.scoreOrdinal ?? 999);
+            return (dancerA.scoreOrdinal ?? 999)
+                .compareTo(dancerB.scoreOrdinal ?? 999);
           });
 
         ActionLogger.logAction('UI_SummaryTab', 'grouping_complete', {
@@ -115,73 +120,75 @@ class SummaryTab extends StatelessWidget {
           'groupSizes': groupedDancers.map((k, v) => MapEntry(k, v.length)),
         });
 
-        return CustomScrollView(
-          slivers: [
-            // Dance summary section
-            SliverToBoxAdapter(
-              child: SummaryGroupHeader(
-                title: 'Dance Summary',
-                child: SummaryRow(
-                  child: Text(
-                    'Recorded ${attendedDancers.where((d) => d.hasDanced).length} dances total. Met ${attendedDancers.where((d) => d.isFirstMetHere).length} people for the first time.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.onSurface,
+        return SafeArea(
+          child: CustomScrollView(
+            slivers: [
+              // Dance summary section
+              SliverToBoxAdapter(
+                child: SummaryGroupHeader(
+                  title: 'Dance Summary',
+                  child: SummaryRow(
+                    child: Text(
+                      'Recorded ${attendedDancers.where((d) => d.hasDanced).length} dances total. Met ${attendedDancers.where((d) => d.isFirstMetHere).length} people for the first time.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
 
-            // Score groups with sticky headers
-            ...sortedKeys.map((scoreName) {
-              final scoreDancers = groupedDancers[scoreName]!;
+              // Score groups with sticky headers
+              ...sortedKeys.map((scoreName) {
+                final scoreDancers = groupedDancers[scoreName]!;
 
-              return SliverMainAxisGroup(
-                slivers: [
-                  // Sticky header for each score group
-                  SliverPersistentHeader(
-                    pinned: true,
-                    delegate: _StickyHeaderDelegate(
-                      minHeight: 60,
-                      maxHeight: 60,
-                      child: SummaryGroupHeader(
-                        title: scoreName,
-                        counter: '(${scoreDancers.length})',
+                return SliverMainAxisGroup(
+                  slivers: [
+                    // Sticky header for each score group
+                    SliverPersistentHeader(
+                      pinned: true,
+                      delegate: _StickyHeaderDelegate(
+                        minHeight: 60,
+                        maxHeight: 60,
+                        child: SummaryGroupHeader(
+                          title: scoreName,
+                          counter: '(${scoreDancers.length})',
+                        ),
                       ),
                     ),
-                  ),
 
-                  // Dancers in this score group
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: DancerCard(
-                              dancer: scoreDancers[index],
-                              eventId: eventId,
-                              isPlanningMode: false,
-                              hideScorePill: true,
-                              isSummaryMode: true,
-                            ),
-                          );
-                        },
-                        childCount: scoreDancers.length,
+                    // Dancers in this score group
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: DancerCard(
+                                dancer: scoreDancers[index],
+                                eventId: eventId,
+                                isPlanningMode: false,
+                                hideScorePill: true,
+                                isSummaryMode: true,
+                              ),
+                            );
+                          },
+                          childCount: scoreDancers.length,
+                        ),
                       ),
                     ),
-                  ),
 
-                  // Spacing after each group
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: 16),
-                  ),
-                ],
-              );
-            }),
-          ],
+                    // Spacing after each group
+                    const SliverToBoxAdapter(
+                      child: SizedBox(height: 16),
+                    ),
+                  ],
+                );
+              }),
+            ],
+          ),
         );
       },
     );
@@ -207,13 +214,16 @@ class _StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => maxHeight;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return SizedBox.expand(child: child);
   }
 
   @override
   bool shouldRebuild(_StickyHeaderDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight || minHeight != oldDelegate.minHeight || child != oldDelegate.child;
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
   }
 }
 
@@ -316,7 +326,8 @@ class SummaryTabActions implements EventTabActions {
   IconData get fabIcon => Icons.add;
 
   @override
-  Future<void> onFabPressed(BuildContext context, VoidCallback onRefresh) async {
+  Future<void> onFabPressed(
+      BuildContext context, VoidCallback onRefresh) async {
     // Show speed dial menu with two options
     _showSummaryTabSpeedDial(context, onRefresh);
   }
@@ -373,14 +384,18 @@ class SummaryTabActions implements EventTabActions {
                 subtitle: const Text('Mark unranked dancers as present'),
                 onTap: () async {
                   Navigator.pop(context);
-                  final appDb = Provider.of<AppDatabase>(context, listen: false);
+                  final appDb =
+                      Provider.of<AppDatabase>(context, listen: false);
                   final result = await Navigator.push<bool>(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Provider<DancerCrudService>(
                         create: (_) => DancerCrudService(appDb),
                         child: Provider<DancerTagService>(
-                          create: (ctx) => DancerTagService(appDb, Provider.of<DancerCrudService>(ctx, listen: false)),
+                          create: (ctx) => DancerTagService(
+                              appDb,
+                              Provider.of<DancerCrudService>(ctx,
+                                  listen: false)),
                           child: AddExistingDancerScreen(
                             eventId: eventId,
                             eventName: eventName,

@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.8] - 2025-01-16
+
+### User Requests
+- "Event screen rows are covered by system bar. Please review all screens to void this." - Request to fix system bar coverage issues across all screens
+
+### Fixed
+- **System Bar Coverage Issues**: Fixed content being covered by system bars (status bar and navigation bar) across all screens
+  - **Proper System UI Handling**: Added SystemChrome configuration for edge-to-edge display
+  - **SafeArea Implementation**: Wrapped all main content areas with SafeArea to prevent system bar overlap
+  - **Consistent Experience**: All screens now properly respect system UI areas
+  - **Better UX**: Content is no longer hidden behind status bar or navigation bar
+
+### Technical
+- Added SystemChrome configuration in main.dart for transparent system bars and edge-to-edge mode
+- Added MediaQuery builder in MaterialApp to ensure proper padding handling
+- Wrapped content areas with SafeArea in:
+  - Event screen tabs (Present, Planning, Summary)
+  - Dancers screen
+  - All list views and scroll views
+- Maintained existing functionality while improving system UI integration
+
 ## [v1.0.7] - 2025-01-16
 
 ### User Requests

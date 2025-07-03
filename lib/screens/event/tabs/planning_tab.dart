@@ -170,32 +170,34 @@ class _PlanningTabState extends State<PlanningTab> {
           'groupSizes': groupedDancers.map((k, v) => MapEntry(k, v.length)),
         });
 
-        return ListView(
-          padding: const EdgeInsets.all(16),
-          children: sortedKeys.map((rankName) {
-            final rankDancers = groupedDancers[rankName]!;
+        return SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: sortedKeys.map((rankName) {
+              final rankDancers = groupedDancers[rankName]!;
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  rankName,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    rankName,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                ...rankDancers.map((dancer) => DancerCard(
-                      dancer: dancer,
-                      eventId: widget.eventId,
-                      isPlanningMode: true,
-                    )),
-                const SizedBox(height: 16),
-              ],
-            );
-          }).toList(),
+                  const SizedBox(height: 8),
+                  ...rankDancers.map((dancer) => DancerCard(
+                        dancer: dancer,
+                        eventId: widget.eventId,
+                        isPlanningMode: true,
+                      )),
+                  const SizedBox(height: 16),
+                ],
+              );
+            }).toList(),
+          ),
         );
       },
     );

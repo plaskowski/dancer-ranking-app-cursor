@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'database/database.dart';
@@ -15,6 +16,22 @@ import 'services/tag_service.dart';
 import 'theme/app_theme.dart';
 
 void main() {
+  // Configure system UI
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
+  );
+
+  // Set system UI mode
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.edgeToEdge,
+    overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+  );
+
   runApp(const DancerRankingApp());
 }
 
@@ -66,6 +83,18 @@ class DancerRankingApp extends StatelessWidget {
         darkTheme: AppTheme.darkTheme,
         home: const HomeScreen(),
         debugShowCheckedModeBanner: false,
+        builder: (context, child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              // Ensure content is not covered by system UI
+              padding: MediaQuery.of(context).padding.copyWith(
+                    top: MediaQuery.of(context).padding.top,
+                    bottom: MediaQuery.of(context).padding.bottom,
+                  ),
+            ),
+            child: child!,
+          );
+        },
       ),
     );
   }

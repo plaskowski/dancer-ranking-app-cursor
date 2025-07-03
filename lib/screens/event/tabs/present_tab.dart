@@ -19,7 +19,8 @@ class PresentTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ActionLogger.logAction('UI_PresentTab', 'build_called', {'eventId': eventId});
+    ActionLogger.logAction(
+        'UI_PresentTab', 'build_called', {'eventId': eventId});
 
     final dancerService = Provider.of<DancerService>(context);
 
@@ -27,7 +28,8 @@ class PresentTab extends StatelessWidget {
       stream: dancerService.watchDancersForEvent(eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          ActionLogger.logAction('UI_PresentTab', 'loading_state', {'eventId': eventId});
+          ActionLogger.logAction(
+              'UI_PresentTab', 'loading_state', {'eventId': eventId});
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -40,7 +42,9 @@ class PresentTab extends StatelessWidget {
         }
 
         final allDancers = snapshot.data ?? [];
-        final presentDancers = allDancers.where((d) => d.status == 'present' || d.status == 'served').toList();
+        final presentDancers = allDancers
+            .where((d) => d.status == 'present' || d.status == 'served')
+            .toList();
 
         ActionLogger.logListRendering(
             'UI_PresentTab',
@@ -113,7 +117,8 @@ class PresentTab extends StatelessWidget {
             final dancerA = groupedDancers[a]!.first;
             final dancerB = groupedDancers[b]!.first;
 
-            return (dancerA.rankOrdinal ?? 999).compareTo(dancerB.rankOrdinal ?? 999);
+            return (dancerA.rankOrdinal ?? 999)
+                .compareTo(dancerB.rankOrdinal ?? 999);
           });
 
         ActionLogger.logAction('UI_PresentTab', 'grouping_complete', {
@@ -122,32 +127,34 @@ class PresentTab extends StatelessWidget {
           'groupSizes': groupedDancers.map((k, v) => MapEntry(k, v.length)),
         });
 
-        return ListView(
-          padding: const EdgeInsets.all(16),
-          children: sortedKeys.map((rankName) {
-            final rankDancers = groupedDancers[rankName]!;
+        return SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: sortedKeys.map((rankName) {
+              final rankDancers = groupedDancers[rankName]!;
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  rankName,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    rankName,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                ...rankDancers.map((dancer) => DancerCard(
-                      dancer: dancer,
-                      eventId: eventId,
-                      isPlanningMode: false,
-                    )),
-                const SizedBox(height: 16),
-              ],
-            );
-          }).toList(),
+                  const SizedBox(height: 8),
+                  ...rankDancers.map((dancer) => DancerCard(
+                        dancer: dancer,
+                        eventId: eventId,
+                        isPlanningMode: false,
+                      )),
+                  const SizedBox(height: 16),
+                ],
+              );
+            }).toList(),
+          ),
         );
       },
     );
@@ -165,7 +172,8 @@ class PresentTabActions implements EventTabActions {
   });
 
   @override
-  Future<void> onFabPressed(BuildContext context, VoidCallback onRefresh) async {
+  Future<void> onFabPressed(
+      BuildContext context, VoidCallback onRefresh) async {
     // Show speed dial menu with two options
     _showPresentTabSpeedDial(context, onRefresh);
   }
@@ -222,14 +230,18 @@ class PresentTabActions implements EventTabActions {
                 subtitle: const Text('Mark unranked dancers as present'),
                 onTap: () async {
                   Navigator.pop(context);
-                  final appDb = Provider.of<AppDatabase>(context, listen: false);
+                  final appDb =
+                      Provider.of<AppDatabase>(context, listen: false);
                   final result = await Navigator.push<bool>(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Provider<DancerCrudService>(
                         create: (_) => DancerCrudService(appDb),
                         child: Provider<DancerTagService>(
-                          create: (ctx) => DancerTagService(appDb, Provider.of<DancerCrudService>(ctx, listen: false)),
+                          create: (ctx) => DancerTagService(
+                              appDb,
+                              Provider.of<DancerCrudService>(ctx,
+                                  listen: false)),
                           child: AddExistingDancerScreen(
                             eventId: eventId,
                             eventName: eventName,
