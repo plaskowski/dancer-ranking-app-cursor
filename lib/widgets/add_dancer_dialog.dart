@@ -244,10 +244,21 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
               TextFormField(
                 controller: _notesController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Notes (optional)',
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   hintText: 'e.g., Great lead, loves spins',
+                  suffixIcon: _notesController.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            setState(() {
+                              _notesController.clear();
+                            });
+                          },
+                          tooltip: 'Clear notes',
+                        )
+                      : null,
                 ),
                 maxLines: 2,
                 textCapitalization: TextCapitalization.sentences,
@@ -256,6 +267,11 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                   if (_formKey.currentState?.validate() == true) {
                     _saveDancer();
                   }
+                },
+                onChanged: (value) {
+                  setState(() {
+                    // Trigger rebuild to show/hide clear button
+                  });
                 },
               ),
 

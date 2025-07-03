@@ -12,18 +12,14 @@ class DancerCrudService {
   Stream<List<Dancer>> watchAllDancers() {
     ActionLogger.logServiceCall('DancerCrudService', 'watchAllDancers');
 
-    return (_database.select(_database.dancers)
-          ..orderBy([(d) => OrderingTerm.asc(d.name)]))
-        .watch();
+    return (_database.select(_database.dancers)..orderBy([(d) => OrderingTerm.asc(d.name)])).watch();
   }
 
   // Get a specific dancer by ID
   Future<Dancer?> getDancer(int id) {
-    ActionLogger.logServiceCall(
-        'DancerCrudService', 'getDancer', {'dancerId': id});
+    ActionLogger.logServiceCall('DancerCrudService', 'getDancer', {'dancerId': id});
 
-    return (_database.select(_database.dancers)..where((d) => d.id.equals(id)))
-        .getSingleOrNull();
+    return (_database.select(_database.dancers)..where((d) => d.id.equals(id))).getSingleOrNull();
   }
 
   // Create a new dancer
@@ -68,8 +64,7 @@ class DancerCrudService {
     try {
       final dancer = await getDancer(id);
       if (dancer == null) {
-        ActionLogger.logAction(
-            'DancerCrudService.updateDancer', 'dancer_not_found', {
+        ActionLogger.logAction('DancerCrudService.updateDancer', 'dancer_not_found', {
           'dancerId': id,
         });
         return false;
@@ -78,7 +73,7 @@ class DancerCrudService {
       final result = await _database.update(_database.dancers).replace(
             dancer.copyWith(
               name: name ?? dancer.name,
-              notes: Value(notes ?? dancer.notes),
+              notes: Value(notes),
             ),
           );
 
@@ -112,8 +107,7 @@ class DancerCrudService {
     try {
       final dancer = await getDancer(id);
       if (dancer == null) {
-        ActionLogger.logError(
-            'DancerCrudService.updateFirstMetDate', 'dancer_not_found', {
+        ActionLogger.logError('DancerCrudService.updateFirstMetDate', 'dancer_not_found', {
           'dancerId': id,
         });
         return false;
@@ -134,8 +128,7 @@ class DancerCrudService {
 
       return result;
     } catch (e) {
-      ActionLogger.logError(
-          'DancerCrudService.updateFirstMetDate', e.toString(), {
+      ActionLogger.logError('DancerCrudService.updateFirstMetDate', e.toString(), {
         'dancerId': id,
         'firstMetDate': firstMetDate?.toIso8601String(),
       });
@@ -150,9 +143,7 @@ class DancerCrudService {
     });
 
     try {
-      final result = await (_database.delete(_database.dancers)
-            ..where((d) => d.id.equals(id)))
-          .go();
+      final result = await (_database.delete(_database.dancers)..where((d) => d.id.equals(id))).go();
 
       ActionLogger.logDbOperation('DELETE', 'dancers', {
         'id': id,
@@ -174,14 +165,12 @@ class DancerCrudService {
 
     try {
       final countExp = countAll();
-      final query = _database.selectOnly(_database.dancers)
-        ..addColumns([countExp]);
+      final query = _database.selectOnly(_database.dancers)..addColumns([countExp]);
 
       final result = await query.getSingle();
       final count = result.read(countExp)!;
 
-      ActionLogger.logAction(
-          'DancerCrudService.getDancersCount', 'count_retrieved', {
+      ActionLogger.logAction('DancerCrudService.getDancersCount', 'count_retrieved', {
         'count': count,
       });
 

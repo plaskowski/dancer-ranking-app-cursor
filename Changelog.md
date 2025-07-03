@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.9] - 2025-01-16
+
+### User Requests
+- "Nope, the problem is that after I clear the field and tap save the change does not get saved" - Request to fix notes field not saving when cleared
+
+### Fixed
+- **Notes Field Clearing Bug**: Fixed issue where clearing dancer notes field and saving would not actually clear the notes
+  - **Proper Null Handling**: Fixed updateDancer method to properly handle null notes values
+  - **Clear Field Support**: Users can now successfully clear dancer notes by emptying the field and saving
+  - **Consistent Behavior**: Notes field now properly saves both content and empty state
+  - **Database Update**: Fixed Value wrapper logic to always use provided notes value instead of falling back to existing value
+
+### Technical
+- Fixed DancerCrudService.updateDancer method to use `Value(notes)` instead of `Value(notes ?? dancer.notes)`
+- Ensured null notes are properly saved to database when field is cleared
+- Maintained existing functionality for non-null notes values
+
 ## [v1.0.8] - 2025-01-16
 
 ### User Requests
