@@ -10,13 +10,7 @@ The app has all I need to start using it. :celebrate:
 - [ ] ...
 
 ### Big improvements
-- persons import
-  - [ ] introduce optional aliases list on dancers
-  - [ ] use AI to extract all dancers names from the JSON files, sort them and deduplicate with aliases
-- events import
-  - [ ] have optional aliases list on dancers to reduce clean up effort after event history import
-  - [ ] extract a summary of my impression on event itself
-  - [ ] ...
+- [ ] ...
 
 ### Milestone 3
 - smart suggestions in add dancers dialog

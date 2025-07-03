@@ -34,6 +34,7 @@
 - need better way to sync two lines
 - MCP tool to run app that connects to a running run configuration in IDE
 - don't put new files into main directory to avoid clutter
+- prevent generating tech spec until I agree on feature and UX spec
 
 # Hard ones
 - increase the 25 tool calls limit
