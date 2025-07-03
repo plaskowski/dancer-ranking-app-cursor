@@ -18,8 +18,6 @@ The app has all I need to start using it. :celebrate:
   - [ ] ...
 - home screen
   - [ ] ...
--  Android
-  - [x] the FAB button is covered with bottom system bar
 -  event screen - summary tab
   - [ ] mark absent/mark as left make no sense for past events
   - [ ] ...
@@ -28,9 +26,9 @@ The app has all I need to start using it. :celebrate:
 - select dancers
   - [ ] does not work
   - [ ] ...
-- add existing dancer
-  - [ ] obscured by system bar on Android
-  - [ ] tag filtering does not work for "Cuban DC Festival"
+- add existing dancer screen
+  - [x] obscured by system bar on Android
+  - [x] tag filtering does not work for "Cuban DC Festival"
 -  dancers screen
   - [ ] ...
 

@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.94.0] - 2025-01-16
+
+### User Requests
+- "add existing dancer screen obscured by system bar on Android" - Request to fix system bar coverage
+- "tag filtering does not work for 'Cuban DC Festival'" - Request to fix tag filtering functionality
+
+### Fixed
+- **Add Existing Dancer Screen System Bar**: Fixed screen being obscured by Android system navigation bar
+  - **SafeArea Wrapper**: Added SafeArea widget to properly handle system UI padding
+  - **Better UX**: Screen content is now fully visible and accessible on Android
+  - **Consistent Behavior**: Matches other screens in the app for system UI handling
+
+- **Tag Filtering Reactivity**: Improved tag filtering to properly update when data changes
+  - **Better Stream Watching**: Enhanced watchAvailableDancersForEventByTag method
+  - **Improved Reactivity**: Tag filtering now properly responds to changes in rankings and attendances
+  - **More Reliable**: Fixed potential issues with tag filtering not updating correctly
+
+### Technical
+- Added SafeArea wrapper to AddExistingDancerScreen body
+- Improved DancerTagService.watchAvailableDancersForEventByTag method for better reactivity
+- Maintained all existing functionality while fixing system UI and filtering issues
+
 ## [v0.93.0] - 2025-01-16
 
 ### User Requests

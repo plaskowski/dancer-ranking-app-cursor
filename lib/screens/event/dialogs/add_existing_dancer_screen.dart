@@ -77,78 +77,81 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
       appBar: AppBar(
         title: Text('Add to ${widget.eventName}'),
       ),
-      body: Column(
-        children: [
-          // Tag Filters Section
-          TagFilterChips(
-            selectedTagId: _selectedTagId,
-            onTagChanged: _onTagChanged,
-          ),
-
-          // Search Section
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                labelText: 'Search available dancers',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-                hintText: 'Search by name or notes...',
-              ),
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Tag Filters Section
+            TagFilterChips(
+              selectedTagId: _selectedTagId,
+              onTagChanged: _onTagChanged,
             ),
-          ),
 
-          // Dancers List (with info block inside scroll)
-          Expanded(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                // Info Banner (now scrollable)
-                Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'Showing unranked and absent dancers only. Present dancers managed in Present tab.',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimaryContainer,
+            // Search Section
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _searchController,
+                decoration: const InputDecoration(
+                  labelText: 'Search available dancers',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(),
+                  hintText: 'Search by name or notes...',
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                },
+              ),
+            ),
+
+            // Dancers List (with info block inside scroll)
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  // Info Banner (now scrollable)
+                  Container(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.info_outline,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Showing unranked and absent dancers only. Present dancers managed in Present tab.',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                // Dancers List
-                const SizedBox(
-                  height: 8,
-                ),
-                ..._buildDancerList(context),
-              ],
+                  // Dancers List
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  ..._buildDancerList(context),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
