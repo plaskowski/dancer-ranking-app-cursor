@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.1.1] - 2025-01-16
+
+### User Requests
+- "when importing event, looking for existing dancer with given name, try lookup few different variants to better match" - Request to improve dancer name matching during event import
+
+### Improved
+- **Enhanced Dancer Name Matching**: Improved event import to try different name variants for better dancer matching
+  - **Multiple Variants**: Tries exact match, lowercase, title case, and different capitalization patterns
+  - **Space Normalization**: Handles extra spaces, single space normalization, and trimming
+  - **Case Variations**: Supports different case combinations for multi-word names
+  - **Better Matching**: Reduces duplicate dancer creation when names differ only in formatting
+  - **Action Logging**: Tracks when variant matching succeeds for analytics
+  - **Fallback Behavior**: Still creates new dancers if no variants match
+
+### Technical
+- Added `getExistingDancersByNamesWithVariants()` method to EventImportValidator
+- Implemented `_findDancerByNameVariants()` for individual name variant lookup
+- Created `_generateNameVariants()` to generate different name formatting options
+- Updated EventImportService to use enhanced matching in both import and summary generation
+- Added comprehensive name variant generation including case, spacing, and capitalization patterns
+- Maintained backward compatibility with existing exact matching functionality
+
 ## [v1.1.0] - 2025-01-16
 
 ### User Requests

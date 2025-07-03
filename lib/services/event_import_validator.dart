@@ -32,24 +32,16 @@ class EventImportValidator {
       final businessRuleConflicts = _validateBusinessRules(events);
       conflicts.addAll(businessRuleConflicts);
 
-      ActionLogger.logAction(
-          'EventImportValidator.validateImport', 'validation_completed', {
+      ActionLogger.logAction('EventImportValidator.validateImport', 'validation_completed', {
         'conflictsCount': conflicts.length,
-        'duplicateEvents': conflicts
-            .where((c) => c.type == EventImportConflictType.duplicateEvent)
-            .length,
-        'missingDancers': conflicts
-            .where((c) => c.type == EventImportConflictType.missingDancer)
-            .length,
-        'invalidData': conflicts
-            .where((c) => c.type == EventImportConflictType.invalidData)
-            .length,
+        'duplicateEvents': conflicts.where((c) => c.type == EventImportConflictType.duplicateEvent).length,
+        'missingDancers': conflicts.where((c) => c.type == EventImportConflictType.missingDancer).length,
+        'invalidData': conflicts.where((c) => c.type == EventImportConflictType.invalidData).length,
       });
 
       return conflicts;
     } catch (e) {
-      ActionLogger.logError(
-          'EventImportValidator.validateImport', e.toString());
+      ActionLogger.logError('EventImportValidator.validateImport', e.toString());
       return [
         EventImportConflict(
           type: EventImportConflictType.invalidData,
@@ -64,18 +56,14 @@ class EventImportValidator {
     List<EventImportConflict> conflicts,
     EventImportOptions options,
   ) {
-    ActionLogger.logServiceCall(
-        'EventImportValidator', 'canProceedWithImport', {
+    ActionLogger.logServiceCall('EventImportValidator', 'canProceedWithImport', {
       'conflictsCount': conflicts.length,
     });
 
     // Cannot proceed if there are invalid data conflicts
-    final invalidDataConflicts = conflicts
-        .where((c) => c.type == EventImportConflictType.invalidData)
-        .toList();
+    final invalidDataConflicts = conflicts.where((c) => c.type == EventImportConflictType.invalidData).toList();
     if (invalidDataConflicts.isNotEmpty) {
-      ActionLogger.logAction('EventImportValidator.canProceedWithImport',
-          'cannot_proceed_invalid_data', {
+      ActionLogger.logAction('EventImportValidator.canProceedWithImport', 'cannot_proceed_invalid_data', {
         'invalidDataCount': invalidDataConflicts.length,
       });
       return false;
@@ -85,8 +73,7 @@ class EventImportValidator {
 
     // Note: Missing dancers are always created automatically - no blocking needed
 
-    ActionLogger.logAction(
-        'EventImportValidator.canProceedWithImport', 'can_proceed', {
+    ActionLogger.logAction('EventImportValidator.canProceedWithImport', 'can_proceed', {
       'conflictsCount': conflicts.length,
     });
 
@@ -104,21 +91,18 @@ class EventImportValidator {
       try {
         // Check if event with same name and date already exists
         final existingEvent = await (_database.select(_database.events)
-              ..where(
-                  (e) => e.name.equals(event.name) & e.date.equals(event.date)))
+              ..where((e) => e.name.equals(event.name) & e.date.equals(event.date)))
             .getSingleOrNull();
 
         if (existingEvent != null) {
           conflicts.add(EventImportConflict(
             type: EventImportConflictType.duplicateEvent,
             eventName: event.name,
-            message:
-                'Event "${event.name}" on ${_formatDate(event.date)} already exists in database',
+            message: 'Event "${event.name}" on ${_formatDate(event.date)} already exists in database',
           ));
         }
       } catch (e) {
-        ActionLogger.logError(
-            'EventImportValidator._checkDuplicateEvents', e.toString(), {
+        ActionLogger.logError('EventImportValidator._checkDuplicateEvents', e.toString(), {
           'eventName': event.name,
           'eventDate': event.date.toIso8601String(),
         });
@@ -134,8 +118,7 @@ class EventImportValidator {
   }
 
   // Validate business rules
-  List<EventImportConflict> _validateBusinessRules(
-      List<ImportableEvent> events) {
+  List<EventImportConflict> _validateBusinessRules(List<ImportableEvent> events) {
     final conflicts = <EventImportConflict>[];
 
     for (final event in events) {
@@ -160,8 +143,7 @@ class EventImportValidator {
       final now = DateTime.now();
       if (event.date.isAfter(now)) {
         // This is a warning, not a blocking error
-        ActionLogger.logAction('EventImportValidator._validateBusinessRules',
-            'future_event_warning', {
+        ActionLogger.logAction('EventImportValidator._validateBusinessRules', 'future_event_warning', {
           'eventName': event.name,
           'eventDate': event.date.toIso8601String(),
         });
@@ -176,8 +158,7 @@ class EventImportValidator {
             type: EventImportConflictType.invalidData,
             eventName: event.name,
             dancerName: attendance.dancerName,
-            message:
-                'Duplicate attendance for dancer "${attendance.dancerName}" in event "${event.name}"',
+            message: 'Duplicate attendance for dancer "${attendance.dancerName}" in event "${event.name}"',
           ));
         } else {
           dancerNames.add(attendance.dancerName);
@@ -197,8 +178,7 @@ class EventImportValidator {
             type: EventImportConflictType.invalidData,
             eventName: event.name,
             dancerName: attendance.dancerName,
-            message:
-                'Dancer name too long (max 100 characters): "${attendance.dancerName}"',
+            message: 'Dancer name too long (max 100 characters): "${attendance.dancerName}"',
           ));
         }
 
@@ -210,8 +190,7 @@ class EventImportValidator {
               type: EventImportConflictType.invalidData,
               eventName: event.name,
               dancerName: attendance.dancerName,
-              message:
-                  'Score name cannot be empty for dancer "${attendance.dancerName}"',
+              message: 'Score name cannot be empty for dancer "${attendance.dancerName}"',
             ));
           } else if (scoreName.length > 50) {
             conflicts.add(EventImportConflict(
@@ -240,30 +219,24 @@ class EventImportValidator {
             type: EventImportConflictType.invalidData,
             eventName: event.name,
             dancerName: attendance.dancerName,
-            message:
-                'Invalid status "${attendance.status}". Must be one of: ${validStatuses.join(', ')}',
+            message: 'Invalid status "${attendance.status}". Must be one of: ${validStatuses.join(', ')}',
           ));
         }
 
         // Validate impression length
-        if (attendance.impression != null &&
-            attendance.impression!.length > 500) {
+        if (attendance.impression != null && attendance.impression!.length > 500) {
           conflicts.add(EventImportConflict(
             type: EventImportConflictType.invalidData,
             eventName: event.name,
             dancerName: attendance.dancerName,
-            message:
-                'Impression too long (max 500 characters) for dancer "${attendance.dancerName}"',
+            message: 'Impression too long (max 500 characters) for dancer "${attendance.dancerName}"',
           ));
         }
 
         // Business rule: impression only meaningful for "served" status
-        if (attendance.impression != null &&
-            attendance.impression!.isNotEmpty &&
-            attendance.status != 'served') {
+        if (attendance.impression != null && attendance.impression!.isNotEmpty && attendance.status != 'served') {
           // This is a warning, not a blocking error
-          ActionLogger.logAction('EventImportValidator._validateBusinessRules',
-              'impression_without_served_warning', {
+          ActionLogger.logAction('EventImportValidator._validateBusinessRules', 'impression_without_served_warning', {
             'eventName': event.name,
             'dancerName': attendance.dancerName,
             'status': attendance.status,
@@ -281,35 +254,139 @@ class EventImportValidator {
   }
 
   // Get existing dancers by names for validation
-  Future<Map<String, Dancer>> getExistingDancersByNames(
-      Set<String> dancerNames) async {
-    ActionLogger.logServiceCall(
-        'EventImportValidator', 'getExistingDancersByNames', {
+  Future<Map<String, Dancer>> getExistingDancersByNames(Set<String> dancerNames) async {
+    ActionLogger.logServiceCall('EventImportValidator', 'getExistingDancersByNames', {
       'dancerNamesCount': dancerNames.length,
     });
 
     if (dancerNames.isEmpty) return {};
 
-    final dancers = await (_database.select(_database.dancers)
-          ..where((d) => d.name.isIn(dancerNames)))
-        .get();
+    final dancers = await (_database.select(_database.dancers)..where((d) => d.name.isIn(dancerNames))).get();
 
     return {for (final dancer in dancers) dancer.name: dancer};
   }
 
+  // Get existing dancers by names with enhanced matching (tries different variants)
+  Future<Map<String, Dancer>> getExistingDancersByNamesWithVariants(Set<String> dancerNames) async {
+    ActionLogger.logServiceCall('EventImportValidator', 'getExistingDancersByNamesWithVariants', {
+      'dancerNamesCount': dancerNames.length,
+    });
+
+    if (dancerNames.isEmpty) return {};
+
+    // First try exact matches
+    final exactMatches = await getExistingDancersByNames(dancerNames);
+    final matchedNames = exactMatches.keys.toSet();
+    final unmatchedNames = dancerNames.difference(matchedNames);
+
+    if (unmatchedNames.isEmpty) {
+      return exactMatches;
+    }
+
+    // For unmatched names, try different variants
+    final variantMatches = <String, Dancer>{};
+
+    for (final name in unmatchedNames) {
+      final dancer = await _findDancerByNameVariants(name);
+      if (dancer != null) {
+        variantMatches[name] = dancer;
+
+        ActionLogger.logAction('EventImportValidator', 'dancer_name_variant_matched', {
+          'importName': name,
+          'matchedName': dancer.name,
+          'dancerId': dancer.id,
+        });
+      }
+    }
+
+    // Combine exact and variant matches
+    return {...exactMatches, ...variantMatches};
+  }
+
+  // Find dancer by trying different name variants
+  Future<Dancer?> _findDancerByNameVariants(String name) async {
+    final variants = _generateNameVariants(name);
+
+    for (final variant in variants) {
+      final dancer =
+          await (_database.select(_database.dancers)..where((d) => d.name.equals(variant))).getSingleOrNull();
+
+      if (dancer != null) {
+        return dancer;
+      }
+    }
+
+    return null;
+  }
+
+  // Generate different name variants for matching
+  List<String> _generateNameVariants(String name) {
+    final variants = <String>{};
+    final trimmed = name.trim();
+
+    if (trimmed.isEmpty) return [];
+
+    // Add original name
+    variants.add(trimmed);
+
+    // Try lowercase
+    variants.add(trimmed.toLowerCase());
+
+    // Try title case (first letter of each word capitalized)
+    variants.add(_toTitleCase(trimmed));
+
+    // Try without extra spaces
+    variants.add(trimmed.replaceAll(RegExp(r'\s+'), ' '));
+
+    // Try with single space normalization
+    variants.add(trimmed.split(' ').where((part) => part.isNotEmpty).join(' '));
+
+    // Try without leading/trailing spaces
+    variants.add(trimmed.trim());
+
+    // Try with different case combinations for multi-word names
+    final words = trimmed.split(' ');
+    if (words.length > 1) {
+      // Try first word capitalized, rest lowercase
+      final firstWordUpper = words.asMap().entries.map((entry) {
+        final index = entry.key;
+        final word = entry.value;
+        if (index == 0) {
+          return word.isNotEmpty ? '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}' : '';
+        }
+        return word.toLowerCase();
+      }).join(' ');
+      variants.add(firstWordUpper);
+
+      // Try all words capitalized
+      final allWordsUpper = words.map((word) {
+        return word.isNotEmpty ? '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}' : '';
+      }).join(' ');
+      variants.add(allWordsUpper);
+    }
+
+    return variants.toList();
+  }
+
+  // Convert string to title case
+  String _toTitleCase(String text) {
+    if (text.isEmpty) return text;
+
+    return text.split(' ').map((word) {
+      if (word.isEmpty) return word;
+      return '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}';
+    }).join(' ');
+  }
+
   // Get existing scores by names for validation
-  Future<Map<String, Score>> getExistingScoresByNames(
-      Set<String> scoreNames) async {
-    ActionLogger.logServiceCall(
-        'EventImportValidator', 'getExistingScoresByNames', {
+  Future<Map<String, Score>> getExistingScoresByNames(Set<String> scoreNames) async {
+    ActionLogger.logServiceCall('EventImportValidator', 'getExistingScoresByNames', {
       'scoreNamesCount': scoreNames.length,
     });
 
     if (scoreNames.isEmpty) return {};
 
-    final scores = await (_database.select(_database.scores)
-          ..where((s) => s.name.isIn(scoreNames)))
-        .get();
+    final scores = await (_database.select(_database.scores)..where((s) => s.name.isIn(scoreNames))).get();
 
     return {for (final score in scores) score.name: score};
   }
@@ -319,8 +396,7 @@ class EventImportValidator {
     final scoreNames = <String>{};
     for (final event in events) {
       for (final attendance in event.attendances) {
-        if (attendance.scoreName != null &&
-            attendance.scoreName!.trim().isNotEmpty) {
+        if (attendance.scoreName != null && attendance.scoreName!.trim().isNotEmpty) {
           scoreNames.add(attendance.scoreName!.trim());
         }
       }
@@ -334,26 +410,21 @@ class EventImportValidator {
     if (allScoreNames.isEmpty) return {};
 
     final existingScores = await getExistingScoresByNames(allScoreNames);
-    return allScoreNames
-        .where((name) => !existingScores.containsKey(name))
-        .toSet();
+    return allScoreNames.where((name) => !existingScores.containsKey(name)).toSet();
   }
 
   // Check if event exists by name and date
   Future<Event?> getEventByNameAndDate(String name, DateTime date) async {
-    ActionLogger.logServiceCall(
-        'EventImportValidator', 'getEventByNameAndDate', {
+    ActionLogger.logServiceCall('EventImportValidator', 'getEventByNameAndDate', {
       'name': name,
       'date': date.toIso8601String(),
     });
 
     try {
-      return await (_database.select(_database.events)
-            ..where((e) => e.name.equals(name) & e.date.equals(date)))
+      return await (_database.select(_database.events)..where((e) => e.name.equals(name) & e.date.equals(date)))
           .getSingleOrNull();
     } catch (e) {
-      ActionLogger.logError(
-          'EventImportValidator.getEventByNameAndDate', e.toString(), {
+      ActionLogger.logError('EventImportValidator.getEventByNameAndDate', e.toString(), {
         'name': name,
         'date': date.toIso8601String(),
       });
