@@ -589,7 +589,7 @@ Tags Tab → [Add | Edit | Delete] → Back to tab
 - **Tab-Specific Actions**: Different action sets available based on Planning vs Present mode
 - **Event Timing Awareness**: Ranking actions hidden for past events to prevent confusion
 - **Efficient Navigation**: Quick action → feedback → return to main view for next task
-- **Action Types**: Set/Edit Ranking (current/future events only), Mark/Remove Present, Record Dance, Edit Notes, Remove from Event, Mark as Left, Combo Actions
+- **Action Types**: Set/Edit Ranking (current/future events only, not on summary tab), Mark/Remove Present, Record Dance, Edit Notes, Remove from Event, Mark as Left, Combo Actions
 - **Event Management**: "Remove from event" action only appears for ranked dancers in Planning mode, allowing cleanup of event rankings
 - **Left Tracking**: "Mark as left" action only appears for present dancers who haven't been danced with yet, tracking early departures
 

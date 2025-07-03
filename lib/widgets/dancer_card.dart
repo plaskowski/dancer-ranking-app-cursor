@@ -12,6 +12,7 @@ class DancerCard extends StatelessWidget {
   final int eventId;
   final bool isPlanningMode;
   final bool hideScorePill;
+  final bool isSummaryMode;
 
   const DancerCard({
     super.key,
@@ -19,6 +20,7 @@ class DancerCard extends StatelessWidget {
     required this.eventId,
     required this.isPlanningMode,
     this.hideScorePill = false,
+    this.isSummaryMode = false,
   });
 
   @override
@@ -196,6 +198,7 @@ class DancerCard extends StatelessWidget {
               dancer: dancer,
               eventId: eventId,
               isPlanningMode: isPlanningMode,
+              isSummaryMode: isSummaryMode,
             ),
           );
         },

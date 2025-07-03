@@ -165,6 +165,7 @@ class SummaryTab extends StatelessWidget {
                               eventId: eventId,
                               isPlanningMode: false,
                               hideScorePill: true,
+                              isSummaryMode: true,
                             ),
                           );
                         },

@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Contextual Actions**: Edit/Set Ranking options only appear for current and future events
   - **Better UX**: Prevents confusion by hiding irrelevant actions for past events
   - **Event Status Aware**: Dialog now loads event data to determine if event is past
+  - **Summary Tab Aware**: Ranking actions also hidden on summary tab for consistency
   - **Maintained Functionality**: All other actions remain available for past events
 
 - **Score Group Headers**: Changed counter display from pill to simple text in parentheses
