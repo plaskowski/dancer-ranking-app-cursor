@@ -27,10 +27,7 @@ class RankingService {
 
   Future<Rank?> getRank(int id) => _rankManagementService.getRank(id);
 
-  Future<Rank?> getDefaultRank() => _rankManagementService.getDefaultRank();
-
-  Future<List<Rank>> getActiveRanks() =>
-      _rankManagementService.getActiveRanks();
+  Future<List<Rank>> getActiveRanks() => _rankManagementService.getActiveRanks();
 
   Future<int> createRank({
     required String name,
@@ -53,8 +50,7 @@ class RankingService {
 
   Future<bool> archiveRank(int id) => _rankManagementService.archiveRank(id);
 
-  Future<bool> unarchiveRank(int id) =>
-      _rankManagementService.unarchiveRank(id);
+  Future<bool> unarchiveRank(int id) => _rankManagementService.unarchiveRank(id);
 
   Future<bool> deleteRank({
     required int id,
@@ -65,8 +61,7 @@ class RankingService {
         replacementRankId: replacementRankId,
       );
 
-  Future<bool> updateRankOrdinals(List<Rank> ranks) =>
-      _rankManagementService.updateRankOrdinals(ranks);
+  Future<bool> updateRankOrdinals(List<Rank> ranks) => _rankManagementService.updateRankOrdinals(ranks);
 
   // Ranking Operations Methods
   Future<int> setRanking({
@@ -82,29 +77,21 @@ class RankingService {
         reason: reason,
       );
 
-  Future<Ranking?> getRanking(int eventId, int dancerId) =>
-      _operationsService.getRanking(eventId, dancerId);
+  Future<Ranking?> getRanking(int eventId, int dancerId) => _operationsService.getRanking(eventId, dancerId);
 
-  Future<List<RankingWithInfo>> getRankingsForEvent(int eventId) =>
-      _operationsService.getRankingsForEvent(eventId);
+  Future<List<RankingWithInfo>> getRankingsForEvent(int eventId) => _operationsService.getRankingsForEvent(eventId);
 
-  Future<Map<String, List<RankingWithInfo>>> getRankingsGroupedByRank(
-          int eventId) =>
+  Future<Map<String, List<RankingWithInfo>>> getRankingsGroupedByRank(int eventId) =>
       _operationsService.getRankingsGroupedByRank(eventId);
 
-  Future<int> deleteRanking(int eventId, int dancerId) =>
-      _operationsService.deleteRanking(eventId, dancerId);
+  Future<int> deleteRanking(int eventId, int dancerId) => _operationsService.deleteRanking(eventId, dancerId);
 
   // Quick rank assignment methods
-  Future<int> setRankReallyWantToDance(int eventId, int dancerId,
-          {String? reason}) =>
-      _operationsService.setRankReallyWantToDance(eventId, dancerId,
-          reason: reason);
+  Future<int> setRankReallyWantToDance(int eventId, int dancerId, {String? reason}) =>
+      _operationsService.setRankReallyWantToDance(eventId, dancerId, reason: reason);
 
-  Future<int> setRankWouldLikeToDance(int eventId, int dancerId,
-          {String? reason}) =>
-      _operationsService.setRankWouldLikeToDance(eventId, dancerId,
-          reason: reason);
+  Future<int> setRankWouldLikeToDance(int eventId, int dancerId, {String? reason}) =>
+      _operationsService.setRankWouldLikeToDance(eventId, dancerId, reason: reason);
 
   Future<int> setRankNeutral(int eventId, int dancerId, {String? reason}) =>
       _operationsService.setRankNeutral(eventId, dancerId, reason: reason);
@@ -112,10 +99,8 @@ class RankingService {
   Future<int> setRankMaybeLater(int eventId, int dancerId, {String? reason}) =>
       _operationsService.setRankMaybeLater(eventId, dancerId, reason: reason);
 
-  Future<int> setRankNotInterested(int eventId, int dancerId,
-          {String? reason}) =>
-      _operationsService.setRankNotInterested(eventId, dancerId,
-          reason: reason);
+  Future<int> setRankNotInterested(int eventId, int dancerId, {String? reason}) =>
+      _operationsService.setRankNotInterested(eventId, dancerId, reason: reason);
 
   // Import/Export Methods
   Future<ImportRankingsResult> importRankingsFromEvent({
@@ -130,12 +115,9 @@ class RankingService {
       );
 
   // Usage Statistics Methods
-  Future<int> getRankUsageCount(int rankId) =>
-      _usageService.getRankUsageCount(rankId);
+  Future<int> getRankUsageCount(int rankId) => _usageService.getRankUsageCount(rankId);
 
-  Future<List<RankWithUsage>> getAllRanksWithUsage() =>
-      _usageService.getAllRanksWithUsage();
+  Future<List<RankWithUsage>> getAllRanksWithUsage() => _usageService.getAllRanksWithUsage();
 
-  Future<int> getRankingsCountForEvent(int eventId) =>
-      _usageService.getRankingsCountForEvent(eventId);
+  Future<int> getRankingsCountForEvent(int eventId) => _usageService.getRankingsCountForEvent(eventId);
 }
