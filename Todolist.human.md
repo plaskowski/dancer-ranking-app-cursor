@@ -12,13 +12,6 @@ Right away:
   - [ ] validate all the new events files can be imported
 
 Small improvements:
-- persons import
-  - [ ] introduce optional aliases list on dancers
-  - [ ] use AI to extract all dancers names from the JSON files, sort them and deduplicate with aliases
-- events import
-  - [ ] have optional aliases list on dancers to reduce clean up effort after event history import
-  - [ ] extract a summary of my impression on event itself
-  - [ ] ...
 - Add existing dancer dialog
   - [ ] ...
 - "Add new dancer" dialog
@@ -29,7 +22,6 @@ Small improvements:
 -  Android
   - [ ] the FAB button is covered with bottom system bar
 -  event screen
-  - [ ] edit randking action on summary tab makes little sense
   - [ ] ...
 - docs
   - [ ] preambula o moim szacunku dla partnerek
@@ -37,10 +29,14 @@ Small improvements:
 -  dancers screen
   - [ ] ...
 
-Extract more historical data:
-- [ ] regenerate file for 2024-08
-- [ ] AloCubano z 2024-08
-- [ ] extract earlier months
+  Big improvements:
+  - persons import
+  - [ ] introduce optional aliases list on dancers
+  - [ ] use AI to extract all dancers names from the JSON files, sort them and deduplicate with aliases
+- events import
+  - [ ] have optional aliases list on dancers to reduce clean up effort after event history import
+  - [ ] extract a summary of my impression on event itself
+  - [ ] ...
 
 ### Milestone 3
 - filter people by tags. Eg. tag about where I know them from in case I don't know or remember the name or #longTimeNoSee or #comesRarely
