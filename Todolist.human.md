@@ -11,12 +11,6 @@ The app has all I need to start using it. :celebrate:
   - [ ] validate the counts against Diary text  <--- diary agent
   - [ ] validate all the new events files can be imported
 
-### Small improvements
--  event screen - summary tab
-  - [x] mark absent/mark as left make no sense for past events
-- select dancers
-  - [x] AppBar subtitle is not centered
-
 ### Big improvements
 - persons import
   - [ ] introduce optional aliases list on dancers
@@ -27,7 +21,6 @@ The app has all I need to start using it. :celebrate:
   - [ ] ...
 
 ### Milestone 3
-- filter people by tags. Eg. tag about where I know them from in case I don't know or remember the name or #longTimeNoSee or #comesRarely
 - smart suggestions in add dancers dialog
 - public release
   - preambula o moim szacunku dla partnerek
