@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/dancer_with_tags.dart';
+import '../screens/dancer_history_screen.dart';
 import '../utils/action_logger.dart';
 
 class DancerCardWithTags extends StatelessWidget {
@@ -132,6 +133,28 @@ class DancerCardWithTags extends StatelessWidget {
 
                   Navigator.pop(context);
                   onMerge();
+                },
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.history,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+                title: const Text('View History'),
+                onTap: () {
+                  ActionLogger.logAction(
+                      'UI_DancerCard', 'context_history_tapped', {
+                    'dancerId': dancer.id,
+                    'dancerName': dancer.name,
+                  });
+
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => DancerHistoryScreen(
+                      dancerId: dancer.id,
+                      dancerName: dancer.name,
+                    ),
+                  ));
                 },
               ),
               ListTile(

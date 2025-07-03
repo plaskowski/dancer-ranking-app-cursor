@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.6] - 2025-01-16
+
+### User Requests
+- "Add dancer history to dancer context actions in dancer screen so I can try recall where I know them from" - Request to add history access to dancer context menu
+
+### Added
+- **Dancer History in Context Menu**: Added "View History" option to dancer context menu in dancers screen
+  - **Quick Access**: Users can now view dancer's event history directly from the dancers list
+  - **Memory Aid**: Helps users recall where they know dancers from by showing past events
+  - **Consistent UX**: Uses the same DancerHistoryScreen as other parts of the app
+  - **Proper Navigation**: Opens history screen with dancer's name and ID for context
+
+### Technical
+- Added DancerHistoryScreen import to DancerCardWithTags widget
+- Added "View History" ListTile to dancer context menu with history icon
+- Added proper action logging for history context menu interactions
+
 ## [v1.0.5] - 2025-01-16
 
 ### User Requests
