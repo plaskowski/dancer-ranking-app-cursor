@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.1] - 2025-01-16
+
+### User Requests
+- "Reset stopped working" - Request to fix database reset functionality
+
+### Fixed
+- **Database Reset Dialog**: Fixed reset confirmation dialog that stopped working
+  - **StatefulBuilder Issue**: Fixed variable scope issue in StatefulBuilder implementation
+  - **Dialog Return Type**: Changed dialog return type to properly handle both confirmation and test data choice
+  - **Proper State Management**: Fixed checkbox state management within the dialog
+  - **Reliable Reset**: Reset functionality now works correctly with optional test data
+
+### Technical
+- Updated `_showResetConfirmationDialog` to use `Map<String, dynamic>` return type
+- Fixed StatefulBuilder variable scope by moving `includeTestData` inside the builder
+- Improved dialog result handling to properly extract both confirmation and test data choice
+- Maintained all existing functionality while fixing the state management issue
+
 ## [v1.0.0] - 2025-01-16
 
 ### User Requests

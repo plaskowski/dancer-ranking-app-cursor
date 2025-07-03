@@ -220,11 +220,11 @@ class GeneralSettingsTab extends StatelessWidget {
   }
 
   Future<void> _showResetConfirmationDialog(BuildContext context) async {
-    bool includeTestData = false;
-
-    final confirmed = await showDialog<bool>(
+    final result = await showDialog<Map<String, dynamic>>(
       context: context,
       builder: (BuildContext context) {
+        bool includeTestData = false;
+
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
@@ -292,11 +292,14 @@ class GeneralSettingsTab extends StatelessWidget {
               ),
               actions: [
                 TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
+                  onPressed: () => Navigator.of(context).pop(),
                   child: const Text('Cancel'),
                 ),
                 ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(true),
+                  onPressed: () => Navigator.of(context).pop({
+                    'confirmed': true,
+                    'includeTestData': includeTestData,
+                  }),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.error,
                     foregroundColor: Theme.of(context).colorScheme.onError,
@@ -310,8 +313,8 @@ class GeneralSettingsTab extends StatelessWidget {
       },
     );
 
-    if (confirmed == true && context.mounted) {
-      await _performDatabaseReset(context, includeTestData);
+    if (result != null && result['confirmed'] == true && context.mounted) {
+      await _performDatabaseReset(context, result['includeTestData'] as bool);
     }
   }
 
