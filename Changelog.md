@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.98.0] - 2025-01-16
+
+### User Requests
+- "still some error" - Request to fix JSON parsing errors for historical event files
+
+### Fixed
+- **JSON Parsing Errors**: Fixed "type 'Null' is not a subtype of type 'String'" errors for historical event files
+  - **Null Value Handling**: Updated ImportableEvent and ImportableAttendance models to handle null values gracefully
+  - **Clear Error Messages**: Now provides specific error messages like "Event name is required and cannot be null or empty"
+  - **Better Validation**: Checks for null, empty, or missing required fields with descriptive error messages
+  - **Robust Parsing**: Prevents crashes when JSON files have incomplete data
+
+### Added
+- **Event Name Fix Script**: Created `scripts/fix_event_names.py` to automatically fix JSON files with missing event names
+  - **Automatic Name Generation**: Adds default names like "Event on January 15, 2024" for events missing names
+  - **Batch Processing**: Can fix multiple files or overwrite existing files
+  - **Safe Operation**: Preserves all other data while only fixing missing names
+  - **Date-Based Naming**: Generates readable names based on event dates
+  - **Documentation**: Includes README with usage examples and requirements
+
+### Technical
+- Updated ImportableEvent.fromJson to handle null name and date fields
+- Updated ImportableAttendance.fromJson to handle null dancer_name and status fields
+- Added comprehensive null checking with descriptive FormatException messages
+- Created Python script for batch fixing of JSON files
+- Maintained all existing functionality while improving error handling
+
 ## [v0.97.0] - 2025-01-16
 
 ### User Requests

@@ -7,9 +7,7 @@ The app has all I need to start using it. :celebrate:
 ## Backlog
 
 ### Right away
-- [ ] (in progress) import more history
-  - [ ] validate the counts against Diary text  <--- diary agent
-  - [ ] validate all the new events files can be imported
+- [ ] ...
 
 ### Big improvements
 - persons import

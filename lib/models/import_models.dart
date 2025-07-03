@@ -243,7 +243,20 @@ class ImportableEvent {
   });
 
   factory ImportableEvent.fromJson(Map<String, dynamic> json) {
-    final dateStr = json['date'] as String;
+    // Handle null name
+    final name = json['name'] as String?;
+    if (name == null || name.trim().isEmpty) {
+      throw const FormatException(
+          'Event name is required and cannot be null or empty');
+    }
+
+    // Handle null date
+    final dateStr = json['date'] as String?;
+    if (dateStr == null || dateStr.trim().isEmpty) {
+      throw const FormatException(
+          'Event date is required and cannot be null or empty');
+    }
+
     final date = DateTime.tryParse(dateStr);
     if (date == null) {
       throw FormatException('Invalid date format: $dateStr');
@@ -255,7 +268,7 @@ class ImportableEvent {
         .toList();
 
     return ImportableEvent(
-      name: (json['name'] as String).trim(),
+      name: name.trim(),
       date: DateTime(date.year, date.month,
           date.day), // Date only, time set to start of day
       attendances: attendances,
@@ -303,7 +316,20 @@ class ImportableAttendance {
   });
 
   factory ImportableAttendance.fromJson(Map<String, dynamic> json) {
-    final status = json['status'] as String;
+    // Handle null dancer_name
+    final dancerName = json['dancer_name'] as String?;
+    if (dancerName == null || dancerName.trim().isEmpty) {
+      throw const FormatException(
+          'Dancer name is required and cannot be null or empty');
+    }
+
+    // Handle null status
+    final status = json['status'] as String?;
+    if (status == null || status.trim().isEmpty) {
+      throw const FormatException(
+          'Status is required and cannot be null or empty');
+    }
+
     const validStatuses = ['present', 'served', 'left'];
     if (!validStatuses.contains(status)) {
       throw FormatException(
@@ -311,7 +337,7 @@ class ImportableAttendance {
     }
 
     return ImportableAttendance(
-      dancerName: (json['dancer_name'] as String).trim(),
+      dancerName: dancerName.trim(),
       status: status,
       impression: json['impression'] as String?,
       scoreName: json['score'] as String?,
