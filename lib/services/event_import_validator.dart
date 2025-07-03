@@ -344,6 +344,18 @@ class EventImportValidator {
     // Try without leading/trailing spaces
     variants.add(trimmed.trim());
 
+    // Handle dots at the end
+    if (trimmed.endsWith('.')) {
+      variants.add(trimmed.substring(0, trimmed.length - 1)); // Remove dot
+    } else {
+      variants.add('$trimmed.'); // Add dot
+    }
+
+    // Replace diacritic characters with base characters
+    variants.add(_removeDiacritics(trimmed));
+    variants.add(_removeDiacritics(trimmed.toLowerCase()));
+    variants.add(_removeDiacritics(_toTitleCase(trimmed)));
+
     // Try with different case combinations for multi-word names
     final words = trimmed.split(' ');
     if (words.length > 1) {
@@ -363,6 +375,33 @@ class EventImportValidator {
         return word.isNotEmpty ? '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}' : '';
       }).join(' ');
       variants.add(allWordsUpper);
+
+      // For two-word names, try switching word order
+      if (words.length == 2) {
+        final word1 = words[0];
+        final word2 = words[1];
+
+        // Switch order with different case combinations
+        variants.add('$word2 $word1'); // Original case
+        variants.add('${word2.toLowerCase()} ${word1.toLowerCase()}'); // Both lowercase
+        variants.add('${_toTitleCase(word2)} ${_toTitleCase(word1)}'); // Both title case
+        variants.add(
+            '${word2[0].toUpperCase()}${word2.substring(1).toLowerCase()} ${word1[0].toUpperCase()}${word1.substring(1).toLowerCase()}'); // Both proper case
+
+        // Switch order with diacritics removed
+        final cleanWord1 = _removeDiacritics(word1);
+        final cleanWord2 = _removeDiacritics(word2);
+        variants.add('$cleanWord2 $cleanWord1');
+        variants.add('${cleanWord2.toLowerCase()} ${cleanWord1.toLowerCase()}');
+        variants.add('${_toTitleCase(cleanWord2)} ${_toTitleCase(cleanWord1)}');
+
+        // Switch order with dot handling
+        if (trimmed.endsWith('.')) {
+          variants.add('$word2 $word1.');
+        } else {
+          variants.add('$word2. $word1');
+        }
+      }
     }
 
     return variants.toList();
@@ -376,6 +415,98 @@ class EventImportValidator {
       if (word.isEmpty) return word;
       return '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}';
     }).join(' ');
+  }
+
+  // Remove diacritic characters from text
+  String _removeDiacritics(String text) {
+    const diacriticMap = {
+      'à': 'a',
+      'á': 'a',
+      'â': 'a',
+      'ã': 'a',
+      'ä': 'a',
+      'å': 'a',
+      'æ': 'ae',
+      'è': 'e',
+      'é': 'e',
+      'ê': 'e',
+      'ë': 'e',
+      'ì': 'i',
+      'í': 'i',
+      'î': 'i',
+      'ï': 'i',
+      'ò': 'o',
+      'ó': 'o',
+      'ô': 'o',
+      'õ': 'o',
+      'ö': 'o',
+      'ø': 'o',
+      'ù': 'u',
+      'ú': 'u',
+      'û': 'u',
+      'ü': 'u',
+      'ý': 'y',
+      'ÿ': 'y',
+      'ñ': 'n',
+      'ç': 'c',
+      'š': 's',
+      'ś': 's',
+      'ș': 's',
+      'ž': 'z',
+      'ź': 'z',
+      'ż': 'z',
+      'ł': 'l',
+      'ć': 'c',
+      'ń': 'n',
+      'ą': 'a',
+      'ę': 'e',
+      'À': 'A',
+      'Á': 'A',
+      'Â': 'A',
+      'Ã': 'A',
+      'Ä': 'A',
+      'Å': 'A',
+      'Æ': 'AE',
+      'È': 'E',
+      'É': 'E',
+      'Ê': 'E',
+      'Ë': 'E',
+      'Ì': 'I',
+      'Í': 'I',
+      'Î': 'I',
+      'Ï': 'I',
+      'Ò': 'O',
+      'Ó': 'O',
+      'Ô': 'O',
+      'Õ': 'O',
+      'Ö': 'O',
+      'Ø': 'O',
+      'Ù': 'U',
+      'Ú': 'U',
+      'Û': 'U',
+      'Ü': 'U',
+      'Ý': 'Y',
+      'Ñ': 'N',
+      'Ç': 'C',
+      'Š': 'S',
+      'Ś': 'S',
+      'Ș': 'S',
+      'Ž': 'Z',
+      'Ź': 'Z',
+      'Ż': 'Z',
+      'Ł': 'L',
+      'Ć': 'C',
+      'Ń': 'N',
+      'Ą': 'A',
+      'Ę': 'E',
+    };
+
+    String result = text;
+    for (final entry in diacriticMap.entries) {
+      result = result.replaceAll(entry.key, entry.value);
+    }
+
+    return result;
   }
 
   // Get existing scores by names for validation

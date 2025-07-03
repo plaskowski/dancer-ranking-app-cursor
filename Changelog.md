@@ -9,12 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### User Requests
 - "when importing event, looking for existing dancer with given name, try lookup few different variants to better match" - Request to improve dancer name matching during event import
+- "try also: switching places of words (for two word names), removing or adding a dot at the and, replacing diacretic characters with their base characters" - Request for additional name matching strategies
 
 ### Improved
 - **Enhanced Dancer Name Matching**: Improved event import to try different name variants for better dancer matching
   - **Multiple Variants**: Tries exact match, lowercase, title case, and different capitalization patterns
   - **Space Normalization**: Handles extra spaces, single space normalization, and trimming
   - **Case Variations**: Supports different case combinations for multi-word names
+  - **Word Order Switching**: For two-word names, tries switching word order (e.g., "John Doe" ↔ "Doe John")
+  - **Dot Handling**: Adds/removes trailing dots (e.g., "John Doe" ↔ "John Doe.")
+  - **Diacritic Removal**: Replaces accented characters with base characters (e.g., "José" ↔ "Jose", "François" ↔ "Francois")
   - **Better Matching**: Reduces duplicate dancer creation when names differ only in formatting
   - **Action Logging**: Tracks when variant matching succeeds for analytics
   - **Fallback Behavior**: Still creates new dancers if no variants match
@@ -23,8 +27,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `getExistingDancersByNamesWithVariants()` method to EventImportValidator
 - Implemented `_findDancerByNameVariants()` for individual name variant lookup
 - Created `_generateNameVariants()` to generate different name formatting options
+- Added `_removeDiacritics()` method with comprehensive diacritic character mapping
+- Enhanced variant generation with word order switching for two-word names
+- Added dot handling logic for trailing punctuation
 - Updated EventImportService to use enhanced matching in both import and summary generation
-- Added comprehensive name variant generation including case, spacing, and capitalization patterns
+- Added comprehensive name variant generation including case, spacing, capitalization, word order, dots, and diacritics
 - Maintained backward compatibility with existing exact matching functionality
 
 ## [v1.1.0] - 2025-01-16
@@ -578,4 +585,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Improved UX**: No more need to wait for toasts to disappear to read import results
 
 ### Technical
-- Removed `ToastHelper.showSuccess` and `
+- Removed `ToastHelper.showSuccess` and `ToastHelper.showError` methods
+- Updated `ToastHelper` to use `Fluttertoast` for toast notifications
+- Maintained all existing functionality while improving toast handling
