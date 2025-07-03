@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### User Requests
 - "Remove Version info row" - Request to remove version information from settings screen
 - "The default data gets inserted after reset no matter if I select the checkbox" - Request to clarify reset behavior and UI text
+- "Bump andriod app version along the changelog version" - Request to update Android app version to match changelog
 
 ### Removed
 - **Version Info Row**: Removed version information display from General Settings tab
@@ -52,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed StatefulBuilder variable scope by moving `includeTestData` inside the builder
 - Updated `_addSelectedDancers` method to use `AttendanceService.markPresent()` instead of `RankingService.setRanking()`
 - Added `AttendanceService` import to `SelectDancersScreen`
+- Updated pubspec.yaml version from 1.0.0+1 to 1.0.3+3 to match changelog version
 
 ### Fixed
 - **Database Reset Dialog**: Fixed reset confirmation dialog that stopped working
