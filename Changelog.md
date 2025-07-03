@@ -5,10 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v1.0.2] - 2025-01-16
+## [v1.0.3] - 2025-01-16
 
 ### User Requests
-- "Don't assign default rank when adding dancers to event" - Request to prevent automatic rank assignment when adding dancers
+- "The default data gets inserted after reset no matter if I select the checkbox" - Request to clarify reset behavior and UI text
+
+### Improved
+- **Database Reset Dialog**: Clarified UI text to distinguish between essential defaults and test data
+  - **Clearer Language**: Changed "Default ranks, tags, and scores" to "Essential system defaults (ranks, tags, scores)"
+  - **Explanation Added**: Added note that essential defaults are required for app functionality and cannot be disabled
+  - **Better Success Messages**: Updated success messages to use "essential defaults" terminology
+  - **Reduced Confusion**: Users now understand that essential system data is always restored regardless of checkbox
+
+### Changed
+- **Select Dancers Screen**: Removed automatic default rank assignment when adding dancers to events
+  - **No Auto-Ranking**: Dancers are now added to events without any rank assignment
+  - **Manual Ranking**: Users must manually assign ranks later if desired
+  - **Cleaner Workflow**: Simplifies the process of adding dancers to events
+  - **Better UX**: Users have full control over when and how to rank dancers
+  - **Updated Success Message**: Changed from "Added X dancers to event ranking" to "Added X dancers to event (no rank assigned)"
 
 ### Changed
 - **Select Dancers Screen**: Removed automatic default rank assignment when adding dancers to events

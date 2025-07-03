@@ -255,10 +255,19 @@ class GeneralSettingsTab extends StatelessWidget {
                   const Text('• All ranks, tags, and scores'),
                   const SizedBox(height: 12),
                   Text(
-                    'Default ranks, tags, and scores will be restored.',
+                    'Essential system defaults (ranks, tags, scores) will be restored.',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                       fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'These are required for the app to function and cannot be disabled.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: 11,
+                      fontStyle: FontStyle.italic,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -354,8 +363,8 @@ class GeneralSettingsTab extends StatelessWidget {
 
         // Show success message
         final message = includeTestData
-            ? 'Database reset successfully. All user data cleared, defaults and test data restored.'
-            : 'Database reset successfully. All user data cleared, defaults restored.';
+            ? 'Database reset successfully. All user data cleared, essential defaults and test data restored.'
+            : 'Database reset successfully. All user data cleared, essential defaults restored.';
         ToastHelper.showSuccess(context, message);
       }
     } catch (e) {
