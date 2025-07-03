@@ -7,7 +7,6 @@ The app has all I need to start using it. :celebrate:
 ## Backlog
 
 ### Right away
-- [x] make test data optional in reset action
 - [ ] ...
 
 ### Big improvements

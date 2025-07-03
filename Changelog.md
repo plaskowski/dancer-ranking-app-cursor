@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.5] - 2025-01-16
+
+### User Requests
+- "I have this events file. I imported it in Android App but Alicja is missing the impression." - Request to fix impression import for non-served status dancers
+
+### Fixed
+- **Event Import Impression Bug**: Fixed missing impressions for dancers with 'present' or 'left' status during event import
+  - **Extended Impression Support**: Impressions are now saved for all attendance statuses (present, served, left)
+  - **Consistent Data Import**: All impression data from JSON files is now properly imported regardless of status
+  - **Better Data Preservation**: No impression data is lost during import process
+  - **Fixed Alicja's Impression**: Dancers like Alicja with 'present' status and impressions now have their data preserved
+
+### Technical
+- Updated EventImportService to save impressions for 'present' and 'left' status dancers using updateDanceImpression method
+- Maintained existing behavior for 'served' status dancers using recordDance method
+- Added proper impression handling for all attendance statuses during import process
+
 ## [v1.0.4] - 2025-01-16
 
 ### User Requests
