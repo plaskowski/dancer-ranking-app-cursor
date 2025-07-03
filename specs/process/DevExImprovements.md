@@ -35,6 +35,7 @@
 - MCP tool to run app that connects to a running run configuration in IDE
 - don't put new files into main directory to avoid clutter
 - prevent generating tech spec until I agree on feature and UX spec
+- write the long output to file so I can comment on it, save it for later and track it's changes
 
 # Hard ones
 - increase the 25 tool calls limit

@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.2.0] - 2025-01-16
+
+### User Requests
+- "Now let's design a new feature - on the list of dancers to be added filter them out by their recency and frequent attendance. Allow me to switch to a broarder scope." - Request for dancer filtering feature design
+- "Still too complex. Try combine the two criterias." - Request to simplify the filtering approach
+- "The user scenarios do not match my case: I have long history and some of the dancers don't come anymore or come very rarely" - Request to update scenarios for real-world long history context
+- "update the spec file" - Request to update the feature specification
+
+### Added
+- **Dancer Filtering Feature Design**: Comprehensive design for filtering dancers by activity level
+  - **Simplified Approach**: Combined recency and frequency into single "Activity Level" filter
+  - **Real-World Scenarios**: Updated user scenarios to reflect long dance history with inactive dancers
+  - **Activity Levels**: 5 intuitive levels (All, Active, Very Active, Core Community, Recent)
+  - **Smart Defaults**: Context-aware filtering based on event type
+  - **Long History Support**: Designed for 200+ dancers with only 30-40 currently active
+  - **Legacy Dancer Handling**: Balance current community with historical relationships
+
+### Improved
+- **User Experience Design**: Simplified from complex dual-filter to single dropdown approach
+- **User Scenarios**: Updated to reflect real-world challenges of managing long dance history
+  - **Weekly Social**: Avoid scrolling through 160+ inactive dancers
+  - **Monthly Events**: Distinguish between truly active vs. occasional attendees
+  - **Festival Planning**: Balance current regulars with legacy dancers
+  - **Class Planning**: Focus on current students, avoid inactive former students
+  - **Last-Minute Events**: Target currently active dancers for reliable attendance
+- **Activity Level Definitions**: Clear criteria for each level with real-world use cases
+- **Implementation Timeline**: Reduced from 6-10 weeks to 2-3 weeks total
+
+### Documentation
+- **Feature Design**: `specs/features/feature_DancerFiltering.md` - Complete feature specification
+- **User Scenarios**: Real-world examples with long dance history context
+- **Activity Level Definitions**: Clear criteria and use cases for each filter level
+- **Implementation Strategy**: Simplified 2-phase approach with faster timeline
+
 ## [v1.1.1] - 2025-01-16
 
 ### User Requests

@@ -7,6 +7,7 @@ The app has all I need to start using it. :celebrate:
 ## Backlog
 
 ### Right away
+- [ ] remove checkmarks from rows in summary tab, at that point I will remember who I danced with after the scores assignment
 - [ ] ...
 
 ### Big improvements
