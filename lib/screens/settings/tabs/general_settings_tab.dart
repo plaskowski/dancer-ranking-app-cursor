@@ -220,77 +220,103 @@ class GeneralSettingsTab extends StatelessWidget {
   }
 
   Future<void> _showResetConfirmationDialog(BuildContext context) async {
+    bool includeTestData = false;
+
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Row(
-            children: [
-              Icon(
-                Icons.warning,
-                color: Theme.of(context).colorScheme.error,
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Row(
+                children: [
+                  Icon(
+                    Icons.warning,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  const SizedBox(width: 8),
+                  const Text('Reset Database'),
+                ],
               ),
-              const SizedBox(width: 8),
-              const Text('Reset Database'),
-            ],
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'This action will permanently delete all your data including:',
-                style: TextStyle(fontWeight: FontWeight.w500),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'This action will permanently delete all your data including:',
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text('• All events and their data'),
+                  const Text('• All dancers and their information'),
+                  const Text('• All rankings and attendance records'),
+                  const Text('• All dance recordings and scores'),
+                  const Text('• Custom tags and associations'),
+                  const Text('• All ranks, tags, and scores'),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Default ranks, tags, and scores will be restored.',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  CheckboxListTile(
+                    title: const Text('Include test data'),
+                    subtitle: Text(
+                      'Add sample events, dancers, and data for testing',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontSize: 12,
+                      ),
+                    ),
+                    value: includeTestData,
+                    onChanged: (value) {
+                      setState(() {
+                        includeTestData = value ?? false;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'This action cannot be undone!',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 12),
-              const Text('• All events and their data'),
-              const Text('• All dancers and their information'),
-              const Text('• All rankings and attendance records'),
-              const Text('• All dance recordings and scores'),
-              const Text('• Custom tags and associations'),
-              const Text('• All ranks, tags, and scores'),
-              const SizedBox(height: 12),
-              Text(
-                'Default ranks, tags, and scores will be restored.',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontSize: 12,
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Cancel'),
                 ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'This action cannot be undone!',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.error,
-                  fontWeight: FontWeight.bold,
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.error,
+                    foregroundColor: Theme.of(context).colorScheme.onError,
+                  ),
+                  child: const Text('Reset Database'),
                 ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.error,
-                foregroundColor: Theme.of(context).colorScheme.onError,
-              ),
-              child: const Text('Reset Database'),
-            ),
-          ],
+              ],
+            );
+          },
         );
       },
     );
 
     if (confirmed == true && context.mounted) {
-      await _performDatabaseReset(context);
+      await _performDatabaseReset(context, includeTestData);
     }
   }
 
-  Future<void> _performDatabaseReset(BuildContext context) async {
+  Future<void> _performDatabaseReset(
+      BuildContext context, bool includeTestData) async {
     try {
       // Show loading indicator
       showDialog(
@@ -317,17 +343,17 @@ class GeneralSettingsTab extends StatelessWidget {
 
       // Get database instance and reset
       final database = Provider.of<AppDatabase>(context, listen: false);
-      await database.resetDatabase();
+      await database.resetDatabase(includeTestData: includeTestData);
 
       if (context.mounted) {
         // Close loading dialog
         Navigator.of(context).pop();
 
         // Show success message
-        ToastHelper.showSuccess(
-          context,
-          'Database reset successfully. All user data cleared, defaults restored.',
-        );
+        final message = includeTestData
+            ? 'Database reset successfully. All user data cleared, defaults and test data restored.'
+            : 'Database reset successfully. All user data cleared, defaults restored.';
+        ToastHelper.showSuccess(context, message);
       }
     } catch (e) {
       if (context.mounted) {

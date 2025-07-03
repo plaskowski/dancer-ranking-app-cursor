@@ -487,11 +487,12 @@ Tab(icon: Icon(Icons.label), text: 'Tags')
   - Built for: "Private use"
 - **Database Reset Option**: 
   - Red-colored warning action to completely clear all data
-  - Confirmation dialog with comprehensive warning about data loss
+  - Confirmation dialog with comprehensive warning about data loss and optional test data choice
+  - Checkbox option to include sample test data (events, dancers, rankings, attendances)
   - Loading state during reset operation
-  - Success/error feedback via toast notifications
+  - Success/error feedback via toast notifications with context-aware messages
   - Clears all tables (events, dancers, rankings, attendances, tags, scores)
-  - No restoration of default data (complete database wipe)
+  - Restores essential defaults (ranks, tags, scores) and optionally test data
 
 ### 7.4 Scores Management Tab (`_ScoresManagementTab`)
 - **Drag-to-Reorder List**: ReorderableListView of all scores with usage statistics
@@ -524,7 +525,7 @@ Tab(icon: Icon(Icons.label), text: 'Tags')
 
 #### General Tab Actions:
 - View app information
-- **Reset Database**: Complete data wipe with confirmation dialog
+- **Reset Database**: Complete data wipe with confirmation dialog and optional test data
 
 #### Scores Tab Actions:
 - **Drag to reorder**: Update score priority
