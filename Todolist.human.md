@@ -6,12 +6,12 @@ The app has all I need to start using it. :celebrate:
 
 ## Backlog
 
-Right away:
+### Right away
 - [ ] (in progress) import more history
   - [ ] validate the counts against Diary text  <--- diary agent
   - [ ] validate all the new events files can be imported
 
-Small improvements:
+### Small improvements
 - Add existing dancer dialog
   - [ ] ...
 - "Add new dancer" dialog
@@ -20,15 +20,22 @@ Small improvements:
   - [ ] ...
 -  Android
   - [x] the FAB button is covered with bottom system bar
--  event screen
+-  event screen - summary tab
+  - [ ] mark absent/mark as left make no sense for past events
   - [ ] ...
 - docs
   - [ ] ...
+- select dancers
+  - [ ] does not work
+  - [ ] ...
+- add existing dancer
+  - [ ] obscured by system bar on Android
+  - [ ] tag filtering does not work for "Cuban DC Festival"
 -  dancers screen
   - [ ] ...
 
-  Big improvements:
-  - persons import
+### Big improvements
+- persons import
   - [ ] introduce optional aliases list on dancers
   - [ ] use AI to extract all dancers names from the JSON files, sort them and deduplicate with aliases
 - events import
