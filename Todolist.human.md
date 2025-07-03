@@ -15,7 +15,7 @@ The app has all I need to start using it. :celebrate:
 -  event screen - summary tab
   - [ ] mark absent/mark as left make no sense for past events
 - select dancers
-  - [ ] does not work
+  - [x] does not work (FIXED: Added missing DancerTagService provider and fixed fluttertoast macOS issue)
 
 ### Big improvements
 - persons import

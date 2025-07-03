@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.95.0] - 2025-01-16
+
+### User Requests
+- "I got an error on Select Dancers screen" - Request to fix Select Dancers screen error
+- "Run the app and observe the logs" - Request to investigate and fix app errors
+
+### Fixed
+- **Select Dancers Screen Provider Error**: Fixed "could not find correct provider<DancerTagService>" error
+  - **Missing Provider**: Added DancerTagService and DancerCrudService to main.dart providers
+  - **Proper Dependencies**: Configured ProxyProvider2 to correctly inject DancerCrudService into DancerTagService
+  - **Tag Filtering**: Select Dancers screen now properly supports tag filtering functionality
+  - **Service Integration**: All tag-related features now work correctly in the Select Dancers screen
+
+- **Fluttertoast macOS Error**: Fixed MissingPluginException for fluttertoast on macOS
+  - **Platform Detection**: Updated ToastHelper to detect macOS platform
+  - **SnackBar Fallback**: Uses SnackBar instead of fluttertoast on macOS for better compatibility
+  - **Native Android Toasts**: Maintains native Android toasts on Android platform
+  - **Cross-Platform Support**: Toast notifications now work correctly on all supported platforms
+
+### Technical
+- Added DancerCrudService and DancerTagService imports to main.dart
+- Added ProxyProvider for DancerCrudService in main.dart
+- Added ProxyProvider2 for DancerTagService with proper dependency injection
+- Updated ToastHelper._showToast method to use platform-specific toast implementations
+- Maintained all existing functionality while fixing provider and platform compatibility issues
+
 ## [v0.94.0] - 2025-01-16
 
 ### User Requests

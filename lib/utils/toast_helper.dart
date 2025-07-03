@@ -7,7 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 class ToastHelper {
   /// Shows a success toast notification
   static void showSuccess(BuildContext context, String message) {
-    _showNativeToast(
+    _showToast(
+      context: context,
       message: message,
       backgroundColor: Theme.of(context).colorScheme.primary,
       textColor: Theme.of(context).colorScheme.onPrimary,
@@ -16,7 +17,8 @@ class ToastHelper {
 
   /// Shows an error toast notification
   static void showError(BuildContext context, String message) {
-    _showNativeToast(
+    _showToast(
+      context: context,
       message: message,
       backgroundColor: Theme.of(context).colorScheme.error,
       textColor: Theme.of(context).colorScheme.onError,
@@ -25,7 +27,8 @@ class ToastHelper {
 
   /// Shows a warning toast notification
   static void showWarning(BuildContext context, String message) {
-    _showNativeToast(
+    _showToast(
+      context: context,
       message: message,
       backgroundColor: Colors.orange,
       textColor: Colors.white,
@@ -34,34 +37,35 @@ class ToastHelper {
 
   /// Shows a general info toast notification
   static void showInfo(BuildContext context, String message) {
-    _showNativeToast(
+    _showToast(
+      context: context,
       message: message,
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
       textColor: Theme.of(context).colorScheme.onSurface,
     );
   }
 
-  /// Private helper method that shows native Android toasts
-  static void _showNativeToast({
+  /// Private helper method that shows appropriate toast based on platform
+  static void _showToast({
+    required BuildContext context,
     required String message,
     required Color backgroundColor,
     required Color textColor,
   }) {
-    // Use native Android toasts on Android platform
-    if (Platform.isAndroid) {
-      Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 2,
-        backgroundColor: backgroundColor,
-        textColor: textColor,
-        fontSize: 16.0,
+    // Use SnackBar for macOS and other platforms where fluttertoast might not work
+    if (Platform.isMacOS) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            message,
+            style: TextStyle(color: textColor),
+          ),
+          backgroundColor: backgroundColor,
+          duration: const Duration(seconds: 2),
+        ),
       );
     } else {
-      // Fallback to SnackBar for other platforms (macOS, iOS, web)
-      // Note: This fallback won't work without context, so we'll need to handle this differently
-      // For now, we'll just use the native toast on all platforms
+      // Use native Android toasts on Android platform
       Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
