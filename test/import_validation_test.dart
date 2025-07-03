@@ -14,16 +14,14 @@ void main() {
       // Check if directory exists
       final directory = Directory(testDirectory);
       if (!await directory.exists()) {
-        print(
-            '⚠️  Test directory "$testDirectory" not found. Skipping validation.');
+        print('⚠️  Test directory "$testDirectory" not found. Skipping validation.');
         return;
       }
 
       // Get all JSON files in the directory
       final jsonFiles = await directory
           .list()
-          .where((entity) =>
-              entity is File && path.extension(entity.path) == '.json')
+          .where((entity) => entity is File && path.extension(entity.path) == '.json')
           .cast<File>()
           .toList();
 
@@ -74,8 +72,7 @@ void main() {
             totalEvents += events.length;
             totalDancers += uniqueDancers.length;
 
-            print(
-                '  ✅ Valid: ${events.length} events, ${uniqueDancers.length} unique dancers');
+            print('  ✅ Valid: ${events.length} events, ${uniqueDancers.length} unique dancers');
           } else {
             print('  ❌ Errors:');
             for (final error in result.errors.take(5)) {
@@ -111,15 +108,13 @@ void main() {
       print('  Total unique dancers: $totalDancers');
 
       if (validFiles > 0) {
-        print(
-            '  ✅ Success rate: ${(validFiles / totalFiles * 100).toStringAsFixed(1)}%');
+        print('  ✅ Success rate: ${(validFiles / totalFiles * 100).toStringAsFixed(1)}%');
       } else {
         print('  ❌ No valid files found');
       }
 
       // Assert that at least some files are valid
-      expect(validFiles, greaterThan(0),
-          reason: 'At least one JSON file should be valid for import');
+      expect(validFiles, greaterThan(0), reason: 'At least one JSON file should be valid for import');
     });
 
     test('Validate specific file structure using service', () async {

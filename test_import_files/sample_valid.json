@@ -1,0 +1,32 @@
+{
+    "events": [
+        {
+            "name": "Sample Event 1",
+            "date": "2024-01-15",
+            "attendances": [
+                {
+                    "dancer_name": "Alice Johnson",
+                    "status": "served",
+                    "impression": "Great technique",
+                    "score": "Amazing"
+                },
+                {
+                    "dancer_name": "Bob Smith",
+                    "status": "present"
+                }
+            ]
+        },
+        {
+            "name": "Sample Event 2",
+            "date": "2024-01-20",
+            "attendances": [
+                {
+                    "dancer_name": "Charlie Brown",
+                    "status": "served",
+                    "impression": "Good energy",
+                    "score": "Good"
+                }
+            ]
+        }
+    ]
+}
