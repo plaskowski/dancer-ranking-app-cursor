@@ -108,8 +108,7 @@ class DancerCardWithTags extends StatelessWidget {
                 ),
                 title: const Text('Edit'),
                 onTap: () {
-                  ActionLogger.logAction(
-                      'UI_DancerCard', 'context_edit_tapped', {
+                  ActionLogger.logAction('UI_DancerCard', 'context_edit_tapped', {
                     'dancerId': dancer.id,
                     'dancerName': dancer.name,
                   });
@@ -125,8 +124,7 @@ class DancerCardWithTags extends StatelessWidget {
                 ),
                 title: const Text('Merge into...'),
                 onTap: () {
-                  ActionLogger.logAction(
-                      'UI_DancerCard', 'context_merge_tapped', {
+                  ActionLogger.logAction('UI_DancerCard', 'context_merge_tapped', {
                     'dancerId': dancer.id,
                     'dancerName': dancer.name,
                   });
@@ -142,8 +140,7 @@ class DancerCardWithTags extends StatelessWidget {
                 ),
                 title: const Text('View History'),
                 onTap: () {
-                  ActionLogger.logAction(
-                      'UI_DancerCard', 'context_history_tapped', {
+                  ActionLogger.logAction('UI_DancerCard', 'context_history_tapped', {
                     'dancerId': dancer.id,
                     'dancerName': dancer.name,
                   });
@@ -164,8 +161,7 @@ class DancerCardWithTags extends StatelessWidget {
                 ),
                 title: const Text('Delete'),
                 onTap: () {
-                  ActionLogger.logAction(
-                      'UI_DancerCard', 'context_delete_tapped', {
+                  ActionLogger.logAction('UI_DancerCard', 'context_delete_tapped', {
                     'dancerId': dancer.id,
                     'dancerName': dancer.name,
                   });

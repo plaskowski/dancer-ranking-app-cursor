@@ -103,7 +103,7 @@ class _DancerHistoryScreenState extends State<DancerHistoryScreen> {
   }
 
   Widget _buildEventItem(DancerRecentHistory event) {
-    final dateFormat = DateFormat('MMM dd');
+    final dateFormat = DateFormat('MMM dd, yyyy');
     final formattedDate = dateFormat.format(event.eventDate);
 
     // Format status and score

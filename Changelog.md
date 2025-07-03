@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.7] - 2025-01-16
+
+### User Requests
+- "show a year too on that history screen records" - Request to add year to date display in dancer history
+
+### Improved
+- **Dancer History Date Display**: Added year to date format in dancer history screen
+  - **Better Context**: Dates now show as "Jan 15, 2024" instead of just "Jan 15"
+  - **Clearer Timeline**: Users can better understand when events occurred across different years
+  - **Improved Readability**: Full date format makes it easier to distinguish events from different years
+
+### Technical
+- Updated DateFormat in DancerHistoryScreen from 'MMM dd' to 'MMM dd, yyyy'
+- Maintained existing layout and styling while improving date information
+
 ## [v1.0.6] - 2025-01-16
 
 ### User Requests
