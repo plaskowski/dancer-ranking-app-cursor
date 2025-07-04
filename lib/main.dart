@@ -15,7 +15,13 @@ import 'services/score_service.dart';
 import 'services/tag_service.dart';
 import 'theme/app_theme.dart';
 
-void main() {
+void main(List<String> args) {
+  // Ensure Flutter binding is initialized
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Parse AppBar color from dart-define
+  final Color? appBarColor = _parseAppBarColorFromDefine();
+
   // Configure system UI
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -32,11 +38,23 @@ void main() {
     overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
   );
 
-  runApp(const DancerRankingApp());
+  runApp(DancerRankingApp(appBarColor: appBarColor));
+}
+
+/// Parse AppBar color from dart-define
+/// Usage: flutter run --dart-define=APPBAR_COLOR=#FF0000
+Color? _parseAppBarColorFromDefine() {
+  const appBarColorDefine = String.fromEnvironment('APPBAR_COLOR');
+  if (appBarColorDefine.isNotEmpty) {
+    return AppTheme.parseColor(appBarColorDefine);
+  }
+  return null;
 }
 
 class DancerRankingApp extends StatelessWidget {
-  const DancerRankingApp({super.key});
+  final Color? appBarColor;
+
+  const DancerRankingApp({super.key, this.appBarColor});
 
   @override
   Widget build(BuildContext context) {
@@ -79,8 +97,8 @@ class DancerRankingApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Dancer Ranking',
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
+        theme: AppTheme.getLightTheme(appBarColor: appBarColor),
+        darkTheme: AppTheme.getDarkTheme(appBarColor: appBarColor),
         home: const HomeScreen(),
         debugShowCheckedModeBanner: false,
         builder: (context, child) {

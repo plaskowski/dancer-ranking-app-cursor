@@ -1,5 +1,27 @@
 # Dancer Ranking App - Cursor Rules
 
+## App Testing Workflow Rule
+**CRITICAL**: When the user asks to test the app, follow this exact workflow:
+1. **DO NOT** start a new terminal session or run `flutter run` commands
+2. **DO** ask the user to reload the app in their existing terminal session
+3. **DO** provide the exact command they should run: `r` (for hot reload) or `R` (for hot restart)
+4. **DO** mention that the app should already be running in their terminal
+5. **DO** wait for user feedback about the test results
+
+### Example Response:
+"Please reload the app in your existing terminal session. If the app is running, press `r` for hot reload or `R` for hot restart. Let me know how the AppBar color looks!"
+
+### When to Use:
+- User asks "test the app"
+- User asks "run the app" 
+- User asks "check if it works"
+- Any request to verify app functionality
+
+### When NOT to Use:
+- User specifically asks for a new terminal session
+- User asks to build or compile the app
+- User asks for deployment commands
+
 ## Documentation Sync Rule
 **CRITICAL**: Whenever you make changes to the implementation (code, UI, functionality, data models), you MUST also update the corresponding sections in the Implementation specification.md file.
 

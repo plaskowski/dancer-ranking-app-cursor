@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'color_schemes.dart';
 import 'theme_extensions.dart';
 
@@ -8,7 +9,7 @@ class AppTheme {
   AppTheme._();
 
   /// Light theme configuration
-  static ThemeData get lightTheme {
+  static ThemeData getLightTheme({Color? appBarColor}) {
     return ThemeData(
       useMaterial3: true,
       colorScheme: lightColorScheme,
@@ -17,10 +18,13 @@ class AppTheme {
       ],
 
       // AppBar theme
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,
         scrolledUnderElevation: 1,
+        backgroundColor: appBarColor ?? lightColorScheme.surface,
+        foregroundColor:
+            appBarColor != null ? Colors.white : lightColorScheme.onSurface,
       ),
 
       // Card theme
@@ -135,7 +139,7 @@ class AppTheme {
   }
 
   /// Dark theme configuration
-  static ThemeData get darkTheme {
+  static ThemeData getDarkTheme({Color? appBarColor}) {
     return ThemeData(
       useMaterial3: true,
       colorScheme: darkColorScheme,
@@ -144,10 +148,13 @@ class AppTheme {
       ],
 
       // AppBar theme
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         centerTitle: true,
         elevation: 0,
         scrolledUnderElevation: 1,
+        backgroundColor: appBarColor ?? darkColorScheme.surface,
+        foregroundColor:
+            appBarColor != null ? Colors.white : darkColorScheme.onSurface,
       ),
 
       // Card theme
@@ -259,5 +266,37 @@ class AppTheme {
         space: 1,
       ),
     );
+  }
+
+  /// Convenience getters for backward compatibility
+  static ThemeData get lightTheme => getLightTheme();
+  static ThemeData get darkTheme => getDarkTheme();
+
+  /// Parse color from hex string (e.g., "#FF0000" or "FF0000")
+  static Color? parseColor(String? hexColor) {
+    if (hexColor == null || hexColor.isEmpty) return null;
+
+    try {
+      // Remove # if present
+      final String hex =
+          hexColor.startsWith('#') ? hexColor.substring(1) : hexColor;
+
+      // Handle different hex formats
+      if (hex.length == 6) {
+        // RGB format
+        return Color(int.parse('FF$hex', radix: 16));
+      } else if (hex.length == 8) {
+        // ARGB format
+        return Color(int.parse(hex, radix: 16));
+      } else if (hex.length == 3) {
+        // Short RGB format (e.g., "F00")
+        final String expanded = hex.split('').map((c) => c + c).join();
+        return Color(int.parse('FF$expanded', radix: 16));
+      }
+    } catch (e) {
+      // Return null if parsing fails
+      return null;
+    }
+    return null;
   }
 }
