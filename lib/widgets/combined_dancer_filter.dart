@@ -24,7 +24,7 @@ class CombinedDancerFilter extends StatefulWidget {
 class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
   String _searchQuery = '';
   List<int> _selectedTagIds = [];
-  ActivityLevel? _selectedActivityLevel = ActivityLevel.active;
+  ActivityLevel? _selectedActivityLevel = ActivityLevel.regular;
   bool _isLoadingCounts = false;
   bool _showTagDropdown = false;
   bool _showActivityDropdown = false;
@@ -135,14 +135,10 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
     switch (level) {
       case ActivityLevel.all:
         return 'All Dancers';
-      case ActivityLevel.active:
-        return 'Active';
-      case ActivityLevel.veryActive:
-        return 'Very Active';
-      case ActivityLevel.coreCommunity:
-        return 'Core Community';
-      case ActivityLevel.recent:
-        return 'Recent';
+      case ActivityLevel.regular:
+        return 'Regular';
+      case ActivityLevel.occasional:
+        return 'Occasional';
     }
   }
 
@@ -150,14 +146,10 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
     switch (level) {
       case ActivityLevel.all:
         return 'Show everyone';
-      case ActivityLevel.active:
-        return '1+ events in 6 months';
-      case ActivityLevel.veryActive:
-        return '3+ events in 6 months';
-      case ActivityLevel.coreCommunity:
-        return '5+ events in year';
-      case ActivityLevel.recent:
-        return '1+ events in 3 months';
+      case ActivityLevel.regular:
+        return '3+ dances in last 2 months';
+      case ActivityLevel.occasional:
+        return '1+ dance in last 3 months';
     }
   }
 

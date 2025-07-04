@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.8] - 2025-01-17
+
+### User Requests
+- "I don't like the activity categories, let's redefine them" - Request to redefine activity level filtering categories
+- "Mixed ones: Regular (3+ dances in last 2 months), Occasional (1+ dance in last 3 months), All" - Request for new activity level definitions
+
+### Changed
+- **Activity Level Categories**: Redefined activity level filtering to use more intuitive categories
+  - **Regular**: 3+ dances in last 2 months (replaces "Very Active" and "Core Community")
+  - **Occasional**: 1+ dance in last 3 months (replaces "Active" and "Recent")  
+  - **All**: Show everyone (unchanged)
+  - **Simplified Logic**: Reduced from 5 categories to 3 for cleaner filtering
+  - **Better UX**: More intuitive category names that reflect actual dance frequency
+  - **Consistent Implementation**: Updated across all filtering components
+
+### Technical
+- Updated `ActivityLevel` enum in `dancer_activity_service.dart` to use new categories
+- Modified `DancerActivityService` filtering logic to use new time periods and thresholds
+- Updated display names and descriptions in `activity_filter_widget.dart`
+- Updated `combined_dancer_filter.dart` to use new activity levels
+- Updated `simplified_tag_filter.dart` activity level options
+- Changed default activity level from "Active" to "Regular" for better user experience
+- Applied proper Dart formatting to all modified files
+
 ## [v1.3.7] - 2025-01-17
 
 ### User Requests

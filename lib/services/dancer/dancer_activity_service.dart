@@ -4,10 +4,8 @@ import 'dancer_models.dart';
 
 enum ActivityLevel {
   all,
-  active,
-  veryActive,
-  coreCommunity,
-  recent,
+  regular,
+  occasional,
 }
 
 class DancerActivityService {
@@ -28,16 +26,10 @@ class DancerActivityService {
       case ActivityLevel.all:
         return dancerEventService.watchDancersForEvent(eventId);
 
-      case ActivityLevel.active:
-        return _getActiveDancers(eventId, months: 6, minEvents: 1);
+      case ActivityLevel.regular:
+        return _getActiveDancers(eventId, months: 2, minEvents: 3);
 
-      case ActivityLevel.veryActive:
-        return _getActiveDancers(eventId, months: 6, minEvents: 3);
-
-      case ActivityLevel.coreCommunity:
-        return _getActiveDancers(eventId, months: 12, minEvents: 5);
-
-      case ActivityLevel.recent:
+      case ActivityLevel.occasional:
         return _getActiveDancers(eventId, months: 3, minEvents: 1);
     }
   }
