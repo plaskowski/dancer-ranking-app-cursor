@@ -44,18 +44,11 @@ class DancerCardWithTags extends StatelessWidget {
               ),
             ),
             if (isArchived)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.tertiary,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  'archived',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Theme.of(context).colorScheme.onTertiary,
-                  ),
+              Text(
+                '👁️',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
           ],
@@ -63,6 +56,18 @@ class DancerCardWithTags extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Last met event info
+            if (dancerWithTags.lastMetEventName != null && dancerWithTags.lastMetEventDate != null) ...[
+              Text(
+                'Last met: ${dancerWithTags.lastMetEventName} • ${_formatDate(dancerWithTags.lastMetEventDate!)}',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              const SizedBox(height: 2),
+            ],
             // Notes
             if (dancer.notes != null && dancer.notes!.isNotEmpty) ...[
               const SizedBox(height: 4),
@@ -279,5 +284,9 @@ class DancerCardWithTags extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _formatDate(DateTime date) {
+    return '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
   }
 }

@@ -684,3 +684,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed `ToastHelper.showSuccess` and `ToastHelper.showError` methods
 - Updated `ToastHelper` to use `Fluttertoast` for toast notifications
 - Maintained all existing functionality while improving toast handling
+
+## [v0.9.1] - 2024-12-19
+
+### User Requests
+- Finish the "last met" task
+
+### Added
+- Last met event information display in dancer cards
+- Reactive stream for last met data updates (`watchDancersWithTagsAndLastMet`)
+- Automatic last met calculation based on latest attendance records
+
+### Technical
+- Enhanced `DancerTagService` with `getDancersWithTagsAndLastMet()` and `watchDancersWithTagsAndLastMet()` methods
+- Updated `DancerService` to expose reactive last met stream
+- Modified dancers screen to use reactive stream instead of FutureBuilder
+- Removed debug print statements from last met implementation
+- Added proper error handling and logging for last met functionality
+
+### Changed
+- Dancers screen now uses StreamBuilder for real-time last met updates
+- Last met information shows event name and formatted date in dancer cards
+- Improved performance with reactive updates when attendance records change
+
+## [v0.9.0] - 2024-12-19

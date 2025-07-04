@@ -117,7 +117,7 @@ class _DancersScreenState extends State<DancersScreen> {
 
             // Dancers list
             StreamBuilder<List<DancerWithTags>>(
-              stream: dancerService.watchDancersWithTags(),
+              stream: dancerService.watchDancersWithTagsAndLastMet(),
               builder: (context, snapshot) {
                 try {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -127,7 +127,8 @@ class _DancersScreenState extends State<DancersScreen> {
                   }
 
                   if (snapshot.hasError) {
-                    ActionLogger.logError('DancersScreen.StreamBuilder', 'stream_error', {
+                    ActionLogger.logError(
+                        'DancersScreen.StreamBuilder', 'stream_error', {
                       'error': snapshot.error.toString(),
                       'stackTrace': snapshot.stackTrace?.toString(),
                     });
@@ -156,14 +157,20 @@ class _DancersScreenState extends State<DancersScreen> {
                             Icon(
                               Icons.people,
                               size: 64,
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              _searchQuery.isEmpty && _selectedTagId == null ? 'No dancers yet' : 'No dancers found',
+                              _searchQuery.isEmpty && _selectedTagId == null
+                                  ? 'No dancers yet'
+                                  : 'No dancers found',
                               style: TextStyle(
                                 fontSize: 18,
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
                               ),
                             ),
                             const SizedBox(height: 8),
@@ -172,7 +179,9 @@ class _DancersScreenState extends State<DancersScreen> {
                                   ? 'Tap + to add your first dancer'
                                   : 'Try adjusting your filters',
                               style: TextStyle(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurfaceVariant,
                               ),
                             ),
                           ],
@@ -191,18 +200,22 @@ class _DancersScreenState extends State<DancersScreen> {
                             return DancerCardWithTags(
                               dancerWithTags: dancerWithTags,
                               onEdit: () => _editDancer(dancerWithTags.dancer),
-                              onDelete: () => _deleteDancer(dancerWithTags.dancer),
-                              onMerge: () => _mergeDancer(dancerWithTags.dancer),
+                              onDelete: () =>
+                                  _deleteDancer(dancerWithTags.dancer),
+                              onMerge: () =>
+                                  _mergeDancer(dancerWithTags.dancer),
                             );
                           } catch (e, stackTrace) {
-                            ActionLogger.logError('DancersScreen.DancerCard', 'build_error', {
+                            ActionLogger.logError(
+                                'DancersScreen.DancerCard', 'build_error', {
                               'index': index,
                               'error': e.toString(),
                               'stackTrace': stackTrace.toString(),
                             });
                             return Card(
                               child: ListTile(
-                                title: Text('Error displaying dancer at index $index'),
+                                title: Text(
+                                    'Error displaying dancer at index $index'),
                                 subtitle: Text('Error: $e'),
                               ),
                             );
@@ -213,7 +226,8 @@ class _DancersScreenState extends State<DancersScreen> {
                     ),
                   );
                 } catch (e, stackTrace) {
-                  ActionLogger.logError('DancersScreen.StreamBuilder', 'builder_error', {
+                  ActionLogger.logError(
+                      'DancersScreen.StreamBuilder', 'builder_error', {
                     'error': e.toString(),
                     'stackTrace': stackTrace.toString(),
                   });
@@ -264,7 +278,8 @@ class _DancersScreenState extends State<DancersScreen> {
           TextButton(
             onPressed: () async {
               try {
-                final dancerService = Provider.of<DancerService>(context, listen: false);
+                final dancerService =
+                    Provider.of<DancerService>(context, listen: false);
                 await dancerService.deleteDancer(dancer.id);
 
                 if (mounted) {
@@ -278,7 +293,8 @@ class _DancersScreenState extends State<DancersScreen> {
                 }
               }
             },
-            style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
+            style: TextButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.error),
             child: const Text('Delete'),
           ),
         ],
