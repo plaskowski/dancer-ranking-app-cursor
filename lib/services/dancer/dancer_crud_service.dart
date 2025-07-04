@@ -12,14 +12,28 @@ class DancerCrudService {
   Stream<List<Dancer>> watchAllDancers() {
     ActionLogger.logServiceCall('DancerCrudService', 'watchAllDancers');
 
-    return (_database.select(_database.dancers)..orderBy([(d) => OrderingTerm.asc(d.name)])).watch();
+    return (_database.select(_database.dancers)
+          ..orderBy([(d) => OrderingTerm.asc(d.name)]))
+        .watch();
+  }
+
+  // Get active dancers ordered by name
+  Stream<List<Dancer>> watchActiveDancers() {
+    ActionLogger.logServiceCall('DancerCrudService', 'watchActiveDancers');
+
+    return (_database.select(_database.dancers)
+          ..where((d) => d.isArchived.equals(false))
+          ..orderBy([(d) => OrderingTerm.asc(d.name)]))
+        .watch();
   }
 
   // Get a specific dancer by ID
   Future<Dancer?> getDancer(int id) {
-    ActionLogger.logServiceCall('DancerCrudService', 'getDancer', {'dancerId': id});
+    ActionLogger.logServiceCall(
+        'DancerCrudService', 'getDancer', {'dancerId': id});
 
-    return (_database.select(_database.dancers)..where((d) => d.id.equals(id))).getSingleOrNull();
+    return (_database.select(_database.dancers)..where((d) => d.id.equals(id)))
+        .getSingleOrNull();
   }
 
   // Create a new dancer
@@ -64,7 +78,8 @@ class DancerCrudService {
     try {
       final dancer = await getDancer(id);
       if (dancer == null) {
-        ActionLogger.logAction('DancerCrudService.updateDancer', 'dancer_not_found', {
+        ActionLogger.logAction(
+            'DancerCrudService.updateDancer', 'dancer_not_found', {
           'dancerId': id,
         });
         return false;
@@ -107,7 +122,8 @@ class DancerCrudService {
     try {
       final dancer = await getDancer(id);
       if (dancer == null) {
-        ActionLogger.logError('DancerCrudService.updateFirstMetDate', 'dancer_not_found', {
+        ActionLogger.logError(
+            'DancerCrudService.updateFirstMetDate', 'dancer_not_found', {
           'dancerId': id,
         });
         return false;
@@ -128,7 +144,8 @@ class DancerCrudService {
 
       return result;
     } catch (e) {
-      ActionLogger.logError('DancerCrudService.updateFirstMetDate', e.toString(), {
+      ActionLogger.logError(
+          'DancerCrudService.updateFirstMetDate', e.toString(), {
         'dancerId': id,
         'firstMetDate': firstMetDate?.toIso8601String(),
       });
@@ -143,7 +160,9 @@ class DancerCrudService {
     });
 
     try {
-      final result = await (_database.delete(_database.dancers)..where((d) => d.id.equals(id))).go();
+      final result = await (_database.delete(_database.dancers)
+            ..where((d) => d.id.equals(id)))
+          .go();
 
       ActionLogger.logDbOperation('DELETE', 'dancers', {
         'id': id,
@@ -165,18 +184,136 @@ class DancerCrudService {
 
     try {
       final countExp = countAll();
-      final query = _database.selectOnly(_database.dancers)..addColumns([countExp]);
+      final query = _database.selectOnly(_database.dancers)
+        ..addColumns([countExp]);
 
       final result = await query.getSingle();
       final count = result.read(countExp)!;
 
-      ActionLogger.logAction('DancerCrudService.getDancersCount', 'count_retrieved', {
+      ActionLogger.logAction(
+          'DancerCrudService.getDancersCount', 'count_retrieved', {
         'count': count,
       });
 
       return count;
     } catch (e) {
       ActionLogger.logError('DancerCrudService.getDancersCount', e.toString());
+      rethrow;
+    }
+  }
+
+  // Archive a dancer
+  Future<bool> archiveDancer(int dancerId) async {
+    ActionLogger.logServiceCall('DancerCrudService', 'archiveDancer', {
+      'dancerId': dancerId,
+    });
+
+    try {
+      final dancer = await getDancer(dancerId);
+      if (dancer == null) {
+        ActionLogger.logAction(
+            'DancerCrudService.archiveDancer', 'dancer_not_found', {
+          'dancerId': dancerId,
+        });
+        return false;
+      }
+
+      if (dancer.isArchived) {
+        ActionLogger.logAction(
+            'DancerCrudService.archiveDancer', 'already_archived', {
+          'dancerId': dancerId,
+        });
+        return false;
+      }
+
+      final result = await _database.update(_database.dancers).replace(
+            dancer.copyWith(
+              isArchived: true,
+              archivedAt: Value(DateTime.now()),
+            ),
+          );
+
+      ActionLogger.logDbOperation('UPDATE', 'dancers_archive', {
+        'id': dancerId,
+        'name': dancer.name,
+        'success': result,
+      });
+
+      return result;
+    } catch (e) {
+      ActionLogger.logError('DancerCrudService.archiveDancer', e.toString(), {
+        'dancerId': dancerId,
+      });
+      rethrow;
+    }
+  }
+
+  // Reactivate a dancer
+  Future<bool> reactivateDancer(int dancerId) async {
+    ActionLogger.logServiceCall('DancerCrudService', 'reactivateDancer', {
+      'dancerId': dancerId,
+    });
+
+    try {
+      final dancer = await getDancer(dancerId);
+      if (dancer == null) {
+        ActionLogger.logAction(
+            'DancerCrudService.reactivateDancer', 'dancer_not_found', {
+          'dancerId': dancerId,
+        });
+        return false;
+      }
+
+      if (!dancer.isArchived) {
+        ActionLogger.logAction(
+            'DancerCrudService.reactivateDancer', 'already_active', {
+          'dancerId': dancerId,
+        });
+        return false;
+      }
+
+      final result = await _database.update(_database.dancers).replace(
+            dancer.copyWith(
+              isArchived: false,
+              archivedAt: const Value(null),
+            ),
+          );
+
+      ActionLogger.logDbOperation('UPDATE', 'dancers_reactivate', {
+        'id': dancerId,
+        'name': dancer.name,
+        'success': result,
+      });
+
+      return result;
+    } catch (e) {
+      ActionLogger.logError(
+          'DancerCrudService.reactivateDancer', e.toString(), {
+        'dancerId': dancerId,
+      });
+      rethrow;
+    }
+  }
+
+  // Get archived dancers
+  Future<List<Dancer>> getArchivedDancers() async {
+    ActionLogger.logServiceCall('DancerCrudService', 'getArchivedDancers');
+
+    try {
+      final dancers = await (_database.select(_database.dancers)
+            ..where((d) => d.isArchived.equals(true))
+            ..orderBy([(d) => OrderingTerm.desc(d.archivedAt)]))
+          .get();
+
+      ActionLogger.logAction(
+          'DancerCrudService.getArchivedDancers', 'archived_retrieved', {
+        'count': dancers.length,
+      });
+
+      return dancers;
+    } catch (e) {
+      ActionLogger.logError(
+          'DancerCrudService.getArchivedDancers', e.toString());
       rethrow;
     }
   }

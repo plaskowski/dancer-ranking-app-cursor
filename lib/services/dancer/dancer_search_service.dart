@@ -26,4 +26,21 @@ class DancerSearchService {
           ..orderBy([(d) => OrderingTerm.asc(d.name)]))
         .watch();
   }
+
+  // Search active dancers by name
+  Stream<List<Dancer>> searchActiveDancers(String query) {
+    ActionLogger.logServiceCall('DancerSearchService', 'searchActiveDancers', {
+      'query': query,
+      'queryLength': query.length,
+    });
+
+    if (query.isEmpty) {
+      return _crudService.watchActiveDancers();
+    }
+
+    return (_database.select(_database.dancers)
+          ..where((d) => d.name.contains(query) & d.isArchived.equals(false))
+          ..orderBy([(d) => OrderingTerm.asc(d.name)]))
+        .watch();
+  }
 }

@@ -301,9 +301,25 @@ class $DancersTable extends Dancers with TableInfo<$DancersTable, Dancer> {
       type: DriftSqlType.dateTime,
       requiredDuringInsert: false,
       defaultValue: currentDateAndTime);
+  static const VerificationMeta _isArchivedMeta =
+      const VerificationMeta('isArchived');
+  @override
+  late final GeneratedColumn<bool> isArchived = GeneratedColumn<bool>(
+      'is_archived', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_archived" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _archivedAtMeta =
+      const VerificationMeta('archivedAt');
+  @override
+  late final GeneratedColumn<DateTime> archivedAt = GeneratedColumn<DateTime>(
+      'archived_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, notes, firstMetDate, createdAt];
+      [id, name, notes, firstMetDate, createdAt, isArchived, archivedAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -337,6 +353,18 @@ class $DancersTable extends Dancers with TableInfo<$DancersTable, Dancer> {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
     }
+    if (data.containsKey('is_archived')) {
+      context.handle(
+          _isArchivedMeta,
+          isArchived.isAcceptableOrUnknown(
+              data['is_archived']!, _isArchivedMeta));
+    }
+    if (data.containsKey('archived_at')) {
+      context.handle(
+          _archivedAtMeta,
+          archivedAt.isAcceptableOrUnknown(
+              data['archived_at']!, _archivedAtMeta));
+    }
     return context;
   }
 
@@ -356,6 +384,10 @@ class $DancersTable extends Dancers with TableInfo<$DancersTable, Dancer> {
           DriftSqlType.dateTime, data['${effectivePrefix}first_met_date']),
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      isArchived: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_archived'])!,
+      archivedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}archived_at']),
     );
   }
 
@@ -371,12 +403,16 @@ class Dancer extends DataClass implements Insertable<Dancer> {
   final String? notes;
   final DateTime? firstMetDate;
   final DateTime createdAt;
+  final bool isArchived;
+  final DateTime? archivedAt;
   const Dancer(
       {required this.id,
       required this.name,
       this.notes,
       this.firstMetDate,
-      required this.createdAt});
+      required this.createdAt,
+      required this.isArchived,
+      this.archivedAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -389,6 +425,10 @@ class Dancer extends DataClass implements Insertable<Dancer> {
       map['first_met_date'] = Variable<DateTime>(firstMetDate);
     }
     map['created_at'] = Variable<DateTime>(createdAt);
+    map['is_archived'] = Variable<bool>(isArchived);
+    if (!nullToAbsent || archivedAt != null) {
+      map['archived_at'] = Variable<DateTime>(archivedAt);
+    }
     return map;
   }
 
@@ -402,6 +442,10 @@ class Dancer extends DataClass implements Insertable<Dancer> {
           ? const Value.absent()
           : Value(firstMetDate),
       createdAt: Value(createdAt),
+      isArchived: Value(isArchived),
+      archivedAt: archivedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(archivedAt),
     );
   }
 
@@ -414,6 +458,8 @@ class Dancer extends DataClass implements Insertable<Dancer> {
       notes: serializer.fromJson<String?>(json['notes']),
       firstMetDate: serializer.fromJson<DateTime?>(json['firstMetDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      isArchived: serializer.fromJson<bool>(json['isArchived']),
+      archivedAt: serializer.fromJson<DateTime?>(json['archivedAt']),
     );
   }
   @override
@@ -425,6 +471,8 @@ class Dancer extends DataClass implements Insertable<Dancer> {
       'notes': serializer.toJson<String?>(notes),
       'firstMetDate': serializer.toJson<DateTime?>(firstMetDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
+      'isArchived': serializer.toJson<bool>(isArchived),
+      'archivedAt': serializer.toJson<DateTime?>(archivedAt),
     };
   }
 
@@ -433,7 +481,9 @@ class Dancer extends DataClass implements Insertable<Dancer> {
           String? name,
           Value<String?> notes = const Value.absent(),
           Value<DateTime?> firstMetDate = const Value.absent(),
-          DateTime? createdAt}) =>
+          DateTime? createdAt,
+          bool? isArchived,
+          Value<DateTime?> archivedAt = const Value.absent()}) =>
       Dancer(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -441,6 +491,8 @@ class Dancer extends DataClass implements Insertable<Dancer> {
         firstMetDate:
             firstMetDate.present ? firstMetDate.value : this.firstMetDate,
         createdAt: createdAt ?? this.createdAt,
+        isArchived: isArchived ?? this.isArchived,
+        archivedAt: archivedAt.present ? archivedAt.value : this.archivedAt,
       );
   Dancer copyWithCompanion(DancersCompanion data) {
     return Dancer(
@@ -451,6 +503,10 @@ class Dancer extends DataClass implements Insertable<Dancer> {
           ? data.firstMetDate.value
           : this.firstMetDate,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      isArchived:
+          data.isArchived.present ? data.isArchived.value : this.isArchived,
+      archivedAt:
+          data.archivedAt.present ? data.archivedAt.value : this.archivedAt,
     );
   }
 
@@ -461,13 +517,16 @@ class Dancer extends DataClass implements Insertable<Dancer> {
           ..write('name: $name, ')
           ..write('notes: $notes, ')
           ..write('firstMetDate: $firstMetDate, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('isArchived: $isArchived, ')
+          ..write('archivedAt: $archivedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, notes, firstMetDate, createdAt);
+  int get hashCode => Object.hash(
+      id, name, notes, firstMetDate, createdAt, isArchived, archivedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -476,7 +535,9 @@ class Dancer extends DataClass implements Insertable<Dancer> {
           other.name == this.name &&
           other.notes == this.notes &&
           other.firstMetDate == this.firstMetDate &&
-          other.createdAt == this.createdAt);
+          other.createdAt == this.createdAt &&
+          other.isArchived == this.isArchived &&
+          other.archivedAt == this.archivedAt);
 }
 
 class DancersCompanion extends UpdateCompanion<Dancer> {
@@ -485,12 +546,16 @@ class DancersCompanion extends UpdateCompanion<Dancer> {
   final Value<String?> notes;
   final Value<DateTime?> firstMetDate;
   final Value<DateTime> createdAt;
+  final Value<bool> isArchived;
+  final Value<DateTime?> archivedAt;
   const DancersCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.notes = const Value.absent(),
     this.firstMetDate = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.isArchived = const Value.absent(),
+    this.archivedAt = const Value.absent(),
   });
   DancersCompanion.insert({
     this.id = const Value.absent(),
@@ -498,6 +563,8 @@ class DancersCompanion extends UpdateCompanion<Dancer> {
     this.notes = const Value.absent(),
     this.firstMetDate = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.isArchived = const Value.absent(),
+    this.archivedAt = const Value.absent(),
   }) : name = Value(name);
   static Insertable<Dancer> custom({
     Expression<int>? id,
@@ -505,6 +572,8 @@ class DancersCompanion extends UpdateCompanion<Dancer> {
     Expression<String>? notes,
     Expression<DateTime>? firstMetDate,
     Expression<DateTime>? createdAt,
+    Expression<bool>? isArchived,
+    Expression<DateTime>? archivedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -512,6 +581,8 @@ class DancersCompanion extends UpdateCompanion<Dancer> {
       if (notes != null) 'notes': notes,
       if (firstMetDate != null) 'first_met_date': firstMetDate,
       if (createdAt != null) 'created_at': createdAt,
+      if (isArchived != null) 'is_archived': isArchived,
+      if (archivedAt != null) 'archived_at': archivedAt,
     });
   }
 
@@ -520,13 +591,17 @@ class DancersCompanion extends UpdateCompanion<Dancer> {
       Value<String>? name,
       Value<String?>? notes,
       Value<DateTime?>? firstMetDate,
-      Value<DateTime>? createdAt}) {
+      Value<DateTime>? createdAt,
+      Value<bool>? isArchived,
+      Value<DateTime?>? archivedAt}) {
     return DancersCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       notes: notes ?? this.notes,
       firstMetDate: firstMetDate ?? this.firstMetDate,
       createdAt: createdAt ?? this.createdAt,
+      isArchived: isArchived ?? this.isArchived,
+      archivedAt: archivedAt ?? this.archivedAt,
     );
   }
 
@@ -548,6 +623,12 @@ class DancersCompanion extends UpdateCompanion<Dancer> {
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
+    if (isArchived.present) {
+      map['is_archived'] = Variable<bool>(isArchived.value);
+    }
+    if (archivedAt.present) {
+      map['archived_at'] = Variable<DateTime>(archivedAt.value);
+    }
     return map;
   }
 
@@ -558,7 +639,9 @@ class DancersCompanion extends UpdateCompanion<Dancer> {
           ..write('name: $name, ')
           ..write('notes: $notes, ')
           ..write('firstMetDate: $firstMetDate, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('isArchived: $isArchived, ')
+          ..write('archivedAt: $archivedAt')
           ..write(')'))
         .toString();
   }
@@ -2880,6 +2963,8 @@ typedef $$DancersTableCreateCompanionBuilder = DancersCompanion Function({
   Value<String?> notes,
   Value<DateTime?> firstMetDate,
   Value<DateTime> createdAt,
+  Value<bool> isArchived,
+  Value<DateTime?> archivedAt,
 });
 typedef $$DancersTableUpdateCompanionBuilder = DancersCompanion Function({
   Value<int> id,
@@ -2887,6 +2972,8 @@ typedef $$DancersTableUpdateCompanionBuilder = DancersCompanion Function({
   Value<String?> notes,
   Value<DateTime?> firstMetDate,
   Value<DateTime> createdAt,
+  Value<bool> isArchived,
+  Value<DateTime?> archivedAt,
 });
 
 final class $$DancersTableReferences
@@ -2961,6 +3048,12 @@ class $$DancersTableFilterComposer
 
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
       column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get archivedAt => $composableBuilder(
+      column: $table.archivedAt, builder: (column) => ColumnFilters(column));
 
   Expression<bool> rankingsRefs(
       Expression<bool> Function($$RankingsTableFilterComposer f) f) {
@@ -3050,6 +3143,12 @@ class $$DancersTableOrderingComposer
 
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
       column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get archivedAt => $composableBuilder(
+      column: $table.archivedAt, builder: (column) => ColumnOrderings(column));
 }
 
 class $$DancersTableAnnotationComposer
@@ -3075,6 +3174,12 @@ class $$DancersTableAnnotationComposer
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get isArchived => $composableBuilder(
+      column: $table.isArchived, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get archivedAt => $composableBuilder(
+      column: $table.archivedAt, builder: (column) => column);
 
   Expression<T> rankingsRefs<T extends Object>(
       Expression<T> Function($$RankingsTableAnnotationComposer a) f) {
@@ -3169,6 +3274,8 @@ class $$DancersTableTableManager extends RootTableManager<
             Value<String?> notes = const Value.absent(),
             Value<DateTime?> firstMetDate = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
+            Value<bool> isArchived = const Value.absent(),
+            Value<DateTime?> archivedAt = const Value.absent(),
           }) =>
               DancersCompanion(
             id: id,
@@ -3176,6 +3283,8 @@ class $$DancersTableTableManager extends RootTableManager<
             notes: notes,
             firstMetDate: firstMetDate,
             createdAt: createdAt,
+            isArchived: isArchived,
+            archivedAt: archivedAt,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -3183,6 +3292,8 @@ class $$DancersTableTableManager extends RootTableManager<
             Value<String?> notes = const Value.absent(),
             Value<DateTime?> firstMetDate = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
+            Value<bool> isArchived = const Value.absent(),
+            Value<DateTime?> archivedAt = const Value.absent(),
           }) =>
               DancersCompanion.insert(
             id: id,
@@ -3190,6 +3301,8 @@ class $$DancersTableTableManager extends RootTableManager<
             notes: notes,
             firstMetDate: firstMetDate,
             createdAt: createdAt,
+            isArchived: isArchived,
+            archivedAt: archivedAt,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) =>

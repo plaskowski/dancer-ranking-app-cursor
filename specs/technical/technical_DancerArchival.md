@@ -23,11 +23,22 @@ ALTER TABLE dancers ADD COLUMN archivedAt DATETIME;
 - `archiveDancer(int dancerId)` - Set isArchived = true, archivedAt = current timestamp
 - `reactivateDancer(int dancerId)` - Set isArchived = false, archivedAt = null
 - `getArchivedDancers()` - Query dancers where isArchived = true, ordered by archivedAt
+- `watchActiveDancers()` - Stream of active dancers only
 
 ### DancerService Extensions
 - `watchActiveDancersWithTags()` - Filter out archived dancers from existing streams
 - `watchAllDancersWithTags()` - Include archived dancers with visual distinction
-- `watchActiveDancersForEvent(int eventId)` - Exclude archived dancers from event planning
+- `watchActiveDancers()` - Stream of active dancers only
+- `searchActiveDancers(String query)` - Search only active dancers
+- `getActiveDancersWithTags()` - Get active dancers with tags
+- `watchActiveDancersWithTags()` - Stream of active dancers with tags
+
+### DancerSearchService Extensions
+- `searchActiveDancers(String query)` - Search only active dancers by name
+
+### DancerTagService Extensions
+- `getActiveDancersWithTags()` - Get active dancers with their tags
+- `watchActiveDancersWithTags()` - Stream of active dancers with tags
 
 ## Screen Wireframes
 
@@ -187,15 +198,17 @@ ALTER TABLE dancers ADD COLUMN archivedAt DATETIME;
 
 ## Migration Strategy
 
-### Phase 1: Database Migration
+### Phase 1: Database Migration ✅ COMPLETED
 - Add new columns to dancers table
 - Set default values for existing data
 - Test migration on sample data
 
-### Phase 2: Service Layer
+### Phase 2: Service Layer ✅ COMPLETED
 - Implement archival methods in DancerCrudService
 - Add active-only streams to DancerService
 - Update existing queries to respect archival status
+- Add active-only search functionality
+- Add active-only tag filtering
 
 ### Phase 3: UI Components
 - Update DancerCardWithTags to show archived label

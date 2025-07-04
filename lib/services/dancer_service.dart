@@ -29,6 +29,9 @@ class DancerService {
   // CRUD Methods
   Stream<List<Dancer>> watchAllDancers() => _crudService.watchAllDancers();
 
+  Stream<List<Dancer>> watchActiveDancers() =>
+      _crudService.watchActiveDancers();
+
   Future<Dancer?> getDancer(int id) => _crudService.getDancer(id);
 
   Future<int> createDancer({required String name, String? notes}) =>
@@ -44,9 +47,22 @@ class DancerService {
 
   Future<int> getDancersCount() => _crudService.getDancersCount();
 
+  // Archival Methods
+  Future<bool> archiveDancer(int dancerId) =>
+      _crudService.archiveDancer(dancerId);
+
+  Future<bool> reactivateDancer(int dancerId) =>
+      _crudService.reactivateDancer(dancerId);
+
+  Future<List<Dancer>> getArchivedDancers() =>
+      _crudService.getArchivedDancers();
+
   // Search Methods
   Stream<List<Dancer>> searchDancers(String query) =>
       _searchService.searchDancers(query);
+
+  Stream<List<Dancer>> searchActiveDancers(String query) =>
+      _searchService.searchActiveDancers(query);
 
   // Tag Methods
   Future<List<DancerWithTags>> getDancersWithTags() =>
@@ -54,6 +70,12 @@ class DancerService {
 
   Stream<List<DancerWithTags>> watchDancersWithTags() =>
       _tagService.watchDancersWithTags();
+
+  Future<List<DancerWithTags>> getActiveDancersWithTags() =>
+      _tagService.getActiveDancersWithTags();
+
+  Stream<List<DancerWithTags>> watchActiveDancersWithTags() =>
+      _tagService.watchActiveDancersWithTags();
 
   // Event Methods
   Stream<List<DancerWithEventInfo>> watchDancersForEvent(int eventId) =>

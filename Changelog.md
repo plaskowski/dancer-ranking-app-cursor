@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.0] - 2025-01-16
+
+### User Requests
+- "1" - Request to implement dancer archival feature
+
+### Added
+- **Dancer Archival System**: Complete backend implementation for archiving inactive dancers
+  - **Database Schema**: Added `isArchived` (boolean) and `archivedAt` (datetime) fields to dancers table
+  - **Archival Methods**: `archiveDancer()`, `reactivateDancer()`, `getArchivedDancers()` in DancerCrudService
+  - **Active-Only Streams**: `watchActiveDancers()`, `searchActiveDancers()`, `getActiveDancersWithTags()` methods
+  - **Service Layer Integration**: Updated DancerService, DancerSearchService, and DancerTagService with archival support
+  - **Data Preservation**: All dance history, rankings, scores, and relationships remain intact when archiving
+  - **Reversible Operations**: Archived dancers can be easily reactivated with one method call
+
+### Technical
+- **Database Migration**: Added new columns with proper defaults (existing dancers remain active)
+- **Service Architecture**: Implemented archival methods across all dancer-related services
+- **Stream Filtering**: Added active-only streams that automatically exclude archived dancers
+- **Search Integration**: Active-only search functionality for cleaner event planning
+- **Tag Service Updates**: Active-only tag filtering for better community management
+- **Action Logging**: Comprehensive logging for all archival operations
+- **Error Handling**: Proper error handling and validation for archival operations
+
+### Documentation
+- **Technical Specification**: Updated `specs/technical/technical_DancerArchival.md` with implementation status
+- **Service Layer Documentation**: Documented all new archival methods and active-only streams
+- **Migration Strategy**: Marked Phase 1 (Database) and Phase 2 (Service Layer) as completed
+
 ## [v1.2.1] - 2025-01-16
 
 ### User Requests
