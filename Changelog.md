@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.7] - 2025-01-17
+
+### User Requests
+- "The dialog from the planning tab" - Request to update the Select Dancers dialog from the Planning tab to use the SimplifiedTagFilter component
+
+### Changed
+- **Select Dancers Dialog**: Updated to use SimplifiedTagFilter component instead of CommonFilterSection
+  - **Consistent Tag Filtering**: Now uses the same tag filtering component as other screens
+  - **Improved UI**: Cleaner interface with separate search field and tag filter
+  - **Better UX**: More intuitive tag selection with visual feedback
+  - **Code Consistency**: Aligns with other screens using SimplifiedTagFilter
+
+### Technical
+- Updated `lib/screens/event/dialogs/select_dancers_screen.dart` to use SimplifiedTagFilter
+- Replaced CommonFilterSection with custom search field and SimplifiedTagFilter
+- Maintained existing functionality while improving component consistency
+- Applied proper Dart formatting to ensure code quality
+
 ## [v1.3.6] - 2025-01-17
 
 ### User Requests

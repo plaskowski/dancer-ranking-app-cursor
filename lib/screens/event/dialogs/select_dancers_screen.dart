@@ -5,8 +5,8 @@ import '../../../services/attendance_service.dart';
 import '../../../services/dancer/dancer_filter_service.dart';
 import '../../../services/dancer_service.dart';
 import '../../../theme/theme_extensions.dart';
-import '../../../widgets/common_filter_section.dart';
 import '../../../widgets/safe_fab.dart';
+import '../../../widgets/simplified_tag_filter.dart';
 
 class SelectDancersScreen extends StatefulWidget {
   final int eventId;
@@ -126,17 +126,36 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
       body: Column(
         children: [
           // Filter Section
-          CommonFilterSection(
-            searchHintText: 'Search dancers',
-            searchLabelText: 'Search dancers',
-            onSearchChanged: (value) {
-              setState(() {
-                _searchQuery = value;
-              });
-            },
-            searchController: _searchController,
-            selectedTagId: _selectedTagId,
-            onTagChanged: _onTagChanged,
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                // Search field
+                TextField(
+                  controller: _searchController,
+                  decoration: const InputDecoration(
+                    hintText: 'Search dancers',
+                    labelText: 'Search dancers',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      _searchQuery = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 16),
+                // Tag filter
+                SimplifiedTagFilter(
+                  selectedTagIds:
+                      _selectedTagId != null ? [_selectedTagId!] : [],
+                  onTagsChanged: (tagIds) {
+                    _onTagChanged(tagIds.isNotEmpty ? tagIds.first : null);
+                  },
+                ),
+              ],
+            ),
           ),
 
           // Dancers List

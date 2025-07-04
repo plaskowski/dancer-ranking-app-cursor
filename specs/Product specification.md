@@ -309,18 +309,19 @@ Users can adjust rankings during events for various reasons:
 **Purpose**: Select multiple existing dancers to add to event ranking (for planning phase)
 **Actions**:
 - View list of unranked dancers only (dancers not yet added to this event)
-- **Tag filtering**: Filter dancers by single tag selection using tag filter chips
+- **Tag filtering**: Filter dancers by single tag selection using SimplifiedTagFilter component
   - Shows only tags that have associated dancers
   - Single-select behavior with clear button (✕) when tag is selected
   - Combined with text search for refined filtering
-- Search dancers by name or notes
+- Search dancers by name or notes using dedicated search field
 - Multi-select dancers using checkboxes
 - Add selected dancers to event without automatic rank assignment
 **Tag Filtering UI**:
-- **Filter Chips**: Horizontal scrollable row of tag chips above dancer list
-- **Material 3 Design**: Chips change color when selected, clear button appears
+- **SimplifiedTagFilter Component**: Consistent tag filtering interface used across the app
+- **Material 3 Design**: Clean interface with proper spacing and visual feedback
 - **Smart Tag Display**: Only shows tags that have associated dancers in database
 - **Memory Aid**: Helps recall dancers by venue/context (e.g., "Monday Class" → class students)
+- **Separate Search Field**: Dedicated text field for name/notes search above tag filter
 **Navigation**:
 - ← Back to Event Screen
 
