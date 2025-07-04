@@ -51,3 +51,12 @@
 - **Last Met Info**: Displays "Last met: [Event Name] • [Date]" when available
 - **Tag Display**: Shows dancer tags as colored pills below dancer info
 - **Error Handling**: Consistent error display with proper logging and user-friendly messages 
+
+### Technical Architecture: Theme System
+
+- For Flutter 3.32.5 and later, use `CardThemeData` and `DialogThemeData` for `ThemeData.cardTheme` and `ThemeData.dialogTheme` respectively. Do not use `CardTheme` or `DialogTheme` as these are not accepted types for ThemeData properties.
+- This ensures compatibility with the latest Flutter SDK and prevents build errors.
+
+### Build & Release
+
+- APK build process was verified and fixed after resolving theme constructor errors. The app now builds successfully for release on the main branch. 

@@ -39,4 +39,7 @@
 - [x] **Search & Filter**: Real-time search and tag filtering
 - [x] **Event Management**: Create, edit, and manage events
 - [x] **Attendance Tracking**: Mark dancers as present, served, or left
-- [x] **Ranking System**: Rank dancers for events with custom ranks 
+- [x] **Ranking System**: Rank dancers for events with custom ranks
+
+## In progress - 🟦 first line 🟦 (navy blue)
+- [ ] ... 

@@ -805,32 +805,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `ToastHelper` to use `Fluttertoast` for toast notifications
 - Maintained all existing functionality while improving toast handling
 
-## [v0.9.1] - 2025-07-04
+## [v0.9.1] - 2025-06-27
 
 ### User Requests
-- "Still no success. Forget it. Let's change the AppBar color in the theme but allow me to provide (optionally) this color via command line argument"
-- "Better, now match the color with IDE top bar"
-- "Change of plans. Write me a Cursor rule so that when I ask you to test the app we will use existing terminal instead of opening the new one. Ask me to reload the app instead."
-- "Great, let's start over with AppBar color provided optionally via command line"
-- "Target file "--appbar-color=#FF0000" not found."
-- "yay, works!"
-- "great, commit and push"
+- Build APK on main branch push
+- Fix theme errors for CardTheme and DialogTheme
 
-### Added
-- **AppBar Color Customization**: Added optional AppBar color customization via `--dart-define=APPBAR_COLOR=#HEXCODE`
-- **Color Parsing**: Implemented hex color parsing with support for `#` prefix and without
-- **Cross-Theme Support**: AppBar color customization works for both light and dark themes
-- **Cursor Rules**: Added App Testing Workflow Rule for better development experience
+### Fixed
+- Resolved build errors caused by incorrect theme constructors (CardTheme/DialogTheme) in Flutter 3.32.5
+- Restored correct usage of CardThemeData and DialogThemeData for ThemeData properties
+- APK now builds successfully for release
 
 ### Technical
-- **Theme System**: Enhanced `AppTheme` class with `getLightTheme()` and `getDarkTheme()` methods accepting optional `appBarColor` parameter
-- **Color Parsing**: Added `parseColor()` method supporting multiple hex formats (6-digit, 8-digit, 3-digit)
-- **Dart-Define Integration**: Used `String.fromEnvironment()` for proper Flutter configuration passing
-- **Backward Compatibility**: Maintained existing `lightTheme` and `darkTheme` getters for compatibility
-
-### Files Changed
-- `lib/main.dart`: Added dart-define parsing and app initialization
-- `lib/theme/app_theme.dart`: Enhanced theme methods with color customization
-- `.cursorrules`: Added App Testing Workflow Rule
+- Updated `lib/theme/app_theme.dart` to use CardThemeData and DialogThemeData constructors
 
 ## [v0.9.0] - 2025-07-04

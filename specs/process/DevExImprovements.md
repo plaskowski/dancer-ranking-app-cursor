@@ -38,6 +38,7 @@
 - write the long output to file so I can comment on it, save it for later and track it's changes
 - how to have separate configs for workspaces (e.g. title bar color)
 - codebase has to be cohesive and modular to avoid conflicts between agents lines
+- If the agent ask for choice it should present buttons for them
 
 # Hard ones
 - increase the 25 tool calls limit
