@@ -283,7 +283,7 @@ class SummaryGroupHeader extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+            color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
             offset: const Offset(0, 2),
             blurRadius: 4,
           ),
