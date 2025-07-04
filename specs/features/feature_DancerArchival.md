@@ -43,13 +43,17 @@ A dancer archival system that allows users to archive inactive dancers while pre
 
 ### 1. Dancers Screen Enhancement
 - **Archive Option**: Add "Archive" to existing context menu (Edit, Merge, Delete)
-- **Archive Count**: Small badge showing number of archived dancers
-- **View Archived**: Subtle link/button to access archived section
+- **Archived Label**: Show "archived" label on archived dancers in main dancers screen
+- **Show Archived**: Display archived dancers on main dancers screen with visual distinction
 
 ### 2. Archived Dancers Screen
 - **Dedicated Space**: Separate screen for archived dancer management
 - **Same Capabilities**: Search and view history like active dancers
 - **Reactivation**: Prominent "Reactivate" button for each dancer
+
+### 3. Event Planning Integration
+- **Skip Archived**: Archived dancers are automatically excluded from event planning dancer selection
+- **Simple Behavior**: No complex toggles or options - just clean separation
 
 ## User Benefits
 
@@ -76,6 +80,18 @@ A dancer archival system that allows users to archive inactive dancers while pre
 **Problem**: They're not in active list, need to add them back
 **Solution**: Go to Archived Dancers → find them → Reactivate
 **Result**: All their history preserved, immediately back in active list
+
+### Scenario 3: Event Planning with Clean Lists
+**Context**: Adding dancers to upcoming event planning
+**Problem**: Event planning shows all 150+ dancers including inactive ones
+**Solution**: Archived dancers are automatically excluded from planning selection
+**Result**: Only see active dancers in planning, faster and more focused selection
+
+### Scenario 4: Managing Community Growth
+**Context**: Dance community has grown from 20 to 80 regulars over 2 years
+**Problem**: Old inactive dancers clutter the main dancers list
+**Solution**: Archive dancers who moved away or changed styles, they remain visible with "archived" label
+**Result**: Cleaner main list while preserving all historical data and relationships
 
 ## Success Metrics
 - **Reduced Planning Time**: Faster dancer selection for events
