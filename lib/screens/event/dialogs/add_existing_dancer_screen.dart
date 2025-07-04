@@ -27,6 +27,7 @@ class AddExistingDancerScreen extends StatefulWidget {
 class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
   // New filtering state
   List<int> _selectedTagIds = [];
+  String _searchQuery = '';
 
   @override
   void dispose() {
@@ -36,6 +37,12 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
   void _onTagsChanged(List<int> tagIds) {
     setState(() {
       _selectedTagIds = tagIds;
+    });
+  }
+
+  void _onSearchChanged(String query) {
+    setState(() {
+      _searchQuery = query;
     });
   }
 
@@ -82,6 +89,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
             SimplifiedTagFilter(
               selectedTagIds: _selectedTagIds,
               onTagsChanged: _onTagsChanged,
+              onSearchChanged: _onSearchChanged,
             ),
 
             // Dancers List (with info block inside scroll)
@@ -138,7 +146,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
   List<Widget> _buildDancerList(BuildContext context) {
     return [
       FutureBuilder<List<DancerWithTags>>(
-        key: ValueKey(_selectedTagIds.toString()),
+        key: ValueKey('${_selectedTagIds.toString()}_$_searchQuery'),
         future: _getAvailableDancers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -214,17 +222,26 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
   Future<List<DancerWithTags>> _getAvailableDancers() async {
     final filterService = DancerFilterService.of(context);
 
+    // Get dancers based on tag filtering
+    List<DancerWithTags> dancers;
     if (_selectedTagIds.isNotEmpty) {
       // Use tag filtering when tags are selected
-      return await filterService.getAvailableDancersWithTagsForEvent(
+      dancers = await filterService.getAvailableDancersWithTagsForEvent(
         widget.eventId,
         tagIds: _selectedTagIds.toSet(),
       );
     } else {
       // Get all available dancers when no tags are selected
-      return await filterService.getAvailableDancersWithTagsForEvent(
+      dancers = await filterService.getAvailableDancersWithTagsForEvent(
         widget.eventId,
       );
     }
+
+    // Apply search filtering if search query is provided
+    if (_searchQuery.isNotEmpty) {
+      dancers = filterService.filterDancersByText(dancers, _searchQuery);
+    }
+
+    return dancers;
   }
 }

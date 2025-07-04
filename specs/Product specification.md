@@ -332,7 +332,10 @@ Users can adjust rankings during events for various reasons:
   - Shows only tags that have associated dancers
   - Single-select behavior with clear button (✕) when tag is selected
   - Combined with text search for refined filtering
-- Search dancers by name or notes
+- **Text search**: Search dancers by name or notes with real-time filtering
+  - Debounced search (300ms) for smooth performance
+  - Combined with tag filtering for comprehensive results
+  - Maintains focus and cursor position during typing
 - One-tap "Mark Present" action for each dancer
 - **Persistent Screen**: Screen stays open after marking dancers to enable bulk operations
 - **Efficient Feedback**: Brief 1-second snackbar confirmations for rapid marking

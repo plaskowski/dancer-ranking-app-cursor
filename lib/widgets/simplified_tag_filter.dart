@@ -39,18 +39,21 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
   late String _searchQuery;
   late String _activityLevel;
   Timer? _searchDebounce;
+  late TextEditingController _searchController;
 
   @override
   void initState() {
     super.initState();
     _searchQuery = widget.initialSearchQuery ?? '';
     _activityLevel = widget.initialActivityLevel ?? 'Active';
+    _searchController = TextEditingController(text: _searchQuery);
     _loadTags();
   }
 
   @override
   void dispose() {
     _searchDebounce?.cancel();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -95,14 +98,6 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
     widget.onTagsChanged(newPendingTags);
 
     print('New pending tags: $_pendingTagIds');
-  }
-
-  void _clearSelection() {
-    setState(() {
-      _pendingTagIds = [];
-    });
-    // Immediately apply changes to trigger dancer list refresh
-    widget.onTagsChanged([]);
   }
 
   void _onSearchChanged(String query) {
@@ -337,7 +332,7 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: TextField(
-                    controller: TextEditingController(text: _searchQuery),
+                    controller: _searchController,
                     onChanged: _onSearchChanged,
                     decoration: InputDecoration(
                       hintText: widget.searchHintText,

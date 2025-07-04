@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.6] - 2025-01-17
+
+### User Requests
+- "Nice. I tested and text search does not work" - Request to fix text search functionality in Add Existing Dancer dialog
+- "Something is off with the text search, it looses focus after writing a letter and puts next letter at first position" - Request to fix text search focus issue
+- "I get late initialization for searchController" - Request to fix late initialization error
+
+### Fixed
+- **Text Search Functionality**: Fixed text search in Add Existing Dancer dialog
+  - **Search Integration**: Connected search callback to filtering logic in AddExistingDancerScreen
+  - **Real-Time Filtering**: Search now properly filters dancers by name and notes
+  - **Combined Filtering**: Search works together with tag filtering for comprehensive results
+  - **Proper State Management**: Added search query state and callback handling
+- **Text Field Focus Issue**: Fixed text field losing focus during typing
+  - **Persistent Controller**: Used persistent TextEditingController instead of creating new one on each build
+  - **Proper Initialization**: Fixed late initialization error with proper controller setup
+  - **Focus Retention**: Text field now maintains focus and cursor position while typing
+  - **Debounced Search**: 300ms debounce prevents excessive API calls during typing
+
+### Technical
+- **AddExistingDancerScreen**: Added search state management and callback handling
+- **SimplifiedTagFilter**: Fixed TextEditingController initialization and disposal
+- **DancerFilterService**: Integrated text filtering with existing tag filtering logic
+- **State Management**: Added proper search query state and rebuild triggers
+- **Performance**: Implemented debounced search to avoid excessive filtering operations
+
 ## [v1.3.5] - 2025-01-17
 
 ### User Requests
