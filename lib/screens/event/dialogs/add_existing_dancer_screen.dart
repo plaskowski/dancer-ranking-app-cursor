@@ -5,6 +5,7 @@ import '../../../services/attendance_service.dart';
 import '../../../services/dancer/dancer_tag_service.dart';
 import '../../../services/dancer_service.dart';
 import '../../../theme/theme_extensions.dart';
+import '../../../widgets/simplified_tag_filter.dart';
 
 class AddExistingDancerScreen extends StatefulWidget {
   final int eventId;
