@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,13 +9,23 @@ import '../services/tag_service.dart';
 class SimplifiedTagFilter extends StatefulWidget {
   final List<int> selectedTagIds;
   final Function(List<int>) onTagsChanged;
+  final Function(String)? onSearchChanged;
+  final Function(String)? onActivityChanged;
   final bool showClearButton;
+  final String searchHintText;
+  final String? initialSearchQuery;
+  final String? initialActivityLevel;
 
   const SimplifiedTagFilter({
     super.key,
     required this.selectedTagIds,
     required this.onTagsChanged,
+    this.onSearchChanged,
+    this.onActivityChanged,
     this.showClearButton = true,
+    this.searchHintText = 'Search dancers...',
+    this.initialSearchQuery,
+    this.initialActivityLevel,
   });
 
   @override
@@ -24,11 +36,22 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
   List<Tag> _availableTags = [];
   bool _isLoading = true;
   List<int> _pendingTagIds = [];
+  late String _searchQuery;
+  late String _activityLevel;
+  Timer? _searchDebounce;
 
   @override
   void initState() {
     super.initState();
+    _searchQuery = widget.initialSearchQuery ?? '';
+    _activityLevel = widget.initialActivityLevel ?? 'Active';
     _loadTags();
+  }
+
+  @override
+  void dispose() {
+    _searchDebounce?.cancel();
+    super.dispose();
   }
 
   Future<void> _loadTags() async {
@@ -80,6 +103,103 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
     });
     // Immediately apply changes to trigger dancer list refresh
     widget.onTagsChanged([]);
+  }
+
+  void _onSearchChanged(String query) {
+    _searchQuery = query;
+
+    // Debounce search to avoid excessive API calls
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(const Duration(milliseconds: 300), () {
+      widget.onSearchChanged?.call(query);
+    });
+  }
+
+  void _onActivityChanged(String activity) {
+    setState(() {
+      _activityLevel = activity;
+    });
+    widget.onActivityChanged?.call(activity);
+  }
+
+  void _showActivityFilterBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => _buildActivityFilterBottomSheet(),
+    );
+  }
+
+  Widget _buildActivityFilterBottomSheet() {
+    final activityLevels = [
+      {'name': 'All', 'description': 'Show everyone'},
+      {'name': 'Active', 'description': '1+ events in 6 months'},
+      {'name': 'Very Active', 'description': '3+ events in 6 months'},
+      {'name': 'Core Community', 'description': '5+ events in year'},
+      {'name': 'Recent', 'description': '1+ events in 3 months'},
+    ];
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Handle bar
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Title
+          const Text(
+            '📊 Filter by Activity Level',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Activity levels
+          Flexible(
+            child: Column(
+              children: activityLevels.map((level) {
+                final isSelected = _activityLevel == level['name'];
+                return ListTile(
+                  leading: Radio<String>(
+                    value: level['name']!,
+                    groupValue: _activityLevel,
+                    onChanged: (value) {
+                      if (value != null) {
+                        _onActivityChanged(value);
+                        Navigator.pop(context);
+                      }
+                    },
+                  ),
+                  title: Text(level['name']!),
+                  subtitle: Text(level['description']!),
+                  selected: isSelected,
+                );
+              }).toList(),
+            ),
+          ),
+
+          // Bottom padding for safe area
+          const SizedBox(height: 16),
+        ],
+      ),
+    );
   }
 
   void _showTagFilterBottomSheet() {
@@ -208,7 +328,7 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Row(
             children: [
-              // Search field (placeholder for now)
+              // Search field
               Expanded(
                 child: Container(
                   height: 40,
@@ -216,19 +336,24 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                     border: Border.all(color: Colors.grey.shade300),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 12),
-                      Icon(Icons.search, color: Colors.grey.shade600, size: 20),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Search dancers...',
-                        style: TextStyle(
-                          color: Colors.grey.shade600,
-                          fontSize: 14,
-                        ),
+                  child: TextField(
+                    controller: TextEditingController(text: _searchQuery),
+                    onChanged: _onSearchChanged,
+                    decoration: InputDecoration(
+                      hintText: widget.searchHintText,
+                      hintStyle: TextStyle(
+                        color: Colors.grey.shade600,
+                        fontSize: 14,
                       ),
-                    ],
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Colors.grey.shade600,
+                        size: 20,
+                      ),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                    ),
                   ),
                 ),
               ),
@@ -264,28 +389,31 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
               ),
               const SizedBox(width: 8),
 
-              // Activity filter (placeholder)
-              Container(
-                height: 40,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.track_changes,
-                        color: Colors.grey.shade600, size: 16),
-                    const SizedBox(width: 4),
-                    const Text(
-                      'Active',
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    const SizedBox(width: 4),
-                    Icon(Icons.arrow_drop_down,
-                        color: Colors.grey.shade600, size: 16),
-                  ],
+              // Activity filter
+              GestureDetector(
+                onTap: _showActivityFilterBottomSheet,
+                child: Container(
+                  height: 40,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.track_changes,
+                          color: Colors.grey.shade600, size: 16),
+                      const SizedBox(width: 4),
+                      Text(
+                        _activityLevel,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(Icons.arrow_drop_down,
+                          color: Colors.grey.shade600, size: 16),
+                    ],
+                  ),
                 ),
               ),
             ],
