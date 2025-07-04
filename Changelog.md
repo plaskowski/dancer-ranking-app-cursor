@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### User Requests
 - "The dialog from the planning tab" - Request to update the Select Dancers dialog from the Planning tab to use the SimplifiedTagFilter component
+- "Now reuse it on Dancers screen" - Request to update the Dancers screen to use SimplifiedTagFilter component
 
 ### Changed
 - **Select Dancers Dialog**: Updated to use SimplifiedTagFilter component instead of CommonFilterSection
@@ -17,11 +18,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Cleaner UI**: Single component handles both search and tag filtering
   - **Better UX**: More intuitive tag selection with visual feedback
   - **Code Consistency**: Aligns with other screens using SimplifiedTagFilter
+- **Dancers Screen**: Updated to use SimplifiedTagFilter component instead of CombinedDancerFilter
+  - **Consistent Tag Filtering**: Now uses the same tag filtering component as other screens
+  - **Integrated Search**: Uses built-in search from SimplifiedTagFilter
+  - **Simplified State Management**: Removed activity level filtering and related complexity
+  - **Better UX**: More streamlined filtering experience
+  - **Code Consistency**: Aligns with other screens using SimplifiedTagFilter
 
 ### Technical
 - Updated `lib/screens/event/dialogs/select_dancers_screen.dart` to use SimplifiedTagFilter
+- Updated `lib/screens/dancers/dancers_screen.dart` to use SimplifiedTagFilter
 - Removed separate search field, now uses integrated search from SimplifiedTagFilter
 - Removed unused TextEditingController and simplified state management
+- Removed activity level filtering complexity from Dancers screen
 - Maintained existing functionality while improving component consistency
 - Applied proper Dart formatting to ensure code quality
 

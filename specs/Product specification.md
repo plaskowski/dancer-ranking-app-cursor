@@ -364,15 +364,15 @@ Users can adjust rankings during events for various reasons:
 - Delete dancer (tap → context menu, with confirmation)
 - **Merge dancers** (tap → context menu → "Merge into...")
 **UI Design**:
-- **Unified Filtering Component**: CombinedDancerFilter provides single interface for all filtering
-- **Self-Managed State**: Component handles its own search, tag, and activity level state
+- **SimplifiedTagFilter Component**: Consistent tag filtering interface used across the app
+- **Integrated Search**: Built-in search field within the SimplifiedTagFilter component
 - **Debounced Search**: 300ms debounce for smooth search experience without excessive API calls
 - **Multi-Tag Selection**: Support for selecting multiple tags with clear visual feedback
-- **Activity Level Filtering**: Radio button selection for different activity levels with descriptions
-- **Dropdown UI**: Clean dropdown interface for both tag and activity level selection
+- **Material 3 Design**: Clean interface with proper spacing and visual feedback
+- **Smart Tag Display**: Only shows tags that have associated dancers in database
 - **Visual Feedback**: Clear indication of selected filters with counts and descriptions
-- **Loading States**: Proper loading indicators for tag and activity level data
-- **Clear Functionality**: Easy clearing of tag selections with "Clear All" button
+- **Loading States**: Proper loading indicators for tag data
+- **Clear Functionality**: Easy clearing of tag selections with standard tap behavior
 - **Enhanced Card Layout**: Name with notes and tags displayed below
 - **Tag Display**: Colored chip badges under dancer name showing assigned tags
 - **Combined Filtering**: Search, tag, and activity level filters work together for precise dancer filtering

@@ -3,14 +3,13 @@ import 'package:provider/provider.dart';
 
 import '../../database/database.dart';
 import '../../models/dancer_with_tags.dart';
-import '../../services/dancer/dancer_activity_service.dart';
 import '../../services/dancer/dancer_filter_service.dart';
 import '../../services/dancer_service.dart';
 import '../../utils/toast_helper.dart';
 import '../../widgets/add_dancer_dialog.dart';
-import '../../widgets/combined_dancer_filter.dart';
 import '../../widgets/dancer_card_with_tags.dart';
 import '../../widgets/safe_fab.dart';
+import '../../widgets/simplified_tag_filter.dart';
 import 'dialogs/select_merge_target_screen.dart';
 
 class DancersScreen extends StatefulWidget {
@@ -23,15 +22,16 @@ class DancersScreen extends StatefulWidget {
 class _DancersScreenState extends State<DancersScreen> {
   String _searchQuery = '';
   List<int> _selectedTagIds = [];
-  ActivityLevel? _selectedActivityLevel = ActivityLevel.active;
-  Map<ActivityLevel, int>? _activityLevelCounts;
 
-  void _onFiltersChanged(String searchQuery, List<int> selectedTagIds,
-      ActivityLevel? selectedActivityLevel) {
+  void _onSearchChanged(String searchQuery) {
     setState(() {
       _searchQuery = searchQuery;
+    });
+  }
+
+  void _onTagsChanged(List<int> selectedTagIds) {
+    setState(() {
       _selectedTagIds = selectedTagIds;
-      _selectedActivityLevel = selectedActivityLevel;
     });
   }
 
@@ -52,12 +52,6 @@ class _DancersScreenState extends State<DancersScreen> {
       }).toList();
     }
 
-    // Apply activity level filter
-    if (_selectedActivityLevel != null) {
-      // TODO: Implement activity level filtering when service is ready
-      // For now, we'll keep all dancers
-    }
-
     return filteredDancers;
   }
 
@@ -74,9 +68,14 @@ class _DancersScreenState extends State<DancersScreen> {
           slivers: [
             // Filter section
             SliverToBoxAdapter(
-              child: CombinedDancerFilter(
-                onFiltersChanged: _onFiltersChanged,
-                activityLevelCounts: _activityLevelCounts,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SimplifiedTagFilter(
+                  selectedTagIds: _selectedTagIds,
+                  onTagsChanged: _onTagsChanged,
+                  onSearchChanged: _onSearchChanged,
+                  initialSearchQuery: _searchQuery,
+                ),
               ),
             ),
 
