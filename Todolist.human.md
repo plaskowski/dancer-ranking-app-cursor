@@ -4,11 +4,16 @@
 ## Status
 The app has all I need to start using it. :celebrate:
 
-## In progress - first line
-Replace "Last seen" with eye icon (a nice one)
-I would like to make use of icons from material 3
+## separator
 
-## In progress - second line
+## In progress - 🟦 first line 🟦 (navy blue)
+Reuse compact dancer filtering in dancers screen
+
+## lines separator
+
+## In progress - 🟩 second line 🟩 (navy greeen)
+Change the macOS app window title bar in color
+
 ...
 
 ## Backlog
