@@ -101,21 +101,30 @@ class _TagSelectionWidgetState extends State<TagSelectionWidget> {
           ),
         ),
         const SizedBox(height: 8),
-        Wrap(
-          spacing: 8.0,
-          runSpacing: 4.0,
-          children: _allTags.map((tag) {
-            final isSelected = widget.selectedTagIds.contains(tag.id);
-            return FilterChip(
-              label: Text(tag.name),
-              selected: isSelected,
-              onSelected: (_) => _toggleTag(tag.id),
-              showCheckmark: false,
-              selectedColor: Theme.of(context).colorScheme.primaryContainer,
-              backgroundColor:
-                  Theme.of(context).colorScheme.surfaceContainerHighest,
-            );
-          }).toList(),
+        // Scrollable oneline tag selection
+        SizedBox(
+          height: 48,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: _allTags.map((tag) {
+                final isSelected = widget.selectedTagIds.contains(tag.id);
+                return Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: FilterChip(
+                    label: Text(tag.name),
+                    selected: isSelected,
+                    onSelected: (_) => _toggleTag(tag.id),
+                    showCheckmark: false,
+                    selectedColor:
+                        Theme.of(context).colorScheme.primaryContainer,
+                    backgroundColor:
+                        Theme.of(context).colorScheme.surfaceContainerHighest,
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
         ),
       ],
     );

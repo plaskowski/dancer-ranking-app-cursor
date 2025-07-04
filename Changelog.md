@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.3] - 2025-01-17
+
+### User Requests
+- "On the edit dancer screen change tags section into scrollable oneline (as we have for search)" - Request to make tag selection scrollable horizontally in edit dancer dialog
+
+### Improved
+- **Tag Selection Layout**: Changed tag selection in edit dancer dialog from wrap layout to scrollable oneline
+  - **Horizontal Scrolling**: Tags now scroll horizontally in a single line, similar to search functionality
+  - **Space Efficient**: Takes up less vertical space while maintaining all functionality
+  - **Consistent UX**: Matches the scrollable pattern used in TagFilterChips and other filter components
+  - **Better Mobile Experience**: Easier to browse through many tags on smaller screens
+  - **Visual Consistency**: Aligns with the app's design patterns for horizontal scrolling elements
+
+### Technical
+- Replaced Wrap widget with SingleChildScrollView and Row in TagSelectionWidget
+- Added proper padding and spacing for horizontal tag chips
+- Maintained all existing tag selection functionality and styling
+- Applied proper Dart formatting to ensure code quality
+
 ## [v1.3.1] - 2025-01-16
 
 ### User Requests
