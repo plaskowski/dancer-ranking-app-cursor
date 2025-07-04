@@ -208,7 +208,7 @@ commit_and_push() {
     git commit -m "chore: bump version to v$version and prepare release"
     
     # Push
-    git push origin main
+    git push origin HEAD
     
     print_success "Changes committed and pushed"
 }
