@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../database/database.dart';
 import '../services/dancer/dancer_activity_service.dart';
@@ -50,7 +51,8 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
 
   Future<void> _loadTags() async {
     try {
-      final tagService = TagService(AppDatabase());
+      final database = Provider.of<AppDatabase>(context, listen: false);
+      final tagService = TagService(database);
       final tags = await tagService.getTagsWithDancers();
 
       if (mounted) {

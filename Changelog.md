@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.5] - 2025-01-17
+
+### User Requests
+- "still no luck" - Request to fix tag filtering in Add Existing Dancer dialog
+- "I wan it in the same line as 'Filter by tags'" - Request to move Clear All button to same line as title
+- "Nah, just remove that button" - Request to remove Clear All button from tag filter dialog
+
+### Added
+- **Enhanced Tag Filtering**: Improved tag filtering functionality in Add Existing Dancer dialog
+  - **Proper Tag Filtering**: Fixed implementation to actually filter dancers by selected tags
+  - **DancerWithTags Integration**: Updated to use DancerWithTags model for proper tag information
+  - **Multi-Tag Support**: Can filter by multiple tags simultaneously with proper database queries
+  - **Real-Time Filtering**: Tag selection immediately filters the dancer list
+
+### Improved
+- **DancerFilterService**: Enhanced with new method for tag-based filtering
+  - **getAvailableDancersWithTagsForEvent()**: New method that properly filters by tags
+  - **Database Integration**: Direct database queries for ranked and present dancer IDs
+  - **Tag-Aware Filtering**: Filters unranked/absent dancers by selected tags
+  - **Performance**: Efficient queries that combine tag filtering with availability filtering
+- **Add Existing Dancer Dialog**: Updated to use proper tag filtering
+  - **DancerWithTags Model**: Changed from DancerWithEventInfo to DancerWithTags for tag support
+  - **Real-Time Updates**: Tag selection immediately updates the dancer list
+  - **Proper Filtering**: Shows only dancers with selected tags who are unranked and absent
+- **SimplifiedTagFilter UI**: Cleaner interface without Clear All button
+  - **Simplified Layout**: Removed Clear All button for cleaner appearance
+  - **Standard Behavior**: Users can deselect tags by tapping them again
+  - **Better UX**: Less cluttered interface with standard tag selection behavior
+
+### Technical
+- **Database Layer**: Added direct database access in DancerFilterService for efficient queries
+- **Model Updates**: Updated Add Existing Dancer dialog to use DancerWithTags instead of DancerWithEventInfo
+- **Service Architecture**: Enhanced DancerFilterService with proper tag filtering capabilities
+- **UI Simplification**: Removed Clear All button from SimplifiedTagFilter for cleaner interface
+- **Import Management**: Added proper imports for DancerWithTags model
+- **Error Handling**: Maintained proper error handling and loading states
+
 ## [v1.3.4] - 2025-01-17
 
 ### User Requests

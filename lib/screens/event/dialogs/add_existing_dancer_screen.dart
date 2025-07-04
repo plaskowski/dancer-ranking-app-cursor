@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/dancer_with_tags.dart';
 import '../../../services/attendance_service.dart';
 import '../../../services/dancer/dancer_filter_service.dart';
-import '../../../services/dancer_service.dart';
 import '../../../theme/theme_extensions.dart';
 import '../../../widgets/simplified_tag_filter.dart';
 
@@ -23,15 +25,11 @@ class AddExistingDancerScreen extends StatefulWidget {
 }
 
 class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
-  final _searchController = TextEditingController();
-  String _searchQuery = '';
-
   // New filtering state
   List<int> _selectedTagIds = [];
 
   @override
   void dispose() {
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -84,25 +82,6 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
             SimplifiedTagFilter(
               selectedTagIds: _selectedTagIds,
               onTagsChanged: _onTagsChanged,
-            ),
-
-            // Search Section
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: _searchController,
-                decoration: const InputDecoration(
-                  labelText: 'Search available dancers',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                  hintText: 'Search by name or notes...',
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _searchQuery = value;
-                  });
-                },
-              ),
             ),
 
             // Dancers List (with info block inside scroll)
@@ -158,21 +137,21 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
 
   List<Widget> _buildDancerList(BuildContext context) {
     return [
-      StreamBuilder<List<DancerWithEventInfo>>(
-        stream: _getAvailableDancersStream(),
+      FutureBuilder<List<DancerWithTags>>(
+        key: ValueKey(_selectedTagIds.toString()),
+        future: _getAvailableDancers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
-            return const Center(child: Text('Error: {snapshot.error}'));
+            return Center(child: Text('Error: ${snapshot.error}'));
           }
 
           final allDancers = snapshot.data ?? [];
-          final filteredDancers = _filterDancers(allDancers);
 
-          if (filteredDancers.isEmpty) {
+          if (allDancers.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -184,7 +163,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _searchQuery.isNotEmpty || _selectedTagIds.isNotEmpty
+                    _selectedTagIds.isNotEmpty
                         ? 'No dancers found with current filters'
                         : 'No available dancers',
                     style: TextStyle(
@@ -194,7 +173,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _searchQuery.isNotEmpty || _selectedTagIds.isNotEmpty
+                    _selectedTagIds.isNotEmpty
                         ? 'Try different search terms or clear filters'
                         : 'All unranked dancers are already present or ranked!',
                     style: TextStyle(
@@ -207,8 +186,8 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
           }
 
           return Column(
-            children: List.generate(filteredDancers.length, (index) {
-              final dancer = filteredDancers[index];
+            children: List.generate(allDancers.length, (index) {
+              final dancer = allDancers[index];
               return Card(
                 margin: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
                 child: ListTile(
@@ -232,16 +211,20 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
     ];
   }
 
-  Stream<List<DancerWithEventInfo>> _getAvailableDancersStream() {
+  Future<List<DancerWithTags>> _getAvailableDancers() async {
     final filterService = DancerFilterService.of(context);
-    return filterService.getAvailableDancersForEvent(
-      widget.eventId,
-      tagIds: _selectedTagIds.isNotEmpty ? _selectedTagIds.toSet() : null,
-    );
-  }
 
-  List<DancerWithEventInfo> _filterDancers(List<DancerWithEventInfo> dancers) {
-    final filterService = DancerFilterService.of(context);
-    return filterService.filterDancersByTextEvent(dancers, _searchQuery);
+    if (_selectedTagIds.isNotEmpty) {
+      // Use tag filtering when tags are selected
+      return await filterService.getAvailableDancersWithTagsForEvent(
+        widget.eventId,
+        tagIds: _selectedTagIds.toSet(),
+      );
+    } else {
+      // Get all available dancers when no tags are selected
+      return await filterService.getAvailableDancersWithTagsForEvent(
+        widget.eventId,
+      );
+    }
   }
 }

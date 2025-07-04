@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../database/database.dart';
 import '../services/tag_service.dart';
@@ -22,7 +23,7 @@ class SimplifiedTagFilter extends StatefulWidget {
 class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
   List<Tag> _availableTags = [];
   bool _isLoading = true;
-  bool _showDropdown = false;
+  List<int> _pendingTagIds = [];
 
   @override
   void initState() {
@@ -32,7 +33,8 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
 
   Future<void> _loadTags() async {
     try {
-      final tagService = TagService(AppDatabase());
+      final database = Provider.of<AppDatabase>(context, listen: false);
+      final tagService = TagService(database);
       final tags = await tagService.getTagsWithDancers();
 
       if (mounted) {
@@ -51,22 +53,151 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
   }
 
   void _onTagSelected(int tagId) {
-    final newSelectedTags = List<int>.from(widget.selectedTagIds);
+    print('Tag tapped: $tagId, current pending: $_pendingTagIds');
+    final newPendingTags = List<int>.from(_pendingTagIds);
 
-    if (newSelectedTags.contains(tagId)) {
-      newSelectedTags.remove(tagId);
+    if (newPendingTags.contains(tagId)) {
+      newPendingTags.remove(tagId);
+      print('Removed tag $tagId');
     } else {
-      newSelectedTags.add(tagId);
+      newPendingTags.add(tagId);
+      print('Added tag $tagId');
     }
 
-    widget.onTagsChanged(newSelectedTags);
     setState(() {
-      _showDropdown = false; // Close dropdown immediately
+      _pendingTagIds = newPendingTags;
     });
+    print('New pending tags: $_pendingTagIds');
   }
 
   void _clearSelection() {
-    widget.onTagsChanged([]);
+    setState(() {
+      _pendingTagIds = [];
+    });
+  }
+
+  void _applyChanges() {
+    widget.onTagsChanged(_pendingTagIds);
+  }
+
+  void _showTagFilterBottomSheet() {
+    // Initialize pending tags with current selection
+    setState(() {
+      _pendingTagIds = List<int>.from(widget.selectedTagIds);
+    });
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => _buildTagFilterBottomSheet(),
+    ).then((_) {
+      // Apply changes when bottom sheet is closed
+      _applyChanges();
+    });
+  }
+
+  Widget _buildTagFilterBottomSheet() {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Handle bar
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Title
+              const Text(
+                '🏷️ Filter by Tags',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Tags as pills
+              if (_isLoading)
+                const Center(child: CircularProgressIndicator())
+              else if (_availableTags.isEmpty)
+                const Text(
+                  'No tags available',
+                  style: TextStyle(color: Colors.grey),
+                )
+              else
+                Flexible(
+                  child: Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: _availableTags.map((tag) {
+                      final isSelected = _pendingTagIds.contains(tag.id);
+                      print(
+                          'Building pill for tag ${tag.name} (ID: ${tag.id}), isSelected: $isSelected');
+
+                      return GestureDetector(
+                        onTap: () {
+                          print(
+                              'Pill tapped for tag: ${tag.name} (ID: ${tag.id})');
+                          _onTagSelected(tag.id);
+                          // Force rebuild of the StatefulBuilder
+                          setState(() {});
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 6.0),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerHighest,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: isSelected
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(context).colorScheme.outline,
+                            ),
+                          ),
+                          child: Text(
+                            tag.name,
+                            style: TextStyle(
+                              color: isSelected
+                                  ? Theme.of(context).colorScheme.onPrimary
+                                  : Theme.of(context).colorScheme.onSurface,
+                              fontSize: 12,
+                              fontWeight: isSelected
+                                  ? FontWeight.w600
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+
+              // Bottom padding for safe area
+              const SizedBox(height: 16),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -106,11 +237,7 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
 
               // Tags filter
               GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showDropdown = !_showDropdown;
-                  });
-                },
+                onTap: _showTagFilterBottomSheet,
                 child: Container(
                   height: 40,
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -124,11 +251,14 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                       Icon(Icons.label, color: Colors.grey.shade600, size: 16),
                       const SizedBox(width: 4),
                       Text(
-                        widget.selectedTagIds.isNotEmpty ? '${widget.selectedTagIds.length} Tags' : 'Tags',
+                        _pendingTagIds.isNotEmpty
+                            ? '${_pendingTagIds.length} Tags'
+                            : 'Tags',
                         style: const TextStyle(fontSize: 14),
                       ),
                       const SizedBox(width: 4),
-                      Icon(Icons.arrow_drop_down, color: Colors.grey.shade600, size: 16),
+                      Icon(Icons.arrow_drop_down,
+                          color: Colors.grey.shade600, size: 16),
                     ],
                   ),
                 ),
@@ -146,105 +276,22 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.track_changes, color: Colors.grey.shade600, size: 16),
+                    Icon(Icons.track_changes,
+                        color: Colors.grey.shade600, size: 16),
                     const SizedBox(width: 4),
                     const Text(
                       'Active',
                       style: TextStyle(fontSize: 14),
                     ),
                     const SizedBox(width: 4),
-                    Icon(Icons.arrow_drop_down, color: Colors.grey.shade600, size: 16),
+                    Icon(Icons.arrow_drop_down,
+                        color: Colors.grey.shade600, size: 16),
                   ],
                 ),
               ),
             ],
           ),
         ),
-
-        // Dropdown
-        if (_showDropdown)
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.grey.shade300),
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Text(
-                    '🏷️ Tags:',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                if (_isLoading)
-                  const Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Center(child: CircularProgressIndicator()),
-                  )
-                else if (_availableTags.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Text('No tags available'),
-                  )
-                else
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Wrap(
-                      spacing: 8.0,
-                      runSpacing: 8.0,
-                      children: _availableTags.map((tag) {
-                        final isSelected = widget.selectedTagIds.contains(tag.id);
-
-                        return GestureDetector(
-                          onTap: () => _onTagSelected(tag.id),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
-                            decoration: BoxDecoration(
-                              color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300,
-                              ),
-                            ),
-                            child: Text(
-                              tag.name,
-                              style: TextStyle(
-                                color: isSelected ? Colors.white : Colors.black87,
-                                fontSize: 12,
-                                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                if (widget.showClearButton && widget.selectedTagIds.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: TextButton(
-                      onPressed: _clearSelection,
-                      child: const Text('Clear All'),
-                    ),
-                  ),
-                const SizedBox(height: 8),
-              ],
-            ),
-          ),
       ],
     );
   }
