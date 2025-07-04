@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.2.1] - 2025-01-16
+
+### User Requests
+- "remove checkmarks from rows in summary tab for past events, at that point I will remember who I danced with after the scores assignment" - Request to hide dance checkmarks for past events in summary tab
+
+### Improved
+- **Summary Tab Checkmark Logic**: Removed dance checkmarks (✓) from summary tab for past events
+  - **Past Event Detection**: Uses EventStatusHelper to determine if an event is in the past
+  - **Cleaner Summary View**: Past events no longer show checkmarks, reducing visual clutter
+  - **Better Memory Aid**: Users can focus on scores and impressions without checkmark distraction
+  - **Context-Aware Display**: Checkmarks still appear for current and future events
+  - **Proper Architecture**: Business logic decision made at SummaryTab level, not DancerCard level
+
+### Technical
+- Added hideCheckmark parameter to DancerCard widget for conditional checkmark display
+- Modified SummaryTab to fetch event date and determine if event is past
+- Used EventStatusHelper.isPastEvent() for consistent past event detection
+- Added proper action logging for past event detection in summary tab
+- Maintained existing functionality for current and future events
+
 ## [v1.2.0] - 2025-01-16
 
 ### User Requests

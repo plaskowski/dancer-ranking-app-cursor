@@ -5,7 +5,9 @@ import '../../../database/database.dart';
 import '../../../services/dancer/dancer_crud_service.dart';
 import '../../../services/dancer/dancer_tag_service.dart';
 import '../../../services/dancer_service.dart';
+import '../../../services/event_service.dart';
 import '../../../utils/action_logger.dart';
+import '../../../utils/event_status_helper.dart';
 import '../../../widgets/add_dancer_dialog.dart';
 import '../../../widgets/dancer_card.dart';
 import '../dialogs/add_existing_dancer_screen.dart';
@@ -23,172 +25,190 @@ class SummaryTab extends StatelessWidget {
         'UI_SummaryTab', 'build_called', {'eventId': eventId});
 
     final dancerService = Provider.of<DancerService>(context);
+    final eventService = Provider.of<EventService>(context, listen: false);
 
-    return StreamBuilder<List<DancerWithEventInfo>>(
-      stream: dancerService.watchDancersForEvent(eventId),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          ActionLogger.logAction(
-              'UI_SummaryTab', 'loading_state', {'eventId': eventId});
+    return FutureBuilder<Event?>(
+      future: eventService.getEvent(eventId),
+      builder: (context, eventSnapshot) {
+        if (eventSnapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        if (snapshot.hasError) {
-          ActionLogger.logError('UI_SummaryTab', 'stream_error', {
-            'eventId': eventId,
-            'error': snapshot.error.toString(),
-          });
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
+        final event = eventSnapshot.data;
+        final isPastEvent =
+            event != null && EventStatusHelper.isPastEvent(event.date);
 
-        final allDancers = snapshot.data ?? [];
-        final attendedDancers =
-            allDancers.where((d) => d.isPresent || d.hasLeft).toList();
+        return StreamBuilder<List<DancerWithEventInfo>>(
+          stream: dancerService.watchDancersForEvent(eventId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              ActionLogger.logAction(
+                  'UI_SummaryTab', 'loading_state', {'eventId': eventId});
+              return const Center(child: CircularProgressIndicator());
+            }
 
-        ActionLogger.logListRendering(
-            'UI_SummaryTab',
-            'attended_dancers',
-            attendedDancers
-                .map((d) => {
-                      'id': d.id,
-                      'name': d.name,
-                      'status': d.status,
-                      'hasScore': d.hasScore,
-                      'scoreName': d.scoreName,
-                      'scoreOrdinal': d.scoreOrdinal,
-                      'isFirstMetHere': d.isFirstMetHere,
-                    })
-                .toList());
+            if (snapshot.hasError) {
+              ActionLogger.logError('UI_SummaryTab', 'stream_error', {
+                'eventId': eventId,
+                'error': snapshot.error.toString(),
+              });
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
 
-        ActionLogger.logAction('UI_SummaryTab', 'filtering_complete', {
-          'eventId': eventId,
-          'totalDancers': allDancers.length,
-          'attendedDancers': attendedDancers.length,
-          'firstMetCount':
-              attendedDancers.where((d) => d.isFirstMetHere).length,
-        });
+            final allDancers = snapshot.data ?? [];
+            final attendedDancers =
+                allDancers.where((d) => d.isPresent || d.hasLeft).toList();
 
-        if (attendedDancers.isEmpty) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.summarize_outlined, size: 64, color: Colors.grey),
-                SizedBox(height: 16),
-                Text('No dances recorded yet'),
-                SizedBox(height: 8),
-                Text(
-                  'Dances will appear here after recording',
-                  style: TextStyle(color: Colors.grey),
+            ActionLogger.logListRendering(
+                'UI_SummaryTab',
+                'attended_dancers',
+                attendedDancers
+                    .map((d) => {
+                          'id': d.id,
+                          'name': d.name,
+                          'status': d.status,
+                          'hasScore': d.hasScore,
+                          'scoreName': d.scoreName,
+                          'scoreOrdinal': d.scoreOrdinal,
+                          'isFirstMetHere': d.isFirstMetHere,
+                        })
+                    .toList());
+
+            ActionLogger.logAction('UI_SummaryTab', 'filtering_complete', {
+              'eventId': eventId,
+              'totalDancers': allDancers.length,
+              'attendedDancers': attendedDancers.length,
+              'firstMetCount':
+                  attendedDancers.where((d) => d.isFirstMetHere).length,
+              'isPastEvent': isPastEvent,
+            });
+
+            if (attendedDancers.isEmpty) {
+              return const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.summarize_outlined,
+                        size: 64, color: Colors.grey),
+                    SizedBox(height: 16),
+                    Text('No dances recorded yet'),
+                    SizedBox(height: 8),
+                    Text(
+                      'Dances will appear here after recording',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        }
+              );
+            }
 
-        // Group dancers by score
-        final Map<String, List<DancerWithEventInfo>> groupedDancers = {};
-        for (final dancer in attendedDancers) {
-          final scoreName = dancer.scoreName ?? 'No score assigned';
-          if (!groupedDancers.containsKey(scoreName)) {
-            groupedDancers[scoreName] = [];
-          }
-          groupedDancers[scoreName]!.add(dancer);
-        }
+            // Group dancers by score
+            final Map<String, List<DancerWithEventInfo>> groupedDancers = {};
+            for (final dancer in attendedDancers) {
+              final scoreName = dancer.scoreName ?? 'No score assigned';
+              if (!groupedDancers.containsKey(scoreName)) {
+                groupedDancers[scoreName] = [];
+              }
+              groupedDancers[scoreName]!.add(dancer);
+            }
 
-        // Sort dancers within each score group by name
-        for (final scoreName in groupedDancers.keys) {
-          groupedDancers[scoreName]!.sort((a, b) => a.name.compareTo(b.name));
-        }
+            // Sort dancers within each score group by name
+            for (final scoreName in groupedDancers.keys) {
+              groupedDancers[scoreName]!
+                  .sort((a, b) => a.name.compareTo(b.name));
+            }
 
-        // Sort scores by ordinal (best first)
-        final sortedKeys = groupedDancers.keys.toList()
-          ..sort((a, b) {
-            if (a == 'No score assigned') return 1;
-            if (b == 'No score assigned') return -1;
+            // Sort scores by ordinal (best first)
+            final sortedKeys = groupedDancers.keys.toList()
+              ..sort((a, b) {
+                if (a == 'No score assigned') return 1;
+                if (b == 'No score assigned') return -1;
 
-            final dancerA = groupedDancers[a]!.first;
-            final dancerB = groupedDancers[b]!.first;
+                final dancerA = groupedDancers[a]!.first;
+                final dancerB = groupedDancers[b]!.first;
 
-            return (dancerA.scoreOrdinal ?? 999)
-                .compareTo(dancerB.scoreOrdinal ?? 999);
-          });
+                return (dancerA.scoreOrdinal ?? 999)
+                    .compareTo(dancerB.scoreOrdinal ?? 999);
+              });
 
-        ActionLogger.logAction('UI_SummaryTab', 'grouping_complete', {
-          'eventId': eventId,
-          'scoreGroups': sortedKeys.length,
-          'groupSizes': groupedDancers.map((k, v) => MapEntry(k, v.length)),
-        });
+            ActionLogger.logAction('UI_SummaryTab', 'grouping_complete', {
+              'eventId': eventId,
+              'scoreGroups': sortedKeys.length,
+              'groupSizes': groupedDancers.map((k, v) => MapEntry(k, v.length)),
+            });
 
-        return SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              // Dance summary section
-              SliverToBoxAdapter(
-                child: SummaryGroupHeader(
-                  title: 'Dance Summary',
-                  child: SummaryRow(
-                    child: Text(
-                      'Recorded ${attendedDancers.where((d) => d.hasDanced).length} dances total. Met ${attendedDancers.where((d) => d.isFirstMetHere).length} people for the first time.',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).colorScheme.onSurface,
+            return SafeArea(
+              child: CustomScrollView(
+                slivers: [
+                  // Dance summary section
+                  SliverToBoxAdapter(
+                    child: SummaryGroupHeader(
+                      title: 'Dance Summary',
+                      child: SummaryRow(
+                        child: Text(
+                          'Recorded ${attendedDancers.where((d) => d.hasDanced).length} dances total. Met ${attendedDancers.where((d) => d.isFirstMetHere).length} people for the first time.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
+
+                  // Score groups with sticky headers
+                  ...sortedKeys.map((scoreName) {
+                    final scoreDancers = groupedDancers[scoreName]!;
+
+                    return SliverMainAxisGroup(
+                      slivers: [
+                        // Sticky header for each score group
+                        SliverPersistentHeader(
+                          pinned: true,
+                          delegate: _StickyHeaderDelegate(
+                            minHeight: 60,
+                            maxHeight: 60,
+                            child: SummaryGroupHeader(
+                              title: scoreName,
+                              counter: '(${scoreDancers.length})',
+                            ),
+                          ),
+                        ),
+
+                        // Dancers in this score group
+                        SliverPadding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          sliver: SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 8),
+                                  child: DancerCard(
+                                    dancer: scoreDancers[index],
+                                    eventId: eventId,
+                                    isPlanningMode: false,
+                                    hideScorePill: true,
+                                    isSummaryMode: true,
+                                    hideCheckmark: isPastEvent,
+                                  ),
+                                );
+                              },
+                              childCount: scoreDancers.length,
+                            ),
+                          ),
+                        ),
+
+                        // Spacing after each group
+                        const SliverToBoxAdapter(
+                          child: SizedBox(height: 16),
+                        ),
+                      ],
+                    );
+                  }),
+                ],
               ),
-
-              // Score groups with sticky headers
-              ...sortedKeys.map((scoreName) {
-                final scoreDancers = groupedDancers[scoreName]!;
-
-                return SliverMainAxisGroup(
-                  slivers: [
-                    // Sticky header for each score group
-                    SliverPersistentHeader(
-                      pinned: true,
-                      delegate: _StickyHeaderDelegate(
-                        minHeight: 60,
-                        maxHeight: 60,
-                        child: SummaryGroupHeader(
-                          title: scoreName,
-                          counter: '(${scoreDancers.length})',
-                        ),
-                      ),
-                    ),
-
-                    // Dancers in this score group
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      sliver: SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: DancerCard(
-                                dancer: scoreDancers[index],
-                                eventId: eventId,
-                                isPlanningMode: false,
-                                hideScorePill: true,
-                                isSummaryMode: true,
-                              ),
-                            );
-                          },
-                          childCount: scoreDancers.length,
-                        ),
-                      ),
-                    ),
-
-                    // Spacing after each group
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 16),
-                    ),
-                  ],
-                );
-              }),
-            ],
-          ),
+            );
+          },
         );
       },
     );

@@ -287,6 +287,10 @@ Users can adjust rankings during events for various reasons:
   - **Visual Design**: Headers feature subtle shadows and borders for clear separation
   - **Count Display**: Simple text counter in parentheses "(X)" next to score name
   - **Smooth Performance**: Custom scroll view optimized for large dancer lists
+- **Dance Checkmarks**: Show checkmarks (✓) for dancers who have danced, except for past events
+  - **Past Event Behavior**: Checkmarks hidden for events in the past to reduce visual clutter
+  - **Current/Future Events**: Checkmarks visible to help track dance completion during active events
+  - **Memory Aid**: Past events focus on scores and impressions without checkmark distraction
 - **Primary use case**: Post-event reflection and score refinement
 - **Optimized for Old Events**: Only tab shown for events 2+ days ago to focus on historical review
 
