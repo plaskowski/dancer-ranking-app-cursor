@@ -579,25 +579,162 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v0.9.2] - 2025-07-04
 
 ### User Requests
-- "Extract common code for dancer filtering from both dialogs"
-- "Commit"
+- "nice, commit" - User requested to commit the CLI navigation improvements
 
 ### Added
-- **DancerFilterService**: New shared service for common dancer filtering logic
-- **Centralized Filtering**: Unified filtering methods for tag-based and text-based filtering
-- **Provider Integration**: Easy access via `DancerFilterService.of(context)`
+- Enhanced CLI navigation with tab and action support
+- Support for `/event/current/present-tab/add-existing-dancer` navigation path
+- Tab name mapping from CLI format to internal format (e.g., "present-tab" → "present")
+- Direct action triggering in PresentTab for add existing dancer dialog
+- Initial tab and action parameters for EventScreen and PresentTab
 
 ### Technical
-- **Code Reuse**: Eliminated duplicate filtering logic across multiple dialogs
-- **Maintainability**: Single source of truth for all dancer filtering operations
-- **Consistency**: All dialogs now use the same filtering behavior and error handling
-- **Performance**: Optimized filtering methods with proper error handling
-
-### Files Changed
-- `lib/services/dancer/dancer_filter_service.dart`: New shared filtering service
-- `lib/widgets/add_dancer_dialog.dart`: Updated to use shared service
-- `lib/screens/event/dialogs/select_dancers_screen.dart`: Updated to use shared service
-- `lib/screens/event/dialogs/add_existing_dancer_screen.dart`: Updated to use shared service
-- `lib/screens/dancers/dancers_screen.dart`: Updated to use shared service
+- Updated CliArguments to include initialTab and initialAction parameters
+- Modified CliNavigator to extract values in constructor and pass to EventScreen
+- Enhanced EventScreen to accept and handle initial tab and action parameters
+- Updated PresentTab to accept initialAction and directly show add existing dancer dialog
+- Added tab name mapping logic in CLI navigation parsing
+- Updated help documentation with new navigation path examples
 
 ## [v0.9.1] - 2025-07-04
+
+### User Requests
+- "you forgot the target" - User pointed out missing macOS target specification
+- "you forgot the macOS target" - User reminded about macOS target requirement
+
+### Added
+- AppBar color customization via dart-define parameter
+- Support for `--dart-define=APPBAR_COLOR=#FF0000` to customize AppBar color
+- Color parsing utility in AppTheme for hex color strings
+
+### Technical
+- Added `_parseAppBarColorFromDefine()` function in main.dart
+- Enhanced AppTheme with `parseColor()` method for hex color parsing
+- Updated DancerRankingApp to accept and apply custom appBarColor
+- Added proper error handling for invalid color values
+
+## [v0.9.0] - 2025-07-04
+
+### User Requests
+- "Nope, extract the needed values in constructor" - User requested to extract CLI argument values in constructor instead of passing the entire object
+
+### Changed
+- Refactored CliNavigator to extract needed values in constructor
+- Removed dependency on CliArguments object within CliNavigator widget
+- Simplified widget properties to focus on specific navigation parameters
+
+### Technical
+- Updated CliNavigator constructor to extract navigationPath, eventIndex, and autoTapAdd
+- Removed const keyword from CliNavigator constructor due to non-const parameters
+- Updated all references to use extracted properties instead of cliArgs object
+
+## [v0.8.5] - 2025-07-04
+
+### User Requests
+- "nice, let's try out the going to current event" - User wanted to test current event navigation
+- "you forgot the target" - User pointed out missing target specification
+
+### Added
+- CLI navigation support for current event detection
+- Support for `--dart-define=NAV_PATH=/event/current` to navigate to today's event
+- Automatic fallback to home screen when no current event is found
+- Detailed logging of available events when current event is not found
+
+### Technical
+- Enhanced `_findCurrentEvent()` method to compare dates properly
+- Added comprehensive logging for debugging navigation issues
+- Updated help documentation with current event examples
+- Improved error handling for invalid navigation paths
+
+## [v0.8.4] - 2025-07-04
+
+### User Requests
+- "nice, commit" - User requested to commit the CLI navigation feature
+
+### Added
+- CLI navigation system for automated testing and development
+- Support for `--dart-define=NAV_PATH=<path>` to navigate directly to specific screens
+- Support for `--dart-define=EVENT_INDEX=<index>` for legacy event navigation
+- Support for `--dart-define=AUTO_TAP_ADD=true` to automatically trigger add actions
+- Support for `--dart-define=HELP=true` to show CLI help information
+
+### Technical
+- Created CliArguments class to parse and store CLI parameters
+- Implemented CliNavigator widget for automatic navigation handling
+- Added parseCliArguments() function to handle dart-define parameters
+- Created showCliHelp() function with comprehensive usage examples
+- Updated main.dart to use CliNavigator when CLI arguments are provided
+- Added navigation path parsing with support for /event/<index> paths
+- Implemented automatic event resolution and error handling
+
+## [v0.8.3] - 2025-07-04
+
+### User Requests
+- "commit" - User requested to commit the tag filtering improvements
+
+### Added
+- Tag filtering support in Add Dancer Dialog
+- Simplified tag filter chips with pill format
+- Auto-apply filtering when tags are selected
+- Clear visual feedback for active tag filters
+
+### Technical
+- Enhanced AddDancerDialog with tag filtering capabilities
+- Implemented SimplifiedTagFilter widget for better UX
+- Added tag selection state management
+- Updated dancer filtering logic to include tag-based filtering
+- Improved performance with optimized filter queries
+
+## [v0.8.2] - 2025-07-04
+
+### User Requests
+- "commit" - User requested to commit the dancer filtering improvements
+
+### Added
+- Simplified dancer filtering with pill format
+- Auto-apply filtering when tags are selected
+- Clear visual feedback for active filters
+- Improved filter performance and user experience
+
+### Technical
+- Refactored tag filtering to use pill format
+- Implemented auto-apply filtering logic
+- Enhanced filter state management
+- Updated UI components for better visual feedback
+- Optimized filter queries for better performance
+
+## [v0.8.1] - 2025-07-04
+
+### User Requests
+- "commit" - User requested to commit the future events tab behavior
+
+### Changed
+- Future events (1+ days ahead) now show only Planning tab
+- Past events show Present and Summary tabs only
+- Current events (today) show all three tabs: Planning, Present, Summary
+- Old events (2+ days ago) show only Summary tab
+
+### Technical
+- Updated EventStatusHelper to properly categorize event dates
+- Modified EventScreen to show appropriate tabs based on event age
+- Enhanced tab indicator text to reflect available tabs
+- Improved user experience for different event types
+
+## [v0.8.0] - 2025-07-04
+
+### User Requests
+- "commit" - User requested to commit the initial implementation
+
+### Added
+- Initial implementation of Dancer Ranking App
+- Basic event management functionality
+- Dancer tracking and ranking system
+- Attendance and scoring features
+- Import/export capabilities
+
+### Technical
+- Flutter-based cross-platform application
+- SQLite database with Drift ORM
+- Material Design 3 UI components
+- Provider pattern for state management
+- Comprehensive logging and error handling

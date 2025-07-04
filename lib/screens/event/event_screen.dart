@@ -14,8 +14,15 @@ import 'tabs/summary_tab.dart';
 
 class EventScreen extends StatefulWidget {
   final int eventId;
+  final String? initialTab;
+  final String? initialAction;
 
-  const EventScreen({super.key, required this.eventId});
+  const EventScreen({
+    super.key,
+    required this.eventId,
+    this.initialTab,
+    this.initialAction,
+  });
 
   @override
   State<EventScreen> createState() => _EventScreenState();
@@ -27,14 +34,11 @@ class _EventScreenState extends State<EventScreen> {
   Event? _event;
   late List<EventTabActions> _tabActions;
 
-  bool get _isPastEvent =>
-      _event != null && EventStatusHelper.isPastEvent(_event!.date);
+  bool get _isPastEvent => _event != null && EventStatusHelper.isPastEvent(_event!.date);
 
-  bool get _isOldEvent =>
-      _event != null && EventStatusHelper.isOldEvent(_event!.date);
+  bool get _isOldEvent => _event != null && EventStatusHelper.isOldEvent(_event!.date);
 
-  bool get _isFarFutureEvent =>
-      _event != null && EventStatusHelper.isFarFutureEvent(_event!.date);
+  bool get _isFarFutureEvent => _event != null && EventStatusHelper.isFarFutureEvent(_event!.date);
 
   @override
   void initState() {
@@ -45,12 +49,18 @@ class _EventScreenState extends State<EventScreen> {
       'eventId': widget.eventId,
       'initialTab': 'planning',
     });
+
+    // Handle initial action if specified
+    if (widget.initialAction != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _performInitialAction();
+      });
+    }
   }
 
   @override
   void dispose() {
-    final tabNames =
-        EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
+    final tabNames = EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
     ActionLogger.logAction('UI_EventScreen', 'screen_disposed', {
       'eventId': widget.eventId,
       'lastTab': tabNames.isNotEmpty ? tabNames[_currentPage] : 'unknown',
@@ -67,7 +77,7 @@ class _EventScreenState extends State<EventScreen> {
       setState(() {
         _event = event;
 
-        // Determine initial page based on event type
+        // Determine initial page based on event type and CLI parameters
         int initialPage = 0;
         if (_isOldEvent) {
           // Old events only have Summary tab, so start at index 0
@@ -75,6 +85,18 @@ class _EventScreenState extends State<EventScreen> {
         } else if (_isFarFutureEvent) {
           // Far future events only have Planning tab, so start at index 0
           initialPage = 0;
+        } else {
+          // For current events, check if CLI specified a tab
+          if (widget.initialTab != null) {
+            final tabNames = EventStatusHelper.getAvailableTabs(_event!.date);
+            final tabIndex = tabNames.indexOf(widget.initialTab!);
+            if (tabIndex != -1) {
+              initialPage = tabIndex;
+              print('CLI Navigation: Setting initial tab to "${widget.initialTab}" (index: $tabIndex)');
+            } else {
+              print('CLI Navigation: Invalid tab "${widget.initialTab}". Available tabs: $tabNames');
+            }
+          }
         }
 
         _currentPage = initialPage;
@@ -104,8 +126,7 @@ class _EventScreenState extends State<EventScreen> {
       _currentPage = index;
     });
 
-    final tabNames =
-        EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
+    final tabNames = EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
     final fromTab = tabNames.isNotEmpty ? tabNames[_currentPage] : 'unknown';
     final toTab = tabNames.isNotEmpty ? tabNames[index] : 'unknown';
 
@@ -118,10 +139,29 @@ class _EventScreenState extends State<EventScreen> {
     });
   }
 
+  void _performInitialAction() {
+    if (widget.initialAction == null) return;
+
+    print('CLI Navigation: Performing initial action "${widget.initialAction}"');
+
+    switch (widget.initialAction) {
+      case 'add-existing-dancer':
+        _performAddExistingDancer();
+        break;
+      default:
+        print('CLI Navigation: Unknown action "${widget.initialAction}"');
+    }
+  }
+
+  void _performAddExistingDancer() {
+    // This will be handled by the PresentTab
+    print('CLI Navigation: Triggering add existing dancer dialog');
+    // The PresentTab will need to handle this action
+  }
+
   @override
   Widget build(BuildContext context) {
-    final tabNames =
-        EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
+    final tabNames = EventStatusHelper.getAvailableTabs(_event?.date ?? DateTime.now());
 
     ActionLogger.logAction('UI_EventScreen', 'build_called', {
       'eventId': widget.eventId,
@@ -137,23 +177,20 @@ class _EventScreenState extends State<EventScreen> {
     // Different tab configurations based on event age
     final pages = _isOldEvent
         ? [
-            SummaryTab(
-                eventId: widget.eventId) // Only Summary tab for old events
+            SummaryTab(eventId: widget.eventId) // Only Summary tab for old events
           ]
         : _isFarFutureEvent
             ? [
-                PlanningTab(
-                    eventId: widget
-                        .eventId) // Only Planning tab for far future events
+                PlanningTab(eventId: widget.eventId) // Only Planning tab for far future events
               ]
             : _isPastEvent
                 ? [
-                    PresentTab(eventId: widget.eventId),
+                    PresentTab(eventId: widget.eventId, initialAction: widget.initialAction),
                     SummaryTab(eventId: widget.eventId)
                   ]
                 : [
                     PlanningTab(eventId: widget.eventId),
-                    PresentTab(eventId: widget.eventId),
+                    PresentTab(eventId: widget.eventId, initialAction: widget.initialAction),
                     SummaryTab(eventId: widget.eventId)
                   ];
 
@@ -163,9 +200,7 @@ class _EventScreenState extends State<EventScreen> {
         : _isFarFutureEvent
             ? _tabActions[0] // Always Planning actions for far future events
             : _isPastEvent
-                ? (_currentPage == 0
-                    ? _tabActions[1]
-                    : _tabActions[2]) // Present or Summary
+                ? (_currentPage == 0 ? _tabActions[1] : _tabActions[2]) // Present or Summary
                 : _tabActions[_currentPage]; // Planning, Present, or Summary
 
     return Scaffold(

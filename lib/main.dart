@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'cli_navigation.dart';
 import 'database/database.dart';
 import 'screens/home/home_screen.dart';
 import 'services/attendance_service.dart';
@@ -18,6 +19,9 @@ import 'theme/app_theme.dart';
 void main(List<String> args) {
   // Ensure Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Parse CLI arguments
+  final cliArgs = parseCliArguments(args);
 
   // Parse AppBar color from dart-define
   final Color? appBarColor = _parseAppBarColorFromDefine();
@@ -38,7 +42,10 @@ void main(List<String> args) {
     overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
   );
 
-  runApp(DancerRankingApp(appBarColor: appBarColor));
+  runApp(DancerRankingApp(
+    appBarColor: appBarColor,
+    cliArgs: cliArgs,
+  ));
 }
 
 /// Parse AppBar color from dart-define
@@ -53,8 +60,13 @@ Color? _parseAppBarColorFromDefine() {
 
 class DancerRankingApp extends StatelessWidget {
   final Color? appBarColor;
+  final CliArguments cliArgs;
 
-  const DancerRankingApp({super.key, this.appBarColor});
+  const DancerRankingApp({
+    super.key,
+    this.appBarColor,
+    required this.cliArgs,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +111,9 @@ class DancerRankingApp extends StatelessWidget {
         title: 'Dancer Ranking',
         theme: AppTheme.getLightTheme(appBarColor: appBarColor),
         darkTheme: AppTheme.getDarkTheme(appBarColor: appBarColor),
-        home: const HomeScreen(),
+        home: (cliArgs.navigationPath != null || cliArgs.eventIndex != null)
+            ? CliNavigator(cliArgs: cliArgs)
+            : const HomeScreen(),
         debugShowCheckedModeBanner: false,
         builder: (context, child) {
           return MediaQuery(
