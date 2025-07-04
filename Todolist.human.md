@@ -4,6 +4,13 @@
 ## Status
 The app has all I need to start using it. :celebrate:
 
+## In progress - first line
+Replace "Last seen" with eye icon (a nice one)
+I would like to make use of icons from material 3
+
+## In progress - second line
+...
+
 ## Backlog
 
 ### Right away

@@ -165,7 +165,7 @@ class DancerCardWithTags extends StatelessWidget {
                 const SizedBox(height: 16),
                 ListTile(
                   leading: Icon(
-                    Icons.edit,
+                    Icons.edit_outlined,
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   title: const Text('Edit'),
@@ -182,7 +182,7 @@ class DancerCardWithTags extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.merge_type,
+                    Icons.merge_type_outlined,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                   title: const Text('Merge into...'),
@@ -199,7 +199,7 @@ class DancerCardWithTags extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.history,
+                    Icons.history_outlined,
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   title: const Text('View History'),
@@ -222,7 +222,9 @@ class DancerCardWithTags extends StatelessWidget {
                 // Archive/Reactivate action
                 ListTile(
                   leading: Icon(
-                    dancer.isArchived ? Icons.restore : Icons.archive,
+                    dancer.isArchived
+                        ? Icons.restore_outlined
+                        : Icons.archive_outlined,
                     color: dancer.isArchived
                         ? Theme.of(context).colorScheme.secondary
                         : Theme.of(context).colorScheme.tertiary,
@@ -306,7 +308,7 @@ class DancerCardWithTags extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.delete,
+                    Icons.delete_outline,
                     color: Theme.of(context).colorScheme.error,
                   ),
                   title: const Text('Delete'),

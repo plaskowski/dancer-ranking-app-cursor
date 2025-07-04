@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.1] - 2025-01-16
+
+### User Requests
+- "I would like to make use of icons from material 3" - Request to implement Material 3 icons throughout the app
+
+### Added
+- **Material 3 Icons Implementation**: Comprehensive Material 3 icon system with proper variants and styling
+  - **Icon Variants**: Implemented filled, outlined, rounded, sharp, and two-tone icon variants
+  - **Color Guidelines**: Established semantic color usage with colorScheme integration
+  - **Size Guidelines**: Defined standard sizes (18, 24, 32, 48) for different contexts
+  - **Best Practices**: Created comprehensive guide for consistent icon usage across the app
+  - **Migration Examples**: Updated existing icons to follow Material 3 conventions
+  - **Documentation**: Added detailed Material 3 Icons Guide with examples and best practices
+
+### Improved
+- **Icon Consistency**: Updated navigation, action, and status icons to use Material 3 variants
+  - **Navigation Icons**: Updated home app bar to use outlined variants (people_outlined, settings_outlined)
+  - **Action Icons**: Updated context menus to use outlined variants (edit_outlined, delete_outline)
+  - **Status Icons**: Updated archive/restore icons to use outlined variants
+  - **Event Icons**: Updated event card actions to use Material 3 variants
+  - **Visual Hierarchy**: Better distinction between primary and secondary actions through icon variants
+  - **Accessibility**: Improved contrast and semantic color usage for better accessibility
+
+### Technical
+- **Icon System Architecture**: Created Material3IconsGuide class with common icons mapping
+- **Color Scheme Integration**: All icons now use Theme.of(context).colorScheme for consistent theming
+- **Variant Selection**: Implemented proper variant selection based on action type and context
+- **Code Organization**: Created dedicated theme file for Material 3 icon utilities and examples
+- **Documentation**: Comprehensive guide with implementation examples and migration strategies
+- **Formatting**: Applied proper Dart formatting to all modified files
+
+### Documentation
+- **Material 3 Icons Guide**: Created comprehensive documentation with examples and best practices
+- **Implementation Examples**: Added practical examples for navigation, action, and status icons
+- **Migration Guide**: Documented process for updating existing icons to Material 3 standards
+- **Best Practices**: Established guidelines for icon variant selection and color usage
+
 ## [v1.3.0] - 2025-01-16
 
 ### User Requests

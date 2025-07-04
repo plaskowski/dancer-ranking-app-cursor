@@ -18,7 +18,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: const Text('Events'),
       actions: [
         IconButton(
-          icon: const Icon(Icons.people),
+          icon: const Icon(Icons.people_outlined),
           tooltip: 'Manage Dancers',
           onPressed: () {
             ActionLogger.logUserAction('HomeScreen', 'navigate_to_dancers', {
@@ -34,7 +34,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
         ),
         IconButton(
-          icon: const Icon(Icons.settings),
+          icon: const Icon(Icons.settings_outlined),
           tooltip: 'Settings',
           onPressed: () {
             ActionLogger.logUserAction('HomeScreen', 'navigate_to_settings', {

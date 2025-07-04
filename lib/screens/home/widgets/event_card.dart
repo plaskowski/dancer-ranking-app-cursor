@@ -39,7 +39,7 @@ class EventCard extends StatelessWidget {
               const SizedBox(height: 16),
               ListTile(
                 leading: Icon(
-                  Icons.edit,
+                  Icons.edit_outlined,
                   color: Theme.of(context).colorScheme.primary,
                 ),
                 title: const Text('Rename'),
@@ -56,7 +56,7 @@ class EventCard extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(
-                  Icons.calendar_today,
+                  Icons.calendar_today_outlined,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 title: const Text('Change Date'),
@@ -74,7 +74,7 @@ class EventCard extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(
-                  Icons.delete,
+                  Icons.delete_outline,
                   color: Theme.of(context).colorScheme.error,
                 ),
                 title: const Text('Delete'),
