@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../screens/dancer_history_screen.dart';
 import '../services/attendance_service.dart';
-import '../services/dancer/dancer_crud_service.dart';
 import '../services/dancer_service.dart';
 import '../services/event_service.dart';
 import '../theme/theme_extensions.dart';
@@ -108,12 +107,10 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
                   'currentRank': widget.dancer.rankName,
                 });
 
-                showDialog<bool>(
-                  context: context,
-                  builder: (context) => RankingDialog(
-                    dancerId: widget.dancer.id,
-                    eventId: widget.eventId,
-                  ),
+                RankingDialog.show(
+                  context,
+                  dancerId: widget.dancer.id,
+                  eventId: widget.eventId,
                 ).then((updated) {
                   if (updated == true && context.mounted) {
                     Navigator.pop(context); // Close the action dialog
@@ -138,8 +135,9 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
                   'currentScore': widget.dancer.scoreName,
                 });
 
-                showDialog<bool>(
+                showModalBottomSheet<bool>(
                   context: context,
+                  isScrollControlled: true,
                   builder: (context) => ScoreDialog(
                     dancerId: widget.dancer.id,
                     eventId: widget.eventId,
@@ -227,19 +225,19 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
               });
 
               Navigator.pop(context);
-              // Get current dancer data from database for editing
-              final crudService = Provider.of<DancerCrudService>(context, listen: false);
-              final dancerEntity = await crudService.getDancer(widget.dancer.id);
-              if (dancerEntity == null) {
-                ToastHelper.showError(context, 'Dancer not found');
-                return;
-              }
-              if (context.mounted) {
-                showDialog(
-                  context: context,
-                  builder: (context) => AddDancerDialog(dancer: dancerEntity),
-                );
-              }
+              // Convert DancerWithEventInfo to Dancer for editing
+              final dancerEntity = Dancer(
+                id: widget.dancer.id,
+                name: widget.dancer.name,
+                notes: widget.dancer.notes,
+                createdAt: widget.dancer.createdAt,
+                firstMetDate: widget.dancer.firstMetDate,
+                isArchived: false, // Default to not archived
+              );
+              showDialog(
+                context: context,
+                builder: (context) => AddDancerDialog(dancer: dancerEntity),
+              );
             },
           ),
 

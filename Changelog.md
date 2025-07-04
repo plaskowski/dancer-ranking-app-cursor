@@ -82,6 +82,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Technical Specification**: Updated `specs/technical/technical_DancerArchival.md` with implementation status
 - **Service Layer Documentation**: Documented all new archival methods and active-only streams
 
+## [v1.3.1] - 2025-01-17
+
+### User Requests
+- "The implementation does not look like the wireframes. The pickers show appear at the bottom, similar to context actions menu" - Request to make ranking and score pickers appear as bottom sheets at the bottom of the screen, matching the wireframes and context menu style
+
+### Changed
+- **RankingDialog and ScoreDialog Presentation**: Both dialogs now use showModalBottomSheet and appear as bottom sheets at the bottom of the screen, matching the context actions menu and wireframes
+- **UI Consistency**: Picker dialogs now visually match the context actions menu for a more consistent and modern user experience
+
+### Improved
+- **Material 3 Bottom Sheet Style**: Ranking and score pickers now use Material 3 bottom sheet style for better UX and platform consistency
+
+### Technical
+- Refactored RankingDialog and ScoreDialog to be used as widgets inside showModalBottomSheet
+- Updated DancerActionsDialog to launch pickers as bottom sheets instead of AlertDialogs
+
+### Documentation
+- Updated Product specification.md to reflect new bottom sheet presentation for ranking and score pickers
+
+## [v1.3.2] - 2025-01-17
+
+### User Requests
+- "have similar filtering in add dancers dialog" - Request to add tag filtering functionality to the Add Dancer Dialog, similar to the Select Dancers and Add Existing Dancer screens
+
+### Added
+- **Tag Filtering in Add Dancer Dialog**: Added tag-based filtering to help users find existing dancers when creating new dancers
+  - **Filter by Tag**: Users can select a tag to filter existing dancers by venue/context
+  - **Existing Dancer Selection**: Shows list of existing dancers with the selected tag
+  - **Pre-fill Form**: Selecting an existing dancer pre-fills the name, notes, and tags
+  - **Duplicate Prevention**: Helps users avoid creating duplicate dancer profiles when they can't remember names
+  - **Memory Aid**: Useful when users remember where they know someone from but not their name
+
+### Technical
+- Added TagFilterChips widget integration to AddDancerDialog
+- Implemented filtered dancer loading and display logic
+- Added existing dancer selection functionality with form pre-filling
+- Maintained existing tag selection functionality for new dancers
+
+### Documentation
+- Updated Product specification.md to reflect new tag filtering functionality in Add Dancer Dialog
+
 ## [v1.2.1] - 2025-01-16
 
 ### User Requests
@@ -722,56 +763,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `ToastHelper` to use `Fluttertoast` for toast notifications
 - Maintained all existing functionality while improving toast handling
 
-## [v0.9.2] - 2024-12-19
+## [v0.9.1] - 2025-07-04
 
 ### User Requests
-- Fix similar error handling in other screens first
-- Extract a common component for error handling
-- Improve audit log to show full error messages
-- Fix archived dancer pill styling and positioning
+- "Still no success. Forget it. Let's change the AppBar color in the theme but allow me to provide (optionally) this color via command line argument"
+- "Better, now match the color with IDE top bar"
+- "Change of plans. Write me a Cursor rule so that when I ask you to test the app we will use existing terminal instead of opening the new one. Ask me to reload the app instead."
+- "Great, let's start over with AppBar color provided optionally via command line"
+- "Target file "--appbar-color=#FF0000" not found."
+- "yay, works!"
+- "great, commit and push"
 
 ### Added
-- Common `ErrorDisplay` component for consistent error handling across screens
-- `ErrorDisplayFactory` with convenience methods for different error types
-- Enhanced audit logging with full error messages and stack traces (500 char limit)
-
-### Improved
-- Archived dancer pill moved to tags section with consistent styling
-- Error handling updated in HomeScreen, DancersScreen, and event tabs
-- Database migration robustness with column existence checks
-- Audit log truncation increased for error messages and stack traces
-
-### Fixed
-- Database migration "duplicate column" errors by checking column existence
-- Archived dancer pill styling to match regular tag pills exactly
-- Error UI consistency across all screens with proper logging
+- **AppBar Color Customization**: Added optional AppBar color customization via `--dart-define=APPBAR_COLOR=#HEXCODE`
+- **Color Parsing**: Implemented hex color parsing with support for `#` prefix and without
+- **Cross-Theme Support**: AppBar color customization works for both light and dark themes
+- **Cursor Rules**: Added App Testing Workflow Rule for better development experience
 
 ### Technical
-- Enhanced `ActionLogger.logError()` to capture full error details
-- Updated database migrations to be idempotent and safe
-- Improved error display with user-friendly messages and proper logging
-- Fixed archived dancer visual design to match tag styling
+- **Theme System**: Enhanced `AppTheme` class with `getLightTheme()` and `getDarkTheme()` methods accepting optional `appBarColor` parameter
+- **Color Parsing**: Added `parseColor()` method supporting multiple hex formats (6-digit, 8-digit, 3-digit)
+- **Dart-Define Integration**: Used `String.fromEnvironment()` for proper Flutter configuration passing
+- **Backward Compatibility**: Maintained existing `lightTheme` and `darkTheme` getters for compatibility
 
-## [v0.9.1] - 2024-12-19
+### Files Changed
+- `lib/main.dart`: Added dart-define parsing and app initialization
+- `lib/theme/app_theme.dart`: Enhanced theme methods with color customization
+- `.cursorrules`: Added App Testing Workflow Rule
 
-### User Requests
-- Finish the "last met" task
-
-### Added
-- Last met event information display in dancer cards
-- Reactive stream for last met data updates (`watchDancersWithTagsAndLastMet`)
-- Automatic last met calculation based on latest attendance records
-
-### Technical
-- Enhanced `DancerTagService` with `getDancersWithTagsAndLastMet()` and `watchDancersWithTagsAndLastMet()` methods
-- Updated `DancerService` to expose reactive last met stream
-- Modified dancers screen to use reactive stream instead of FutureBuilder
-- Removed debug print statements from last met implementation
-- Added proper error handling and logging for last met functionality
-
-### Changed
-- Dancers screen now uses StreamBuilder for real-time last met updates
-- Last met information shows event name and formatted date in dancer cards
-- Improved performance with reactive updates when attendance records change
-
-## [v0.9.0] - 2024-12-19
+## [v0.9.0] - 2025-07-04

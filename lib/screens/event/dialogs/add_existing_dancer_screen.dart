@@ -5,7 +5,7 @@ import '../../../services/attendance_service.dart';
 import '../../../services/dancer/dancer_tag_service.dart';
 import '../../../services/dancer_service.dart';
 import '../../../theme/theme_extensions.dart';
-import '../../../widgets/tag_filter_chips.dart';
+import '../../../widgets/simplified_tag_filter.dart';
 
 class AddExistingDancerScreen extends StatefulWidget {
   final int eventId;
@@ -18,16 +18,15 @@ class AddExistingDancerScreen extends StatefulWidget {
   });
 
   @override
-  State<AddExistingDancerScreen> createState() =>
-      _AddExistingDancerScreenState();
+  State<AddExistingDancerScreen> createState() => _AddExistingDancerScreenState();
 }
 
 class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
 
-  // New tag filtering state
-  int? _selectedTagId; // null = show all
+  // New filtering state
+  List<int> _selectedTagIds = [];
 
   @override
   void dispose() {
@@ -35,16 +34,15 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
     super.dispose();
   }
 
-  void _onTagChanged(int? tagId) {
+  void _onTagsChanged(List<int> tagIds) {
     setState(() {
-      _selectedTagId = tagId;
+      _selectedTagIds = tagIds;
     });
   }
 
   Future<void> _markDancerPresent(int dancerId, String dancerName) async {
     try {
-      final attendanceService =
-          Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
 
       await attendanceService.markPresent(widget.eventId, dancerId);
 
@@ -54,8 +52,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
           SnackBar(
             content: Text('$dancerName marked as present'),
             backgroundColor: context.danceTheme.success,
-            duration:
-                const Duration(seconds: 1), // Shorter duration for efficiency
+            duration: const Duration(seconds: 1), // Shorter duration for efficiency
           ),
         );
       }
@@ -80,10 +77,10 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Tag Filters Section
-            TagFilterChips(
-              selectedTagId: _selectedTagId,
-              onTagChanged: _onTagChanged,
+            // Simplified Filter Section
+            SimplifiedTagFilter(
+              selectedTagIds: _selectedTagIds,
+              onTagsChanged: _onTagsChanged,
             ),
 
             // Search Section
@@ -112,8 +109,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                 children: [
                   // Info Banner (now scrollable)
                   Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primaryContainer,
@@ -123,8 +119,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                       children: [
                         Icon(
                           Icons.info_outline,
-                          color:
-                              Theme.of(context).colorScheme.onPrimaryContainer,
+                          color: Theme.of(context).colorScheme.onPrimaryContainer,
                           size: 20,
                         ),
                         const SizedBox(width: 8),
@@ -133,9 +128,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                             'Showing unranked and absent dancers only. Present dancers managed in Present tab.',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer,
+                              color: Theme.of(context).colorScheme.onPrimaryContainer,
                             ),
                           ),
                         ),
@@ -184,7 +177,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _searchQuery.isNotEmpty || _selectedTagId != null
+                    _searchQuery.isNotEmpty || _selectedTagIds.isNotEmpty
                         ? 'No dancers found with current filters'
                         : 'No available dancers',
                     style: TextStyle(
@@ -194,7 +187,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _searchQuery.isNotEmpty || _selectedTagId != null
+                    _searchQuery.isNotEmpty || _selectedTagIds.isNotEmpty
                         ? 'Try different search terms or clear filters'
                         : 'All unranked dancers are already present or ranked!',
                     style: TextStyle(
@@ -216,9 +209,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                     dancer.name,
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
-                      ? Text(dancer.notes!)
-                      : null,
+                  subtitle: dancer.notes != null && dancer.notes!.isNotEmpty ? Text(dancer.notes!) : null,
                   trailing: ElevatedButton(
                     onPressed: () => _markDancerPresent(dancer.id, dancer.name),
                     child: const Text('Mark Present'),
@@ -234,18 +225,14 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
 
   Stream<List<DancerWithEventInfo>> _getAvailableDancersStream() {
     final dancerService = Provider.of<DancerService>(context, listen: false);
-    final dancerTagService =
-        Provider.of<DancerTagService>(context, listen: false);
+    final dancerTagService = Provider.of<DancerTagService>(context, listen: false);
 
-    if (_selectedTagId != null) {
-      // Use tag-filtered stream
-      return dancerTagService.watchAvailableDancersForEventByTag(
-          widget.eventId, _selectedTagId!);
+    if (_selectedTagIds.isNotEmpty) {
+      // Use tag-filtered stream (for now, just use first tag)
+      return dancerTagService.watchAvailableDancersForEventByTag(widget.eventId, _selectedTagIds.first);
     } else {
       // Use existing stream and filter to show only unranked and absent dancers
-      return dancerService
-          .watchDancersForEvent(widget.eventId)
-          .map((allDancers) {
+      return dancerService.watchDancersForEvent(widget.eventId).map((allDancers) {
         return allDancers.where((dancer) {
           // Show dancers who are NOT ranked (no rankName) AND NOT present (no attendanceMarkedAt)
           final isUnranked = dancer.rankName == null;
