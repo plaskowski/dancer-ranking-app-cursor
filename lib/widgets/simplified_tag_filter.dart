@@ -67,6 +67,10 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
     setState(() {
       _pendingTagIds = newPendingTags;
     });
+
+    // Immediately apply changes to trigger dancer list refresh
+    widget.onTagsChanged(newPendingTags);
+
     print('New pending tags: $_pendingTagIds');
   }
 
@@ -74,10 +78,8 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
     setState(() {
       _pendingTagIds = [];
     });
-  }
-
-  void _applyChanges() {
-    widget.onTagsChanged(_pendingTagIds);
+    // Immediately apply changes to trigger dancer list refresh
+    widget.onTagsChanged([]);
   }
 
   void _showTagFilterBottomSheet() {
@@ -93,10 +95,7 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (context) => _buildTagFilterBottomSheet(),
-    ).then((_) {
-      // Apply changes when bottom sheet is closed
-      _applyChanges();
-    });
+    );
   }
 
   Widget _buildTagFilterBottomSheet() {
