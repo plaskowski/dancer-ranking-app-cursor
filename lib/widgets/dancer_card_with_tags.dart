@@ -58,13 +58,25 @@ class DancerCardWithTags extends StatelessWidget {
             // Last met event info
             if (dancerWithTags.lastMetEventName != null &&
                 dancerWithTags.lastMetEventDate != null) ...[
-              Text(
-                'Last met: ${dancerWithTags.lastMetEventName} • ${_formatDate(dancerWithTags.lastMetEventDate!)}',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontStyle: FontStyle.italic,
-                ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.visibility_outlined,
+                    size: 16,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      '${dancerWithTags.lastMetEventName} • ${_formatDate(dancerWithTags.lastMetEventDate!)}',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 2),
             ],
