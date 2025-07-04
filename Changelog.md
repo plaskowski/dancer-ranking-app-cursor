@@ -13,13 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - **Select Dancers Dialog**: Updated to use SimplifiedTagFilter component instead of CommonFilterSection
   - **Consistent Tag Filtering**: Now uses the same tag filtering component as other screens
-  - **Improved UI**: Cleaner interface with separate search field and tag filter
+  - **Integrated Search**: Removed separate search field, now uses built-in search from SimplifiedTagFilter
+  - **Cleaner UI**: Single component handles both search and tag filtering
   - **Better UX**: More intuitive tag selection with visual feedback
   - **Code Consistency**: Aligns with other screens using SimplifiedTagFilter
 
 ### Technical
 - Updated `lib/screens/event/dialogs/select_dancers_screen.dart` to use SimplifiedTagFilter
-- Replaced CommonFilterSection with custom search field and SimplifiedTagFilter
+- Removed separate search field, now uses integrated search from SimplifiedTagFilter
+- Removed unused TextEditingController and simplified state management
 - Maintained existing functionality while improving component consistency
 - Applied proper Dart formatting to ensure code quality
 

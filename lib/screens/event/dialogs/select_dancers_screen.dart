@@ -24,7 +24,6 @@ class SelectDancersScreen extends StatefulWidget {
 
 class _SelectDancersScreenState extends State<SelectDancersScreen> {
   final Set<int> _selectedDancerIds = <int>{};
-  final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   bool _isLoading = false;
 
@@ -33,7 +32,6 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
 
   @override
   void dispose() {
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -128,33 +126,18 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
           // Filter Section
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                // Search field
-                TextField(
-                  controller: _searchController,
-                  decoration: const InputDecoration(
-                    hintText: 'Search dancers',
-                    labelText: 'Search dancers',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      _searchQuery = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 16),
-                // Tag filter
-                SimplifiedTagFilter(
-                  selectedTagIds:
-                      _selectedTagId != null ? [_selectedTagId!] : [],
-                  onTagsChanged: (tagIds) {
-                    _onTagChanged(tagIds.isNotEmpty ? tagIds.first : null);
-                  },
-                ),
-              ],
+            child: SimplifiedTagFilter(
+              selectedTagIds: _selectedTagId != null ? [_selectedTagId!] : [],
+              onTagsChanged: (tagIds) {
+                _onTagChanged(tagIds.isNotEmpty ? tagIds.first : null);
+              },
+              onSearchChanged: (value) {
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
+              searchHintText: 'Search dancers',
+              initialSearchQuery: _searchQuery,
             ),
           ),
 

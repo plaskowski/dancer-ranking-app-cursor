@@ -312,8 +312,8 @@ Users can adjust rankings during events for various reasons:
 - **Tag filtering**: Filter dancers by single tag selection using SimplifiedTagFilter component
   - Shows only tags that have associated dancers
   - Single-select behavior with clear button (✕) when tag is selected
-  - Combined with text search for refined filtering
-- Search dancers by name or notes using dedicated search field
+  - Combined with integrated text search for refined filtering
+- **Integrated search**: Search dancers by name or notes using built-in search from SimplifiedTagFilter
 - Multi-select dancers using checkboxes
 - Add selected dancers to event without automatic rank assignment
 **Tag Filtering UI**:
@@ -321,7 +321,7 @@ Users can adjust rankings during events for various reasons:
 - **Material 3 Design**: Clean interface with proper spacing and visual feedback
 - **Smart Tag Display**: Only shows tags that have associated dancers in database
 - **Memory Aid**: Helps recall dancers by venue/context (e.g., "Monday Class" → class students)
-- **Separate Search Field**: Dedicated text field for name/notes search above tag filter
+- **Integrated Search**: Built-in search field within the SimplifiedTagFilter component
 **Navigation**:
 - ← Back to Event Screen
 
