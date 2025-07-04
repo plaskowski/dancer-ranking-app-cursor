@@ -8,6 +8,7 @@ import '../../utils/action_logger.dart';
 import '../../utils/toast_helper.dart';
 import '../../widgets/add_dancer_dialog.dart';
 import '../../widgets/dancer_card_with_tags.dart';
+import '../../widgets/error_display.dart';
 import '../../widgets/safe_fab.dart';
 import '../../widgets/tag_filter_chips.dart';
 import 'dialogs/select_merge_target_screen.dart';
@@ -127,14 +128,13 @@ class _DancersScreenState extends State<DancersScreen> {
                   }
 
                   if (snapshot.hasError) {
-                    ActionLogger.logError(
-                        'DancersScreen.StreamBuilder', 'stream_error', {
-                      'error': snapshot.error.toString(),
-                      'stackTrace': snapshot.stackTrace?.toString(),
-                    });
                     return SliverToBoxAdapter(
-                      child: Center(
-                        child: Text('Error: ${snapshot.error}'),
+                      child: ErrorDisplayFactory.streamError(
+                        source: 'DancersScreen.StreamBuilder',
+                        error: snapshot.error!,
+                        stackTrace: snapshot.stackTrace,
+                        title: 'Unable to load dancers',
+                        message: 'Please restart the app or contact support',
                       ),
                     );
                   }
