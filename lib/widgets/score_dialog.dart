@@ -141,65 +141,99 @@ class _ScoreDialogState extends State<ScoreDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(_dancerName),
-      content: _isLoading
-          ? const SizedBox(
-              height: 100,
-              child: Center(child: CircularProgressIndicator()),
-            )
-          : Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    maxHeight: 300, // Limit height to prevent overflow
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: _isLoading
+            ? const SizedBox(
+                height: 100,
+                child: Center(child: CircularProgressIndicator()),
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          _dancerName,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          ActionLogger.logUserAction(
+                              'ScoreDialog', 'dialog_cancelled', {
+                            'dancerId': widget.dancerId,
+                            'eventId': widget.eventId,
+                          });
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ],
                   ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: _scores.map((score) {
-                        final isCurrentScore = score.id == _currentScoreId;
+                  const SizedBox(height: 16),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxHeight: 300, // Limit height to prevent overflow
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: _scores.map((score) {
+                          final isCurrentScore = score.id == _currentScoreId;
 
-                        return ListTile(
-                          leading: Icon(
-                            isCurrentScore
-                                ? Icons.check_circle
-                                : Icons.circle_outlined,
-                            color: isCurrentScore
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .onSurfaceVariant,
-                          ),
-                          title: Text(
-                            score.name,
-                            style: TextStyle(
-                              fontWeight: isCurrentScore
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
+                          return ListTile(
+                            leading: Icon(
+                              isCurrentScore
+                                  ? Icons.check_circle
+                                  : Icons.circle_outlined,
+                              color: isCurrentScore
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant,
                             ),
-                          ),
-                          onTap: () => _selectScore(score),
-                        );
-                      }).toList(),
+                            title: Text(
+                              score.name,
+                              style: TextStyle(
+                                fontWeight: isCurrentScore
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
+                            onTap: () => _selectScore(score),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            ActionLogger.logUserAction('ScoreDialog', 'dialog_cancelled', {
-              'dancerId': widget.dancerId,
-              'eventId': widget.eventId,
-            });
-            Navigator.pop(context);
-          },
-          child: const Text('Cancel'),
-        ),
-      ],
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () {
+                            ActionLogger.logUserAction(
+                                'ScoreDialog', 'dialog_cancelled', {
+                              'dancerId': widget.dancerId,
+                              'eventId': widget.eventId,
+                            });
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Cancel'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }

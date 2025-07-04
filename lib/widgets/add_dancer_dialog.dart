@@ -3,11 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../database/database.dart';
+import '../models/dancer_with_tags.dart';
 import '../services/attendance_service.dart';
 import '../services/dancer_service.dart';
 import '../services/tag_service.dart';
 import '../utils/action_logger.dart';
 import '../utils/toast_helper.dart';
+import 'tag_filter_chips.dart';
 import 'tag_selection_widget.dart';
 
 class AddDancerDialog extends StatefulWidget {
@@ -36,6 +38,11 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
   // Tag-related state
   Set<int> _selectedTagIds = {};
+
+  // Tag filtering state
+  int? _selectedFilterTagId; // null = show all
+  List<DancerWithTags> _filteredDancers = [];
+  bool _isLoadingDancers = false;
 
   @override
   void initState() {
@@ -68,6 +75,69 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
     setState(() {
       _selectedTagIds = newTags;
     });
+  }
+
+  void _onFilterTagChanged(int? tagId) {
+    setState(() {
+      _selectedFilterTagId = tagId;
+    });
+    _loadFilteredDancers();
+  }
+
+  Future<void> _loadFilteredDancers() async {
+    if (_selectedFilterTagId == null) {
+      setState(() {
+        _filteredDancers = [];
+        _isLoadingDancers = false;
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoadingDancers = true;
+    });
+
+    try {
+      final dancerService = Provider.of<DancerService>(context, listen: false);
+      final dancers = await dancerService.getDancersWithTags();
+
+      final filtered = dancers.where((dancer) {
+        return dancer.tags.any((tag) => tag.id == _selectedFilterTagId);
+      }).toList();
+
+      if (mounted) {
+        setState(() {
+          _filteredDancers = filtered;
+          _isLoadingDancers = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _filteredDancers = [];
+          _isLoadingDancers = false;
+        });
+      }
+    }
+  }
+
+  void _selectExistingDancer(DancerWithTags dancer) {
+    ActionLogger.logUserAction('AddDancerDialog', 'existing_dancer_selected', {
+      'dancerId': dancer.id,
+      'dancerName': dancer.name,
+      'selectedTagId': _selectedFilterTagId,
+    });
+
+    setState(() {
+      _nameController.text = dancer.name;
+      _notesController.text = dancer.notes ?? '';
+      _selectedTagIds = dancer.tags.map((tag) => tag.id).toSet();
+      _selectedFilterTagId = null; // Clear filter
+      _filteredDancers = [];
+    });
+
+    ToastHelper.showSuccess(
+        context, 'Selected existing dancer: ${dancer.name}');
   }
 
   Future<void> _selectFirstMetDate() async {
@@ -134,12 +204,15 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
         await dancerService.updateDancer(
           widget.dancer!.id,
           name: _nameController.text.trim(),
-          notes: _notesController.text.trim().isNotEmpty ? _notesController.text.trim() : null,
+          notes: _notesController.text.trim().isNotEmpty
+              ? _notesController.text.trim()
+              : null,
         );
 
         // Update first met date if it changed
         if (_firstMetDate != widget.dancer!.firstMetDate) {
-          await dancerService.updateFirstMetDate(widget.dancer!.id, _firstMetDate);
+          await dancerService.updateFirstMetDate(
+              widget.dancer!.id, _firstMetDate);
         }
 
         dancerId = widget.dancer!.id;
@@ -152,7 +225,9 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
         dancerId = await dancerService.createDancer(
           name: _nameController.text.trim(),
-          notes: _notesController.text.trim().isNotEmpty ? _notesController.text.trim() : null,
+          notes: _notesController.text.trim().isNotEmpty
+              ? _notesController.text.trim()
+              : null,
         );
       }
 
@@ -161,17 +236,21 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
       // If we're adding during an event and "already danced" is checked
       if (widget.eventId != null && _alreadyDanced && widget.dancer == null) {
-        ActionLogger.logUserAction('AddDancerDialog', 'recording_dance_during_creation', {
+        ActionLogger.logUserAction(
+            'AddDancerDialog', 'recording_dance_during_creation', {
           'eventId': widget.eventId!,
           'dancerId': dancerId,
           'hasImpression': _impressionController.text.trim().isNotEmpty,
         });
 
-        final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+        final attendanceService =
+            Provider.of<AttendanceService>(context, listen: false);
         await attendanceService.createAttendanceWithDance(
           eventId: widget.eventId!,
           dancerId: dancerId,
-          impression: _impressionController.text.trim().isNotEmpty ? _impressionController.text.trim() : null,
+          impression: _impressionController.text.trim().isNotEmpty
+              ? _impressionController.text.trim()
+              : null,
         );
       }
 
@@ -185,7 +264,10 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
         Navigator.pop(context, true); // Return true to indicate success
         ToastHelper.showSuccess(
-            context, widget.dancer != null ? 'Dancer updated successfully!' : 'Dancer added successfully!');
+            context,
+            widget.dancer != null
+                ? 'Dancer updated successfully!'
+                : 'Dancer added successfully!');
       }
     } catch (e) {
       ActionLogger.logError('AddDancerDialog._saveDancer', e.toString(), {
@@ -220,6 +302,77 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Tag filtering section (only when not editing)
+              if (!isEditing) ...[
+                const Text(
+                  'Filter existing dancers by tag:',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                TagFilterChips(
+                  selectedTagId: _selectedFilterTagId,
+                  onTagChanged: _onFilterTagChanged,
+                ),
+                const SizedBox(height: 16),
+              ],
+
+              // Show filtered dancers if any
+              if (!isEditing && _selectedFilterTagId != null) ...[
+                if (_isLoadingDancers)
+                  const Center(child: CircularProgressIndicator())
+                else if (_filteredDancers.isNotEmpty) ...[
+                  const Text(
+                    'Existing dancers with this tag:',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    constraints: const BoxConstraints(maxHeight: 200),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _filteredDancers.length,
+                      itemBuilder: (context, index) {
+                        final dancer = _filteredDancers[index];
+                        return Card(
+                          child: ListTile(
+                            leading: const Icon(Icons.person),
+                            title: Text(dancer.name),
+                            subtitle:
+                                dancer.notes != null && dancer.notes!.isNotEmpty
+                                    ? Text(
+                                        dancer.notes!,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    : null,
+                            trailing: TextButton(
+                              onPressed: () => _selectExistingDancer(dancer),
+                              child: const Text('Select'),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ] else if (!_isLoadingDancers) ...[
+                  const Text(
+                    'No existing dancers found with this tag.',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ],
+
               TextFormField(
                 controller: _nameController,
                 decoration: const InputDecoration(
@@ -284,7 +437,8 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                   title: const Text('Already danced with this person'),
                   value: _alreadyDanced,
                   onChanged: (value) {
-                    ActionLogger.logUserAction('AddDancerDialog', 'already_danced_toggled', {
+                    ActionLogger.logUserAction(
+                        'AddDancerDialog', 'already_danced_toggled', {
                       'value': value ?? false,
                       'eventId': widget.eventId,
                     });
@@ -357,7 +511,8 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                                 onPressed: _selectFirstMetDate,
                                 icon: const Icon(Icons.edit_calendar),
                                 label: Text(_firstMetDate != null
-                                    ? DateFormat('MMM d, yyyy').format(_firstMetDate!)
+                                    ? DateFormat('MMM d, yyyy')
+                                        .format(_firstMetDate!)
                                     : 'Select Date'),
                               ),
                             ),
@@ -385,7 +540,8 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
           onPressed: _isLoading
               ? null
               : () {
-                  ActionLogger.logUserAction('AddDancerDialog', 'dialog_cancelled', {
+                  ActionLogger.logUserAction(
+                      'AddDancerDialog', 'dialog_cancelled', {
                     'isEditing': widget.dancer != null,
                     'eventId': widget.eventId,
                   });

@@ -33,6 +33,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Service Layer Documentation**: Documented all new archival methods and active-only streams
 - **Migration Strategy**: Marked Phase 1 (Database) and Phase 2 (Service Layer) as completed
 
+## [v1.3.1] - 2025-01-17
+
+### User Requests
+- "The implementation does not look like the wireframes. The pickers show appear at the bottom, similar to context actions menu" - Request to make ranking and score pickers appear as bottom sheets at the bottom of the screen, matching the wireframes and context menu style
+
+### Changed
+- **RankingDialog and ScoreDialog Presentation**: Both dialogs now use showModalBottomSheet and appear as bottom sheets at the bottom of the screen, matching the context actions menu and wireframes
+- **UI Consistency**: Picker dialogs now visually match the context actions menu for a more consistent and modern user experience
+
+### Improved
+- **Material 3 Bottom Sheet Style**: Ranking and score pickers now use Material 3 bottom sheet style for better UX and platform consistency
+
+### Technical
+- Refactored RankingDialog and ScoreDialog to be used as widgets inside showModalBottomSheet
+- Updated DancerActionsDialog to launch pickers as bottom sheets instead of AlertDialogs
+
+### Documentation
+- Updated Product specification.md to reflect new bottom sheet presentation for ranking and score pickers
+
+## [v1.3.2] - 2025-01-17
+
+### User Requests
+- "have similar filtering in add dancers dialog" - Request to add tag filtering functionality to the Add Dancer Dialog, similar to the Select Dancers and Add Existing Dancer screens
+
+### Added
+- **Tag Filtering in Add Dancer Dialog**: Added tag-based filtering to help users find existing dancers when creating new dancers
+  - **Filter by Tag**: Users can select a tag to filter existing dancers by venue/context
+  - **Existing Dancer Selection**: Shows list of existing dancers with the selected tag
+  - **Pre-fill Form**: Selecting an existing dancer pre-fills the name, notes, and tags
+  - **Duplicate Prevention**: Helps users avoid creating duplicate dancer profiles when they can't remember names
+  - **Memory Aid**: Useful when users remember where they know someone from but not their name
+
+### Technical
+- Added TagFilterChips widget integration to AddDancerDialog
+- Implemented filtered dancer loading and display logic
+- Added existing dancer selection functionality with form pre-filling
+- Maintained existing tag selection functionality for new dancers
+
+### Documentation
+- Updated Product specification.md to reflect new tag filtering functionality in Add Dancer Dialog
+
 ## [v1.2.1] - 2025-01-16
 
 ### User Requests

@@ -577,12 +577,14 @@ Tags Tab → [Add | Edit | Delete] → Back to tab
 - Optional reason text field for current situation context
 - Shows when ranking was last updated
 - Save/cancel actions (updates `last_updated` timestamp)
+- **Presented as a bottom sheet (showModalBottomSheet), matching the context actions menu style and wireframes**
 
 **Score Dialog (`ScoreDialog`)**:
 - Simple score assignment from predefined score options for any present attendant
 - Display score names with ordinal ratings (1=Amazing, 5=Meh) as radio buttons
 - Auto-selects current score if already assigned, otherwise defaults to "Good"
 - Save/cancel actions only - simplified interface without removal options
+- **Presented as a bottom sheet (showModalBottomSheet), matching the context actions menu style and wireframes**
 - **Context**: Accessible for any present attendant regardless of dance completion status
 - **Integration**: Launched from Dancer Actions Dialog for any attendant with flexible rating criteria
 
@@ -606,6 +608,11 @@ Tags Tab → [Add | Edit | Delete] → Back to tab
   - Selected tags highlighted with primary container color
   - Supports multiple tag selection per dancer
   - Tags load automatically for existing dancers
+- **Tag Filtering (New)**: Filter existing dancers by tag to avoid duplicates
+  - Tag filter chips above form fields (only when creating new dancers)
+  - Shows existing dancers with selected tag
+  - Select existing dancer to pre-fill form with their data
+  - Helps when users remember venue/context but not dancer name
 - Save/cancel actions
 - **Accessible from Event Screen**: Create new dancers during events without navigation
   - **Special Event Context Features**:

@@ -20,9 +20,44 @@ class RankingDialog extends StatefulWidget {
 
   @override
   State<RankingDialog> createState() => _RankingDialogState();
+
+  static Future<bool?> show(
+    BuildContext context, {
+    required int dancerId,
+    required int eventId,
+  }) {
+    return showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => _RankingDialogContent(
+        dancerId: dancerId,
+        eventId: eventId,
+      ),
+    );
+  }
 }
 
 class _RankingDialogState extends State<RankingDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(); // This widget is not used directly
+  }
+}
+
+class _RankingDialogContent extends StatefulWidget {
+  final int dancerId;
+  final int eventId;
+
+  const _RankingDialogContent({
+    required this.dancerId,
+    required this.eventId,
+  });
+
+  @override
+  State<_RankingDialogContent> createState() => _RankingDialogContentState();
+}
+
+class _RankingDialogContentState extends State<_RankingDialogContent> {
   final _reasonController = TextEditingController();
 
   List<Rank> _ranks = [];
@@ -34,12 +69,6 @@ class _RankingDialogState extends State<RankingDialog> {
   @override
   void initState() {
     super.initState();
-
-    ActionLogger.logUserAction('RankingDialog', 'dialog_opened', {
-      'dancerId': widget.dancerId,
-      'eventId': widget.eventId,
-    });
-
     _loadData();
   }
 
@@ -195,13 +224,41 @@ class _RankingDialogState extends State<RankingDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('Rank $_dancerName'),
-      content: SingleChildScrollView(
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Header
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Rank $_dancerName',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    ActionLogger.logUserAction(
+                        'RankingDialog', 'dialog_cancelled', {
+                      'dancerId': widget.dancerId,
+                      'eventId': widget.eventId,
+                    });
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.close),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 16),
+
             const Text(
               'How eager are you to dance with this person?',
               style: TextStyle(fontSize: 16),
@@ -229,7 +286,7 @@ class _RankingDialogState extends State<RankingDialog> {
                             color: Theme.of(context)
                                 .colorScheme
                                 .outline
-                                .withOpacity(0.2),
+                                .withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
@@ -305,34 +362,45 @@ class _RankingDialogState extends State<RankingDialog> {
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
+
+            const SizedBox(height: 16),
+
+            // Action buttons
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: _isLoading
+                        ? null
+                        : () {
+                            ActionLogger.logUserAction(
+                                'RankingDialog', 'dialog_cancelled', {
+                              'dancerId': widget.dancerId,
+                              'eventId': widget.eventId,
+                            });
+                            Navigator.pop(context);
+                          },
+                    child: const Text('Cancel'),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _saveRanking,
+                    child: _isLoading
+                        ? const SizedBox(
+                            height: 16,
+                            width: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Text('Set Ranking'),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: _isLoading
-              ? null
-              : () {
-                  ActionLogger.logUserAction(
-                      'RankingDialog', 'dialog_cancelled', {
-                    'dancerId': widget.dancerId,
-                    'eventId': widget.eventId,
-                  });
-                  Navigator.pop(context);
-                },
-          child: const Text('Cancel'),
-        ),
-        ElevatedButton(
-          onPressed: _isLoading ? null : _saveRanking,
-          child: _isLoading
-              ? const SizedBox(
-                  height: 16,
-                  width: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : const Text('Set Ranking'),
-        ),
-      ],
     );
   }
 }
