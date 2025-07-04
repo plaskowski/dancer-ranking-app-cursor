@@ -120,17 +120,6 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
               },
             ),
 
-          // Remove from Event action (only available in planning mode for ranked dancers)
-          if (widget.isPlanningMode && widget.dancer.hasRanking && !isPastEvent)
-            ListTile(
-              leading: Icon(
-                Icons.remove_circle_outline,
-                color: context.danceTheme.warning,
-              ),
-              title: const Text('Remove from Event'),
-              onTap: () => _removeFromEvent(context),
-            ),
-
           // Score actions (only for present mode and attendants)
           if (!widget.isPlanningMode && widget.dancer.isPresent)
             ListTile(
@@ -259,6 +248,17 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
               leading: Icon(Icons.exit_to_app, color: context.danceTheme.warning),
               title: const Text('Mark as Left'),
               onTap: () => _markAsLeft(context),
+            ),
+
+          // Remove from Event action (only available in planning mode for ranked dancers)
+          if (widget.isPlanningMode && widget.dancer.hasRanking && !isPastEvent)
+            ListTile(
+              leading: Icon(
+                Icons.remove_circle_outline,
+                color: context.danceTheme.warning,
+              ),
+              title: const Text('Remove from Event'),
+              onTap: () => _removeFromEvent(context),
             ),
         ],
       ),
