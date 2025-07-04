@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../database/database.dart';
 import '../../models/dancer_with_tags.dart';
 import '../../services/dancer_service.dart';
+import '../../utils/action_logger.dart';
 import '../../utils/toast_helper.dart';
 import '../../widgets/add_dancer_dialog.dart';
 import '../../widgets/dancer_card_with_tags.dart';
@@ -118,81 +119,110 @@ class _DancersScreenState extends State<DancersScreen> {
             StreamBuilder<List<DancerWithTags>>(
               stream: dancerService.watchDancersWithTags(),
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const SliverToBoxAdapter(
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                }
+                try {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const SliverToBoxAdapter(
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
 
-                if (snapshot.hasError) {
-                  return SliverToBoxAdapter(
-                    child: Center(
-                      child: Text('Error: ${snapshot.error}'),
-                    ),
-                  );
-                }
+                  if (snapshot.hasError) {
+                    ActionLogger.logError('DancersScreen.StreamBuilder', 'stream_error', {
+                      'error': snapshot.error.toString(),
+                      'stackTrace': snapshot.stackTrace?.toString(),
+                    });
+                    return SliverToBoxAdapter(
+                      child: Center(
+                        child: Text('Error: ${snapshot.error}'),
+                      ),
+                    );
+                  }
 
-                final allDancers = snapshot.data ?? [];
-                final dancers = _filterDancers(allDancers);
+                  final allDancers = snapshot.data ?? [];
 
-                if (dancers.isEmpty) {
-                  return SliverToBoxAdapter(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.people,
-                            size: 64,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            _searchQuery.isEmpty && _selectedTagId == null
-                                ? 'No dancers yet'
-                                : 'No dancers found',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
+                  // Log null check issues
+                  for (int i = 0; i < allDancers.length; i++) {
+                    final dancer = allDancers[i];
+                  }
+
+                  final dancers = _filterDancers(allDancers);
+
+                  if (dancers.isEmpty) {
+                    return SliverToBoxAdapter(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.people,
+                              size: 64,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            _searchQuery.isEmpty && _selectedTagId == null
-                                ? 'Tap + to add your first dancer'
-                                : 'Try adjusting your filters',
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
+                            const SizedBox(height: 16),
+                            Text(
+                              _searchQuery.isEmpty && _selectedTagId == null ? 'No dancers yet' : 'No dancers found',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 8),
+                            Text(
+                              _searchQuery.isEmpty && _selectedTagId == null
+                                  ? 'Tap + to add your first dancer'
+                                  : 'Try adjusting your filters',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+
+                  return SliverPadding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          try {
+                            final dancerWithTags = dancers[index];
+                            return DancerCardWithTags(
+                              dancerWithTags: dancerWithTags,
+                              onEdit: () => _editDancer(dancerWithTags.dancer),
+                              onDelete: () => _deleteDancer(dancerWithTags.dancer),
+                              onMerge: () => _mergeDancer(dancerWithTags.dancer),
+                            );
+                          } catch (e, stackTrace) {
+                            ActionLogger.logError('DancersScreen.DancerCard', 'build_error', {
+                              'index': index,
+                              'error': e.toString(),
+                              'stackTrace': stackTrace.toString(),
+                            });
+                            return Card(
+                              child: ListTile(
+                                title: Text('Error displaying dancer at index $index'),
+                                subtitle: Text('Error: $e'),
+                              ),
+                            );
+                          }
+                        },
+                        childCount: dancers.length,
                       ),
                     ),
                   );
-                }
-
-                return SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final dancerWithTags = dancers[index];
-                        return DancerCardWithTags(
-                          dancerWithTags: dancerWithTags,
-                          onEdit: () => _editDancer(dancerWithTags.dancer),
-                          onDelete: () => _deleteDancer(dancerWithTags.dancer),
-                          onMerge: () => _mergeDancer(dancerWithTags.dancer),
-                        );
-                      },
-                      childCount: dancers.length,
+                } catch (e, stackTrace) {
+                  ActionLogger.logError('DancersScreen.StreamBuilder', 'builder_error', {
+                    'error': e.toString(),
+                    'stackTrace': stackTrace.toString(),
+                  });
+                  return SliverToBoxAdapter(
+                    child: Center(
+                      child: Text('Error building dancers list: $e'),
                     ),
-                  ),
-                );
+                  );
+                }
               },
             ),
           ],
@@ -234,8 +264,7 @@ class _DancersScreenState extends State<DancersScreen> {
           TextButton(
             onPressed: () async {
               try {
-                final dancerService =
-                    Provider.of<DancerService>(context, listen: false);
+                final dancerService = Provider.of<DancerService>(context, listen: false);
                 await dancerService.deleteDancer(dancer.id);
 
                 if (mounted) {
@@ -249,8 +278,7 @@ class _DancersScreenState extends State<DancersScreen> {
                 }
               }
             },
-            style: TextButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.error),
+            style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
             child: const Text('Delete'),
           ),
         ],

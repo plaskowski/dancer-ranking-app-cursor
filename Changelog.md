@@ -8,16 +8,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v1.3.0] - 2025-01-16
 
 ### User Requests
-- "1" - Request to implement dancer archival feature
+- "The implementation does not match the @feature_DancerArchival.md spec" - Request to align implementation with dancer archival feature specification
 
 ### Added
-- **Dancer Archival System**: Complete backend implementation for archiving inactive dancers
+- **Dancer Archival System**: Complete implementation for archiving inactive dancers with UI integration
   - **Database Schema**: Added `isArchived` (boolean) and `archivedAt` (datetime) fields to dancers table
   - **Archival Methods**: `archiveDancer()`, `reactivateDancer()`, `getArchivedDancers()` in DancerCrudService
   - **Active-Only Streams**: `watchActiveDancers()`, `searchActiveDancers()`, `getActiveDancersWithTags()` methods
   - **Service Layer Integration**: Updated DancerService, DancerSearchService, and DancerTagService with archival support
   - **Data Preservation**: All dance history, rankings, scores, and relationships remain intact when archiving
   - **Reversible Operations**: Archived dancers can be easily reactivated with one method call
+  - **Archive Confirmation Dialog**: Explains archival effects before archiving dancers
+  - **Event Planning Integration**: Archived dancers automatically excluded from all event planning screens
+  - **Visual Distinction**: Archived dancers display with muted appearance and "archived" label
+
+### Improved
+- **Event Planning Cleanup**: Archived dancers no longer appear in event planning, making selection cleaner
+- **User Experience**: Archive confirmation dialog explains what archival means (preserves history, reversible)
+- **Context Menu Enhancement**: Archive/Reactivate options in dancer context menu with proper icons
+- **Visual Feedback**: Archived dancers clearly marked with grey "archived" label and muted styling
 
 ### Technical
 - **Database Migration**: Added new columns with proper defaults (existing dancers remain active)
@@ -27,11 +36,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Tag Service Updates**: Active-only tag filtering for better community management
 - **Action Logging**: Comprehensive logging for all archival operations
 - **Error Handling**: Proper error handling and validation for archival operations
+- **UI Components**: Created ArchiveConfirmationDialog with clear explanation of archival effects
+- **Event Service Updates**: Modified watchDancersForEvent to exclude archived dancers from event planning
 
 ### Documentation
+- **Feature Specification**: Updated `specs/features/feature_DancerArchival.md` to remove dedicated screen option
+- **Product Specification**: Updated Dancers Screen section to include archival functionality
 - **Technical Specification**: Updated `specs/technical/technical_DancerArchival.md` with implementation status
 - **Service Layer Documentation**: Documented all new archival methods and active-only streams
-- **Migration Strategy**: Marked Phase 1 (Database) and Phase 2 (Service Layer) as completed
 
 ## [v1.2.1] - 2025-01-16
 

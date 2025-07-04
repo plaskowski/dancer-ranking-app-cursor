@@ -18,7 +18,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting(super.executor);
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -54,6 +54,10 @@ class AppDatabase extends _$AppDatabase {
           if (from < 5) {
             // Migration from v4 to v5: Add Scores table and enhance Attendances/Dancers tables
             await _addScoresAndEnhanceTables(m);
+          }
+          if (from < 6) {
+            // Migration from v5 to v6: Add archival fields to Dancers table
+            await _addArchivalFieldsToDancers(m);
           }
         },
       );
@@ -122,6 +126,13 @@ class AppDatabase extends _$AppDatabase {
 
     // Insert default scores
     await _insertDefaultScores();
+  }
+
+  // Migration helper to add archival fields to Dancers table
+  Future<void> _addArchivalFieldsToDancers(Migrator m) async {
+    // Add new columns to dancers table
+    await customStatement('ALTER TABLE dancers ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0');
+    await customStatement('ALTER TABLE dancers ADD COLUMN archived_at INTEGER');
   }
 
   // Insert contextual tags related to specific places/events where you know dancers from

@@ -17,9 +17,7 @@ class DancerTagService {
     ActionLogger.logServiceCall('DancerTagService', 'getDancersWithTags');
 
     try {
-      final dancers = await (_database.select(_database.dancers)
-            ..orderBy([(d) => OrderingTerm.asc(d.name)]))
-          .get();
+      final dancers = await (_database.select(_database.dancers)..orderBy([(d) => OrderingTerm.asc(d.name)])).get();
 
       final dancersWithTags = <DancerWithTags>[];
 
@@ -35,8 +33,7 @@ class DancerTagService {
           ..orderBy([OrderingTerm.asc(_database.tags.name)]);
 
         final tagResults = await tagQuery.get();
-        final tags =
-            tagResults.map((row) => row.readTable(_database.tags)).toList();
+        final tags = tagResults.map((row) => row.readTable(_database.tags)).toList();
 
         dancersWithTags.add(DancerWithTags(
           dancer: dancer,
@@ -46,8 +43,7 @@ class DancerTagService {
 
       return dancersWithTags;
     } catch (e) {
-      ActionLogger.logError(
-          'DancerTagService.getDancersWithTags', e.toString());
+      ActionLogger.logError('DancerTagService.getDancersWithTags', e.toString());
       rethrow;
     }
   }
@@ -86,8 +82,7 @@ class DancerTagService {
           ..orderBy([OrderingTerm.asc(_database.tags.name)]);
 
         final tagResults = await tagQuery.get();
-        final tags =
-            tagResults.map((row) => row.readTable(_database.tags)).toList();
+        final tags = tagResults.map((row) => row.readTable(_database.tags)).toList();
 
         dancersWithTags.add(DancerWithTags(
           dancer: dancer,
@@ -97,20 +92,67 @@ class DancerTagService {
 
       return dancersWithTags;
     } catch (e) {
-      ActionLogger.logError(
-          'DancerTagService.getActiveDancersWithTags', e.toString());
+      ActionLogger.logError('DancerTagService.getActiveDancersWithTags', e.toString());
       rethrow;
     }
   }
 
   // Watch active dancers with their tags for reactive updates
   Stream<List<DancerWithTags>> watchActiveDancersWithTags() {
-    ActionLogger.logServiceCall(
-        'DancerTagService', 'watchActiveDancersWithTags');
+    ActionLogger.logServiceCall('DancerTagService', 'watchActiveDancersWithTags');
 
     // Use the existing watchAllDancers stream and transform it
     return _crudService.watchAllDancers().asyncMap((_) async {
       return await getActiveDancersWithTags();
+    });
+  }
+
+  // Get archived dancers with their tags for display
+  Future<List<DancerWithTags>> getArchivedDancersWithTags() async {
+    ActionLogger.logServiceCall('DancerTagService', 'getArchivedDancersWithTags');
+
+    try {
+      final dancers = await (_database.select(_database.dancers)
+            ..where((d) => d.isArchived.equals(true))
+            ..orderBy([(d) => OrderingTerm.desc(d.archivedAt), (d) => OrderingTerm.asc(d.name)]))
+          .get();
+
+      final dancersWithTags = <DancerWithTags>[];
+
+      for (final dancer in dancers) {
+        // Get tags for this dancer
+        final tagQuery = _database.select(_database.tags).join([
+          innerJoin(
+            _database.dancerTags,
+            _database.tags.id.equalsExp(_database.dancerTags.tagId),
+          ),
+        ])
+          ..where(_database.dancerTags.dancerId.equals(dancer.id))
+          ..orderBy([OrderingTerm.asc(_database.tags.name)]);
+
+        final tagResults = await tagQuery.get();
+        final tags = tagResults.map((row) => row.readTable(_database.tags)).toList();
+
+        dancersWithTags.add(DancerWithTags(
+          dancer: dancer,
+          tags: tags,
+        ));
+      }
+
+      return dancersWithTags;
+    } catch (e) {
+      ActionLogger.logError('DancerTagService.getArchivedDancersWithTags', e.toString());
+      rethrow;
+    }
+  }
+
+  // Watch archived dancers with their tags for reactive updates
+  Stream<List<DancerWithTags>> watchArchivedDancersWithTags() {
+    ActionLogger.logServiceCall('DancerTagService', 'watchArchivedDancersWithTags');
+
+    // Use the existing watchAllDancers stream and transform it
+    return _crudService.watchAllDancers().asyncMap((_) async {
+      return await getArchivedDancersWithTags();
     });
   }
 
@@ -119,8 +161,7 @@ class DancerTagService {
     int eventId,
     int tagId,
   ) async {
-    ActionLogger.logServiceCall(
-        'DancerTagService', 'getUnrankedDancersForEventByTag', {
+    ActionLogger.logServiceCall('DancerTagService', 'getUnrankedDancersForEventByTag', {
       'eventId': eventId,
       'tagId': tagId,
     });
@@ -137,9 +178,7 @@ class DancerTagService {
             ..orderBy([OrderingTerm.asc(_database.dancers.name)]))
           .get();
 
-      final dancers = dancersWithTag
-          .map((row) => row.readTable(_database.dancers))
-          .toList();
+      final dancers = dancersWithTag.map((row) => row.readTable(_database.dancers)).toList();
 
       // Now filter these dancers to only include unranked ones for the event
       final unrankedDancers = <DancerWithEventInfo>[];
@@ -147,15 +186,13 @@ class DancerTagService {
       for (final dancer in dancers) {
         // Check if dancer is already ranked for this event
         final ranking = await (_database.select(_database.rankings)
-              ..where((r) =>
-                  r.eventId.equals(eventId) & r.dancerId.equals(dancer.id)))
+              ..where((r) => r.eventId.equals(eventId) & r.dancerId.equals(dancer.id)))
             .getSingleOrNull();
 
         if (ranking == null) {
           // Get attendance info if exists
           final attendance = await (_database.select(_database.attendances)
-                ..where((a) =>
-                    a.eventId.equals(eventId) & a.dancerId.equals(dancer.id)))
+                ..where((a) => a.eventId.equals(eventId) & a.dancerId.equals(dancer.id)))
               .getSingleOrNull();
 
           // Create DancerWithEventInfo
@@ -175,8 +212,7 @@ class DancerTagService {
 
       return unrankedDancers;
     } catch (e) {
-      ActionLogger.logError(
-          'DancerTagService.getUnrankedDancersForEventByTag', e.toString(), {
+      ActionLogger.logError('DancerTagService.getUnrankedDancersForEventByTag', e.toString(), {
         'eventId': eventId,
         'tagId': tagId,
       });
@@ -189,8 +225,7 @@ class DancerTagService {
     int eventId,
     int tagId,
   ) {
-    ActionLogger.logServiceCall(
-        'DancerTagService', 'watchAvailableDancersForEventByTag', {
+    ActionLogger.logServiceCall('DancerTagService', 'watchAvailableDancersForEventByTag', {
       'eventId': eventId,
       'tagId': tagId,
     });
@@ -206,8 +241,7 @@ class DancerTagService {
     int eventId,
     int tagId,
   ) async {
-    ActionLogger.logServiceCall(
-        'DancerTagService', 'getAvailableDancersForEventByTag', {
+    ActionLogger.logServiceCall('DancerTagService', 'getAvailableDancersForEventByTag', {
       'eventId': eventId,
       'tagId': tagId,
     });
@@ -224,9 +258,7 @@ class DancerTagService {
             ..orderBy([OrderingTerm.asc(_database.dancers.name)]))
           .get();
 
-      final dancers = dancersWithTag
-          .map((row) => row.readTable(_database.dancers))
-          .toList();
+      final dancers = dancersWithTag.map((row) => row.readTable(_database.dancers)).toList();
 
       // Filter to only include unranked and absent dancers
       final availableDancers = <DancerWithEventInfo>[];
@@ -234,14 +266,12 @@ class DancerTagService {
       for (final dancer in dancers) {
         // Check if dancer is already ranked for this event
         final ranking = await (_database.select(_database.rankings)
-              ..where((r) =>
-                  r.eventId.equals(eventId) & r.dancerId.equals(dancer.id)))
+              ..where((r) => r.eventId.equals(eventId) & r.dancerId.equals(dancer.id)))
             .getSingleOrNull();
 
         // Check attendance status
         final attendance = await (_database.select(_database.attendances)
-              ..where((a) =>
-                  a.eventId.equals(eventId) & a.dancerId.equals(dancer.id)))
+              ..where((a) => a.eventId.equals(eventId) & a.dancerId.equals(dancer.id)))
             .getSingleOrNull();
 
         // Include only unranked and absent dancers
@@ -263,8 +293,7 @@ class DancerTagService {
 
       return availableDancers;
     } catch (e) {
-      ActionLogger.logError(
-          'DancerTagService.getAvailableDancersForEventByTag', e.toString(), {
+      ActionLogger.logError('DancerTagService.getAvailableDancersForEventByTag', e.toString(), {
         'eventId': eventId,
         'tagId': tagId,
       });

@@ -36,7 +36,7 @@ A dancer archival system that allows users to archive inactive dancers while pre
 
 #### Reactivating a Dancer
 1. **Trigger**: Dancer returns to community or user wants to include them
-2. **Action**: Go to Archived Dancers → find dancer → "Reactivate"
+2. **Action**: Navigate to Dancers screen → find archived dancer → "Reactivate"
 3. **Result**: Dancer immediately returns to active list with all history intact
 
 ## User Interface Design
@@ -45,13 +45,11 @@ A dancer archival system that allows users to archive inactive dancers while pre
 - **Archive Option**: Add "Archive" to existing context menu (Edit, Merge, Delete)
 - **Archived Label**: Show "archived" label on archived dancers in main dancers screen
 - **Show Archived**: Display archived dancers on main dancers screen with visual distinction
+- **Visual Distinction**: Archived dancers have muted appearance with grey "archived" label
+- **Same Capabilities**: Search, view history, and manage archived dancers like active dancers
+- **Reactivation**: "Archive" becomes "Reactivate" in context menu for archived dancers
 
-### 2. Archived Dancers Screen
-- **Dedicated Space**: Separate screen for archived dancer management
-- **Same Capabilities**: Search and view history like active dancers
-- **Reactivation**: Prominent "Reactivate" button for each dancer
-
-### 3. Event Planning Integration
+### 2. Event Planning Integration
 - **Skip Archived**: Archived dancers are automatically excluded from event planning dancer selection
 - **Simple Behavior**: No complex toggles or options - just clean separation
 
@@ -78,7 +76,7 @@ A dancer archival system that allows users to archive inactive dancers while pre
 ### Scenario 2: Dancer Returns
 **Context**: Former regular dancer shows up at event after 6-month absence
 **Problem**: They're not in active list, need to add them back
-**Solution**: Go to Archived Dancers → find them → Reactivate
+**Solution**: Go to Dancers screen → find archived dancer → Reactivate
 **Result**: All their history preserved, immediately back in active list
 
 ### Scenario 3: Event Planning with Clean Lists

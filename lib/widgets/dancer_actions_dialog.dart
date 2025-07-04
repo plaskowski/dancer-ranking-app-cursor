@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../screens/dancer_history_screen.dart';
 import '../services/attendance_service.dart';
+import '../services/dancer/dancer_crud_service.dart';
 import '../services/dancer_service.dart';
 import '../services/event_service.dart';
 import '../theme/theme_extensions.dart';
@@ -64,8 +65,7 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final isPastEvent =
-        _event != null && EventStatusHelper.isPastEvent(_event!.date);
+    final isPastEvent = _event != null && EventStatusHelper.isPastEvent(_event!.date);
 
     ActionLogger.logUserAction('DancerActionsDialog', 'dialog_opened', {
       'dancerId': widget.dancer.id,
@@ -99,11 +99,9 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
                 widget.dancer.hasRanking ? Icons.edit : Icons.add,
                 color: context.danceTheme.rankingHigh,
               ),
-              title: Text(
-                  widget.dancer.hasRanking ? 'Edit Ranking' : 'Set Ranking'),
+              title: Text(widget.dancer.hasRanking ? 'Edit Ranking' : 'Set Ranking'),
               onTap: () {
-                ActionLogger.logUserAction(
-                    'DancerActionsDialog', 'ranking_action_tapped', {
+                ActionLogger.logUserAction('DancerActionsDialog', 'ranking_action_tapped', {
                   'dancerId': widget.dancer.id,
                   'eventId': widget.eventId,
                   'hasExistingRanking': widget.dancer.hasRanking,
@@ -131,11 +129,9 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
                 widget.dancer.hasScore ? Icons.star : Icons.star_outline,
                 color: context.danceTheme.danceAccent,
               ),
-              title:
-                  Text(widget.dancer.hasScore ? 'Edit Score' : 'Assign Score'),
+              title: Text(widget.dancer.hasScore ? 'Edit Score' : 'Assign Score'),
               onTap: () {
-                ActionLogger.logUserAction(
-                    'DancerActionsDialog', 'score_action_tapped', {
+                ActionLogger.logUserAction('DancerActionsDialog', 'score_action_tapped', {
                   'dancerId': widget.dancer.id,
                   'eventId': widget.eventId,
                   'hasExistingScore': widget.dancer.hasScore,
@@ -160,23 +156,17 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
           if (!isPastEvent)
             ListTile(
               leading: Icon(
-                widget.dancer.isPresent
-                    ? Icons.location_off
-                    : Icons.location_on,
-                color: widget.dancer.isPresent
-                    ? context.danceTheme.absent
-                    : context.danceTheme.present,
+                widget.dancer.isPresent ? Icons.location_off : Icons.location_on,
+                color: widget.dancer.isPresent ? context.danceTheme.absent : context.danceTheme.present,
               ),
-              title: Text(
-                  widget.dancer.isPresent ? 'Mark absent' : 'Mark Present'),
+              title: Text(widget.dancer.isPresent ? 'Mark absent' : 'Mark Present'),
               onTap: () => _togglePresence(context),
             ),
 
           // Combined action for absent dancers - Mark Present & Record Dance
           if (!widget.dancer.isPresent && !widget.isPlanningMode)
             ListTile(
-              leading: Icon(Icons.music_note_outlined,
-                  color: context.danceTheme.danceAccent),
+              leading: Icon(Icons.music_note_outlined, color: context.danceTheme.danceAccent),
               title: const Text('Mark Present & Record Dance'),
               subtitle: const Text('Quick combo action'),
               onTap: () => _markPresentAndRecordDance(context),
@@ -185,13 +175,10 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
           // Record Dance / Edit impression - only available for present dancers in Present mode
           if (!widget.isPlanningMode && widget.dancer.isPresent)
             ListTile(
-              leading:
-                  Icon(Icons.music_note, color: context.danceTheme.danceAccent),
-              title: Text(
-                  widget.dancer.hasDanced ? 'Edit impression' : 'Record Dance'),
+              leading: Icon(Icons.music_note, color: context.danceTheme.danceAccent),
+              title: Text(widget.dancer.hasDanced ? 'Edit impression' : 'Record Dance'),
               onTap: () {
-                ActionLogger.logUserAction(
-                    'DancerActionsDialog', 'record_dance_tapped', {
+                ActionLogger.logUserAction('DancerActionsDialog', 'record_dance_tapped', {
                   'dancerId': widget.dancer.id,
                   'eventId': widget.eventId,
                   'hasAlreadyDanced': widget.dancer.hasDanced,
@@ -211,12 +198,10 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
 
           // View History
           ListTile(
-            leading: Icon(Icons.history,
-                color: Theme.of(context).colorScheme.onSurfaceVariant),
+            leading: Icon(Icons.history, color: Theme.of(context).colorScheme.onSurfaceVariant),
             title: const Text('View History'),
             onTap: () {
-              ActionLogger.logUserAction(
-                  'DancerActionsDialog', 'view_history_tapped', {
+              ActionLogger.logUserAction('DancerActionsDialog', 'view_history_tapped', {
                 'dancerId': widget.dancer.id,
                 'eventId': widget.eventId,
               });
@@ -233,39 +218,35 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
 
           // Edit General Notes
           ListTile(
-            leading: Icon(Icons.edit_note,
-                color: Theme.of(context).colorScheme.primary),
+            leading: Icon(Icons.edit_note, color: Theme.of(context).colorScheme.primary),
             title: const Text('Edit the dancer'),
-            onTap: () {
-              ActionLogger.logUserAction(
-                  'DancerActionsDialog', 'edit_notes_tapped', {
+            onTap: () async {
+              ActionLogger.logUserAction('DancerActionsDialog', 'edit_notes_tapped', {
                 'dancerId': widget.dancer.id,
                 'eventId': widget.eventId,
               });
 
               Navigator.pop(context);
-              // Convert DancerWithEventInfo to Dancer for editing
-              final dancerEntity = Dancer(
-                id: widget.dancer.id,
-                name: widget.dancer.name,
-                notes: widget.dancer.notes,
-                createdAt: widget.dancer.createdAt,
-                firstMetDate: widget.dancer.firstMetDate,
-              );
-              showDialog(
-                context: context,
-                builder: (context) => AddDancerDialog(dancer: dancerEntity),
-              );
+              // Get current dancer data from database for editing
+              final crudService = Provider.of<DancerCrudService>(context, listen: false);
+              final dancerEntity = await crudService.getDancer(widget.dancer.id);
+              if (dancerEntity == null) {
+                ToastHelper.showError(context, 'Dancer not found');
+                return;
+              }
+              if (context.mounted) {
+                showDialog(
+                  context: context,
+                  builder: (context) => AddDancerDialog(dancer: dancerEntity),
+                );
+              }
             },
           ),
 
           // Mark as Left - only show for present dancers who haven't danced yet and not for past events
-          if (!isPastEvent &&
-              widget.dancer.isPresent &&
-              !widget.dancer.hasDanced)
+          if (!isPastEvent && widget.dancer.isPresent && !widget.dancer.hasDanced)
             ListTile(
-              leading:
-                  Icon(Icons.exit_to_app, color: context.danceTheme.warning),
+              leading: Icon(Icons.exit_to_app, color: context.danceTheme.warning),
               title: const Text('Mark as Left'),
               onTap: () => _markAsLeft(context),
             ),
@@ -274,8 +255,7 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
       actions: [
         TextButton(
           onPressed: () {
-            ActionLogger.logUserAction(
-                'DancerActionsDialog', 'dialog_cancelled', {
+            ActionLogger.logUserAction('DancerActionsDialog', 'dialog_cancelled', {
               'dancerId': widget.dancer.id,
               'eventId': widget.eventId,
             });
@@ -288,8 +268,7 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
   }
 
   Future<void> _togglePresence(BuildContext context) async {
-    ActionLogger.logUserAction(
-        'DancerActionsDialog', 'toggle_presence_started', {
+    ActionLogger.logUserAction('DancerActionsDialog', 'toggle_presence_started', {
       'dancerId': widget.dancer.id,
       'eventId': widget.eventId,
       'currentlyPresent': widget.dancer.isPresent,
@@ -297,42 +276,35 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
     });
 
     try {
-      final attendanceService =
-          Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
 
       if (widget.dancer.isPresent) {
         // Mark as absent
-        await attendanceService.removeFromPresent(
-            widget.eventId, widget.dancer.id);
+        await attendanceService.removeFromPresent(widget.eventId, widget.dancer.id);
         if (context.mounted) {
-          ActionLogger.logUserAction(
-              'DancerActionsDialog', 'mark_absent_completed', {
+          ActionLogger.logUserAction('DancerActionsDialog', 'mark_absent_completed', {
             'dancerId': widget.dancer.id,
             'eventId': widget.eventId,
           });
 
           Navigator.pop(context);
-          ToastHelper.showSuccess(
-              context, '${widget.dancer.name} marked as absent');
+          ToastHelper.showSuccess(context, '${widget.dancer.name} marked as absent');
         }
       } else {
         // Mark as present
         await attendanceService.markPresent(widget.eventId, widget.dancer.id);
         if (context.mounted) {
-          ActionLogger.logUserAction(
-              'DancerActionsDialog', 'mark_present_completed', {
+          ActionLogger.logUserAction('DancerActionsDialog', 'mark_present_completed', {
             'dancerId': widget.dancer.id,
             'eventId': widget.eventId,
           });
 
           Navigator.pop(context);
-          ToastHelper.showSuccess(
-              context, '${widget.dancer.name} marked as present');
+          ToastHelper.showSuccess(context, '${widget.dancer.name} marked as present');
         }
       }
     } catch (e) {
-      ActionLogger.logError(
-          'DancerActionsDialog._togglePresence', e.toString(), {
+      ActionLogger.logError('DancerActionsDialog._togglePresence', e.toString(), {
         'dancerId': widget.dancer.id,
         'eventId': widget.eventId,
         'action': widget.dancer.isPresent ? 'mark_absent' : 'mark_present',
@@ -353,8 +325,7 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
     });
 
     try {
-      final attendanceService =
-          Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
 
       // Mark as present and record dance
       await attendanceService.recordDance(
@@ -363,19 +334,16 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
       );
 
       if (context.mounted) {
-        ActionLogger.logUserAction(
-            'DancerActionsDialog', 'combo_action_completed', {
+        ActionLogger.logUserAction('DancerActionsDialog', 'combo_action_completed', {
           'dancerId': widget.dancer.id,
           'eventId': widget.eventId,
         });
 
         Navigator.pop(context);
-        ToastHelper.showSuccess(
-            context, '${widget.dancer.name} marked present and dance recorded');
+        ToastHelper.showSuccess(context, '${widget.dancer.name} marked present and dance recorded');
       }
     } catch (e) {
-      ActionLogger.logError(
-          'DancerActionsDialog._markPresentAndRecordDance', e.toString(), {
+      ActionLogger.logError('DancerActionsDialog._markPresentAndRecordDance', e.toString(), {
         'dancerId': widget.dancer.id,
         'eventId': widget.eventId,
       });
@@ -395,22 +363,19 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
     });
 
     try {
-      final attendanceService =
-          Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
 
       // Mark the dancer as left
       await attendanceService.markAsLeft(widget.eventId, widget.dancer.id);
 
       if (context.mounted) {
-        ActionLogger.logUserAction(
-            'DancerActionsDialog', 'mark_as_left_completed', {
+        ActionLogger.logUserAction('DancerActionsDialog', 'mark_as_left_completed', {
           'dancerId': widget.dancer.id,
           'eventId': widget.eventId,
         });
 
         Navigator.pop(context);
-        ToastHelper.showSuccess(
-            context, '${widget.dancer.name} marked as left');
+        ToastHelper.showSuccess(context, '${widget.dancer.name} marked as left');
       }
     } catch (e) {
       ActionLogger.logError('DancerActionsDialog._markAsLeft', e.toString(), {

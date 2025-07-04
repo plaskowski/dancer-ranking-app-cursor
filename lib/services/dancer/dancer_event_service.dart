@@ -37,6 +37,7 @@ class DancerEventService {
         _database.attendances.scoreId.equalsExp(_database.scores.id),
       ),
     ])
+      ..where(_database.dancers.isArchived.equals(false)) // Exclude archived dancers from event planning
       ..orderBy([OrderingTerm.asc(_database.dancers.name)]);
 
     return query.watch().asyncMap((result) async {
@@ -127,8 +128,11 @@ class DancerEventService {
       print('DEBUG: Ranked dancer IDs for event $eventId: ${rankedDancerIdsDebug.map((r) => r.dancerId).toList()}');
       print('DEBUG: Present dancer IDs for event $eventId: ${presentDancerIds.map((a) => a.dancerId).toList()}');
 
-      // Get all dancers
-      final allDancers = await (_database.select(_database.dancers)..orderBy([(d) => OrderingTerm.asc(d.name)])).get();
+      // Get all active dancers (exclude archived dancers)
+      final allDancers = await (_database.select(_database.dancers)
+            ..where((d) => d.isArchived.equals(false))
+            ..orderBy([(d) => OrderingTerm.asc(d.name)]))
+          .get();
 
       // Filter out dancers that have rankings OR are present for this event
       final rankedDancerIds = rankedDancerIdsDebug.map((r) => r.dancerId).toSet();

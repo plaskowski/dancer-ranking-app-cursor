@@ -16,6 +16,8 @@ import 'services/tag_service.dart';
 import 'theme/app_theme.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   // Configure system UI
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

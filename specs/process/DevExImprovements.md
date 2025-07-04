@@ -48,5 +48,10 @@
 - second cursor
   - https://egghead.io/launch-multiple-cursor-composer-ai-agents-to-work-in-parallel~y1q56
 
-  ## Przemyslenia
-  Bez szans zeby moc mergowac zmiany roznych agentow kiedy pisza low level code
+## Remember
+- DB migration
+- update wireframes
+- ..
+
+## Przemyslenia
+Bez szans zeby moc mergowac zmiany roznych agentow kiedy pisza low level code
