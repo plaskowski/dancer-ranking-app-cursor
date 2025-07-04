@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Technical
 - Replaced Wrap widget with SingleChildScrollView and Row in TagSelectionWidget
 - Used Expanded widget to properly constrain scrollable area and prevent dialog width expansion
+- Added ConstrainedBox with maxWidth: 400 to dialog content to prevent horizontal expansion
 - Added proper padding and spacing for horizontal tag chips
 - Maintained all existing tag selection functionality and styling
 - Applied proper Dart formatting to ensure code quality

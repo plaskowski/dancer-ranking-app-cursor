@@ -295,243 +295,246 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
     return AlertDialog(
       title: Text(isEditing ? 'Edit Dancer' : 'Add New Dancer'),
-      content: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Tag filtering section (only when not editing)
-              if (!isEditing) ...[
-                const Text(
-                  'Filter existing dancers by tag:',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TagFilterChips(
-                  selectedTagId: _selectedFilterTagId,
-                  onTagChanged: _onFilterTagChanged,
-                ),
-                const SizedBox(height: 16),
-              ],
-
-              // Show filtered dancers if any
-              if (!isEditing && _selectedFilterTagId != null) ...[
-                if (_isLoadingDancers)
-                  const Center(child: CircularProgressIndicator())
-                else if (_filteredDancers.isNotEmpty) ...[
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 400),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Tag filtering section (only when not editing)
+                if (!isEditing) ...[
                   const Text(
-                    'Existing dancers with this tag:',
+                    'Filter existing dancers by tag:',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Container(
-                    constraints: const BoxConstraints(maxHeight: 200),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _filteredDancers.length,
-                      itemBuilder: (context, index) {
-                        final dancer = _filteredDancers[index];
-                        return Card(
-                          child: ListTile(
-                            leading: const Icon(Icons.person),
-                            title: Text(dancer.name),
-                            subtitle:
-                                dancer.notes != null && dancer.notes!.isNotEmpty
-                                    ? Text(
-                                        dancer.notes!,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    : null,
-                            trailing: TextButton(
-                              onPressed: () => _selectExistingDancer(dancer),
-                              child: const Text('Select'),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                ] else if (!_isLoadingDancers) ...[
-                  const Text(
-                    'No existing dancers found with this tag.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
+                  TagFilterChips(
+                    selectedTagId: _selectedFilterTagId,
+                    onTagChanged: _onFilterTagChanged,
                   ),
                   const SizedBox(height: 16),
                 ],
-              ],
 
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Name *',
-                  border: OutlineInputBorder(),
+                // Show filtered dancers if any
+                if (!isEditing && _selectedFilterTagId != null) ...[
+                  if (_isLoadingDancers)
+                    const Center(child: CircularProgressIndicator())
+                  else if (_filteredDancers.isNotEmpty) ...[
+                    const Text(
+                      'Existing dancers with this tag:',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      constraints: const BoxConstraints(maxHeight: 200),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _filteredDancers.length,
+                        itemBuilder: (context, index) {
+                          final dancer = _filteredDancers[index];
+                          return Card(
+                            child: ListTile(
+                              leading: const Icon(Icons.person),
+                              title: Text(dancer.name),
+                              subtitle: dancer.notes != null &&
+                                      dancer.notes!.isNotEmpty
+                                  ? Text(
+                                      dancer.notes!,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  : null,
+                              trailing: TextButton(
+                                onPressed: () => _selectExistingDancer(dancer),
+                                child: const Text('Select'),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ] else if (!_isLoadingDancers) ...[
+                    const Text(
+                      'No existing dancers found with this tag.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ],
+
+                TextFormField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Name *',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter a name';
+                    }
+                    return null;
+                  },
+                  textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (_) {
+                    // Move focus to notes field
+                    FocusScope.of(context).nextFocus();
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Please enter a name';
-                  }
-                  return null;
-                },
-                textCapitalization: TextCapitalization.words,
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_) {
-                  // Move focus to notes field
-                  FocusScope.of(context).nextFocus();
-                },
-              ),
 
-              const SizedBox(height: 16),
-
-              TextFormField(
-                controller: _notesController,
-                decoration: InputDecoration(
-                  labelText: 'Notes (optional)',
-                  border: const OutlineInputBorder(),
-                  hintText: 'e.g., Great lead, loves spins',
-                  suffixIcon: _notesController.text.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.clear),
-                          onPressed: () {
-                            setState(() {
-                              _notesController.clear();
-                            });
-                          },
-                          tooltip: 'Clear notes',
-                        )
-                      : null,
-                ),
-                maxLines: 2,
-                textCapitalization: TextCapitalization.sentences,
-                textInputAction: TextInputAction.done,
-                onFieldSubmitted: (_) {
-                  if (_formKey.currentState?.validate() == true) {
-                    _saveDancer();
-                  }
-                },
-                onChanged: (value) {
-                  setState(() {
-                    // Trigger rebuild to show/hide clear button
-                  });
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              // Show "already danced" option only when adding during an event
-              if (isEventContext && !isEditing) ...[
                 const SizedBox(height: 16),
-                CheckboxListTile(
-                  title: const Text('Already danced with this person'),
-                  value: _alreadyDanced,
-                  onChanged: (value) {
-                    ActionLogger.logUserAction(
-                        'AddDancerDialog', 'already_danced_toggled', {
-                      'value': value ?? false,
-                      'eventId': widget.eventId,
-                    });
 
+                TextFormField(
+                  controller: _notesController,
+                  decoration: InputDecoration(
+                    labelText: 'Notes (optional)',
+                    border: const OutlineInputBorder(),
+                    hintText: 'e.g., Great lead, loves spins',
+                    suffixIcon: _notesController.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              setState(() {
+                                _notesController.clear();
+                              });
+                            },
+                            tooltip: 'Clear notes',
+                          )
+                        : null,
+                  ),
+                  maxLines: 2,
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) {
+                    if (_formKey.currentState?.validate() == true) {
+                      _saveDancer();
+                    }
+                  },
+                  onChanged: (value) {
                     setState(() {
-                      _alreadyDanced = value ?? false;
+                      // Trigger rebuild to show/hide clear button
                     });
                   },
-                  controlAffinity: ListTileControlAffinity.leading,
-                  contentPadding: EdgeInsets.zero,
                 ),
 
-                // Show impression field if already danced is checked
-                if (_alreadyDanced) ...[
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _impressionController,
-                    decoration: const InputDecoration(
-                      labelText: 'Impression (optional)',
-                      border: OutlineInputBorder(),
-                      hintText: 'How was the dance?',
-                    ),
-                    maxLines: 3,
-                    textCapitalization: TextCapitalization.sentences,
-                  ),
-                  const SizedBox(height: 16),
-                ],
-              ],
-
-              // Tag selection
-              TagSelectionWidget(
-                selectedTagIds: _selectedTagIds,
-                onTagsChanged: _onTagsChanged,
-                dancerId: widget.dancer?.id,
-              ),
-
-              // First met date picker (only when editing existing dancers)
-              if (isEditing) ...[
                 const SizedBox(height: 16),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.calendar_today,
-                              size: 20,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              'First Met Date',
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Set explicit date for when you first met (if before event tracking)',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: OutlinedButton.icon(
-                                onPressed: _selectFirstMetDate,
-                                icon: const Icon(Icons.edit_calendar),
-                                label: Text(_firstMetDate != null
-                                    ? DateFormat('MMM d, yyyy')
-                                        .format(_firstMetDate!)
-                                    : 'Select Date'),
+
+                // Show "already danced" option only when adding during an event
+                if (isEventContext && !isEditing) ...[
+                  const SizedBox(height: 16),
+                  CheckboxListTile(
+                    title: const Text('Already danced with this person'),
+                    value: _alreadyDanced,
+                    onChanged: (value) {
+                      ActionLogger.logUserAction(
+                          'AddDancerDialog', 'already_danced_toggled', {
+                        'value': value ?? false,
+                        'eventId': widget.eventId,
+                      });
+
+                      setState(() {
+                        _alreadyDanced = value ?? false;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity.leading,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+
+                  // Show impression field if already danced is checked
+                  if (_alreadyDanced) ...[
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _impressionController,
+                      decoration: const InputDecoration(
+                        labelText: 'Impression (optional)',
+                        border: OutlineInputBorder(),
+                        hintText: 'How was the dance?',
+                      ),
+                      maxLines: 3,
+                      textCapitalization: TextCapitalization.sentences,
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ],
+
+                // Tag selection
+                TagSelectionWidget(
+                  selectedTagIds: _selectedTagIds,
+                  onTagsChanged: _onTagsChanged,
+                  dancerId: widget.dancer?.id,
+                ),
+
+                // First met date picker (only when editing existing dancers)
+                if (isEditing) ...[
+                  const SizedBox(height: 16),
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.calendar_today,
+                                size: 20,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
-                            ),
-                            if (_firstMetDate != null) ...[
                               const SizedBox(width: 8),
-                              IconButton(
-                                onPressed: _clearFirstMetDate,
-                                icon: const Icon(Icons.clear),
-                                tooltip: 'Clear date',
+                              Text(
+                                'First Met Date',
+                                style: Theme.of(context).textTheme.titleSmall,
                               ),
                             ],
-                          ],
-                        ),
-                      ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Set explicit date for when you first met (if before event tracking)',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: OutlinedButton.icon(
+                                  onPressed: _selectFirstMetDate,
+                                  icon: const Icon(Icons.edit_calendar),
+                                  label: Text(_firstMetDate != null
+                                      ? DateFormat('MMM d, yyyy')
+                                          .format(_firstMetDate!)
+                                      : 'Select Date'),
+                                ),
+                              ),
+                              if (_firstMetDate != null) ...[
+                                const SizedBox(width: 8),
+                                IconButton(
+                                  onPressed: _clearFirstMetDate,
+                                  icon: const Icon(Icons.clear),
+                                  tooltip: 'Clear date',
+                                ),
+                              ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
