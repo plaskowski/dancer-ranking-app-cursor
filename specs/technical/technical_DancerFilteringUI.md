@@ -27,13 +27,14 @@ Integrate the existing `SimplifiedTagFilter` and `ActivityFilterWidget` componen
 **Props**:
 ```dart
 class CombinedDancerFilter extends StatefulWidget {
-  final String searchQuery;
-  final Function(String) onSearchChanged;
-  final List<int> selectedTagIds;
-  final Function(List<int>) onTagsChanged;
-  final ActivityLevel? selectedActivityLevel;
-  final Function(ActivityLevel?) onActivityLevelChanged;
+  final Function(String, List<int>, ActivityLevel?) onFiltersChanged;
   final Map<ActivityLevel, int>? activityLevelCounts;
+
+  const CombinedDancerFilter({
+    super.key,
+    required this.onFiltersChanged,
+    this.activityLevelCounts,
+  });
 }
 ```
 
@@ -46,32 +47,23 @@ class CombinedDancerFilter extends StatefulWidget {
 
 ### 2. **Update AddExistingDancerScreen State**
 
-**Add to `_AddExistingDancerScreenState`**:
+**Replace existing state with simplified version**:
 ```dart
-// Activity filtering state
-ActivityLevel? _selectedActivityLevel = ActivityLevel.active; // Default
-Map<ActivityLevel, int>? _activityLevelCounts;
-bool _isLoadingActivityCounts = false;
+class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
+  final _searchController = TextEditingController();
+  String _searchQuery = '';
+  List<int> _selectedTagIds = [];
+  ActivityLevel? _selectedActivityLevel = ActivityLevel.active;
+}
 ```
 
-**Add methods**:
+**Add callback handler**:
 ```dart
-void _onActivityLevelChanged(ActivityLevel? level) {
+void _onFiltersChanged(String searchQuery, List<int> tagIds, ActivityLevel? activityLevel) {
   setState(() {
-    _selectedActivityLevel = level;
-  });
-}
-
-Future<void> _loadActivityLevelCounts() async {
-  // TODO: Implement when activity service is ready
-  setState(() {
-    _activityLevelCounts = {
-      ActivityLevel.all: 47,
-      ActivityLevel.active: 23,
-      ActivityLevel.veryActive: 15,
-      ActivityLevel.coreCommunity: 8,
-      ActivityLevel.recent: 12,
-    };
+    _searchQuery = searchQuery;
+    _selectedTagIds = tagIds;
+    _selectedActivityLevel = activityLevel;
   });
 }
 ```
@@ -88,17 +80,8 @@ SimplifiedTagFilter(
 
 // With this:
 CombinedDancerFilter(
-  searchQuery: _searchQuery,
-  onSearchChanged: (query) {
-    setState(() {
-      _searchQuery = query;
-    });
-  },
-  selectedTagIds: _selectedTagIds,
-  onTagsChanged: _onTagsChanged,
-  selectedActivityLevel: _selectedActivityLevel,
-  onActivityLevelChanged: _onActivityLevelChanged,
-  activityLevelCounts: _activityLevelCounts,
+  onFiltersChanged: _onFiltersChanged,
+  activityLevelCounts: widget.activityLevelCounts,
 ),
 ```
 
@@ -155,20 +138,21 @@ Stream<List<DancerWithEventInfo>> _getAvailableDancersStream() {
 **File**: `lib/widgets/combined_dancer_filter.dart`
 
 **Features**:
+- Self-contained state management
 - Horizontal layout with three filters
-- Search field with proper controller
+- Search field with debounced input
 - Tag dropdown with pill format
 - Activity dropdown with radio buttons
 - Auto-apply functionality for both dropdowns
-- Proper state management
+- Parent notification through single callback
 
 ### Step 2: Update AddExistingDancerScreen
 
 **Changes**:
-- Add activity level state variables
 - Replace `SimplifiedTagFilter` with `CombinedDancerFilter`
 - Remove duplicate search field
-- Add activity level change handler
+- Add single `_onFiltersChanged` callback
+- Simplify state management
 - Update filtering logic (placeholder for now)
 
 ### Step 3: Update Dancer Filtering
@@ -187,40 +171,12 @@ CombinedDancerFilter
 └── ActivityFilter (dropdown with radio buttons)
 ```
 
-## Unified Component State
-
-### CombinedDancerFilter Props
-
-```dart
-class CombinedDancerFilter extends StatefulWidget {
-  final String searchQuery;
-  final Function(String) onSearchChanged;
-  final List<int> selectedTagIds;
-  final Function(List<int>) onTagsChanged;
-  final ActivityLevel? selectedActivityLevel;
-  final Function(ActivityLevel?) onActivityLevelChanged;
-  final Map<ActivityLevel, int>? activityLevelCounts;
-}
-```
+## Component State Management
 
 ### CombinedDancerFilter Internal State
 
 **Component manages its own state**:
 ```dart
-class CombinedDancerFilter extends StatefulWidget {
-  final Function(String, List<int>, ActivityLevel?) onFiltersChanged;
-  final Map<ActivityLevel, int>? activityLevelCounts;
-
-  const CombinedDancerFilter({
-    super.key,
-    required this.onFiltersChanged,
-    this.activityLevelCounts,
-  });
-
-  @override
-  State<CombinedDancerFilter> createState() => _CombinedDancerFilterState();
-}
-
 class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
   String _searchQuery = '';
   List<int> _selectedTagIds = [];
@@ -270,31 +226,6 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
       _isLoadingCounts = false;
     });
   }
-}
-```
-
-### AddExistingDancerScreen Simplified State
-
-**Keep only what's needed**:
-```dart
-class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
-  final _searchController = TextEditingController();
-  String _searchQuery = '';
-  List<int> _selectedTagIds = [];
-  ActivityLevel? _selectedActivityLevel = ActivityLevel.active;
-}
-```
-
-### State Management Methods
-
-**Simple callback handlers**:
-```dart
-void _onFiltersChanged(String searchQuery, List<int> tagIds, ActivityLevel? activityLevel) {
-  setState(() {
-    _searchQuery = searchQuery;
-    _selectedTagIds = tagIds;
-    _selectedActivityLevel = activityLevel;
-  });
 }
 ```
 
