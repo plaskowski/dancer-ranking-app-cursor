@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../database/database.dart';
 import '../../models/dancer_with_tags.dart';
+import '../../services/dancer/dancer_filter_service.dart';
 import '../../services/dancer_service.dart';
 import '../../utils/toast_helper.dart';
 import '../../widgets/add_dancer_dialog.dart';
@@ -42,28 +43,13 @@ class _DancersScreenState extends State<DancersScreen> {
   }
 
   List<DancerWithTags> _filterDancers(List<DancerWithTags> dancers) {
+    final filterService = DancerFilterService.of(context);
     List<DancerWithTags> filteredDancers = dancers;
 
     // Apply search filter
     if (_searchQuery.isNotEmpty) {
-      final query = _searchQuery.toLowerCase();
-      filteredDancers = filteredDancers.where((dancer) {
-        // Search in dancer name - match start of words only
-        final nameWords = dancer.name.toLowerCase().split(' ');
-        if (nameWords.any((word) => word.startsWith(query))) {
-          return true;
-        }
-
-        // Search in notes - match start of words only
-        if (dancer.notes != null) {
-          final noteWords = dancer.notes!.toLowerCase().split(' ');
-          if (noteWords.any((word) => word.startsWith(query))) {
-            return true;
-          }
-        }
-
-        return false;
-      }).toList();
+      filteredDancers =
+          filterService.filterDancersByTextWords(dancers, _searchQuery);
     }
 
     // Apply tag filter

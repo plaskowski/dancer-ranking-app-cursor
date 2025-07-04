@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../services/attendance_service.dart';
-import '../../../services/dancer/dancer_tag_service.dart';
+import '../../../services/dancer/dancer_filter_service.dart';
 import '../../../services/dancer_service.dart';
 import '../../../theme/theme_extensions.dart';
 import '../../../widgets/safe_fab.dart';
@@ -260,36 +260,15 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
   }
 
   Future<List<DancerWithEventInfo>> _getDancersForSelection() async {
-    final dancerService = Provider.of<DancerService>(context, listen: false);
-    final dancerTagService =
-        Provider.of<DancerTagService>(context, listen: false);
-
-    // If tag is selected, use tag-filtered method
-    if (_selectedTagId != null) {
-      return dancerTagService.getUnrankedDancersForEventByTag(
-          widget.eventId, _selectedTagId!);
-    } else {
-      // Use existing method for all unranked dancers
-      return dancerService.getUnrankedDancersForEvent(widget.eventId);
-    }
+    final filterService = DancerFilterService.of(context);
+    return filterService.getUnrankedDancersForEvent(
+      widget.eventId,
+      tagId: _selectedTagId,
+    );
   }
 
   List<DancerWithEventInfo> _filterDancers(List<DancerWithEventInfo> dancers) {
-    var filtered = dancers;
-
-    // Tag filtering is handled in _getDancersForSelection()
-    // Only apply text search here
-
-    // Filter by search query
-    if (_searchQuery.isNotEmpty) {
-      filtered = filtered.where((dancer) {
-        final name = dancer.name.toLowerCase();
-        final notes = (dancer.notes ?? '').toLowerCase();
-        final query = _searchQuery.toLowerCase();
-        return name.contains(query) || notes.contains(query);
-      }).toList();
-    }
-
-    return filtered;
+    final filterService = DancerFilterService.of(context);
+    return filterService.filterDancersByTextEvent(dancers, _searchQuery);
   }
 }

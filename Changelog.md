@@ -549,197 +549,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated score group header in summary tab to use simple text instead of pill container
 - Maintained all existing functionality while improving contextual behavior
 
-## [v0.91.0] - 2025-07-03
+## [v0.9.2] - 2025-07-04
 
 ### User Requests
-- "do the import preview right away after selecting a file (or dropping to drop zone)" - Request to automatically show import preview after file selection
-- "use native android toasts" - Request to replace Flutter SnackBars with native Android toasts
+- "Extract common code for dancer filtering from both dialogs"
+- "Commit"
 
 ### Added
-- **Automatic Preview**: Import preview now appears immediately after file selection or drop
-  - **Seamless Workflow**: No more manual "Next" button needed after file selection
-  - **Instant Feedback**: Users see preview data as soon as files are selected
-  - **Loading Indicator**: File selection step shows loading spinner while parsing files
-  - **Automatic Advancement**: Valid files automatically advance to preview step
-- **Native Android Toasts**: Replaced Flutter SnackBars with native Android toast notifications
-  - **Platform Native**: Uses Android's native toast system for better integration
-  - **Consistent Styling**: Maintains app's color scheme and theming
-  - **Better Performance**: Native toasts are more efficient than Flutter SnackBars
-  - **Cross-Platform Support**: Works on Android with fallback for other platforms
-
-### Changed
-- **Import Workflow**: Streamlined import process by eliminating manual preview step
-  - **Simplified Steps**: File selection step now automatically processes and shows preview
-  - **Better UX**: Reduced number of clicks needed to complete import process
-  - **Immediate Feedback**: Users get instant validation and preview of their files
-- **Toast System**: Replaced SnackBar-based toasts with native Android toasts
-  - **Native Integration**: Better integration with Android system
-  - **Improved UX**: More familiar toast behavior for Android users
-  - **Consistent Theming**: Maintains app's color scheme across all toast types
+- **DancerFilterService**: New shared service for common dancer filtering logic
+- **Centralized Filtering**: Unified filtering methods for tag-based and text-based filtering
+- **Provider Integration**: Easy access via `DancerFilterService.of(context)`
 
 ### Technical
-- Modified `_onFilesSelected` method to automatically trigger file parsing
-- Updated `_parseFiles` method to automatically advance to preview step for valid files
-- Removed manual "Next" button from file selection step
-- Added loading indicator to file selection step during parsing
-- Added `fluttertoast` dependency for native Android toast support
-- Updated `ToastHelper` to use native Android toasts with platform detection
-- Maintained all existing functionality while improving user experience
-
-## [v0.90.0] - 2025-01-16
-
-### User Requests
-- "import many files at once" - Request to add support for importing multiple event files simultaneously
-
-### Added
-- **Multiple File Import**: Added support for importing multiple event files at once
-  - **Multi-File Selection**: Users can now select multiple JSON files in a single import session
-  - **Drag & Drop Support**: Multiple files can be dropped simultaneously
-  - **Combined Preview**: All files are parsed and shown in a unified preview
-  - **Bulk Import**: All valid events from all files are imported in a single operation
-  - **Error Handling**: Individual file errors are shown while valid files proceed
-  - **Progress Tracking**: Import progress shows combined operation across all files
-
-### Improved
-- **File Selection UI**: Updated file selection step to show multiple selected files
-  - **File List Display**: Shows count and details of all selected files
-  - **Individual File Info**: Each file shows name and size
-  - **Clear All Option**: Easy way to clear all selected files at once
-  - **Updated Help Text**: Clarified that multiple files are supported
-
-### Technical
-- Enhanced `EventFileSelectionStep` to support multiple file selection
-- Updated `ImportEventsDialog` to handle multiple parse results
-- Added combined preview logic to merge results from multiple files
-- Modified import logic to combine events from all files into single JSON structure
-- Maintained backward compatibility with single file imports
-- Added proper error handling for individual file failures
-
-## [v0.89.0] - 2025-01-16
-
-### User Requests
-- "The filter fields on dancers screen do not scroll with the dancers list" - Request to fix scrolling behavior
-- "Why the search field looses focus after every key press?" - Request to fix search field focus issue
-- "Make search more inteligent, it should only match a start of word in the dancer name" - Request to improve search precision
-
-### Fixed
-- **Unified Scrolling**: Fixed filter fields and dancers list to scroll together as one unit
-  - **Single Scroll Area**: Replaced separate scrollable areas with unified `CustomScrollView`
-  - **Sliver Components**: Used `SliverToBoxAdapter` for filters and `SliverList` for dancers
-  - **Natural Scrolling**: Filter fields now scroll away smoothly with the rest of content
-  - **Better UX**: Consistent scrolling behavior like other screens in the app
-
-- **Search Field Focus**: Fixed search field losing focus after every keystroke
-  - **Stable Filter Section**: Moved `StreamBuilder` to only wrap dancers list, not entire body
-  - **Preserved Focus**: Search field maintains focus while typing
-  - **Smooth Typing**: No more focus loss after each keystroke
-  - **Better Performance**: Only necessary parts rebuild when data changes
-
-### Improved
-- **Intelligent Word-Start Search**: Enhanced search to only match start of words
-  - **Word Boundary Matching**: Split names and notes into words, match query against word starts
-  - **More Precise**: Only matches meaningful word beginnings, not substrings anywhere
-  - **Intuitive Behavior**: Matches how users naturally think about names
-  - **Professional Quality**: Similar to how most search engines work
-  - **Case Insensitive**: Still ignores case for better usability
-
-### Technical
-- Restructured widget hierarchy to separate stable filter section from dynamic dancers list
-- Enhanced `_filterDancers()` method with word-start matching logic
-- Used `CustomScrollView` with slivers for unified scrolling experience
-- Maintained all existing functionality while improving UX
-- Improved search precision with `split(' ')` and `startsWith()` logic
-
-## [v0.88.0] - 2025-01-16
-
-### User Requests
-- "dancers screen - add tag filter" - Request to add tag filtering functionality to dancers screen
-- "add both filter fields into scrollview so they don't take space" - Request to make filter fields scrollable to save vertical space
-
-### Added
-- **Tag Filtering**: Added tag filter functionality to dancers screen
-  - **Tag Filter Chips**: Users can now filter dancers by selecting specific tags
-  - **Combined Filtering**: Search and tag filters work together for precise dancer filtering
-  - **Clear Filter Option**: Easy way to clear tag selection with close button
-  - **Visual Feedback**: Selected tags are highlighted with primary container color
-  - **Smart Empty State**: Empty state messages now consider both search and tag filters
-
-### Improved
-- **Scrollable Filter Section**: Both search field and tag filter are now in a scrollable container
-  - **Space Efficient**: Filter fields don't take up fixed vertical space
-  - **Better UX**: Users can scroll through filters when needed, especially on smaller screens
-  - **Flexible Layout**: Filter section adapts to content without blocking dancer list
-  - **Consistent Design**: Maintains Material Design principles with proper spacing
-
-### Technical
-- Added `_selectedTagId` state variable to track selected tag filter
-- Enhanced `_filterDancers()` method to handle both search and tag filtering
-- Integrated `TagFilterChips` widget for consistent tag filtering UI
-- Wrapped filter fields in `SingleChildScrollView` for space efficiency
-- Updated empty state logic to consider both filter types
-- Maintained existing search functionality while adding tag filtering
-
-## [v0.87.0] - 2025-01-16
-
-### User Requests
-- "Event preview list should not be scrollable as it conflicts with overall scrolling of the screen" - Request to fix scrolling conflicts in events import preview
-
-### Improved
-- **Events Import Preview**: Fixed scrolling conflicts by making event preview list non-scrollable
-  - **No More Scrolling Conflicts**: Removed fixed-height ListView that was conflicting with overall screen scrolling
-  - **Better UX**: Users can now scroll through the entire preview naturally without nested scroll areas
-  - **Cleaner Layout**: Event preview cards now flow naturally in the main scroll area
-  - **Maintained Functionality**: All event details and expansion tiles still work as expected
-
-### Technical
-- Replaced `SizedBox(height: 300, child: ListView.builder)` with `Column` using `map()` spread operator
-- Added margin to event cards for proper spacing
-- Maintained all existing functionality including expansion tiles and attendance details
-- Improved code readability with better formatting
-
-## [v0.86.0] - 2025-01-16
-
-### User Requests
-- "remove the import completion toast as it obscures the summary view" - Request to remove toast notifications that block the import results view
-
-### Improved
-- **Events Import Summary View**: Removed toast notifications that were obscuring the import results
-  - **Cleaner Summary**: Import completion toasts no longer block the detailed results view
-  - **Better Visibility**: Users can now see all import statistics and details without toast interference
-  - **Comprehensive Information**: Summary view already provides all necessary import result information
-  - **Improved UX**: No more need to wait for toasts to disappear to read import results
-
-### Technical
-- Removed `ToastHelper.showSuccess` and `ToastHelper.showError` methods
-- Updated `ToastHelper` to use `Fluttertoast` for toast notifications
-- Maintained all existing functionality while improving toast handling
-
-## [v0.9.1] - 2025-07-04
-
-### User Requests
-- "Still no success. Forget it. Let's change the AppBar color in the theme but allow me to provide (optionally) this color via command line argument"
-- "Better, now match the color with IDE top bar"
-- "Change of plans. Write me a Cursor rule so that when I ask you to test the app we will use existing terminal instead of opening the new one. Ask me to reload the app instead."
-- "Great, let's start over with AppBar color provided optionally via command line"
-- "Target file "--appbar-color=#FF0000" not found."
-- "yay, works!"
-- "great, commit and push"
-
-### Added
-- **AppBar Color Customization**: Added optional AppBar color customization via `--dart-define=APPBAR_COLOR=#HEXCODE`
-- **Color Parsing**: Implemented hex color parsing with support for `#` prefix and without
-- **Cross-Theme Support**: AppBar color customization works for both light and dark themes
-- **Cursor Rules**: Added App Testing Workflow Rule for better development experience
-
-### Technical
-- **Theme System**: Enhanced `AppTheme` class with `getLightTheme()` and `getDarkTheme()` methods accepting optional `appBarColor` parameter
-- **Color Parsing**: Added `parseColor()` method supporting multiple hex formats (6-digit, 8-digit, 3-digit)
-- **Dart-Define Integration**: Used `String.fromEnvironment()` for proper Flutter configuration passing
-- **Backward Compatibility**: Maintained existing `lightTheme` and `darkTheme` getters for compatibility
+- **Code Reuse**: Eliminated duplicate filtering logic across multiple dialogs
+- **Maintainability**: Single source of truth for all dancer filtering operations
+- **Consistency**: All dialogs now use the same filtering behavior and error handling
+- **Performance**: Optimized filtering methods with proper error handling
 
 ### Files Changed
-- `lib/main.dart`: Added dart-define parsing and app initialization
-- `lib/theme/app_theme.dart`: Enhanced theme methods with color customization
-- `.cursorrules`: Added App Testing Workflow Rule
+- `lib/services/dancer/dancer_filter_service.dart`: New shared filtering service
+- `lib/widgets/add_dancer_dialog.dart`: Updated to use shared service
+- `lib/screens/event/dialogs/select_dancers_screen.dart`: Updated to use shared service
+- `lib/screens/event/dialogs/add_existing_dancer_screen.dart`: Updated to use shared service
+- `lib/screens/dancers/dancers_screen.dart`: Updated to use shared service
 
-## [v0.9.0] - 2025-07-04
+## [v0.9.1] - 2025-07-04

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../database/database.dart';
 import '../models/dancer_with_tags.dart';
 import '../services/attendance_service.dart';
+import '../services/dancer/dancer_filter_service.dart';
 import '../services/dancer_service.dart';
 import '../services/tag_service.dart';
 import '../utils/action_logger.dart';
@@ -98,12 +99,9 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
     });
 
     try {
-      final dancerService = Provider.of<DancerService>(context, listen: false);
-      final dancers = await dancerService.getDancersWithTags();
-
-      final filtered = dancers.where((dancer) {
-        return dancer.tags.any((tag) => tag.id == _selectedFilterTagId);
-      }).toList();
+      final filterService = DancerFilterService.of(context);
+      final filtered =
+          await filterService.filterDancersByTag(_selectedFilterTagId!);
 
       if (mounted) {
         setState(() {
