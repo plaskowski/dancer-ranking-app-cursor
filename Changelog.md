@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.4] - 2025-01-17
+
+### User Requests
+- "remove dancer from planned event action" - Request to add ability to remove dancers from planned events
+
+### Added
+- **Remove from Event Action**: Added ability to remove dancers from planned events in the planning tab
+  - **Planning Mode Only**: Available only in planning mode for dancers who have rankings
+  - **Context Menu Action**: "Remove from Event" option in dancer actions dialog
+  - **Ranking Deletion**: Removes the dancer's ranking and planning data from the event
+  - **User Feedback**: Success/error toast messages with dancer name
+  - **Past Event Protection**: Not available for past events to preserve historical data
+  - **Action Logging**: Comprehensive logging for remove operations
+
+### Technical
+- Added `_removeFromEvent()` method to DancerActionsDialog
+- Used RankingService.deleteRanking() to remove dancer rankings
+- Added proper error handling and user feedback
+- Integrated with existing action logging system
+- Applied proper Dart formatting for code quality
+
 ## [v1.3.3] - 2025-01-17
 
 ### User Requests
