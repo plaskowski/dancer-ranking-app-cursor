@@ -309,18 +309,19 @@ Users can adjust rankings during events for various reasons:
 **Purpose**: Select multiple existing dancers to add to event ranking (for planning phase)
 **Actions**:
 - View list of unranked dancers only (dancers not yet added to this event)
-- **Tag filtering**: Filter dancers by single tag selection using tag filter chips
+- **Tag filtering**: Filter dancers by single tag selection using SimplifiedTagFilter component
   - Shows only tags that have associated dancers
   - Single-select behavior with clear button (✕) when tag is selected
-  - Combined with text search for refined filtering
-- Search dancers by name or notes
+  - Combined with integrated text search for refined filtering
+- **Integrated search**: Search dancers by name or notes using built-in search from SimplifiedTagFilter
 - Multi-select dancers using checkboxes
 - Add selected dancers to event without automatic rank assignment
 **Tag Filtering UI**:
-- **Filter Chips**: Horizontal scrollable row of tag chips above dancer list
-- **Material 3 Design**: Chips change color when selected, clear button appears
+- **SimplifiedTagFilter Component**: Consistent tag filtering interface used across the app
+- **Material 3 Design**: Clean interface with proper spacing and visual feedback
 - **Smart Tag Display**: Only shows tags that have associated dancers in database
 - **Memory Aid**: Helps recall dancers by venue/context (e.g., "Monday Class" → class students)
+- **Integrated Search**: Built-in search field within the SimplifiedTagFilter component
 **Navigation**:
 - ← Back to Event Screen
 
@@ -332,7 +333,10 @@ Users can adjust rankings during events for various reasons:
   - Shows only tags that have associated dancers
   - Single-select behavior with clear button (✕) when tag is selected
   - Combined with text search for refined filtering
-- Search dancers by name or notes
+- **Text search**: Search dancers by name or notes with real-time filtering
+  - Debounced search (300ms) for smooth performance
+  - Combined with tag filtering for comprehensive results
+  - Maintains focus and cursor position during typing
 - One-tap "Mark Present" action for each dancer
 - **Persistent Screen**: Screen stays open after marking dancers to enable bulk operations
 - **Efficient Feedback**: Brief 1-second snackbar confirmations for rapid marking
@@ -352,20 +356,26 @@ Users can adjust rankings during events for various reasons:
 **Purpose**: Manage all dancers in the database with comprehensive tag display, filtering, and archival support
 **Actions**:
 - View list of all dancers with their tags (active and archived)
-- **Search dancers** by name or notes (intelligent word-start matching)
-- **Filter dancers by tags** (tag filter chips with clear option)
+- **Search dancers** by name or notes (intelligent word-start matching with debounced input)
+- **Filter dancers by tags** (multi-tag selection with visual feedback)
 - Add new dancer (FAB)
 - Edit existing dancer (tap → context menu)
 - Delete dancer (tap → context menu, with confirmation)
 - **Merge dancers** (tap → context menu → "Merge into...")
 - **Archive/Reactivate dancers** (tap → context menu → "Archive"/"Reactivate")
 **UI Design**:
-- **Unified Scrolling**: Filter fields and dancers list scroll together as one cohesive unit
+- **SimplifiedTagFilter Component**: Consistent tag filtering interface used across the app
+- **Integrated Search**: Built-in search field within the SimplifiedTagFilter component
+- **Debounced Search**: 300ms debounce for smooth search experience without excessive API calls
+- **Multi-Tag Selection**: Support for selecting multiple tags with clear visual feedback
+- **Material 3 Design**: Clean interface with proper spacing and visual feedback
+- **Smart Tag Display**: Only shows tags that have associated dancers in database
+- **Visual Feedback**: Clear indication of selected filters with counts and descriptions
+- **Loading States**: Proper loading indicators for tag data
+- **Clear Functionality**: Easy clearing of tag selections with standard tap behavior
 - **Enhanced Card Layout**: Name with notes and tags displayed below
 - **Tag Display**: Colored chip badges under dancer name showing assigned tags
-- **Tag Filtering**: Horizontal scrollable tag chips with selection highlighting
 - **Combined Filtering**: Search and tag filters work together for precise dancer filtering
-- **Clear Filter Option**: Easy way to clear tag selection with close button
 - **Intelligent Search**: Word-start matching for precise name and notes searching
 - **Stable Focus**: Search field maintains focus while typing for smooth user experience
 - **Clean Organization**: Tags appear only on main Dancers screen, not on event screens
@@ -379,7 +389,7 @@ Users can adjust rankings during events for various reasons:
 - **Consistent Interaction**: Follows same pattern as Tags, Ranks, and Events screens
 - **Clean Design**: No visual clutter with hidden context menus
 - **Tag Chips Styling**: Small rounded containers with primary container color
-- **Smart Empty State**: Empty state messages consider both search and tag filters
+- **Smart Empty State**: Empty state messages consider all active filters
 **Merge Workflow**:
 1. **Initiate Merge**: Tap source dancer → Select "Merge into..." from context menu
 2. **Target Selection**: Navigate to dedicated screen with search functionality
@@ -691,6 +701,57 @@ Tags Tab → [Add | Edit | Delete] → Back to tab
 **Navigation**:
 - Opened from Home Screen's overflow menu.
 - Closes upon completion or cancellation.
+
+## Common Components
+
+### Filtering Components
+
+**CombinedDancerFilter (`lib/widgets/combined_dancer_filter.dart`)**:
+- Unified filtering component with self-managed state
+- Debounced search (300ms) for smooth user experience
+- Multi-tag selection with visual feedback and clear functionality
+- Activity level filtering with radio button selection
+- Dropdown UI for both tag and activity level selection
+- Loading states and error handling for data fetching
+- Visual feedback with counts and descriptions for each filter type
+- Used for comprehensive dancer filtering across the app
+
+**CommonSearchField (`lib/widgets/common_search_field.dart`)**:
+- Reusable search field with consistent Material 3 styling
+- Built-in clear button that appears when text is entered
+- Configurable hint text, label text, and initial value
+- Proper state management with TextEditingController
+- Support for different text input actions and autofocus
+- Used across multiple screens for consistent search experience
+
+**CommonFilterSection (`lib/widgets/common_filter_section.dart`)**:
+- Combined search and tag filtering component
+- Integrates CommonSearchField with TagFilterChips
+- Optional tag filtering with configurable visibility
+- Consistent padding and layout across all screens
+- Flexible configuration for different use cases
+- Reduces code duplication and ensures consistent UX
+
+**TagFilterChips (`lib/widgets/tag_filter_chips.dart`)**:
+- Horizontal scrollable row of tag filter chips
+- Single tag selection with toggle behavior
+- Clear button that appears when tag is selected
+- Loading state and empty state handling
+- Material 3 FilterChip styling with proper theming
+- Used for venue/context-based dancer filtering
+
+### Usage Patterns
+- **DancersScreen**: Uses CombinedDancerFilter for unified search, tag, and activity level filtering
+- **SelectDancersScreen**: Uses CommonFilterSection for event dancer selection
+- **AddDancerDialog**: Uses TagFilterChips for existing dancer filtering
+- **AddExistingDancerScreen**: Uses SimplifiedTagFilter for advanced filtering
+
+### Benefits
+- **Consistent UX**: All filtering screens have identical behavior and appearance
+- **Code Reusability**: Reduced duplication across multiple screens
+- **Maintainability**: Centralized filtering logic for easier updates
+- **Accessibility**: Proper semantic labels and keyboard navigation
+- **Performance**: Optimized state management and efficient rebuilds
 
 ## Navigation Flow
 

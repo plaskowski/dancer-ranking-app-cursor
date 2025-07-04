@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/dancer_with_tags.dart';
 import '../../../services/attendance_service.dart';
-import '../../../services/dancer/dancer_tag_service.dart';
-import '../../../services/dancer_service.dart';
+import '../../../services/dancer/dancer_filter_service.dart';
 import '../../../theme/theme_extensions.dart';
 import '../../../widgets/simplified_tag_filter.dart';
 
@@ -18,19 +20,17 @@ class AddExistingDancerScreen extends StatefulWidget {
   });
 
   @override
-  State<AddExistingDancerScreen> createState() => _AddExistingDancerScreenState();
+  State<AddExistingDancerScreen> createState() =>
+      _AddExistingDancerScreenState();
 }
 
 class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
-  final _searchController = TextEditingController();
-  String _searchQuery = '';
-
   // New filtering state
   List<int> _selectedTagIds = [];
+  String _searchQuery = '';
 
   @override
   void dispose() {
-    _searchController.dispose();
     super.dispose();
   }
 
@@ -40,9 +40,16 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
     });
   }
 
+  void _onSearchChanged(String query) {
+    setState(() {
+      _searchQuery = query;
+    });
+  }
+
   Future<void> _markDancerPresent(int dancerId, String dancerName) async {
     try {
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
 
       await attendanceService.markPresent(widget.eventId, dancerId);
 
@@ -52,7 +59,8 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
           SnackBar(
             content: Text('$dancerName marked as present'),
             backgroundColor: context.danceTheme.success,
-            duration: const Duration(seconds: 1), // Shorter duration for efficiency
+            duration:
+                const Duration(seconds: 1), // Shorter duration for efficiency
           ),
         );
       }
@@ -81,25 +89,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
             SimplifiedTagFilter(
               selectedTagIds: _selectedTagIds,
               onTagsChanged: _onTagsChanged,
-            ),
-
-            // Search Section
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: _searchController,
-                decoration: const InputDecoration(
-                  labelText: 'Search available dancers',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                  hintText: 'Search by name or notes...',
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _searchQuery = value;
-                  });
-                },
-              ),
+              onSearchChanged: _onSearchChanged,
             ),
 
             // Dancers List (with info block inside scroll)
@@ -109,7 +99,8 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                 children: [
                   // Info Banner (now scrollable)
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primaryContainer,
@@ -119,7 +110,8 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                       children: [
                         Icon(
                           Icons.info_outline,
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
                           size: 20,
                         ),
                         const SizedBox(width: 8),
@@ -128,7 +120,9 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                             'Showing unranked and absent dancers only. Present dancers managed in Present tab.',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Theme.of(context).colorScheme.onPrimaryContainer,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer,
                             ),
                           ),
                         ),
@@ -151,21 +145,21 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
 
   List<Widget> _buildDancerList(BuildContext context) {
     return [
-      StreamBuilder<List<DancerWithEventInfo>>(
-        stream: _getAvailableDancersStream(),
+      FutureBuilder<List<DancerWithTags>>(
+        key: ValueKey('${_selectedTagIds.toString()}_$_searchQuery'),
+        future: _getAvailableDancers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
           if (snapshot.hasError) {
-            return const Center(child: Text('Error: {snapshot.error}'));
+            return Center(child: Text('Error: ${snapshot.error}'));
           }
 
           final allDancers = snapshot.data ?? [];
-          final filteredDancers = _filterDancers(allDancers);
 
-          if (filteredDancers.isEmpty) {
+          if (allDancers.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -177,7 +171,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _searchQuery.isNotEmpty || _selectedTagIds.isNotEmpty
+                    _selectedTagIds.isNotEmpty
                         ? 'No dancers found with current filters'
                         : 'No available dancers',
                     style: TextStyle(
@@ -187,7 +181,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _searchQuery.isNotEmpty || _selectedTagIds.isNotEmpty
+                    _selectedTagIds.isNotEmpty
                         ? 'Try different search terms or clear filters'
                         : 'All unranked dancers are already present or ranked!',
                     style: TextStyle(
@@ -200,8 +194,8 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
           }
 
           return Column(
-            children: List.generate(filteredDancers.length, (index) {
-              final dancer = filteredDancers[index];
+            children: List.generate(allDancers.length, (index) {
+              final dancer = allDancers[index];
               return Card(
                 margin: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
                 child: ListTile(
@@ -209,7 +203,9 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
                     dancer.name,
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  subtitle: dancer.notes != null && dancer.notes!.isNotEmpty ? Text(dancer.notes!) : null,
+                  subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
+                      ? Text(dancer.notes!)
+                      : null,
                   trailing: ElevatedButton(
                     onPressed: () => _markDancerPresent(dancer.id, dancer.name),
                     child: const Text('Mark Present'),
@@ -223,36 +219,29 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
     ];
   }
 
-  Stream<List<DancerWithEventInfo>> _getAvailableDancersStream() {
-    final dancerService = Provider.of<DancerService>(context, listen: false);
-    final dancerTagService = Provider.of<DancerTagService>(context, listen: false);
+  Future<List<DancerWithTags>> _getAvailableDancers() async {
+    final filterService = DancerFilterService.of(context);
 
+    // Get dancers based on tag filtering
+    List<DancerWithTags> dancers;
     if (_selectedTagIds.isNotEmpty) {
-      // Use tag-filtered stream (for now, just use first tag)
-      return dancerTagService.watchAvailableDancersForEventByTag(widget.eventId, _selectedTagIds.first);
+      // Use tag filtering when tags are selected
+      dancers = await filterService.getAvailableDancersWithTagsForEvent(
+        widget.eventId,
+        tagIds: _selectedTagIds.toSet(),
+      );
     } else {
-      // Use existing stream and filter to show only unranked and absent dancers
-      return dancerService.watchDancersForEvent(widget.eventId).map((allDancers) {
-        return allDancers.where((dancer) {
-          // Show dancers who are NOT ranked (no rankName) AND NOT present (no attendanceMarkedAt)
-          final isUnranked = dancer.rankName == null;
-          final isAbsent = dancer.attendanceMarkedAt == null;
-          return isUnranked && isAbsent;
-        }).toList();
-      });
-    }
-  }
-
-  List<DancerWithEventInfo> _filterDancers(List<DancerWithEventInfo> dancers) {
-    if (_searchQuery.isEmpty) {
-      return dancers;
+      // Get all available dancers when no tags are selected
+      dancers = await filterService.getAvailableDancersWithTagsForEvent(
+        widget.eventId,
+      );
     }
 
-    return dancers.where((dancer) {
-      final name = dancer.name.toLowerCase();
-      final notes = (dancer.notes ?? '').toLowerCase();
-      final query = _searchQuery.toLowerCase();
-      return name.contains(query) || notes.contains(query);
-    }).toList();
+    // Apply search filtering if search query is provided
+    if (_searchQuery.isNotEmpty) {
+      dancers = filterService.filterDancersByText(dancers, _searchQuery);
+    }
+
+    return dancers;
   }
 }
