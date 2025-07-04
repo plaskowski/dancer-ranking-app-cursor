@@ -212,7 +212,7 @@ void main() {
         final dancer1Id = await crudService.createDancer(name: 'Dancer 1');
         await crudService.archiveDancer(dancer1Id);
 
-        await Future.delayed(const Duration(milliseconds: 100));
+        await Future.delayed(const Duration(milliseconds: 200));
 
         final dancer2Id = await crudService.createDancer(name: 'Dancer 2');
         await crudService.archiveDancer(dancer2Id);
@@ -226,13 +226,12 @@ void main() {
         expect(archivedDancers.any((d) => d.id == dancer1Id), isTrue);
         expect(archivedDancers.any((d) => d.id == dancer2Id), isTrue);
 
-        // Sort by archivedAt descending and check order
-        final sorted = [...archivedDancers]..sort((a, b) => b.archivedAt!.compareTo(a.archivedAt!));
-        expect(sorted[0].id, equals(dancer2Id));
-        expect(sorted[1].id, equals(dancer1Id));
+        // Check that the list is ordered by archivedAt descending (most recent first)
+        expect(archivedDancers[0].id, equals(dancer2Id));
+        expect(archivedDancers[1].id, equals(dancer1Id));
 
         // Verify that the timestamps are actually different
-        expect(sorted[0].archivedAt!.isAfter(sorted[1].archivedAt!), isTrue);
+        expect(archivedDancers[0].archivedAt!.isAfter(archivedDancers[1].archivedAt!), isTrue);
       });
     });
 
