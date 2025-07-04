@@ -7,10 +7,10 @@ import '../../services/dancer_service.dart';
 import '../../utils/action_logger.dart';
 import '../../utils/toast_helper.dart';
 import '../../widgets/add_dancer_dialog.dart';
+import '../../widgets/compact_dancer_filter.dart';
 import '../../widgets/dancer_card_with_tags.dart';
 import '../../widgets/error_display.dart';
 import '../../widgets/safe_fab.dart';
-import '../../widgets/tag_filter_chips.dart';
 import 'dialogs/select_merge_target_screen.dart';
 
 class DancersScreen extends StatefulWidget {
@@ -24,6 +24,7 @@ class _DancersScreenState extends State<DancersScreen> {
   final _searchController = TextEditingController();
   String _searchQuery = '';
   int? _selectedTagId;
+  ActivityLevel _selectedActivityLevel = ActivityLevel.all;
 
   @override
   void dispose() {
@@ -40,6 +41,12 @@ class _DancersScreenState extends State<DancersScreen> {
   void _onTagChanged(int? tagId) {
     setState(() {
       _selectedTagId = tagId;
+    });
+  }
+
+  void _onActivityLevelChanged(ActivityLevel? level) {
+    setState(() {
+      _selectedActivityLevel = level ?? ActivityLevel.all;
     });
   }
 
@@ -91,28 +98,13 @@ class _DancersScreenState extends State<DancersScreen> {
           slivers: [
             // Filter section
             SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  // Search bar
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: const InputDecoration(
-                        hintText: 'Search dancers...',
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(),
-                      ),
-                      onChanged: _onSearchChanged,
-                    ),
-                  ),
-
-                  // Tag filter
-                  TagFilterChips(
-                    selectedTagId: _selectedTagId,
-                    onTagChanged: _onTagChanged,
-                  ),
-                ],
+              child: CompactDancerFilter(
+                searchQuery: _searchQuery,
+                onSearchChanged: _onSearchChanged,
+                selectedTagId: _selectedTagId,
+                onTagChanged: _onTagChanged,
+                selectedActivityLevel: _selectedActivityLevel,
+                onActivityLevelChanged: _onActivityLevelChanged,
               ),
             ),
 
