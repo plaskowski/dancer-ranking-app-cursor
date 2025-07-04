@@ -3,11 +3,12 @@ import 'package:provider/provider.dart';
 
 import '../../database/database.dart';
 import '../../models/dancer_with_tags.dart';
+import '../../services/dancer/dancer_activity_service.dart';
 import '../../services/dancer/dancer_filter_service.dart';
 import '../../services/dancer_service.dart';
 import '../../utils/toast_helper.dart';
 import '../../widgets/add_dancer_dialog.dart';
-import '../../widgets/common_filter_section.dart';
+import '../../widgets/combined_dancer_filter.dart';
 import '../../widgets/dancer_card_with_tags.dart';
 import '../../widgets/safe_fab.dart';
 import 'dialogs/select_merge_target_screen.dart';
@@ -20,25 +21,17 @@ class DancersScreen extends StatefulWidget {
 }
 
 class _DancersScreenState extends State<DancersScreen> {
-  final _searchController = TextEditingController();
   String _searchQuery = '';
-  int? _selectedTagId;
+  List<int> _selectedTagIds = [];
+  ActivityLevel? _selectedActivityLevel = ActivityLevel.active;
+  Map<ActivityLevel, int>? _activityLevelCounts;
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  void _onSearchChanged(String query) {
+  void _onFiltersChanged(String searchQuery, List<int> selectedTagIds,
+      ActivityLevel? selectedActivityLevel) {
     setState(() {
-      _searchQuery = query;
-    });
-  }
-
-  void _onTagChanged(int? tagId) {
-    setState(() {
-      _selectedTagId = tagId;
+      _searchQuery = searchQuery;
+      _selectedTagIds = selectedTagIds;
+      _selectedActivityLevel = selectedActivityLevel;
     });
   }
 
@@ -53,10 +46,16 @@ class _DancersScreenState extends State<DancersScreen> {
     }
 
     // Apply tag filter
-    if (_selectedTagId != null) {
+    if (_selectedTagIds.isNotEmpty) {
       filteredDancers = filteredDancers.where((dancer) {
-        return dancer.tags.any((tag) => tag.id == _selectedTagId);
+        return dancer.tags.any((tag) => _selectedTagIds.contains(tag.id));
       }).toList();
+    }
+
+    // Apply activity level filter
+    if (_selectedActivityLevel != null) {
+      // TODO: Implement activity level filtering when service is ready
+      // For now, we'll keep all dancers
     }
 
     return filteredDancers;
@@ -75,12 +74,9 @@ class _DancersScreenState extends State<DancersScreen> {
           slivers: [
             // Filter section
             SliverToBoxAdapter(
-              child: CommonFilterSection(
-                searchHintText: 'Search dancers...',
-                onSearchChanged: _onSearchChanged,
-                searchController: _searchController,
-                selectedTagId: _selectedTagId,
-                onTagChanged: _onTagChanged,
+              child: CombinedDancerFilter(
+                onFiltersChanged: _onFiltersChanged,
+                activityLevelCounts: _activityLevelCounts,
               ),
             ),
 
@@ -119,7 +115,7 @@ class _DancersScreenState extends State<DancersScreen> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            _searchQuery.isEmpty && _selectedTagId == null
+                            _searchQuery.isEmpty && _selectedTagIds.isEmpty
                                 ? 'No dancers yet'
                                 : 'No dancers found',
                             style: TextStyle(
@@ -131,7 +127,7 @@ class _DancersScreenState extends State<DancersScreen> {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            _searchQuery.isEmpty && _selectedTagId == null
+                            _searchQuery.isEmpty && _selectedTagIds.isEmpty
                                 ? 'Tap + to add your first dancer'
                                 : 'Try adjusting your filters',
                             style: TextStyle(

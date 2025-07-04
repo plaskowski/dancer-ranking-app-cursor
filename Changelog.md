@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.4] - 2025-01-17
+
+### User Requests
+- "Great, let's implement this" - Request to implement the unified dancer filtering component
+
+### Added
+- **Unified Dancer Filtering Component**: Implemented CombinedDancerFilter widget with comprehensive filtering capabilities
+  - **Self-Managed State**: Component manages its own search query, tag selection, and activity level state
+  - **Unified Interface**: Single component handles search, tag filtering, and activity level filtering
+  - **Debounced Search**: 300ms debounce for smooth search experience without excessive API calls
+  - **Multi-Tag Selection**: Support for selecting multiple tags with visual feedback
+  - **Activity Level Filtering**: Radio button selection for different activity levels (All, Active, Very Active, Core Community, Recent)
+  - **Dropdown UI**: Clean dropdown interface for both tag and activity level selection
+  - **Visual Feedback**: Clear indication of selected filters with counts and descriptions
+  - **Loading States**: Proper loading indicators for tag and activity level data
+  - **Clear Functionality**: Easy clearing of tag selections with "Clear All" button
+
+### Improved
+- **DancersScreen Integration**: Updated to use new CombinedDancerFilter instead of separate components
+  - **Simplified State Management**: Removed individual search and tag state management
+  - **Unified Filtering Logic**: Single callback handles all filter changes
+  - **Better UX**: Consistent filtering experience across the app
+  - **Reduced Code Complexity**: Eliminated duplicate filtering logic
+- **Filtering Logic**: Enhanced to support multiple tag selection and activity level filtering
+  - **Multi-Tag Support**: Can filter by multiple tags simultaneously
+  - **Activity Level Integration**: Ready for activity level filtering when service is implemented
+  - **Future-Proof Design**: Architecture supports upcoming activity level filtering features
+
+### Technical
+- Created `lib/widgets/combined_dancer_filter.dart` with comprehensive filtering functionality
+- Updated `lib/screens/dancers/dancers_screen.dart` to use new unified filtering component
+- Added proper imports for ActivityLevel enum and TagService
+- Implemented debounced search with Timer for performance optimization
+- Added loading states and error handling for tag and activity level data
+- Maintained existing functionality while improving code organization
+- Applied proper Dart formatting to all modified files
+
 ## [v1.3.3] - 2025-01-17
 
 ### User Requests
