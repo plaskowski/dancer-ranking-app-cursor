@@ -26,5 +26,6 @@
     "titleBar.activeForeground": "#ffffff", // White text
     "titleBar.inactiveBackground": "#2D4A3D", // Lighter variant
     "titleBar.inactiveForeground": "#cccccc"
-  }
+  },
+  "files.autoSave": "onFocusChange"
 }
