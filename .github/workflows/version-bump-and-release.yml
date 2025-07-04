@@ -1,0 +1,92 @@
+name: Version Bump & Release
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'Changelog.md'
+      - 'pubspec.yaml'
+
+jobs:
+  version-bump:
+    name: Bump Version & Build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+    - name: Get current version
+      id: current_version
+      run: |
+        CURRENT_VERSION=$(grep 'version:' pubspec.yaml | sed 's/version: //')
+        echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+        
+    - name: Bump patch version
+      id: new_version
+      run: |
+        CURRENT_VERSION=$(grep 'version:' pubspec.yaml | sed 's/version: //')
+        IFS='.' read -ra VERSION_PARTS <<< "$CURRENT_VERSION"
+        PATCH_VERSION=$((VERSION_PARTS[2] + 1))
+        NEW_VERSION="${VERSION_PARTS[0]}.${VERSION_PARTS[1]}.$PATCH_VERSION"
+        echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+        
+    - name: Update pubspec.yaml
+      run: |
+        sed -i "s/version: ${{ steps.current_version.outputs.current_version }}/version: ${{ steps.new_version.outputs.new_version }}/" pubspec.yaml
+        
+    - name: Update Changelog
+      run: |
+        TODAY=$(date +%Y-%m-%d)
+        NEW_VERSION="${{ steps.new_version.outputs.new_version }}"
+        
+        # Create new version section at the top of Changelog.md
+        sed -i "1i ## [v$NEW_VERSION] - $TODAY\n\n### Added\n- \n\n### Changed\n- \n\n### Fixed\n- \n\n### Technical\n- \n\n" Changelog.md
+        
+    - name: Commit and push changes
+      run: |
+        git add pubspec.yaml Changelog.md
+        git commit -m "chore: bump version to ${{ steps.new_version.outputs.new_version }}"
+        git push
+        
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.5'
+        channel: 'stable'
+        
+    - name: Get dependencies
+      run: flutter pub get
+      
+    - name: Build APK
+      run: flutter build apk --release
+      
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.new_version.outputs.new_version }}
+        name: Release v${{ steps.new_version.outputs.new_version }}
+        body: |
+          ## Dancer Ranking App v${{ steps.new_version.outputs.new_version }}
+          
+          ### Downloads
+          - **Android APK**: Download the APK file above
+          
+          ### Changes
+          See [Changelog.md](https://github.com/${{ github.repository }}/blob/main/Changelog.md) for detailed changes.
+          
+          ### What's New
+          This release includes the latest improvements and bug fixes.
+        files: build/app/outputs/flutter-apk/app-release.apk
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
