@@ -5,8 +5,8 @@ import '../../../services/attendance_service.dart';
 import '../../../services/dancer/dancer_filter_service.dart';
 import '../../../services/dancer_service.dart';
 import '../../../theme/theme_extensions.dart';
+import '../../../widgets/common_filter_section.dart';
 import '../../../widgets/safe_fab.dart';
-import '../../../widgets/tag_filter_chips.dart';
 
 class SelectDancersScreen extends StatefulWidget {
   final int eventId;
@@ -125,28 +125,18 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
       ),
       body: Column(
         children: [
-          // Tag Filters Section
-          TagFilterChips(
+          // Filter Section
+          CommonFilterSection(
+            searchHintText: 'Search dancers',
+            searchLabelText: 'Search dancers',
+            onSearchChanged: (value) {
+              setState(() {
+                _searchQuery = value;
+              });
+            },
+            searchController: _searchController,
             selectedTagId: _selectedTagId,
             onTagChanged: _onTagChanged,
-          ),
-
-          // Search Section
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                labelText: 'Search dancers',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
-            ),
           ),
 
           // Dancers List

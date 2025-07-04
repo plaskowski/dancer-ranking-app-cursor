@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.3] - 2025-01-17
+
+### User Requests
+- "Try extract a common component for the same" - Request to extract common components for filtering functionality
+
+### Added
+- **Common Filter Components**: Extracted reusable components for consistent filtering across screens
+  - **CommonSearchField**: Reusable search field with consistent styling, clear button, and behavior
+  - **CommonFilterSection**: Combined search and tag filtering component for unified filtering UI
+  - **Consistent Styling**: Material 3 design with proper theming and accessibility
+  - **Flexible Configuration**: Support for different hint texts, labels, and optional tag filtering
+  - **Clear Button Integration**: Built-in clear functionality with proper state management
+
+### Improved
+- **Code Reusability**: Reduced code duplication across multiple screens
+  - **DancersScreen**: Updated to use CommonFilterSection instead of separate search and tag components
+  - **SelectDancersScreen**: Refactored to use unified filtering component
+  - **Consistent UX**: All filtering screens now have identical behavior and appearance
+  - **Maintainability**: Centralized filtering logic for easier updates and bug fixes
+
+### Technical
+- Created `lib/widgets/common_search_field.dart` with comprehensive search field functionality
+- Created `lib/widgets/common_filter_section.dart` that combines search and tag filtering
+- Updated import statements and component usage across multiple screens
+- Maintained existing functionality while improving code organization
+- Applied proper Dart formatting to all modified files
+
 ## [v1.3.0] - 2025-01-16
 
 ### User Requests

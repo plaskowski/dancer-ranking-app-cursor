@@ -689,6 +689,47 @@ Tags Tab → [Add | Edit | Delete] → Back to tab
 - Opened from Home Screen's overflow menu.
 - Closes upon completion or cancellation.
 
+## Common Components
+
+### Filtering Components
+
+**CommonSearchField (`lib/widgets/common_search_field.dart`)**:
+- Reusable search field with consistent Material 3 styling
+- Built-in clear button that appears when text is entered
+- Configurable hint text, label text, and initial value
+- Proper state management with TextEditingController
+- Support for different text input actions and autofocus
+- Used across multiple screens for consistent search experience
+
+**CommonFilterSection (`lib/widgets/common_filter_section.dart`)**:
+- Combined search and tag filtering component
+- Integrates CommonSearchField with TagFilterChips
+- Optional tag filtering with configurable visibility
+- Consistent padding and layout across all screens
+- Flexible configuration for different use cases
+- Reduces code duplication and ensures consistent UX
+
+**TagFilterChips (`lib/widgets/tag_filter_chips.dart`)**:
+- Horizontal scrollable row of tag filter chips
+- Single tag selection with toggle behavior
+- Clear button that appears when tag is selected
+- Loading state and empty state handling
+- Material 3 FilterChip styling with proper theming
+- Used for venue/context-based dancer filtering
+
+### Usage Patterns
+- **DancersScreen**: Uses CommonFilterSection for search and tag filtering
+- **SelectDancersScreen**: Uses CommonFilterSection for event dancer selection
+- **AddDancerDialog**: Uses TagFilterChips for existing dancer filtering
+- **AddExistingDancerScreen**: Uses SimplifiedTagFilter for advanced filtering
+
+### Benefits
+- **Consistent UX**: All filtering screens have identical behavior and appearance
+- **Code Reusability**: Reduced duplication across multiple screens
+- **Maintainability**: Centralized filtering logic for easier updates
+- **Accessibility**: Proper semantic labels and keyboard navigation
+- **Performance**: Optimized state management and efficient rebuilds
+
 ## Navigation Flow
 
 ```mermaid

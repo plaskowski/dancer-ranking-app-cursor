@@ -7,9 +7,9 @@ import '../../services/dancer/dancer_filter_service.dart';
 import '../../services/dancer_service.dart';
 import '../../utils/toast_helper.dart';
 import '../../widgets/add_dancer_dialog.dart';
+import '../../widgets/common_filter_section.dart';
 import '../../widgets/dancer_card_with_tags.dart';
 import '../../widgets/safe_fab.dart';
-import '../../widgets/tag_filter_chips.dart';
 import 'dialogs/select_merge_target_screen.dart';
 
 class DancersScreen extends StatefulWidget {
@@ -75,28 +75,12 @@ class _DancersScreenState extends State<DancersScreen> {
           slivers: [
             // Filter section
             SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  // Search bar
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: const InputDecoration(
-                        hintText: 'Search dancers...',
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(),
-                      ),
-                      onChanged: _onSearchChanged,
-                    ),
-                  ),
-
-                  // Tag filter
-                  TagFilterChips(
-                    selectedTagId: _selectedTagId,
-                    onTagChanged: _onTagChanged,
-                  ),
-                ],
+              child: CommonFilterSection(
+                searchHintText: 'Search dancers...',
+                onSearchChanged: _onSearchChanged,
+                searchController: _searchController,
+                selectedTagId: _selectedTagId,
+                onTagChanged: _onTagChanged,
               ),
             ),
 
