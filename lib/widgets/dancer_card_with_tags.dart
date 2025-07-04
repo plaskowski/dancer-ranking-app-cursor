@@ -55,40 +55,62 @@ class DancerCardWithTags extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Last met event info
+            // Last met event info and notes in same row
             if (dancerWithTags.lastMetEventName != null &&
-                dancerWithTags.lastMetEventDate != null) ...[
+                    dancerWithTags.lastMetEventDate != null ||
+                (dancer.notes != null && dancer.notes!.isNotEmpty)) ...[
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(
-                    Icons.visibility_outlined,
-                    size: 16,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                  const SizedBox(width: 4),
-                  Expanded(
-                    child: Text(
-                      '${dancerWithTags.lastMetEventName} • ${_formatDate(dancerWithTags.lastMetEventDate!)}',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        fontStyle: FontStyle.italic,
+                  // Last met info
+                  if (dancerWithTags.lastMetEventName != null &&
+                      dancerWithTags.lastMetEventDate != null) ...[
+                    Icon(
+                      Icons.visibility_outlined,
+                      size: 16,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                    const SizedBox(width: 4),
+                    Flexible(
+                      child: Text(
+                        '${dancerWithTags.lastMetEventName} • ${_formatDate(dancerWithTags.lastMetEventDate!)}',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontStyle: FontStyle.italic,
+                        ),
                       ),
                     ),
-                  ),
+                  ],
+                  // Notes
+                  if (dancer.notes != null && dancer.notes!.isNotEmpty) ...[
+                    if (dancerWithTags.lastMetEventName != null &&
+                        dancerWithTags.lastMetEventDate != null) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        width: 1,
+                        height: 16,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withOpacity(0.3),
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                    Flexible(
+                      child: Text(
+                        dancer.notes!,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                  ],
                 ],
               ),
               const SizedBox(height: 2),
-            ],
-            // Notes
-            if (dancer.notes != null && dancer.notes!.isNotEmpty) ...[
-              const SizedBox(height: 4),
-              Text(
-                dancer.notes!,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
-              ),
             ],
             // Tags
             if (tags.isNotEmpty || isArchived) ...[
