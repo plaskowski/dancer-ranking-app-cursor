@@ -20,5 +20,11 @@
       "**/*.md",
       "**/*.dart"
     ]
+  },
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#1E3A2E", // Rich navy green
+    "titleBar.activeForeground": "#ffffff", // White text
+    "titleBar.inactiveBackground": "#2D4A3D", // Lighter variant
+    "titleBar.inactiveForeground": "#cccccc"
   }
 }
