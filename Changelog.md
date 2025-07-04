@@ -685,6 +685,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `ToastHelper` to use `Fluttertoast` for toast notifications
 - Maintained all existing functionality while improving toast handling
 
+## [v0.9.2] - 2024-12-19
+
+### User Requests
+- Fix similar error handling in other screens first
+- Extract a common component for error handling
+- Improve audit log to show full error messages
+- Fix archived dancer pill styling and positioning
+
+### Added
+- Common `ErrorDisplay` component for consistent error handling across screens
+- `ErrorDisplayFactory` with convenience methods for different error types
+- Enhanced audit logging with full error messages and stack traces (500 char limit)
+
+### Improved
+- Archived dancer pill moved to tags section with consistent styling
+- Error handling updated in HomeScreen, DancersScreen, and event tabs
+- Database migration robustness with column existence checks
+- Audit log truncation increased for error messages and stack traces
+
+### Fixed
+- Database migration "duplicate column" errors by checking column existence
+- Archived dancer pill styling to match regular tag pills exactly
+- Error UI consistency across all screens with proper logging
+
+### Technical
+- Enhanced `ActionLogger.logError()` to capture full error details
+- Updated database migrations to be idempotent and safe
+- Improved error display with user-friendly messages and proper logging
+- Fixed archived dancer visual design to match tag styling
+
 ## [v0.9.1] - 2024-12-19
 
 ### User Requests

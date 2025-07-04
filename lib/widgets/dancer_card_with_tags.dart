@@ -30,7 +30,12 @@ class DancerCardWithTags extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
-      color: isArchived ? Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.5) : null,
+      color: isArchived
+          ? Theme.of(context)
+              .colorScheme
+              .surfaceContainerHighest
+              .withOpacity(0.5)
+          : null,
       child: ListTile(
         title: Row(
           children: [
@@ -39,25 +44,20 @@ class DancerCardWithTags extends StatelessWidget {
                 dancer.name,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isArchived ? Theme.of(context).colorScheme.onSurfaceVariant : null,
+                  color: isArchived
+                      ? Theme.of(context).colorScheme.onSurfaceVariant
+                      : null,
                 ),
               ),
             ),
-            if (isArchived)
-              Text(
-                '👁️',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
-              ),
           ],
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Last met event info
-            if (dancerWithTags.lastMetEventName != null && dancerWithTags.lastMetEventDate != null) ...[
+            if (dancerWithTags.lastMetEventName != null &&
+                dancerWithTags.lastMetEventDate != null) ...[
               Text(
                 'Last met: ${dancerWithTags.lastMetEventName} • ${_formatDate(dancerWithTags.lastMetEventDate!)}',
                 style: TextStyle(
@@ -79,30 +79,56 @@ class DancerCardWithTags extends StatelessWidget {
               ),
             ],
             // Tags
-            if (tags.isNotEmpty) ...[
+            if (tags.isNotEmpty || isArchived) ...[
               const SizedBox(height: 8),
               Wrap(
                 spacing: 4.0,
                 runSpacing: 2.0,
-                children: tags.map((tag) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                      vertical: 2.0,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      tag.name,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                children: [
+                  // Regular tags
+                  ...tags.map((tag) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 2.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        tag.name,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                    );
+                  }),
+                  // Archived pill
+                  if (isArchived)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 2.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .outline
+                            .withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        'archived',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).colorScheme.outline,
+                        ),
                       ),
                     ),
-                  );
-                }).toList(),
+                ],
               ),
             ],
           ],
@@ -144,7 +170,8 @@ class DancerCardWithTags extends StatelessWidget {
                   ),
                   title: const Text('Edit'),
                   onTap: () {
-                    ActionLogger.logAction('UI_DancerCard', 'context_edit_tapped', {
+                    ActionLogger.logAction(
+                        'UI_DancerCard', 'context_edit_tapped', {
                       'dancerId': dancer.id,
                       'dancerName': dancer.name,
                     });
@@ -160,7 +187,8 @@ class DancerCardWithTags extends StatelessWidget {
                   ),
                   title: const Text('Merge into...'),
                   onTap: () {
-                    ActionLogger.logAction('UI_DancerCard', 'context_merge_tapped', {
+                    ActionLogger.logAction(
+                        'UI_DancerCard', 'context_merge_tapped', {
                       'dancerId': dancer.id,
                       'dancerName': dancer.name,
                     });
@@ -176,7 +204,8 @@ class DancerCardWithTags extends StatelessWidget {
                   ),
                   title: const Text('View History'),
                   onTap: () {
-                    ActionLogger.logAction('UI_DancerCard', 'context_history_tapped', {
+                    ActionLogger.logAction(
+                        'UI_DancerCard', 'context_history_tapped', {
                       'dancerId': dancer.id,
                       'dancerName': dancer.name,
                     });
@@ -200,7 +229,8 @@ class DancerCardWithTags extends StatelessWidget {
                   ),
                   title: Text(dancer.isArchived ? 'Reactivate' : 'Archive'),
                   onTap: () async {
-                    ActionLogger.logAction('UI_DancerCard', 'context_archive_tapped', {
+                    ActionLogger.logAction(
+                        'UI_DancerCard', 'context_archive_tapped', {
                       'dancerId': dancer.id,
                       'dancerName': dancer.name,
                       'isArchived': dancer.isArchived,
@@ -212,15 +242,21 @@ class DancerCardWithTags extends StatelessWidget {
                     if (dancer.isArchived) {
                       // Reactivate immediately (no confirmation needed)
                       try {
-                        final crudService = Provider.of<DancerCrudService>(context, listen: false);
-                        final success = await crudService.reactivateDancer(dancer.id);
+                        final crudService = Provider.of<DancerCrudService>(
+                            context,
+                            listen: false);
+                        final success =
+                            await crudService.reactivateDancer(dancer.id);
                         if (success && context.mounted) {
-                          ToastHelper.showSuccess(context, '${dancer.name} reactivated');
+                          ToastHelper.showSuccess(
+                              context, '${dancer.name} reactivated');
                         } else if (context.mounted) {
-                          ToastHelper.showError(context, 'Failed to reactivate ${dancer.name}');
+                          ToastHelper.showError(
+                              context, 'Failed to reactivate ${dancer.name}');
                         }
                       } catch (e) {
-                        ActionLogger.logError('UI_DancerCard', 'reactivate_action_error', {
+                        ActionLogger.logError(
+                            'UI_DancerCard', 'reactivate_action_error', {
                           'dancerId': dancer.id,
                           'dancerName': dancer.name,
                           'error': e.toString(),
@@ -238,15 +274,21 @@ class DancerCardWithTags extends StatelessWidget {
                           dancerName: dancer.name,
                           onConfirm: () async {
                             try {
-                              final crudService = Provider.of<DancerCrudService>(context, listen: false);
-                              final success = await crudService.archiveDancer(dancer.id);
+                              final crudService =
+                                  Provider.of<DancerCrudService>(context,
+                                      listen: false);
+                              final success =
+                                  await crudService.archiveDancer(dancer.id);
                               if (success && context.mounted) {
-                                ToastHelper.showSuccess(context, '${dancer.name} archived');
+                                ToastHelper.showSuccess(
+                                    context, '${dancer.name} archived');
                               } else if (context.mounted) {
-                                ToastHelper.showError(context, 'Failed to archive ${dancer.name}');
+                                ToastHelper.showError(context,
+                                    'Failed to archive ${dancer.name}');
                               }
                             } catch (e) {
-                              ActionLogger.logError('UI_DancerCard', 'archive_action_error', {
+                              ActionLogger.logError(
+                                  'UI_DancerCard', 'archive_action_error', {
                                 'dancerId': dancer.id,
                                 'dancerName': dancer.name,
                                 'error': e.toString(),
@@ -269,7 +311,8 @@ class DancerCardWithTags extends StatelessWidget {
                   ),
                   title: const Text('Delete'),
                   onTap: () {
-                    ActionLogger.logAction('UI_DancerCard', 'context_delete_tapped', {
+                    ActionLogger.logAction(
+                        'UI_DancerCard', 'context_delete_tapped', {
                       'dancerId': dancer.id,
                       'dancerName': dancer.name,
                     });

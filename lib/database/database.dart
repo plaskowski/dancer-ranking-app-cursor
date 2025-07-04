@@ -10,7 +10,16 @@ import 'tables.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [Events, Dancers, Ranks, Rankings, Attendances, Tags, DancerTags, Scores])
+@DriftDatabase(tables: [
+  Events,
+  Dancers,
+  Ranks,
+  Rankings,
+  Attendances,
+  Tags,
+  DancerTags,
+  Scores
+])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
@@ -95,13 +104,28 @@ class AppDatabase extends _$AppDatabase {
   Future<void> _migrateRanksTable(Migrator m) async {
     final now = DateTime.now().millisecondsSinceEpoch;
 
-    // Add new columns to existing ranks table
-    await customStatement('ALTER TABLE ranks ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0');
-    await customStatement('ALTER TABLE ranks ADD COLUMN created_at INTEGER NOT NULL DEFAULT $now');
-    await customStatement('ALTER TABLE ranks ADD COLUMN updated_at INTEGER NOT NULL DEFAULT $now');
+    // Check if columns already exist before adding them
+    final columns = await customSelect('PRAGMA table_info(ranks)').get();
+    final columnNames =
+        columns.map((row) => row.data['name'] as String).toList();
+
+    // Add new columns to existing ranks table only if they don't exist
+    if (!columnNames.contains('is_archived')) {
+      await customStatement(
+          'ALTER TABLE ranks ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0');
+    }
+    if (!columnNames.contains('created_at')) {
+      await customStatement(
+          'ALTER TABLE ranks ADD COLUMN created_at INTEGER NOT NULL DEFAULT $now');
+    }
+    if (!columnNames.contains('updated_at')) {
+      await customStatement(
+          'ALTER TABLE ranks ADD COLUMN updated_at INTEGER NOT NULL DEFAULT $now');
+    }
 
     // Update existing ranks to have proper timestamps
-    await customStatement('UPDATE ranks SET created_at = $now, updated_at = $now WHERE created_at = $now');
+    await customStatement(
+        'UPDATE ranks SET created_at = $now, updated_at = $now WHERE created_at = $now');
   }
 
   // Migration helper to add Tags and DancerTags tables
@@ -118,11 +142,28 @@ class AppDatabase extends _$AppDatabase {
     // Create the new scores table
     await m.createTable(scores);
 
-    // Add new columns to attendances table
-    await customStatement('ALTER TABLE attendances ADD COLUMN score_id INTEGER REFERENCES scores(id)');
+    // Check if columns already exist before adding them
+    final attendanceColumns =
+        await customSelect('PRAGMA table_info(attendances)').get();
+    final attendanceColumnNames =
+        attendanceColumns.map((row) => row.data['name'] as String).toList();
 
-    // Add new column to dancers table
-    await customStatement('ALTER TABLE dancers ADD COLUMN first_met_date INTEGER');
+    final dancerColumns =
+        await customSelect('PRAGMA table_info(dancers)').get();
+    final dancerColumnNames =
+        dancerColumns.map((row) => row.data['name'] as String).toList();
+
+    // Add new columns to attendances table only if they don't exist
+    if (!attendanceColumnNames.contains('score_id')) {
+      await customStatement(
+          'ALTER TABLE attendances ADD COLUMN score_id INTEGER REFERENCES scores(id)');
+    }
+
+    // Add new column to dancers table only if it doesn't exist
+    if (!dancerColumnNames.contains('first_met_date')) {
+      await customStatement(
+          'ALTER TABLE dancers ADD COLUMN first_met_date INTEGER');
+    }
 
     // Insert default scores
     await _insertDefaultScores();
@@ -130,9 +171,20 @@ class AppDatabase extends _$AppDatabase {
 
   // Migration helper to add archival fields to Dancers table
   Future<void> _addArchivalFieldsToDancers(Migrator m) async {
-    // Add new columns to dancers table
-    await customStatement('ALTER TABLE dancers ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0');
-    await customStatement('ALTER TABLE dancers ADD COLUMN archived_at INTEGER');
+    // Check if columns already exist before adding them
+    final columns = await customSelect('PRAGMA table_info(dancers)').get();
+    final columnNames =
+        columns.map((row) => row.data['name'] as String).toList();
+
+    // Add new columns to dancers table only if they don't exist
+    if (!columnNames.contains('is_archived')) {
+      await customStatement(
+          'ALTER TABLE dancers ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0');
+    }
+    if (!columnNames.contains('archived_at')) {
+      await customStatement(
+          'ALTER TABLE dancers ADD COLUMN archived_at INTEGER');
+    }
   }
 
   // Insert contextual tags related to specific places/events where you know dancers from

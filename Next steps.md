@@ -17,8 +17,14 @@
 ### Low Priority
 - [ ] **Push Notifications**: Add reminders for upcoming events
 - [ ] **Social Features**: Add sharing capabilities for event results
-- [ ] **Advanced Reporting**: Generate detailed reports and analytics
-- [ ] **Multi-language Support**: Add internationalization support
+- [ ] **Advanced Search**: Add search by tags, date ranges, and dance history
+- [ ] **Data Analytics**: Add charts and insights about dance patterns
+
+## Recently Completed
+- ✅ **Last Met Tracking**: Complete implementation with reactive updates
+- ✅ **Archived Dancer Pill**: Improved styling and positioning in tags section
+- ✅ **Error Handling**: Common ErrorDisplay component with proper audit logging
+- ✅ **Database Migrations**: Robust migration system with column existence checks
 
 ## Completed Features ✅
 

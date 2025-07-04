@@ -19,6 +19,9 @@
 - **Merge Dancer**: Opens SelectMergeTargetScreen to merge with another dancer
 - **Search**: Filters dancers by name or notes (word-start matching)
 - **Tag Filter**: Filters dancers by selected tag
+- **Archive Dancer**: Shows confirmation dialog, then archives dancer (preserves all data)
+- **Reactivate Dancer**: Immediately reactivates archived dancer
+- **View History**: Opens DancerHistoryScreen to view all dance history
 
 **Navigation Flow**:
 - Home Screen → Dancers (bottom navigation)
@@ -42,3 +45,9 @@
 - **Search & Filter**: Find dancers by name, notes, or tags with real-time filtering
 
 ### Event Management 
+
+**Visual Design**:
+- **Archived Dancers**: Show gray "archived" pill in tags section with consistent styling
+- **Last Met Info**: Displays "Last met: [Event Name] • [Date]" when available
+- **Tag Display**: Shows dancer tags as colored pills below dancer info
+- **Error Handling**: Consistent error display with proper logging and user-friendly messages 

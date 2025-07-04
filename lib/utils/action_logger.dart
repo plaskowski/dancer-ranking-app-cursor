@@ -12,12 +12,10 @@ class ActionLogger {
   /// [component] - Which component/screen/service performed the action
   /// [action] - What action was performed
   /// [details] - Additional context (IDs, values, etc.)
-  static void logAction(String component, String action,
-      [Map<String, dynamic>? details]) {
+  static void logAction(String component, String action, [Map<String, dynamic>? details]) {
     final timestamp = DateTime.now().toIso8601String();
     final detailsStr = details != null ? _formatDetails(details) : '';
-    final message =
-        '$_actionPrefix $timestamp | $component | $action$detailsStr';
+    final message = '$_actionPrefix $timestamp | $component | $action$detailsStr';
 
     developer.log(message, name: 'ActionLogger');
     print(message); // Also print for easy console viewing
@@ -27,13 +25,11 @@ class ActionLogger {
   /// [component] - Which component is rendering the list
   /// [listType] - Type of list (dancers, events, rankings, etc.)
   /// [items] - List of items with their key information
-  static void logListRendering(
-      String component, String listType, List<Map<String, dynamic>> items) {
+  static void logListRendering(String component, String listType, List<Map<String, dynamic>> items) {
     final timestamp = DateTime.now().toIso8601String();
     final count = items.length;
     final itemsStr = items.map((item) => _formatDetails(item)).join(', ');
-    final message =
-        '$_listPrefix $timestamp | $component | $listType | count=$count | items=[$itemsStr]';
+    final message = '$_listPrefix $timestamp | $component | $listType | count=$count | items=[$itemsStr]';
 
     developer.log(message, name: 'ActionLogger');
     print(message);
@@ -64,12 +60,10 @@ class ActionLogger {
   /// [component] - Where the error occurred
   /// [error] - The error that occurred
   /// [context] - Additional context about what was being attempted
-  static void logError(String component, String error,
-      [Map<String, dynamic>? context]) {
+  static void logError(String component, String error, [Map<String, dynamic>? context]) {
     final timestamp = DateTime.now().toIso8601String();
     final contextStr = context != null ? _formatDetails(context) : '';
-    final message =
-        '$_errorPrefix $timestamp | $component | ERROR: $error$contextStr';
+    final message = '$_errorPrefix $timestamp | $component | ERROR: $error$contextStr';
 
     developer.log(message, name: 'ActionLogger', level: 1000); // Error level
     print(message);
@@ -84,8 +78,9 @@ class ActionLogger {
       // Handle different value types for better readability
       String valueStr;
       if (value is String) {
-        valueStr =
-            '"${value.length > 30 ? '${value.substring(0, 30)}...' : value}"';
+        // Allow longer strings for error messages and stack traces
+        final maxLength = (e.key == 'error' || e.key == 'stackTrace') ? 500 : 30;
+        valueStr = '"${value.length > maxLength ? '${value.substring(0, maxLength)}...' : value}"';
       } else if (value is DateTime) {
         valueStr = value.toIso8601String();
       } else if (value is List) {
@@ -102,26 +97,22 @@ class ActionLogger {
   // Convenience methods for common logging scenarios
 
   /// Log database operations
-  static void logDbOperation(
-      String operation, String table, Map<String, dynamic> data) {
+  static void logDbOperation(String operation, String table, Map<String, dynamic> data) {
     logAction('Database', '$operation $table', data);
   }
 
   /// Log UI interactions
-  static void logUserAction(String screen, String action,
-      [Map<String, dynamic>? context]) {
+  static void logUserAction(String screen, String action, [Map<String, dynamic>? context]) {
     logAction('UI_$screen', action, context);
   }
 
   /// Log navigation events
-  static void logNavigation(String from, String to,
-      [Map<String, dynamic>? params]) {
+  static void logNavigation(String from, String to, [Map<String, dynamic>? params]) {
     logAction('Navigation', '$from -> $to', params);
   }
 
   /// Log service method calls
-  static void logServiceCall(String service, String method,
-      [Map<String, dynamic>? params]) {
+  static void logServiceCall(String service, String method, [Map<String, dynamic>? params]) {
     logAction('Service_$service', method, params);
   }
 }
