@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.5.7] - 2025-01-17
+
+### User Requests
+- "Drop latest commit. You were supposed to reorder dancer actions on Planning and Present tab" - Request to reorder dancer context menu actions
+
+### Changed
+- **Dancer Actions Dialog**: Reordered actions by frequency of use for better UX
+  - **Most Common First**: Mark Present/Absent moved to top
+  - **Second Most Common**: Assign/Edit Score moved to second position
+  - **Third Most Common**: Set/Change Ranking moved to third position
+  - **Less Common Actions**: Record Dance, View History, Edit, etc. moved to bottom
+- **Documentation Updates**: Updated Product specification to reflect new action order
+
+### Technical
+- **UX Optimization**: Most frequently used actions now appear first in context menu
+- **Better Workflow**: Reduces scrolling and improves efficiency for common tasks
+
 ## [v1.5.6] - 2025-01-17
 ## [v2.0.0] - 2025-07-05
 
@@ -1833,17 +1850,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [v1.5.3] - 2025-07-05
 ## [v2.0.0] - 2025-07-05
-
-### User Requests
-- Release build and upload
-
-### Added
-- Automated release process
-
-### Technical
-- Release script for version bumping and APK distribution
-
-
 
 ### User Requests
 - Release build and upload
