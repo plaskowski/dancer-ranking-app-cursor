@@ -20,15 +20,15 @@ class AddExistingDancerScreen extends StatefulWidget {
   });
 
   @override
-  State<AddExistingDancerScreen> createState() =>
-      _AddExistingDancerScreenState();
+  State<AddExistingDancerScreen> createState() => _AddExistingDancerScreenState();
 }
 
 class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
+  int _refreshKey = 0;
+
   Future<void> _markDancerPresent(int dancerId, String dancerName) async {
     try {
-      final attendanceService =
-          Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
 
       await attendanceService.markPresent(widget.eventId, dancerId);
 
@@ -38,10 +38,14 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
           SnackBar(
             content: Text('$dancerName marked as present'),
             backgroundColor: context.danceTheme.success,
-            duration:
-                const Duration(seconds: 1), // Shorter duration for efficiency
+            duration: const Duration(seconds: 1), // Shorter duration for efficiency
           ),
         );
+
+        // Trigger a refresh by updating the key
+        setState(() {
+          _refreshKey++;
+        });
       }
     } catch (e) {
       if (mounted) {
@@ -55,8 +59,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
     }
   }
 
-  Future<List<DancerWithTags>> _getAvailableDancers(
-      List<int> tagIds, String searchQuery) async {
+  Future<List<DancerWithTags>> _getAvailableDancers(List<int> tagIds, String searchQuery) async {
     final filterService = DancerFilterService.of(context);
 
     // Get dancers based on tag filtering
@@ -90,9 +93,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
           dancer.name,
           style: const TextStyle(fontWeight: FontWeight.w600),
         ),
-        subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
-            ? Text(dancer.notes!)
-            : null,
+        subtitle: dancer.notes != null && dancer.notes!.isNotEmpty ? Text(dancer.notes!) : null,
         trailing: ElevatedButton(
           onPressed: () => _markDancerPresent(dancer.id, dancer.name),
           child: const Text('Mark Present'),
@@ -105,10 +106,10 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
   Widget build(BuildContext context) {
     return DancerFilterListWidget(
       title: 'Add to ${widget.eventName}',
-      infoMessage:
-          'Showing unranked and absent dancers only. Present dancers managed in Present tab.',
+      infoMessage: 'Showing unranked and absent dancers only. Present dancers managed in Present tab.',
       getDancers: _getAvailableDancers,
       buildDancerTile: _buildDancerTile,
+      refreshKey: _refreshKey,
     );
   }
 }

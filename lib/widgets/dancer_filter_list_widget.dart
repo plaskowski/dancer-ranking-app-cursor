@@ -8,11 +8,11 @@ import 'simplified_tag_filter.dart';
 class DancerFilterListWidget extends StatefulWidget {
   final String title;
   final String infoMessage;
-  final Future<List<DancerWithTags>> Function(
-      List<int> tagIds, String searchQuery) getDancers;
+  final Future<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery) getDancers;
   final Widget Function(DancerWithTags dancer) buildDancerTile;
   final Widget? Function(List<DancerWithTags> dancers)? buildEmptyState;
   final bool showInfoBanner;
+  final int? refreshKey;
 
   const DancerFilterListWidget({
     super.key,
@@ -22,6 +22,7 @@ class DancerFilterListWidget extends StatefulWidget {
     required this.buildDancerTile,
     this.buildEmptyState,
     this.showInfoBanner = true,
+    this.refreshKey,
   });
 
   @override
@@ -68,8 +69,7 @@ class _DancerFilterListWidgetState extends State<DancerFilterListWidget> {
                   // Info Banner (now scrollable)
                   if (widget.showInfoBanner)
                     Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
+                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primaryContainer,
@@ -79,9 +79,7 @@ class _DancerFilterListWidgetState extends State<DancerFilterListWidget> {
                         children: [
                           Icon(
                             Icons.info_outline,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onPrimaryContainer,
+                            color: Theme.of(context).colorScheme.onPrimaryContainer,
                             size: 20,
                           ),
                           const SizedBox(width: 8),
@@ -90,9 +88,7 @@ class _DancerFilterListWidgetState extends State<DancerFilterListWidget> {
                               widget.infoMessage,
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer,
+                                color: Theme.of(context).colorScheme.onPrimaryContainer,
                               ),
                             ),
                           ),
@@ -114,7 +110,7 @@ class _DancerFilterListWidgetState extends State<DancerFilterListWidget> {
   List<Widget> _buildDancerList(BuildContext context) {
     return [
       FutureBuilder<List<DancerWithTags>>(
-        key: ValueKey('${_selectedTagIds.toString()}_$_searchQuery'),
+        key: ValueKey('${_selectedTagIds.toString()}_$_searchQuery${widget.refreshKey ?? 0}'),
         future: widget.getDancers(_selectedTagIds, _searchQuery),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -146,9 +142,7 @@ class _DancerFilterListWidgetState extends State<DancerFilterListWidget> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _selectedTagIds.isNotEmpty
-                        ? 'No dancers found with current filters'
-                        : 'No available dancers',
+                    _selectedTagIds.isNotEmpty ? 'No dancers found with current filters' : 'No available dancers',
                     style: TextStyle(
                       fontSize: 18,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -156,9 +150,7 @@ class _DancerFilterListWidgetState extends State<DancerFilterListWidget> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _selectedTagIds.isNotEmpty
-                        ? 'Try different search terms or clear filters'
-                        : 'No dancers available',
+                    _selectedTagIds.isNotEmpty ? 'Try different search terms or clear filters' : 'No dancers available',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
