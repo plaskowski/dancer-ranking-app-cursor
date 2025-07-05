@@ -205,6 +205,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Service Layer Documentation**: Documented all new archival methods and active-only streams
 - **Migration Strategy**: Marked Phase 1 (Database) and Phase 2 (Service Layer) as completed
 
+## [v0.9.2] - 2025-01-27
+
+### User Requests
+- "Check the logs. It still opens the dialog many times" - Fixed multiple CLI action executions
+- "works, commit" - Confirmed fix is working
+
+### Fixed
+- **CLI Action Execution**: Prevented multiple executions of CLI actions during widget rebuilds
+  - Added execution flag in PresentTab to track if CLI action has already been executed
+  - Removed duplicate CLI action handling from EventScreen
+  - Improved separation of concerns between EventScreen and PresentTab
+  - CLI actions now execute only once per navigation, preventing dialog spam
+
 ## [v0.9.1] - 2025-01-27
 
 ### User Requests
