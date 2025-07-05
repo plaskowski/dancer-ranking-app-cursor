@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.2.1] - 2025-01-17
+
+### User Requests
+- Dance history screen is obscured by system bottom bar
+
+### Fixed
+- **Dance History Screen Layout**: Fixed issue where content was obscured by system bottom bar
+  - **SafeArea Implementation**: Wrapped body content in SafeArea widget to respect system UI insets
+  - **Bottom Content Visibility**: Last items in dance history are now fully visible above system navigation
+  - **Cross-Platform Compatibility**: Ensures proper layout on both iOS and Android devices
+  - **User Experience**: Users can now access all dance history content without scrolling conflicts
+
+### Technical
+- **UI Layout Fix**: Added SafeArea wrapper to DancerHistoryScreen body
+- **System UI Respect**: Proper handling of system bottom navigation and home indicator areas
+- **Content Accessibility**: Ensures all content is within safe viewing area
+
 ## [v2.2.0] - 2025-07-05
 
 ### User Requests

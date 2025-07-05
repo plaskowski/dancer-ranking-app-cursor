@@ -138,36 +138,38 @@ class _DancerHistoryScreenState extends State<DancerHistoryScreen> {
       appBar: AppBar(
         title: Text(widget.dancerName),
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : _history.isEmpty
-              ? const Center(
-                  child: Text(
-                    'No event history found',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                )
-              : ListView.builder(
-                  controller: _scrollController,
-                  padding: const EdgeInsets.all(16),
-                  itemCount: _history.length + (_hasMoreData ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    if (index == _history.length) {
-                      // Show loading indicator at the bottom
-                      return _isLoadingMore
-                          ? const Padding(
-                              padding: EdgeInsets.all(16.0),
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            )
-                          : const SizedBox.shrink();
-                    }
+      body: SafeArea(
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : _history.isEmpty
+                ? const Center(
+                    child: Text(
+                      'No event history found',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  )
+                : ListView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _history.length + (_hasMoreData ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index == _history.length) {
+                        // Show loading indicator at the bottom
+                        return _isLoadingMore
+                            ? const Padding(
+                                padding: EdgeInsets.all(16.0),
+                                child: Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )
+                            : const SizedBox.shrink();
+                      }
 
-                    final event = _history[index];
-                    return _buildEventItem(event);
-                  },
-                ),
+                      final event = _history[index];
+                      return _buildEventItem(event);
+                    },
+                  ),
+      ),
     );
   }
 
