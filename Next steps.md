@@ -3,6 +3,13 @@
 ## Upcoming Improvements
 
 ### High Priority
+- [ ] **Unified Dancer Filter**: Create single parametrized implementation for Select Dancers, Add Existing Dancer, and Dancers screen
+  - [x] Write down a tech spec first
+  - [ ] Implement UnifiedDancerFilter component
+  - [ ] Migrate Dancers Screen to use new component
+  - [ ] Migrate Select Dancers Screen to use new component
+  - [ ] Migrate Add Existing Dancer Screen to use new component
+  - [ ] Clean up old filter components
 - [ ] **Performance Optimization**: Optimize database queries and UI rendering for large datasets
 - [ ] **Data Export**: Add ability to export event data and dancer lists
 - [ ] **Backup/Restore**: Implement data backup and restore functionality
