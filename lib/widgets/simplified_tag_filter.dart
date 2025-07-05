@@ -40,7 +40,6 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
   late String _activityLevel;
   Timer? _searchDebounce;
   late TextEditingController _searchController;
-  final bool _showTagFlyout = false;
 
   @override
   void initState() {
@@ -206,6 +205,16 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
     setState(() {
       _pendingTagIds = List<int>.from(widget.selectedTagIds);
     });
+
+    // Show the tag filter bottom sheet
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => _buildTagFilterBottomSheet(),
+    );
   }
 
   Widget _buildTagFilterBottomSheet() {
