@@ -234,16 +234,6 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
                 },
               ),
 
-            // Combined action for absent dancers - Mark Present & Record Dance
-            if (!widget.dancer.isPresent && !widget.isPlanningMode)
-              ListTile(
-                leading: Icon(Icons.music_note_outlined,
-                    color: context.danceTheme.danceAccent),
-                title: const Text('Mark Present & Record Dance'),
-                subtitle: const Text('Quick combo action'),
-                onTap: () => _markPresentAndRecordDance(context),
-              ),
-
             // View History
             ListTile(
               leading: Icon(Icons.history,
@@ -378,48 +368,6 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
       if (context.mounted) {
         Navigator.pop(context);
         ToastHelper.showError(context, 'Error updating presence: $e');
-      }
-    }
-  }
-
-  Future<void> _markPresentAndRecordDance(BuildContext context) async {
-    ActionLogger.logUserAction('DancerActionsDialog', 'combo_action_started', {
-      'dancerId': widget.dancer.id,
-      'eventId': widget.eventId,
-      'action': 'mark_present_and_record_dance',
-    });
-
-    try {
-      final attendanceService =
-          Provider.of<AttendanceService>(context, listen: false);
-
-      // Mark as present and record dance
-      await attendanceService.recordDance(
-        eventId: widget.eventId,
-        dancerId: widget.dancer.id,
-      );
-
-      if (context.mounted) {
-        ActionLogger.logUserAction(
-            'DancerActionsDialog', 'combo_action_completed', {
-          'dancerId': widget.dancer.id,
-          'eventId': widget.eventId,
-        });
-
-        Navigator.pop(context);
-        ToastHelper.showSuccess(
-            context, '${widget.dancer.name} marked present and dance recorded');
-      }
-    } catch (e) {
-      ActionLogger.logError(
-          'DancerActionsDialog._markPresentAndRecordDance', e.toString(), {
-        'dancerId': widget.dancer.id,
-        'eventId': widget.eventId,
-      });
-
-      if (context.mounted) {
-        Navigator.pop(context);
-        ToastHelper.showError(context, 'Error recording dance: $e');
       }
     }
   }

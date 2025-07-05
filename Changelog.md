@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Second Most Common**: Assign/Edit Score moved to second position
   - **Third Most Common**: Set/Change Ranking moved to third position
   - **Less Common Actions**: Record Dance, View History, Edit, etc. moved to bottom
+- **Removed Unused Action**: Removed "Mark Present & Record Dance" action since absent dancers aren't shown in Present tab
 - **Documentation Updates**: Updated Product specification to reflect new action order
 
 ### Technical

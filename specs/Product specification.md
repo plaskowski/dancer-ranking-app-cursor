@@ -264,7 +264,6 @@ Users can adjust rankings during events for various reasons:
   - **Assign/Edit Score** (for present dancers) - second most common
   - **Set/edit dancer ranking** (→ Ranking Dialog) - third most common
   - **Record dance / Edit impression** (context-aware) → opens Dance Recording Dialog
-  - **Mark Present & Record Dance** (combo action for absent dancers) → marks present + opens Dance Recording Dialog
   - **View History** → opens DancerHistoryScreen
   - **Edit dancer notes** → opens AddDancerDialog
   - **Mark as Left** (for present dancers who haven't danced yet)
