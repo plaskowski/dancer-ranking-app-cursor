@@ -240,7 +240,11 @@ Users can adjust rankings during events for various reasons:
 - Quick access to ranking adjustments and dance recording
 - Shows when each person was first spotted
 - Easy ranking modification based on current presentation/mood
-- **Score Display**: Shows dance scores as bold text after the dance impression for compact, readable flow
+- **Enhanced Score & Impression Display**: Shows dance scores and impressions with visual icons for better readability
+  - **Score with Star**: Scores appear as bold text with star (★) character before impressions
+  - **Impression with Note**: Dance impressions appear with note (♪) character in italics
+  - **Unified Color Scheme**: Both score and impression use the same color for visual consistency
+  - **Compact Flow**: Natural text flow with clear visual indicators
 - **Add newly met dancers** (FAB → Add Dancer Dialog)
   - Create new dancer and add to database
   - Option to mark as "already danced with"

@@ -9,18 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### User Requests
 - At present tab move the score as text after the dance impression (maybe bold it)
+- add a note character for impression and star character for score but switch them so that score goes before impression. Make the score the same color as impressioon.
 
 ### Changed
-- **Score Display in Present Tab**: Modified score presentation in the "At present" tab for better readability
-  - **Score as Bold Text**: Score now appears as bold text after the dance impression instead of as a separate pill
-  - **Improved Flow**: Score naturally flows with the dancer information in the text content
+- **Score Display in Present Tab**: Enhanced score and impression presentation in the "At present" tab for better readability
+  - **Visual Icons**: Added star (★) character for scores and note (♪) character for impressions
+  - **Reordered Display**: Score now appears before impression for better information flow
+  - **Unified Color Scheme**: Score and impression use the same color for visual consistency
+  - **Score as Bold Text**: Score appears as bold text with star icon instead of as a separate pill
   - **Planning Tab Unchanged**: Score pill remains in Planning tab for visual emphasis during planning
-  - **Better UX**: More compact and readable display of dancer information in Present tab
+  - **Better UX**: More compact and readable display with clear visual indicators
 
 ### Technical
-- **DancerCard Widget**: Modified to show score as bold text after impression when not in planning mode
-- **Conditional Display**: Score pill only appears in planning mode, bold text appears in present mode
-- **Text Styling**: Applied bold formatting with primary color for score text
+- **DancerCard Widget**: Modified to show score before impression with visual icons
+- **Character Icons**: Added ★ for scores and ♪ for impressions
+- **Color Unification**: Both score and impression use danceAccent color theme
+- **Conditional Display**: Score pill only appears in planning mode, formatted text appears in present mode
 
 ## [v2.2.1] - 2025-01-17
 

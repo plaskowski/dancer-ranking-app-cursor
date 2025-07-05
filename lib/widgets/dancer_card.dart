@@ -91,29 +91,29 @@ class DancerCard extends StatelessWidget {
                           ),
                         ],
 
-                        // Show dance impression if they have danced and have an impression
-                        if (dancer.hasDanced && dancer.impression != null && dancer.impression!.isNotEmpty) ...[
+                        // Show score with star before impression (for non-planning mode)
+                        if (dancer.hasScore && !isPlanningMode) ...[
                           const TextSpan(text: ' • '),
                           TextSpan(
-                            text: dancer.impression!,
+                            text: '★ ${dancer.scoreName!}',
                             style: TextStyle(
                               fontSize: 13,
-                              fontWeight: FontWeight.normal,
-                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.bold,
                               color: context.danceTheme.danceAccent,
                             ),
                           ),
                         ],
 
-                        // Show score as bold text after impression (for non-planning mode)
-                        if (dancer.hasScore && !isPlanningMode) ...[
+                        // Show dance impression with note if they have danced and have an impression
+                        if (dancer.hasDanced && dancer.impression != null && dancer.impression!.isNotEmpty) ...[
                           const TextSpan(text: ' • '),
                           TextSpan(
-                            text: dancer.scoreName!,
+                            text: '♪ ${dancer.impression!}',
                             style: TextStyle(
                               fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: context.danceTheme.rankingHigh,
+                              fontWeight: FontWeight.normal,
+                              fontStyle: FontStyle.italic,
+                              color: context.danceTheme.danceAccent,
                             ),
                           ),
                         ],
