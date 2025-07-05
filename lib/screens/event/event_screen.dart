@@ -47,15 +47,8 @@ class _EventScreenState extends State<EventScreen> {
 
     ActionLogger.logAction('UI_EventScreen', 'screen_initialized', {
       'eventId': widget.eventId,
-      'initialTab': 'planning',
+      'initialTab': widget.initialTab,
     });
-
-    // Handle initial action if specified
-    if (widget.initialAction != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _performInitialAction();
-      });
-    }
   }
 
   @override
@@ -137,37 +130,6 @@ class _EventScreenState extends State<EventScreen> {
       'tabIndex': index,
       'changeMethod': 'swipe',
     });
-  }
-
-  void _performInitialAction() {
-    if (widget.initialAction == null) return;
-
-    ActionLogger.logAction('UI_EventScreen', 'cli_performing_initial_action', {
-      'eventId': widget.eventId,
-      'initialAction': widget.initialAction,
-    });
-
-    switch (widget.initialAction) {
-      case 'add-existing-dancer':
-        ActionLogger.logAction('UI_EventScreen', 'cli_triggering_add_existing_dancer', {
-          'eventId': widget.eventId,
-        });
-        _performAddExistingDancer();
-        break;
-      default:
-        ActionLogger.logAction('UI_EventScreen', 'cli_unknown_action', {
-          'eventId': widget.eventId,
-          'initialAction': widget.initialAction,
-        });
-    }
-  }
-
-  void _performAddExistingDancer() {
-    // This will be handled by the PresentTab
-    ActionLogger.logAction('UI_EventScreen', 'cli_add_existing_dancer_handled_by_present_tab', {
-      'eventId': widget.eventId,
-    });
-    // The PresentTab will need to handle this action
   }
 
   @override

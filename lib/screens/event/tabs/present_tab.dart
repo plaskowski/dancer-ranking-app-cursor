@@ -13,7 +13,7 @@ import '../dialogs/add_existing_dancer_screen.dart';
 import '../dialogs/event_tab_actions.dart';
 
 // Present Tab - Shows only dancers who are present, grouped by rank
-class PresentTab extends StatelessWidget {
+class PresentTab extends StatefulWidget {
   final int eventId;
   final String? initialAction;
 
@@ -24,41 +24,54 @@ class PresentTab extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    ActionLogger.logAction('UI_PresentTab', 'build_called', {'eventId': eventId});
+  _PresentTabState createState() => _PresentTabState();
+}
 
-    // Handle initial action if specified
-    if (initialAction != null) {
+class _PresentTabState extends State<PresentTab> {
+  bool _cliActionExecuted = false;
+
+  @override
+  Widget build(BuildContext context) {
+    ActionLogger.logAction('UI_PresentTab', 'build_called', {'eventId': widget.eventId});
+
+    // Handle initial action if specified - only execute once
+    if (widget.initialAction != null && !_cliActionExecuted) {
       ActionLogger.logAction('UI_PresentTab', 'cli_initial_action_received', {
-        'eventId': eventId,
-        'initialAction': initialAction,
+        'eventId': widget.eventId,
+        'initialAction': widget.initialAction,
       });
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ActionLogger.logAction('UI_PresentTab', 'cli_executing_initial_action', {
-          'eventId': eventId,
-          'initialAction': initialAction,
+          'eventId': widget.eventId,
+          'initialAction': widget.initialAction,
         });
         _performInitialAction(context);
+        _cliActionExecuted = true;
+      });
+    } else if (widget.initialAction != null && _cliActionExecuted) {
+      ActionLogger.logAction('UI_PresentTab', 'cli_action_already_executed', {
+        'eventId': widget.eventId,
+        'initialAction': widget.initialAction,
       });
     } else {
       ActionLogger.logAction('UI_PresentTab', 'cli_no_initial_action', {
-        'eventId': eventId,
+        'eventId': widget.eventId,
       });
     }
 
     final dancerService = Provider.of<DancerService>(context);
 
     return StreamBuilder<List<DancerWithEventInfo>>(
-      stream: dancerService.watchDancersForEvent(eventId),
+      stream: dancerService.watchDancersForEvent(widget.eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          ActionLogger.logAction('UI_PresentTab', 'loading_state', {'eventId': eventId});
+          ActionLogger.logAction('UI_PresentTab', 'loading_state', {'eventId': widget.eventId});
           return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasError) {
           ActionLogger.logError('UI_PresentTab', 'stream_error', {
-            'eventId': eventId,
+            'eventId': widget.eventId,
             'error': snapshot.error.toString(),
             'stackTrace': snapshot.stackTrace?.toString(),
           });
@@ -115,7 +128,7 @@ class PresentTab extends StatelessWidget {
                 .toList());
 
         ActionLogger.logAction('UI_PresentTab', 'filtering_complete', {
-          'eventId': eventId,
+          'eventId': widget.eventId,
           'totalDancers': allDancers.length,
           'presentDancers': presentDancers.length,
           'dancedCount': presentDancers.where((d) => d.hasDanced).length,
@@ -169,7 +182,7 @@ class PresentTab extends StatelessWidget {
           });
 
         ActionLogger.logAction('UI_PresentTab', 'grouping_complete', {
-          'eventId': eventId,
+          'eventId': widget.eventId,
           'rankGroups': sortedKeys.length,
           'groupSizes': groupedDancers.map((k, v) => MapEntry(k, v.length)),
         });
@@ -194,7 +207,7 @@ class PresentTab extends StatelessWidget {
                   const SizedBox(height: 8),
                   ...rankDancers.map((dancer) => DancerCard(
                         dancer: dancer,
-                        eventId: eventId,
+                        eventId: widget.eventId,
                         isPlanningMode: false,
                       )),
                   const SizedBox(height: 16),
@@ -208,37 +221,37 @@ class PresentTab extends StatelessWidget {
   }
 
   void _performInitialAction(BuildContext context) {
-    if (initialAction == null) return;
+    if (widget.initialAction == null) return;
 
     ActionLogger.logAction('UI_PresentTab', 'cli_performing_initial_action', {
-      'eventId': eventId,
-      'initialAction': initialAction,
+      'eventId': widget.eventId,
+      'initialAction': widget.initialAction,
     });
 
-    switch (initialAction) {
+    switch (widget.initialAction) {
       case 'add-existing-dancer':
         ActionLogger.logAction('UI_PresentTab', 'cli_triggering_add_existing_dancer', {
-          'eventId': eventId,
+          'eventId': widget.eventId,
         });
         _showAddExistingDancerDialog(context);
         break;
       default:
         ActionLogger.logAction('UI_PresentTab', 'cli_unknown_action', {
-          'eventId': eventId,
-          'initialAction': initialAction,
+          'eventId': widget.eventId,
+          'initialAction': widget.initialAction,
         });
     }
   }
 
   void _showAddExistingDancerDialog(BuildContext context) {
     ActionLogger.logAction('UI_PresentTab', 'cli_showing_add_existing_dancer_dialog', {
-      'eventId': eventId,
+      'eventId': widget.eventId,
     });
     final appDb = Provider.of<AppDatabase>(context, listen: false);
 
     // Get event name from EventService
     final eventService = Provider.of<EventService>(context, listen: false);
-    eventService.getEvent(eventId).then((event) {
+    eventService.getEvent(widget.eventId).then((event) {
       if (event != null && context.mounted) {
         Navigator.push<bool>(
           context,
@@ -248,7 +261,7 @@ class PresentTab extends StatelessWidget {
               child: Provider<DancerTagService>(
                 create: (ctx) => DancerTagService(appDb, Provider.of<DancerCrudService>(ctx, listen: false)),
                 child: AddExistingDancerScreen(
-                  eventId: eventId,
+                  eventId: widget.eventId,
                   eventName: event.name,
                 ),
               ),
