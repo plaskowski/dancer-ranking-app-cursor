@@ -90,55 +90,28 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
 
     return AlertDialog(
       title: Text(widget.dancer.name),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Ranking actions (available in planning and present modes, but not for past events or summary tab)
-          if (!isPastEvent && !widget.isSummaryMode) ...[
-            // Set Ranking action
-            ListTile(
-              leading: Icon(
-                widget.dancer.hasRanking ? Icons.edit : Icons.add,
-                color: context.danceTheme.rankingHigh,
-              ),
-              title: Text(widget.dancer.hasRanking ? 'Change Ranking' : 'Set Ranking'),
-              onTap: () {
-                ActionLogger.logUserAction('DancerActionsDialog', 'set_ranking_tapped', {
-                  'dancerId': widget.dancer.id,
-                  'eventId': widget.eventId,
-                  'hasExistingRanking': widget.dancer.hasRanking,
-                  'currentRank': widget.dancer.rankName,
-                });
-
-                RankingDialog.show(
-                  context,
-                  dancerId: widget.dancer.id,
-                  eventId: widget.eventId,
-                ).then((updated) {
-                  if (updated == true && context.mounted) {
-                    Navigator.pop(context); // Close the action dialog
-                  }
-                });
-              },
-            ),
-
-            // Edit Ranking Reason action (only show if dancer has a ranking)
-            if (widget.dancer.hasRanking)
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Ranking actions (available in planning and present modes, but not for past events or summary tab)
+            if (!isPastEvent && !widget.isSummaryMode) ...[
+              // Set Ranking action
               ListTile(
                 leading: Icon(
-                  Icons.edit_note,
+                  widget.dancer.hasRanking ? Icons.edit : Icons.add,
                   color: context.danceTheme.rankingHigh,
                 ),
-                title: const Text('Edit Ranking Reason'),
+                title: Text(widget.dancer.hasRanking ? 'Change Ranking' : 'Set Ranking'),
                 onTap: () {
-                  ActionLogger.logUserAction('DancerActionsDialog', 'edit_ranking_reason_tapped', {
+                  ActionLogger.logUserAction('DancerActionsDialog', 'set_ranking_tapped', {
                     'dancerId': widget.dancer.id,
                     'eventId': widget.eventId,
+                    'hasExistingRanking': widget.dancer.hasRanking,
                     'currentRank': widget.dancer.rankName,
-                    'hasExistingReason': widget.dancer.rankingReason != null,
                   });
 
-                  RankingReasonDialog.show(
+                  RankingDialog.show(
                     context,
                     dancerId: widget.dancer.id,
                     eventId: widget.eventId,
@@ -149,162 +122,179 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
                   });
                 },
               ),
-          ],
 
-          // Score actions (only for present mode and attendants)
-          if (!widget.isPlanningMode && widget.dancer.isPresent)
-            ListTile(
-              leading: Icon(
-                widget.dancer.hasScore ? Icons.star : Icons.star_outline,
-                color: context.danceTheme.danceAccent,
-              ),
-              title: Text(widget.dancer.hasScore ? 'Edit Score' : 'Assign Score'),
-              onTap: () {
-                ActionLogger.logUserAction('DancerActionsDialog', 'score_action_tapped', {
-                  'dancerId': widget.dancer.id,
-                  'eventId': widget.eventId,
-                  'hasExistingScore': widget.dancer.hasScore,
-                  'currentScore': widget.dancer.scoreName,
-                });
-
-                showModalBottomSheet<bool>(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (context) => ScoreDialog(
-                    dancerId: widget.dancer.id,
-                    eventId: widget.eventId,
+              // Edit Ranking Reason action (only show if dancer has a ranking)
+              if (widget.dancer.hasRanking)
+                ListTile(
+                  leading: Icon(
+                    Icons.edit_note,
+                    color: context.danceTheme.rankingHigh,
                   ),
-                ).then((updated) {
-                  if (updated == true && context.mounted) {
-                    Navigator.pop(context); // Close the action dialog
-                  }
-                });
-              },
-            ),
+                  title: const Text('Edit Ranking Reason'),
+                  onTap: () {
+                    ActionLogger.logUserAction('DancerActionsDialog', 'edit_ranking_reason_tapped', {
+                      'dancerId': widget.dancer.id,
+                      'eventId': widget.eventId,
+                      'currentRank': widget.dancer.rankName,
+                      'hasExistingReason': widget.dancer.rankingReason != null,
+                    });
 
-          // Presence toggle - hide for past events
-          if (!isPastEvent)
-            ListTile(
-              leading: Icon(
-                widget.dancer.isPresent ? Icons.location_off : Icons.location_on,
-                color: widget.dancer.isPresent ? context.danceTheme.absent : context.danceTheme.present,
+                    RankingReasonDialog.show(
+                      context,
+                      dancerId: widget.dancer.id,
+                      eventId: widget.eventId,
+                    ).then((updated) {
+                      if (updated == true && context.mounted) {
+                        Navigator.pop(context); // Close the action dialog
+                      }
+                    });
+                  },
+                ),
+            ],
+
+            // Score actions (only for present mode and attendants)
+            if (!widget.isPlanningMode && widget.dancer.isPresent)
+              ListTile(
+                leading: Icon(
+                  widget.dancer.hasScore ? Icons.star : Icons.star_outline,
+                  color: context.danceTheme.danceAccent,
+                ),
+                title: Text(widget.dancer.hasScore ? 'Edit Score' : 'Assign Score'),
+                onTap: () {
+                  ActionLogger.logUserAction('DancerActionsDialog', 'score_action_tapped', {
+                    'dancerId': widget.dancer.id,
+                    'eventId': widget.eventId,
+                    'hasExistingScore': widget.dancer.hasScore,
+                    'currentScore': widget.dancer.scoreName,
+                  });
+
+                  showModalBottomSheet<bool>(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => ScoreDialog(
+                      dancerId: widget.dancer.id,
+                      eventId: widget.eventId,
+                    ),
+                  ).then((updated) {
+                    if (updated == true && context.mounted) {
+                      Navigator.pop(context); // Close the action dialog
+                    }
+                  });
+                },
               ),
-              title: Text(widget.dancer.isPresent ? 'Mark absent' : 'Mark Present'),
-              onTap: () => _togglePresence(context),
-            ),
 
-          // Combined action for absent dancers - Mark Present & Record Dance
-          if (!widget.dancer.isPresent && !widget.isPlanningMode)
-            ListTile(
-              leading: Icon(Icons.music_note_outlined, color: context.danceTheme.danceAccent),
-              title: const Text('Mark Present & Record Dance'),
-              subtitle: const Text('Quick combo action'),
-              onTap: () => _markPresentAndRecordDance(context),
-            ),
+            // Presence toggle - hide for past events
+            if (!isPastEvent)
+              ListTile(
+                leading: Icon(
+                  widget.dancer.isPresent ? Icons.location_off : Icons.location_on,
+                  color: widget.dancer.isPresent ? context.danceTheme.absent : context.danceTheme.present,
+                ),
+                title: Text(widget.dancer.isPresent ? 'Mark absent' : 'Mark Present'),
+                onTap: () => _togglePresence(context),
+              ),
 
-          // Record Dance / Edit impression - only available for present dancers in Present mode
-          if (!widget.isPlanningMode && widget.dancer.isPresent)
+            // Combined action for absent dancers - Mark Present & Record Dance
+            if (!widget.dancer.isPresent && !widget.isPlanningMode)
+              ListTile(
+                leading: Icon(Icons.music_note_outlined, color: context.danceTheme.danceAccent),
+                title: const Text('Mark Present & Record Dance'),
+                subtitle: const Text('Quick combo action'),
+                onTap: () => _markPresentAndRecordDance(context),
+              ),
+
+            // Record Dance / Edit impression - only available for present dancers in Present mode
+            if (!widget.isPlanningMode && widget.dancer.isPresent)
+              ListTile(
+                leading: Icon(Icons.music_note, color: context.danceTheme.danceAccent),
+                title: Text(widget.dancer.hasDanced ? 'Edit impression' : 'Record Dance'),
+                onTap: () {
+                  ActionLogger.logUserAction('DancerActionsDialog', 'record_dance_tapped', {
+                    'dancerId': widget.dancer.id,
+                    'eventId': widget.eventId,
+                    'hasAlreadyDanced': widget.dancer.hasDanced,
+                  });
+
+                  Navigator.pop(context);
+                  showDialog(
+                    context: context,
+                    builder: (context) => DanceRecordingDialog(
+                      dancerId: widget.dancer.id,
+                      eventId: widget.eventId,
+                      dancerName: widget.dancer.name,
+                    ),
+                  );
+                },
+              ),
+
+            // View History
             ListTile(
-              leading: Icon(Icons.music_note, color: context.danceTheme.danceAccent),
-              title: Text(widget.dancer.hasDanced ? 'Edit impression' : 'Record Dance'),
+              leading: Icon(Icons.history, color: Theme.of(context).colorScheme.onSurfaceVariant),
+              title: const Text('View History'),
               onTap: () {
-                ActionLogger.logUserAction('DancerActionsDialog', 'record_dance_tapped', {
+                ActionLogger.logUserAction('DancerActionsDialog', 'view_history_tapped', {
                   'dancerId': widget.dancer.id,
                   'eventId': widget.eventId,
-                  'hasAlreadyDanced': widget.dancer.hasDanced,
                 });
 
                 Navigator.pop(context);
-                showDialog(
-                  context: context,
-                  builder: (context) => DanceRecordingDialog(
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => DancerHistoryScreen(
                     dancerId: widget.dancer.id,
-                    eventId: widget.eventId,
                     dancerName: widget.dancer.name,
                   ),
+                ));
+              },
+            ),
+
+            // Edit General Notes
+            ListTile(
+              leading: Icon(Icons.edit_note, color: Theme.of(context).colorScheme.primary),
+              title: const Text('Edit the dancer'),
+              onTap: () async {
+                ActionLogger.logUserAction('DancerActionsDialog', 'edit_notes_tapped', {
+                  'dancerId': widget.dancer.id,
+                  'eventId': widget.eventId,
+                });
+
+                Navigator.pop(context);
+                // Convert DancerWithEventInfo to Dancer for editing
+                final dancerEntity = Dancer(
+                  id: widget.dancer.id,
+                  name: widget.dancer.name,
+                  notes: widget.dancer.notes,
+                  createdAt: widget.dancer.createdAt,
+                  firstMetDate: widget.dancer.firstMetDate,
+                  isArchived: false, // Default to not archived
+                );
+                showDialog(
+                  context: context,
+                  builder: (context) => AddDancerDialog(dancer: dancerEntity),
                 );
               },
             ),
 
-          // View History
-          ListTile(
-            leading: Icon(Icons.history, color: Theme.of(context).colorScheme.onSurfaceVariant),
-            title: const Text('View History'),
-            onTap: () {
-              ActionLogger.logUserAction('DancerActionsDialog', 'view_history_tapped', {
-                'dancerId': widget.dancer.id,
-                'eventId': widget.eventId,
-              });
-
-              Navigator.pop(context);
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => DancerHistoryScreen(
-                  dancerId: widget.dancer.id,
-                  dancerName: widget.dancer.name,
-                ),
-              ));
-            },
-          ),
-
-          // Edit General Notes
-          ListTile(
-            leading: Icon(Icons.edit_note, color: Theme.of(context).colorScheme.primary),
-            title: const Text('Edit the dancer'),
-            onTap: () async {
-              ActionLogger.logUserAction('DancerActionsDialog', 'edit_notes_tapped', {
-                'dancerId': widget.dancer.id,
-                'eventId': widget.eventId,
-              });
-
-              Navigator.pop(context);
-              // Convert DancerWithEventInfo to Dancer for editing
-              final dancerEntity = Dancer(
-                id: widget.dancer.id,
-                name: widget.dancer.name,
-                notes: widget.dancer.notes,
-                createdAt: widget.dancer.createdAt,
-                firstMetDate: widget.dancer.firstMetDate,
-                isArchived: false, // Default to not archived
-              );
-              showDialog(
-                context: context,
-                builder: (context) => AddDancerDialog(dancer: dancerEntity),
-              );
-            },
-          ),
-
-          // Mark as Left - only show for present dancers who haven't danced yet and not for past events
-          if (!isPastEvent && widget.dancer.isPresent && !widget.dancer.hasDanced)
-            ListTile(
-              leading: Icon(Icons.exit_to_app, color: context.danceTheme.warning),
-              title: const Text('Mark as Left'),
-              onTap: () => _markAsLeft(context),
-            ),
-
-          // Remove from Event action (only available in planning mode for ranked dancers)
-          if (widget.isPlanningMode && widget.dancer.hasRanking && !isPastEvent)
-            ListTile(
-              leading: Icon(
-                Icons.remove_circle_outline,
-                color: context.danceTheme.warning,
+            // Mark as Left - only show for present dancers who haven't danced yet and not for past events
+            if (!isPastEvent && widget.dancer.isPresent && !widget.dancer.hasDanced)
+              ListTile(
+                leading: Icon(Icons.exit_to_app, color: context.danceTheme.warning),
+                title: const Text('Mark as Left'),
+                onTap: () => _markAsLeft(context),
               ),
-              title: const Text('Remove from Event'),
-              onTap: () => _removeFromEvent(context),
-            ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            ActionLogger.logUserAction('DancerActionsDialog', 'dialog_cancelled', {
-              'dancerId': widget.dancer.id,
-              'eventId': widget.eventId,
-            });
-            Navigator.pop(context);
-          },
-          child: const Text('Close'),
+
+            // Remove from Event action (only available in planning mode for ranked dancers)
+            if (widget.isPlanningMode && widget.dancer.hasRanking && !isPastEvent)
+              ListTile(
+                leading: Icon(
+                  Icons.remove_circle_outline,
+                  color: context.danceTheme.warning,
+                ),
+                title: const Text('Remove from Event'),
+                onTap: () => _removeFromEvent(context),
+              ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
