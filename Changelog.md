@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.4.4] - 2025-01-17
+
+### User Requests
+- "All good now, commit" - Request to commit the real-time filtering improvements
+
+### Improved
+- **Real-Time Dancer Filtering**: Enhanced dancer filtering to use streams for live updates
+  - **Dancers Screen**: Converted from Future to Stream for real-time dancer list updates
+  - **Base Dancer Selection**: Updated base class to support streaming data for live filtering
+  - **Immediate Updates**: Dancer lists now update immediately when data changes
+  - **Better Performance**: Reduced unnecessary rebuilds with streaming approach
+  - **Consistent Architecture**: All dancer filtering now uses same streaming pattern
+
+### Technical
+- **DancersScreen**: Updated `_getDancers` method to return Stream instead of Future
+- **BaseDancerSelectionScreen**: Updated base class to support streaming data sources
+- **DancerListFilterWidget**: Converted from FutureBuilder to StreamBuilder for real-time updates
+- **Streaming Architecture**: Consistent use of streams across all dancer filtering components
+- **Performance Optimization**: Real-time updates without manual refresh requirements
+
 ## [v1.4.3] - 2025-01-17
 
 ### User Requests

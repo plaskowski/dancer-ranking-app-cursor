@@ -34,6 +34,34 @@
 - Only displays for dancers with actual attendance records (excludes absent status)
 - Uses reactive stream for real-time updates
 
+**Real-Time Filtering**:
+- Uses streaming architecture for immediate updates when data changes
+- Dancer list updates automatically when dancers are added, edited, or deleted
+- Search and tag filtering work with real-time data streams
+- No manual refresh required - changes appear immediately
+
+## 3. Real-Time Filtering Architecture
+
+**Purpose**: Provide immediate updates across all dancer filtering components
+
+**Key Features**:
+- **Streaming Data**: All dancer filtering uses Stream<List<DancerWithTags>> for real-time updates
+- **Immediate Updates**: Dancer lists update automatically when data changes
+- **Consistent Architecture**: All filtering components use same streaming pattern
+- **Performance Optimized**: Reduces unnecessary rebuilds with streaming approach
+
+**Implementation**:
+- **DancersScreen**: Uses `watchDancersWithTagsAndLastMet()` stream for real-time updates
+- **BaseDancerSelectionScreen**: Supports streaming data sources for live filtering
+- **DancerListFilterWidget**: Uses StreamBuilder for immediate UI updates
+- **Filtering Logic**: Search and tag filtering applied to streaming data
+
+**Benefits**:
+- **Immediate Feedback**: Changes appear instantly without manual refresh
+- **Better UX**: Users see updates as they happen
+- **Consistent Behavior**: All dancer lists behave the same way
+- **Reduced Complexity**: No need for manual refresh mechanisms
+
 ## Key Features
 
 ### Dancer Management

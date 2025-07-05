@@ -105,7 +105,7 @@ class _BaseDancerSelectionScreenState extends State<BaseDancerSelectionScreen> w
 /// Generic base class for dancer list screens with filtering and actions
 class BaseDancerListScreen extends StatefulWidget {
   final String screenTitle;
-  final Future<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery) getDancers;
+  final Stream<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery) getDancers;
   final Widget Function(DancerWithTags dancer) buildDancerTile;
   final String? infoMessage;
   final Widget? floatingActionButton;
@@ -172,7 +172,7 @@ class _DancerSelectionFilterWidget extends StatefulWidget {
 }
 
 class _DancerListFilterWidget extends StatefulWidget {
-  final Future<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery) getDancers;
+  final Stream<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery) getDancers;
   final Widget Function(DancerWithTags dancer) buildDancerTile;
   final int? refreshKey;
   final String? infoMessage;
@@ -393,9 +393,9 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
 
   List<Widget> _buildDancerList(BuildContext context) {
     return [
-      FutureBuilder<List<DancerWithTags>>(
+      StreamBuilder<List<DancerWithTags>>(
         key: ValueKey('${_selectedTagIds.toString()}_$_searchQuery${widget.refreshKey ?? 0}'),
-        future: widget.getDancers(_selectedTagIds, _searchQuery),
+        stream: widget.getDancers(_selectedTagIds, _searchQuery),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

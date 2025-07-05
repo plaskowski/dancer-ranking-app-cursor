@@ -21,26 +21,28 @@ class DancersScreen extends StatefulWidget {
 }
 
 class _DancersScreenState extends State<DancersScreen> {
-  Future<List<DancerWithTags>> _getDancers(List<int> tagIds, String searchQuery) async {
+  Stream<List<DancerWithTags>> _getDancers(List<int> tagIds, String searchQuery) {
     final dancerService = Provider.of<DancerService>(context, listen: false);
-    final allDancers = await dancerService.getDancersWithTagsAndLastMet();
+    final allDancersStream = dancerService.watchDancersWithTagsAndLastMet();
 
-    final filterService = DancerFilterService.of(context);
-    List<DancerWithTags> filteredDancers = allDancers;
+    return allDancersStream.map((allDancers) {
+      final filterService = DancerFilterService.of(context);
+      List<DancerWithTags> filteredDancers = allDancers;
 
-    // Apply search filter
-    if (searchQuery.isNotEmpty) {
-      filteredDancers = filterService.filterDancersByTextWords(allDancers, searchQuery);
-    }
+      // Apply search filter
+      if (searchQuery.isNotEmpty) {
+        filteredDancers = filterService.filterDancersByTextWords(allDancers, searchQuery);
+      }
 
-    // Apply tag filter
-    if (tagIds.isNotEmpty) {
-      filteredDancers = filteredDancers.where((dancer) {
-        return dancer.tags.any((tag) => tagIds.contains(tag.id));
-      }).toList();
-    }
+      // Apply tag filter
+      if (tagIds.isNotEmpty) {
+        filteredDancers = filteredDancers.where((dancer) {
+          return dancer.tags.any((tag) => tagIds.contains(tag.id));
+        }).toList();
+      }
 
-    return filteredDancers;
+      return filteredDancers;
+    });
   }
 
   Widget _buildDancerTile(DancerWithTags dancer) {
