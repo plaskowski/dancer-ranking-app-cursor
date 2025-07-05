@@ -40,7 +40,7 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> with 
       onDancerSelected: _onDancerSelected,
       actionButtonText: 'Mark Present',
       infoMessage: 'Showing unranked and absent dancers only. Present dancers managed in Present tab.',
-      screenTitle: 'Add to ${widget.eventName}',
+      screenTitle: 'Mark Dancers Present',
     );
   }
 }

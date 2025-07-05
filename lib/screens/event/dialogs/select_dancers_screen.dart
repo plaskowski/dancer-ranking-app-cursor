@@ -38,9 +38,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> with EventDan
       onDancerSelected: _onDancerSelected,
       actionButtonText: 'Add to Event',
       infoMessage: 'Showing unranked and absent dancers only. Select multiple dancers to add to the event.',
-      screenTitle: 'Select Dancers',
-      shouldCloseAfterSelection: true,
-      returnValueOnClose: true,
+      screenTitle: 'Add Dancers to Event',
     );
   }
 }

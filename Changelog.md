@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.4.2] - 2025-01-17
+
+### User Requests
+- "move mixin to parent class" - Request to move EventDancerSelectionMixin to base class for better code organization
+- "Have same screen title" - Request to fix duplicate screen titles between dancer selection screens
+- "The select dancers dialog shoud not close after first row action" - Request to allow multiple selections without closing dialog
+
+### Changed
+- **Dancer Selection Screens**: Improved code organization and user experience
+  - **Mixin Refactoring**: Moved EventDancerSelectionMixin to BaseDancerSelectionScreen for better code reuse
+  - **Unique Screen Titles**: Updated titles to be more descriptive and distinct
+    - "Add Dancers to Event" for Select Dancers screen
+    - "Mark Dancers Present" for Add Existing Dancer screen
+  - **Multi-Selection Support**: Select Dancers screen now stays open for multiple selections
+  - **Better UX**: Users can add multiple dancers without reopening the dialog
+  - **Consistent Behavior**: Both screens maintain their specific success messages and refresh functionality
+
+### Technical
+- **BaseDancerSelectionScreen**: Added EventDancerSelectionMixin to base class for common functionality
+- **SelectDancersScreen**: Removed mixin duplication, updated title, disabled auto-close
+- **AddExistingDancerScreen**: Removed mixin duplication, updated title for clarity
+- **Code Organization**: Reduced duplication while maintaining specific functionality per screen
+- **User Experience**: Improved multi-selection workflow for event planning
+
 ## [v1.4.1] - 2025-01-17
 
 ### User Requests

@@ -3,13 +3,6 @@
 ## Upcoming Improvements
 
 ### High Priority
-- [ ] **Unified Dancer Filter**: Create single parametrized implementation for Select Dancers, Add Existing Dancer, and Dancers screen
-  - [x] Write down a tech spec first
-  - [x] Implement base component (DancerFilterListWidget)
-  - [x] Migrate Add Existing Dancer Screen to use new component
-  - [ ] Migrate Dancers Screen to use new component
-  - [ ] Migrate Select Dancers Screen to use new component
-  - [ ] Clean up old filter components
 - [ ] **Performance Optimization**: Optimize database queries and UI rendering for large datasets
 - [ ] **Data Export**: Add ability to export event data and dancer lists
 - [ ] **Backup/Restore**: Implement data backup and restore functionality
@@ -28,6 +21,7 @@
 - [ ] **Data Analytics**: Add charts and insights about dance patterns
 
 ## Recently Completed
+- ✅ **Dancer Selection Screen Improvements**: Refactored code organization and improved UX
 - ✅ **Base Component Refactoring**: Created DancerFilterListWidget and migrated Add Existing Dancer screen
 - ✅ **Last Met Tracking**: Complete implementation with reactive updates
 - ✅ **Archived Dancer Pill**: Improved styling and positioning in tags section
@@ -37,6 +31,7 @@
 ## Completed Features ✅
 
 ### Recent Completions
+- [x] **Dancer Selection Screens**: Improved code organization with mixin refactoring and better UX
 - [x] **Base Component Architecture**: Created reusable DancerFilterListWidget for consistent dancer filtering
 - [x] **Last Met Tracking**: Automatically track and display when you last met each dancer at events
 - [x] **Toast Notifications**: Improved toast notification system using Fluttertoast
