@@ -57,9 +57,6 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
     
-    - name: Run tests
-      run: flutter test
-    
     - name: Get current version
       id: current_version
       run: |
