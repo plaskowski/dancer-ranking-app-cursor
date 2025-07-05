@@ -29,8 +29,7 @@ class SimpleSelectionDialog<T> extends StatefulWidget {
   });
 
   @override
-  State<SimpleSelectionDialog<T>> createState() =>
-      _SimpleSelectionDialogState<T>();
+  State<SimpleSelectionDialog<T>> createState() => _SimpleSelectionDialogState<T>();
 }
 
 class _SimpleSelectionDialogState<T> extends State<SimpleSelectionDialog<T>> {
@@ -58,8 +57,7 @@ class _SimpleSelectionDialogState<T> extends State<SimpleSelectionDialog<T>> {
       await widget.onItemSelected(item);
     } catch (e) {
       if (widget.logPrefix != null) {
-        ActionLogger.logError(
-            '${widget.logPrefix!}._handleItemSelected', e.toString());
+        ActionLogger.logError('${widget.logPrefix!}._handleItemSelected', e.toString());
       }
       rethrow;
     }
@@ -82,89 +80,85 @@ class _SimpleSelectionDialogState<T> extends State<SimpleSelectionDialog<T>> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: widget.isLoading
-            ? const SizedBox(
-                height: 100,
-                child: Center(child: CircularProgressIndicator()),
-              )
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          widget.title,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+      child: Material(
+        color: Colors.transparent,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: widget.isLoading
+              ? const SizedBox(
+                  height: 100,
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            widget.title,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                        onPressed: _handleCancel,
-                        icon: const Icon(Icons.close),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Items List
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxHeight: 300, // Limit height to prevent overflow
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: widget.items.map((item) {
-                          final isSelected =
-                              widget.isSelected?.call(item) ?? false;
-
-                          return ListTile(
-                            leading: Icon(
-                              isSelected
-                                  ? Icons.check_circle
-                                  : Icons.circle_outlined,
-                              color: isSelected
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
-                            ),
-                            title: Text(
-                              widget.itemTitle(item),
-                              style: TextStyle(
-                                fontWeight: isSelected
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                              ),
-                            ),
-                            onTap: () => _handleItemSelected(item),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ),
-
-                  // Cancel Button
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextButton(
+                        IconButton(
                           onPressed: _handleCancel,
-                          child: Text(widget.cancelButtonText ?? 'Cancel'),
+                          icon: const Icon(Icons.close),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Items List
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxHeight: 300, // Limit height to prevent overflow
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: widget.items.map((item) {
+                            final isSelected = widget.isSelected?.call(item) ?? false;
+
+                            return ListTile(
+                              leading: Icon(
+                                isSelected ? Icons.check_circle : Icons.circle_outlined,
+                                color: isSelected
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context).colorScheme.onSurfaceVariant,
+                              ),
+                              title: Text(
+                                widget.itemTitle(item),
+                                style: TextStyle(
+                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                ),
+                              ),
+                              onTap: () => _handleItemSelected(item),
+                            );
+                          }).toList(),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+
+                    // Cancel Button
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextButton(
+                            onPressed: _handleCancel,
+                            child: Text(widget.cancelButtonText ?? 'Cancel'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+        ),
       ),
     );
   }
