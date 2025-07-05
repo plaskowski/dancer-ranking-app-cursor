@@ -56,6 +56,7 @@ class DancerRecentHistory {
   final String status; // 'present', 'served', 'left'
   final String? impression;
   final String? scoreName;
+  final int attendanceId; // ID of the attendance record for extraction
 
   DancerRecentHistory({
     required this.eventName,
@@ -63,6 +64,7 @@ class DancerRecentHistory {
     required this.status,
     this.impression,
     this.scoreName,
+    required this.attendanceId,
   });
 
   // Simple computed properties

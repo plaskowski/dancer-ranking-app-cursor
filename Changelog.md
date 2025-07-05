@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.5.6] - 2025-01-17
+
+### User Requests
+- "Let's try this" - Request to implement extract historical dance record as one-time person feature
+- "use regular tap" - Request to use tap instead of long press for extraction action
+- "add the dancer name to the new one-time dancer name" - Request to include original dancer name in extracted person name
+- "finish" - Request to complete the implementation
+
+### Added
+- **Extract Historical Dance Record Feature**: Complete implementation for separating dance records as one-time persons
+  - **Service Layer**: New `DancerExtractionService` with database transaction handling
+  - **UI Dialog**: `ExtractDanceRecordDialog` with confirmation, loading states, and error handling
+  - **Context Menu**: Tap on dance records in dancer history to access "Separate record" option
+  - **Data Model Updates**: Enhanced `DancerRecentHistory` to include attendance ID for extraction
+  - **Naming Convention**: New one-time persons named "[EventName] - [OriginalDancerName]"
+
+### Technical
+- **Database Operations**: Safe transaction-based extraction with proper error handling
+- **UI Integration**: Context menu in dancer history screen with proper data flow
+- **Data Integrity**: Preserves all dance data while removing from original dancer
+- **Audit Logging**: Comprehensive logging for all extraction operations
+
 ## [v1.5.5] - 2025-01-17
 
 ### User Requests

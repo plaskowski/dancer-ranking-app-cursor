@@ -6,6 +6,7 @@ import '../database/database.dart';
 import '../services/dancer/dancer_event_service.dart';
 import '../services/dancer/dancer_models.dart';
 import '../utils/action_logger.dart';
+import '../widgets/extract_dance_record_dialog.dart';
 
 class DancerHistoryScreen extends StatefulWidget {
   final int dancerId;
@@ -58,20 +59,23 @@ class _DancerHistoryScreenState extends State<DancerHistoryScreen> {
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
       _loadMoreHistory();
     }
   }
 
   Future<void> _loadHistory() async {
     try {
-      final history = await _dancerEventService.getRecentHistory(widget.dancerId);
+      final history =
+          await _dancerEventService.getRecentHistory(widget.dancerId);
 
       if (mounted) {
         setState(() {
           _history = history;
           _isLoading = false;
-          _hasMoreData = history.length >= 20; // If we got 20 items, there might be more
+          _hasMoreData =
+              history.length >= 20; // If we got 20 items, there might be more
         });
       }
     } catch (e) {
@@ -108,7 +112,8 @@ class _DancerHistoryScreenState extends State<DancerHistoryScreen> {
         setState(() {
           _history.addAll(moreHistory);
           _isLoadingMore = false;
-          _hasMoreData = moreHistory.length >= 20; // If we got 20 items, there might be more
+          _hasMoreData = moreHistory.length >=
+              20; // If we got 20 items, there might be more
         });
       }
     } catch (e) {
@@ -185,27 +190,83 @@ class _DancerHistoryScreenState extends State<DancerHistoryScreen> {
     }
     final contentLine = parts.join(' • ');
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Event name and date
-          Text(
-            '$formattedDate - ${event.eventName}',
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+    return GestureDetector(
+      onTap: () => _showContextMenu(event),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Event name and date
+            Text(
+              '$formattedDate - ${event.eventName}',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-          const SizedBox(height: 4),
-          // Status, score, and impression
-          Text(
-            '$statusIcon $contentLine',
-            style: const TextStyle(fontSize: 14),
-          ),
-        ],
+            const SizedBox(height: 4),
+            // Status, score, and impression
+            Text(
+              '$statusIcon $contentLine',
+              style: const TextStyle(fontSize: 14),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  void _showContextMenu(DancerRecentHistory event) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                event.eventName,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 16),
+              ListTile(
+                leading: const Icon(Icons.call_split),
+                title: const Text('Separate record'),
+                subtitle: const Text('Extract as one-time person'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _extractDanceRecord(event);
+                },
+              ),
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _extractDanceRecord(DancerRecentHistory event) {
+    ExtractDanceRecordDialog.show(
+      context,
+      attendanceId: event.attendanceId,
+      dancerName: widget.dancerName,
+      eventName: event.eventName,
+      eventDate: event.eventDate,
+      impression: event.impression,
+      scoreName: event.scoreName,
+    ).then((_) {
+      // Refresh the history after extraction
+      _loadHistory();
+    });
   }
 }
