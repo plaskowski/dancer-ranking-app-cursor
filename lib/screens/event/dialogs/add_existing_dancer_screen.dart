@@ -3,11 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../models/dancer_with_tags.dart';
 import '../../../services/attendance_service.dart';
-import '../../../services/dancer/dancer_filter_service.dart';
-import '../../../widgets/dancer_filter_list_widget.dart';
-import '../../../widgets/dancer_selection_tile.dart';
+import 'base_dancer_selection_screen.dart';
 import 'event_dancer_selection_mixin.dart';
 
 class AddExistingDancerScreen extends StatefulWidget {
@@ -28,66 +25,22 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> with 
   @override
   int get eventId => widget.eventId;
 
-  Future<void> _markDancerPresent(int dancerId, String dancerName) async {
-    try {
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
-
-      await attendanceService.markPresent(widget.eventId, dancerId);
-
-      if (mounted) {
-        // Show a brief success message without closing the screen
-        showSuccessMessage('$dancerName marked as present');
-
-        // Trigger a refresh by updating the key
-        triggerRefresh();
-      }
-    } catch (e) {
-      showErrorMessage('Error marking dancer as present: $e');
-    }
-  }
-
-  Future<List<DancerWithTags>> _getAvailableDancers(List<int> tagIds, String searchQuery) async {
-    final filterService = DancerFilterService.of(context);
-
-    // Get dancers based on tag filtering
-    List<DancerWithTags> dancers;
-    if (tagIds.isNotEmpty) {
-      // Use tag filtering when tags are selected
-      dancers = await filterService.getAvailableDancersWithTagsForEvent(
-        widget.eventId,
-        tagIds: tagIds.toSet(),
-      );
-    } else {
-      // Get all available dancers when no tags are selected
-      dancers = await filterService.getAvailableDancersWithTagsForEvent(
-        widget.eventId,
-      );
-    }
-
-    // Apply search filtering if search query is provided
-    if (searchQuery.isNotEmpty) {
-      dancers = filterService.filterDancersByText(dancers, searchQuery);
-    }
-
-    return dancers;
-  }
-
-  Widget _buildDancerTile(DancerWithTags dancer) {
-    return DancerSelectionTile(
-      dancer: dancer,
-      buttonText: 'Mark Present',
-      onPressed: () => _markDancerPresent(dancer.id, dancer.name),
-    );
+  Future<void> _onDancerSelected(int dancerId, String dancerName) async {
+    final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+    await attendanceService.markPresent(widget.eventId, dancerId);
+    showSuccessMessage('$dancerName marked as present');
+    triggerRefresh();
   }
 
   @override
   Widget build(BuildContext context) {
-    return DancerFilterListWidget(
-      title: 'Add to ${widget.eventName}',
+    return BaseDancerSelectionScreen(
+      eventId: widget.eventId,
+      eventName: widget.eventName,
+      onDancerSelected: _onDancerSelected,
+      actionButtonText: 'Mark Present',
       infoMessage: 'Showing unranked and absent dancers only. Present dancers managed in Present tab.',
-      getDancers: getAvailableDancers,
-      buildDancerTile: _buildDancerTile,
-      refreshKey: refreshKey,
+      screenTitle: 'Add to ${widget.eventName}',
     );
   }
 }

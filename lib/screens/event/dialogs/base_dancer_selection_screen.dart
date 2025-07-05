@@ -1,70 +1,127 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../models/dancer_with_tags.dart';
-import '../../../services/ranking_service.dart';
+import '../../../widgets/dancer_selection_tile.dart';
 import '../../../widgets/simplified_tag_filter.dart';
-import 'base_dancer_selection_screen.dart';
 import 'event_dancer_selection_mixin.dart';
 
-class SelectDancersScreen extends StatefulWidget {
+/// Base class for dancer selection screens that share common UI patterns
+class BaseDancerSelectionScreen extends StatefulWidget {
   final int eventId;
   final String eventName;
+  final Future<void> Function(int dancerId, String dancerName) onDancerSelected;
+  final String actionButtonText;
+  final String infoMessage;
+  final String screenTitle;
+  final bool shouldCloseAfterSelection;
+  final bool returnValueOnClose;
 
-  const SelectDancersScreen({
+  const BaseDancerSelectionScreen({
     super.key,
     required this.eventId,
     required this.eventName,
+    required this.onDancerSelected,
+    required this.actionButtonText,
+    required this.infoMessage,
+    required this.screenTitle,
+    this.shouldCloseAfterSelection = false,
+    this.returnValueOnClose = false,
   });
 
   @override
-  State<SelectDancersScreen> createState() => _SelectDancersScreenState();
+  State<BaseDancerSelectionScreen> createState() => _BaseDancerSelectionScreenState();
 }
 
-class _SelectDancersScreenState extends State<SelectDancersScreen> with EventDancerSelectionMixin {
+class _BaseDancerSelectionScreenState extends State<BaseDancerSelectionScreen> with EventDancerSelectionMixin {
+  bool _isLoading = false;
+
   @override
   int get eventId => widget.eventId;
 
-  Future<void> _onDancerSelected(int dancerId, String dancerName) async {
-    final rankingService = Provider.of<RankingService>(context, listen: false);
-    await rankingService.setRankNeutral(widget.eventId, dancerId);
-    showSuccessMessage('$dancerName added to event');
-    triggerRefresh();
+  Future<void> _handleDancerSelection(int dancerId, String dancerName) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await widget.onDancerSelected(dancerId, dancerName);
+
+      if (mounted) {
+        if (widget.shouldCloseAfterSelection) {
+          Navigator.pop(context, widget.returnValueOnClose);
+        }
+      }
+    } catch (e) {
+      showErrorMessage('Error: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Widget _buildDancerTile(DancerWithTags dancer) {
+    return DancerSelectionTile(
+      dancer: dancer,
+      buttonText: widget.actionButtonText,
+      onPressed: () => _handleDancerSelection(dancer.id, dancer.name),
+      isLoading: _isLoading,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BaseDancerSelectionScreen(
-      eventId: widget.eventId,
-      eventName: widget.eventName,
-      onDancerSelected: _onDancerSelected,
-      actionButtonText: 'Add to Event',
-      infoMessage: 'Showing unranked and absent dancers only. Select multiple dancers to add to the event.',
-      screenTitle: 'Select Dancers',
-      shouldCloseAfterSelection: true,
-      returnValueOnClose: true,
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context, false);
+          },
+        ),
+        title: Column(
+          children: [
+            Text(widget.screenTitle),
+            Text(
+              widget.eventName,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+            ),
+          ],
+        ),
+      ),
+      body: _DancerSelectionFilterWidget(
+        eventId: widget.eventId,
+        getDancers: getAvailableDancers,
+        buildDancerTile: _buildDancerTile,
+        refreshKey: refreshKey,
+        infoMessage: widget.infoMessage,
+      ),
     );
   }
 }
 
-class _SelectDancersFilterWidget extends StatefulWidget {
+class _DancerSelectionFilterWidget extends StatefulWidget {
   final int eventId;
   final Future<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery) getDancers;
   final Widget Function(DancerWithTags dancer) buildDancerTile;
   final int? refreshKey;
+  final String infoMessage;
 
-  const _SelectDancersFilterWidget({
+  const _DancerSelectionFilterWidget({
     required this.eventId,
     required this.getDancers,
     required this.buildDancerTile,
     this.refreshKey,
+    required this.infoMessage,
   });
 
   @override
-  State<_SelectDancersFilterWidget> createState() => _SelectDancersFilterWidgetState();
+  State<_DancerSelectionFilterWidget> createState() => _DancerSelectionFilterWidgetState();
 }
 
-class _SelectDancersFilterWidgetState extends State<_SelectDancersFilterWidget> {
+class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidget> {
   List<int> _selectedTagIds = [];
   String _searchQuery = '';
 
@@ -115,7 +172,7 @@ class _SelectDancersFilterWidgetState extends State<_SelectDancersFilterWidget> 
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          'Showing unranked and absent dancers only. Select multiple dancers to add to the event.',
+                          widget.infoMessage,
                           style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).colorScheme.onPrimaryContainer,
