@@ -205,6 +205,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Service Layer Documentation**: Documented all new archival methods and active-only streams
 - **Migration Strategy**: Marked Phase 1 (Database) and Phase 2 (Service Layer) as completed
 
+## [v0.9.4] - 2025-01-27
+
+### User Requests
+- "add CLI arg value to open that screen" - Added CLI navigation for Select Dancers screen
+- "I don't have a back button, I want to be able to navigate back to planning tab" - Added back button navigation
+- "great, commit" - Confirmed all features working
+
+### Added
+- **CLI Navigation for Select Dancers**: Added new CLI action to open Select Dancers screen directly
+  - New path: `/event/current/planning-tab/select-dancers`
+  - Direct navigation to Select Dancers screen with proper context
+  - Updated CLI help documentation with new action
+- **Back Button Navigation**: Added back button to Select Dancers screen
+  - Navigates back to EventScreen with planning tab active
+  - Preserves event context and tab selection
+  - Seamless user experience with proper navigation flow
+
+### Improved
+- **Reactive Template Pattern**: Applied reactive updates to Select Dancers screen
+  - Added refresh key mechanism for immediate UI updates
+  - Dancers disappear from list when added to event
+  - Real-time feedback for user actions
+  - Consistent with Add Existing Dancer dialog behavior
+
 ## [v0.9.3] - 2025-01-27
 
 ### User Requests
