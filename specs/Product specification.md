@@ -246,7 +246,7 @@ Users can adjust rankings during events for various reasons:
   - Immediately adds to event attendance
 
 **Planning Tab Actions**:
-- **FAB**: Opens Select Dancers Screen → add multiple existing dancers to event ranking
+- **FAB**: Opens Select Dancers Screen → add multiple existing dancers to event with neutral ranking
 - **Tap dancer**: Opens Planning Actions Dialog → rank editing, notes editing, mark present
 - **Import Rankings Button**: Opens ImportRankingsDialog → copy rankings from another event (only when no dancers added yet)
 
@@ -306,7 +306,7 @@ Users can adjust rankings during events for various reasons:
   - **Attendance Management** → Mark present/absent, mark as left
 
 ### 4. Select Dancers Screen (`SelectDancersScreen`)
-**Purpose**: Select multiple existing dancers to add to event ranking (for planning phase)
+**Purpose**: Select multiple existing dancers to add to event with neutral ranking (for planning phase)
 **Actions**:
 - View list of unranked dancers only (dancers not yet added to this event)
 - **Tag filtering**: Filter dancers by single tag selection using SimplifiedTagFilter component
@@ -315,7 +315,7 @@ Users can adjust rankings during events for various reasons:
   - Combined with integrated text search for refined filtering
 - **Integrated search**: Search dancers by name or notes using built-in search from SimplifiedTagFilter
 - Multi-select dancers using checkboxes
-- Add selected dancers to event without automatic rank assignment
+- Add selected dancers to event with neutral ranking (ordinal 3) for planning purposes
 **Tag Filtering UI**:
 - **SimplifiedTagFilter Component**: Consistent tag filtering interface used across the app
 - **Material 3 Design**: Clean interface with proper spacing and visual feedback

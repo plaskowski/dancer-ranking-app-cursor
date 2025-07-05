@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.9] - 2025-01-17
+
+### User Requests
+- "fix" - Request to fix issue where dancers added to future events appear on present tab but not planning tab
+
+### Fixed
+- **Planning Tab Dancer Display**: Fixed issue where dancers added through Planning tab appeared on Present tab instead of Planning tab
+  - **Correct Behavior**: Dancers added through Planning tab now appear in Planning tab with neutral ranking
+  - **Proper Workflow**: Planning tab adds dancers with neutral ranking (not marked as present)
+  - **Tab Separation**: Planning tab shows ranked dancers who are not present, Present tab shows only present dancers
+  - **User Experience**: Dancers can now be properly planned and ranked before being marked as present
+  - **Consistent Logic**: Aligns with intended workflow where Planning tab is for preparation, Present tab is for attendance
+
+### Technical
+- **SelectDancersScreen**: Modified to add rankings instead of marking dancers as present
+  - **RankingService Integration**: Now uses `setRankNeutral()` instead of `markPresent()`
+  - **Neutral Ranking**: Dancers get ordinal 3 (neutral) ranking by default
+  - **Proper Imports**: Added RankingService import for ranking operations
+  - **Updated Messages**: Changed success message to reflect neutral ranking assignment
+- **Database Logic**: Maintains proper separation between rankings and attendance records
+  - **Planning Tab Filter**: Shows dancers with `hasRanking && !isPresent`
+  - **Present Tab Filter**: Shows dancers with `status == 'present' || status == 'served'`
+  - **Workflow Clarity**: Clear distinction between planning (ranking) and attendance (presence)
+
 ## [v1.3.8] - 2025-01-17
 
 ### User Requests

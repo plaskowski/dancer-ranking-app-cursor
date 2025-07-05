@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/attendance_service.dart';
 import '../../../services/dancer/dancer_filter_service.dart';
 import '../../../services/dancer_service.dart';
+import '../../../services/ranking_service.dart';
 import '../../../theme/theme_extensions.dart';
 import '../../../widgets/safe_fab.dart';
 import '../../../widgets/simplified_tag_filter.dart';
@@ -57,21 +57,19 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
     });
 
     try {
-      // Add dancers to event without assigning any rank
-      // Users can manually assign ranks later if desired
-      final attendanceService =
-          Provider.of<AttendanceService>(context, listen: false);
+      // Add dancers to event with neutral ranking (not marked as present)
+      // This allows them to appear in the Planning tab for further ranking adjustments
+      final rankingService = Provider.of<RankingService>(context, listen: false);
 
       for (final dancerId in _selectedDancerIds) {
-        await attendanceService.markPresent(widget.eventId, dancerId);
+        await rankingService.setRankNeutral(widget.eventId, dancerId);
       }
 
       if (mounted) {
         Navigator.pop(context, true); // Return true to indicate success
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-                'Added ${_selectedDancerIds.length} dancers to event (no rank assigned)'),
+            content: Text('Added ${_selectedDancerIds.length} dancers to event with neutral ranking'),
             backgroundColor: context.danceTheme.success,
           ),
         );
@@ -103,8 +101,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
             const Text('Select Dancers'),
             Text(
               widget.eventName,
-              style:
-                  const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
             ),
           ],
         ),
@@ -162,20 +159,13 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.people,
-                            size: 64,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant),
+                        Icon(Icons.people, size: 64, color: Theme.of(context).colorScheme.onSurfaceVariant),
                         const SizedBox(height: 16),
                         Text(
                           _searchQuery.isNotEmpty || _selectedTagId != null
                               ? 'No dancers found with current filters'
                               : 'All dancers are already ranked for this event',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant),
+                          style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onSurfaceVariant),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -197,17 +187,12 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                           dancer.name,
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
-                        subtitle:
-                            dancer.notes != null && dancer.notes!.isNotEmpty
-                                ? Text(
-                                    dancer.notes!,
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurfaceVariant),
-                                  )
-                                : null,
+                        subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
+                            ? Text(
+                                dancer.notes!,
+                                style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                              )
+                            : null,
                         value: isSelected,
                         onChanged: (bool? value) {
                           setState(() {
@@ -239,13 +224,11 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                       height: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            Theme.of(context).colorScheme.onPrimary),
+                        valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                       ),
                     )
                   : const Icon(Icons.check),
-              child: const Icon(
-                  Icons.check), // Required but not used when isExtended is true
+              child: const Icon(Icons.check), // Required but not used when isExtended is true
             )
           : null,
     );
