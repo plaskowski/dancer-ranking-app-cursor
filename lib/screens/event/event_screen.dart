@@ -47,15 +47,8 @@ class _EventScreenState extends State<EventScreen> {
 
     ActionLogger.logAction('UI_EventScreen', 'screen_initialized', {
       'eventId': widget.eventId,
-      'initialTab': 'planning',
+      'initialTab': widget.initialTab,
     });
-
-    // Handle initial action if specified
-    if (widget.initialAction != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _performInitialAction();
-      });
-    }
   }
 
   @override
@@ -137,26 +130,6 @@ class _EventScreenState extends State<EventScreen> {
       'tabIndex': index,
       'changeMethod': 'swipe',
     });
-  }
-
-  void _performInitialAction() {
-    if (widget.initialAction == null) return;
-
-    print('CLI Navigation: Performing initial action "${widget.initialAction}"');
-
-    switch (widget.initialAction) {
-      case 'add-existing-dancer':
-        _performAddExistingDancer();
-        break;
-      default:
-        print('CLI Navigation: Unknown action "${widget.initialAction}"');
-    }
-  }
-
-  void _performAddExistingDancer() {
-    // This will be handled by the PresentTab
-    print('CLI Navigation: Triggering add existing dancer dialog');
-    // The PresentTab will need to handle this action
   }
 
   @override

@@ -55,62 +55,42 @@ class DancerCardWithTags extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Last met event info and notes in same row
+            // Last met event info spanning full width
             if (dancerWithTags.lastMetEventName != null &&
-                    dancerWithTags.lastMetEventDate != null ||
-                (dancer.notes != null && dancer.notes!.isNotEmpty)) ...[
+                dancerWithTags.lastMetEventDate != null) ...[
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Last met info
-                  if (dancerWithTags.lastMetEventName != null &&
-                      dancerWithTags.lastMetEventDate != null) ...[
-                    Icon(
-                      Icons.visibility_outlined,
-                      size: 16,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                    const SizedBox(width: 4),
-                    Flexible(
-                      child: Text(
-                        '${dancerWithTags.lastMetEventName} • ${_formatDate(dancerWithTags.lastMetEventDate!)}',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontStyle: FontStyle.italic,
-                        ),
+                  Icon(
+                    Icons.visibility_outlined,
+                    size: 16,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      '${dancerWithTags.lastMetEventName} • ${_formatDate(dancerWithTags.lastMetEventDate!)}',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        fontStyle: FontStyle.italic,
                       ),
                     ),
-                  ],
-                  // Notes
-                  if (dancer.notes != null && dancer.notes!.isNotEmpty) ...[
-                    if (dancerWithTags.lastMetEventName != null &&
-                        dancerWithTags.lastMetEventDate != null) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        width: 1,
-                        height: 16,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .outline
-                            .withOpacity(0.3),
-                      ),
-                      const SizedBox(width: 8),
-                    ],
-                    Flexible(
-                      child: Text(
-                        dancer.notes!,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ],
               ),
-              const SizedBox(height: 2),
+              const SizedBox(height: 4),
+            ],
+            // Notes on new line
+            if (dancer.notes != null && dancer.notes!.isNotEmpty) ...[
+              Text(
+                dancer.notes!,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              const SizedBox(height: 4),
             ],
             // Tags
             if (tags.isNotEmpty || isArchived) ...[

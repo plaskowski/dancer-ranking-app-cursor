@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../../database/database.dart';
@@ -9,8 +10,40 @@ import '../../../widgets/import/import_dancers_dialog.dart';
 import '../../../widgets/import_events_dialog.dart';
 import '../widgets/info_row.dart';
 
-class GeneralSettingsTab extends StatelessWidget {
+class GeneralSettingsTab extends StatefulWidget {
   const GeneralSettingsTab({super.key});
+
+  @override
+  State<GeneralSettingsTab> createState() => _GeneralSettingsTabState();
+}
+
+class _GeneralSettingsTabState extends State<GeneralSettingsTab> {
+  PackageInfo? _packageInfo;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPackageInfo();
+  }
+
+  Future<void> _loadPackageInfo() async {
+    try {
+      final packageInfo = await PackageInfo.fromPlatform();
+      if (mounted) {
+        setState(() {
+          _packageInfo = packageInfo;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +70,22 @@ class GeneralSettingsTab extends StatelessWidget {
                   label: 'App Name',
                   value: 'Dancer Ranking App',
                 ),
+                const SizedBox(height: 8),
+                if (_isLoading)
+                  const InfoRow(
+                    label: 'Version',
+                    value: 'Loading...',
+                  )
+                else if (_packageInfo != null)
+                  InfoRow(
+                    label: 'Version',
+                    value: '${_packageInfo!.version} (${_packageInfo!.buildNumber})',
+                  )
+                else
+                  const InfoRow(
+                    label: 'Version',
+                    value: 'Unknown',
+                  ),
                 const SizedBox(height: 8),
                 const InfoRow(
                   label: 'Built for',
@@ -122,8 +171,7 @@ class GeneralSettingsTab extends StatelessWidget {
   }
 
   void _importDancers(BuildContext context) {
-    ActionLogger.logUserAction(
-        'GeneralSettingsTab', 'import_dancers_dialog_opened', {
+    ActionLogger.logUserAction('GeneralSettingsTab', 'import_dancers_dialog_opened', {
       'source': 'settings',
     });
 
@@ -131,8 +179,7 @@ class GeneralSettingsTab extends StatelessWidget {
       context: context,
       barrierDismissible: true,
       barrierLabel: 'Close',
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          const Dialog.fullscreen(
+      pageBuilder: (context, animation, secondaryAnimation) => const Dialog.fullscreen(
         child: ImportDancersDialog(),
       ),
       transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -146,16 +193,14 @@ class GeneralSettingsTab extends StatelessWidget {
       },
     ).then((result) {
       if (result == true && context.mounted) {
-        ActionLogger.logUserAction(
-            'GeneralSettingsTab', 'import_dancers_completed', {});
+        ActionLogger.logUserAction('GeneralSettingsTab', 'import_dancers_completed', {});
         ToastHelper.showSuccess(context, 'Dancers imported successfully');
       }
     });
   }
 
   void _importEvents(BuildContext context) {
-    ActionLogger.logUserAction(
-        'GeneralSettingsTab', 'import_events_dialog_opened', {
+    ActionLogger.logUserAction('GeneralSettingsTab', 'import_events_dialog_opened', {
       'source': 'settings',
     });
 
@@ -182,8 +227,7 @@ class GeneralSettingsTab extends StatelessWidget {
       },
     ).then((result) {
       if (result == true && context.mounted) {
-        ActionLogger.logUserAction(
-            'GeneralSettingsTab', 'import_events_completed', {});
+        ActionLogger.logUserAction('GeneralSettingsTab', 'import_events_completed', {});
         ToastHelper.showSuccess(context, 'Events imported successfully');
       }
     });
@@ -322,8 +366,7 @@ class GeneralSettingsTab extends StatelessWidget {
     }
   }
 
-  Future<void> _performDatabaseReset(
-      BuildContext context, bool includeTestData) async {
+  Future<void> _performDatabaseReset(BuildContext context, bool includeTestData) async {
     try {
       // Show loading indicator
       showDialog(

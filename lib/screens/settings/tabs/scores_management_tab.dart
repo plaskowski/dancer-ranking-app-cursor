@@ -5,6 +5,7 @@ import '../../../database/database.dart';
 import '../../../services/score_service.dart';
 import '../../../utils/toast_helper.dart';
 import '../../../widgets/safe_fab.dart';
+import '../../../widgets/simple_selection_dialog.dart';
 
 class ScoresManagementTab extends StatefulWidget {
   const ScoresManagementTab({super.key});
@@ -208,48 +209,23 @@ class _ScoresManagementTabState extends State<ScoresManagementTab> {
       return;
     }
 
-    final targetScore = await showDialog<Score>(
+    Score? selectedTarget;
+    await showDialog<void>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Merge Into'),
-        content: SizedBox(
-          width: double.maxFinite,
-          height: 300,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Merge "${sourceScore.name}" into:'),
-              const SizedBox(height: 16),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: targetScores.length,
-                  itemBuilder: (context, index) {
-                    final score = targetScores[index];
-                    return ListTile(
-                      title: Text(score.name),
-                      subtitle: Text(
-                          'Used in ${_scoresWithUsage.firstWhere((s) => s.score.id == score.id).usageCount} dances'),
-                      onTap: () => Navigator.pop(context, score),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-        ],
+      builder: (context) => SimpleSelectionDialog<Score>(
+        title: 'Merge "${sourceScore.name}" into:',
+        items: targetScores,
+        itemTitle: (score) => score.name,
+        onItemSelected: (score) async {
+          selectedTarget = score;
+          Navigator.pop(context);
+        },
+        logPrefix: 'ScoreMergeDialog',
       ),
     );
 
-    if (targetScore != null) {
-      await _showMergeConfirmationDialog(sourceScore, targetScore);
+    if (selectedTarget != null) {
+      await _showMergeConfirmationDialog(sourceScore, selectedTarget!);
     }
   }
 

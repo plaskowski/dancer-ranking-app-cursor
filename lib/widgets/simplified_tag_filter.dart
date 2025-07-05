@@ -135,80 +135,84 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
       {'name': 'All', 'description': 'Show everyone'},
     ];
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Handle bar
-          Center(
-            child: Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(2),
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Handle bar
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-          // Title
-          const Text(
-            '📊 Filter by Activity Level',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
+            // Title
+            const Text(
+              '📊 Filter by Activity Level',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-          // Activity levels - one-tap options
-          Flexible(
-            child: ListView(
-              shrinkWrap: true,
-              children: activityLevels.map((level) {
-                final isSelected = _activityLevel == level['name'];
-                return ListTile(
-                  dense: true,
-                  title: Text(
-                    level['name']!,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight:
-                          isSelected ? FontWeight.w600 : FontWeight.normal,
-                      color: isSelected
-                          ? Theme.of(context).colorScheme.primary
-                          : null,
+            // Activity levels - one-tap options
+            Flexible(
+              child: ListView(
+                shrinkWrap: true,
+                children: activityLevels.map((level) {
+                  final isSelected = _activityLevel == level['name'];
+                  return ListTile(
+                    dense: true,
+                    title: Text(
+                      level['name']!,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight:
+                            isSelected ? FontWeight.w600 : FontWeight.normal,
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.primary
+                            : null,
+                      ),
                     ),
-                  ),
-                  subtitle: Text(
-                    level['description']!,
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-                  ),
-                  onTap: () {
-                    _onActivityChanged(level['name']!);
-                    Navigator.pop(context);
-                  },
-                );
-              }).toList(),
+                    subtitle: Text(
+                      level['description']!,
+                      style:
+                          TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                    ),
+                    onTap: () {
+                      _onActivityChanged(level['name']!);
+                      Navigator.pop(context);
+                    },
+                  );
+                }).toList(),
+              ),
             ),
-          ),
 
-          // Bottom padding for safe area
-          const SizedBox(height: 16),
-        ],
+            // Bottom padding for safe area
+            const SizedBox(height: 16),
+          ],
+        ),
       ),
     );
   }
 
-  void _showTagFilterBottomSheet() {
+  void _showTagFilterFlyout() {
     // Initialize pending tags with current selection
     setState(() {
       _pendingTagIds = List<int>.from(widget.selectedTagIds);
     });
 
+    // Show the tag filter bottom sheet
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -222,98 +226,100 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
   Widget _buildTagFilterBottomSheet() {
     return StatefulBuilder(
       builder: (context, setState) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Handle bar
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    borderRadius: BorderRadius.circular(2),
+        return SafeArea(
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Handle bar
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // Title
-              const Text(
-                '🏷️ Filter by Tags',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Tags as pills
-              if (_isLoading)
-                const Center(child: CircularProgressIndicator())
-              else if (_availableTags.isEmpty)
+                // Title
                 const Text(
-                  'No tags available',
-                  style: TextStyle(color: Colors.grey),
-                )
-              else
-                Flexible(
-                  child: Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: _availableTags.map((tag) {
-                      final isSelected = _pendingTagIds.contains(tag.id);
-                      print(
-                          'Building pill for tag ${tag.name} (ID: ${tag.id}), isSelected: $isSelected');
+                  '🏷️ Filter by Tags',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 16),
 
-                      return GestureDetector(
-                        onTap: () {
-                          print(
-                              'Pill tapped for tag: ${tag.name} (ID: ${tag.id})');
-                          _onTagSelected(tag.id);
-                          // Force rebuild of the StatefulBuilder
-                          setState(() {});
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 6.0),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .surfaceContainerHighest,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
+                // Tags as pills
+                if (_isLoading)
+                  const Center(child: CircularProgressIndicator())
+                else if (_availableTags.isEmpty)
+                  const Text(
+                    'No tags available',
+                    style: TextStyle(color: Colors.grey),
+                  )
+                else
+                  Flexible(
+                    child: Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: _availableTags.map((tag) {
+                        final isSelected = _pendingTagIds.contains(tag.id);
+                        print(
+                            'Building pill for tag ${tag.name} (ID: ${tag.id}), isSelected: $isSelected');
+
+                        return GestureDetector(
+                          onTap: () {
+                            print(
+                                'Pill tapped for tag: ${tag.name} (ID: ${tag.id})');
+                            _onTagSelected(tag.id);
+                            // Force rebuild of the StatefulBuilder
+                            setState(() {});
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 6.0),
+                            decoration: BoxDecoration(
                               color: isSelected
                                   ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context).colorScheme.outline,
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .surfaceContainerHighest,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: isSelected
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(context).colorScheme.outline,
+                              ),
+                            ),
+                            child: Text(
+                              tag.name,
+                              style: TextStyle(
+                                color: isSelected
+                                    ? Theme.of(context).colorScheme.onPrimary
+                                    : Theme.of(context).colorScheme.onSurface,
+                                fontSize: 12,
+                                fontWeight: isSelected
+                                    ? FontWeight.w600
+                                    : FontWeight.normal,
+                              ),
                             ),
                           ),
-                          child: Text(
-                            tag.name,
-                            style: TextStyle(
-                              color: isSelected
-                                  ? Theme.of(context).colorScheme.onPrimary
-                                  : Theme.of(context).colorScheme.onSurface,
-                              fontSize: 12,
-                              fontWeight: isSelected
-                                  ? FontWeight.w600
-                                  : FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
 
-              // Bottom padding for safe area
-              const SizedBox(height: 16),
-            ],
+                // Bottom padding for safe area
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         );
       },
@@ -331,12 +337,8 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
             children: [
               // Search field
               Expanded(
-                child: Container(
+                child: SizedBox(
                   height: 40,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                   child: TextField(
                     controller: _searchController,
                     onChanged: _onSearchChanged,
@@ -351,9 +353,35 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                         color: Colors.grey.shade600,
                         size: 20,
                       ),
-                      border: InputBorder.none,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
+                            width: 2),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
+                            width: 2),
+                      ),
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
+                          horizontal: 12, vertical: 2),
                     ),
                   ),
                 ),
@@ -362,12 +390,13 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
 
               // Tags filter
               GestureDetector(
-                onTap: _showTagFilterBottomSheet,
+                onTap: _showTagFilterFlyout,
                 child: Container(
                   height: 40,
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.outline),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -397,7 +426,8 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                   height: 40,
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.outline),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(

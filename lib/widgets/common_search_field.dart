@@ -72,7 +72,6 @@ class _CommonSearchFieldState extends State<CommonSearchField> {
         labelText: widget.labelText,
         hintText: widget.hintText,
         prefixIcon: const Icon(Icons.search),
-        border: const OutlineInputBorder(),
         suffixIcon: widget.showClearButton && _hasText
             ? IconButton(
                 icon: const Icon(Icons.clear),

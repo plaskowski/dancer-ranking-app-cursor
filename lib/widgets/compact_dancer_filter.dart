@@ -105,7 +105,6 @@ class _CompactDancerFilterState extends State<CompactDancerFilter> {
             decoration: const InputDecoration(
               hintText: 'Search dancers...',
               prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
               contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             ),
             onChanged: widget.onSearchChanged,

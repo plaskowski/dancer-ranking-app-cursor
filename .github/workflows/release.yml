@@ -1,0 +1,196 @@
+name: Release Build and Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type (patch, minor, major)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  merge-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout main branch
+      uses: actions/checkout@v4
+      with:
+        ref: main
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Configure Git
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+    
+    - name: Merge first-line branch into main
+      run: |
+        if git show-ref --verify --quiet refs/remotes/origin/first-line; then
+          echo "Merging first-line branch..."
+          git merge origin/first-line --no-ff -m "Merge first-line branch into main for release"
+        else
+          echo "first-line branch does not exist, skipping merge"
+        fi
+    
+    - name: Merge second-line branch into main
+      run: |
+        if git show-ref --verify --quiet refs/remotes/origin/second-line; then
+          echo "Merging second-line branch..."
+          git merge origin/second-line --no-ff -m "Merge second-line branch into main for release"
+        else
+          echo "second-line branch does not exist, skipping merge"
+        fi
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.3'
+        channel: 'stable'
+    
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Run tests
+      run: flutter test
+    
+    - name: Get current version
+      id: current_version
+      run: |
+        current_version=$(grep '^version:' pubspec.yaml | cut -d' ' -f2)
+        echo "current_version=$current_version" >> $GITHUB_OUTPUT
+        echo "Current version: $current_version"
+    
+    - name: Bump version
+      id: version_bump
+      run: |
+        current_version="${{ steps.current_version.outputs.current_version }}"
+        version_part=$(echo $current_version | cut -d'+' -f1)
+        build_number=$(echo $current_version | cut -d'+' -f2)
+        
+        IFS='.' read -r major minor patch <<< "$version_part"
+        
+        case "${{ github.event.inputs.release_type }}" in
+          "major")
+            major=$((major + 1))
+            minor=0
+            patch=0
+            ;;
+          "minor")
+            minor=$((minor + 1))
+            patch=0
+            ;;
+          "patch")
+            patch=$((patch + 1))
+            ;;
+        esac
+        
+        build_number=$((build_number + 1))
+        new_version="${major}.${minor}.${patch}+${build_number}"
+        
+        echo "new_version=$new_version" >> $GITHUB_OUTPUT
+        echo "version_name=${major}.${minor}.${patch}" >> $GITHUB_OUTPUT
+        echo "build_number=$build_number" >> $GITHUB_OUTPUT
+        
+        # Update pubspec.yaml
+        sed -i "s/^version: .*/version: $new_version/" pubspec.yaml
+        
+        echo "Version bumped from $current_version to $new_version"
+    
+    - name: Commit version bump
+      run: |
+        git add pubspec.yaml
+        git commit -m "bump: version to ${{ steps.version_bump.outputs.new_version }}"
+    
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+    
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+    
+    - name: Build APK
+      run: |
+        flutter build apk --release
+        
+        # Rename APK with version
+        mv build/app/outputs/flutter-apk/app-release.apk \
+           build/app/outputs/flutter-apk/dancer-ranking-app-v${{ steps.version_bump.outputs.version_name }}.apk
+    
+    - name: Create changelog for release
+      id: changelog
+      run: |
+        # Get commits since last tag
+        last_tag=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+        
+        if [ -z "$last_tag" ]; then
+          echo "No previous tags found, using all commits"
+          commits=$(git log --oneline --pretty=format:"- %s" HEAD~10..HEAD)
+        else
+          echo "Getting commits since last tag: $last_tag"
+          commits=$(git log --oneline --pretty=format:"- %s" $last_tag..HEAD)
+        fi
+        
+        if [ -z "$commits" ]; then
+          commits="- Bug fixes and improvements"
+        fi
+        
+        # Create changelog content
+        changelog_content="## What's New in v${{ steps.version_bump.outputs.version_name }}
+        
+        $commits
+        
+        ## Technical Details
+        - Version: ${{ steps.version_bump.outputs.new_version }}
+        - Build: ${{ steps.version_bump.outputs.build_number }}
+        - Built with Flutter 3.24.3
+        
+        ## Installation
+        Download the APK file below and install it on your Android device."
+        
+        echo "$changelog_content" > RELEASE_NOTES.md
+        echo "changelog_file=RELEASE_NOTES.md" >> $GITHUB_OUTPUT
+    
+    - name: Push changes to main
+      run: |
+        git push origin main
+    
+    - name: Create and push tag
+      run: |
+        git tag -a "v${{ steps.version_bump.outputs.version_name }}" -m "Release v${{ steps.version_bump.outputs.version_name }}"
+        git push origin "v${{ steps.version_bump.outputs.version_name }}"
+    
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.version_bump.outputs.version_name }}
+        name: Dancer Ranking App v${{ steps.version_bump.outputs.version_name }}
+        body_path: RELEASE_NOTES.md
+        files: |
+          build/app/outputs/flutter-apk/dancer-ranking-app-v${{ steps.version_bump.outputs.version_name }}.apk
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Cleanup
+      run: |
+        rm -f RELEASE_NOTES.md
+    
+    - name: Summary
+      run: |
+        echo "## Release Summary" >> $GITHUB_STEP_SUMMARY
+        echo "- **Version**: v${{ steps.version_bump.outputs.version_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build Number**: ${{ steps.version_bump.outputs.build_number }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **APK**: dancer-ranking-app-v${{ steps.version_bump.outputs.version_name }}.apk" >> $GITHUB_STEP_SUMMARY
+        echo "- **Release**: [v${{ steps.version_bump.outputs.version_name }}](${{ github.server_url }}/${{ github.repository }}/releases/tag/v${{ steps.version_bump.outputs.version_name }})" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Release completed successfully!" >> $GITHUB_STEP_SUMMARY

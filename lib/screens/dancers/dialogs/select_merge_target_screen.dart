@@ -126,7 +126,6 @@ class _SelectMergeTargetScreenState extends State<SelectMergeTargetScreen> {
               decoration: const InputDecoration(
                 hintText: 'Search dancers...',
                 prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
               ),
               onChanged: _onSearchChanged,
             ),

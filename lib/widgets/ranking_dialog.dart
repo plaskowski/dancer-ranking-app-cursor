@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../database/database.dart';
@@ -7,6 +6,7 @@ import '../services/dancer_service.dart';
 import '../services/ranking_service.dart';
 import '../utils/action_logger.dart';
 import '../utils/toast_helper.dart';
+import 'simple_selection_dialog.dart';
 
 class RankingDialog extends StatefulWidget {
   final int dancerId;
@@ -58,24 +58,15 @@ class _RankingDialogContent extends StatefulWidget {
 }
 
 class _RankingDialogContentState extends State<_RankingDialogContent> {
-  final _reasonController = TextEditingController();
-
   List<Rank> _ranks = [];
-  Rank? _selectedRank;
+  int? _currentRankId;
   String _dancerName = '';
-  bool _isLoading = false;
-  DateTime? _lastUpdated;
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _loadData();
-  }
-
-  @override
-  void dispose() {
-    _reasonController.dispose();
-    super.dispose();
   }
 
   Future<void> _loadData() async {
@@ -126,15 +117,8 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
         setState(() {
           _ranks = ranks;
           _dancerName = dancer?.name ?? 'Unknown';
-
-          if (existingRanking != null) {
-            _selectedRank = ranks.firstWhere((r) => r.id == existingRanking.rankId);
-            _reasonController.text = existingRanking.reason ?? '';
-            _lastUpdated = existingRanking.lastUpdated;
-          } else {
-            // Default to neutral rank
-            _selectedRank = ranks.firstWhere((r) => r.ordinal == 3, orElse: () => ranks.first);
-          }
+          _currentRankId = existingRanking?.rankId;
+          _isLoading = false;
         });
       }
     } catch (e) {
@@ -144,32 +128,21 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
       });
 
       if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
         ToastHelper.showError(context, 'Error loading data: $e');
       }
     }
   }
 
-  Future<void> _saveRanking() async {
-    if (_selectedRank == null) {
-      ActionLogger.logUserAction('RankingDialog', 'save_validation_failed', {
-        'dancerId': widget.dancerId,
-        'eventId': widget.eventId,
-        'reason': 'no_rank_selected',
-      });
-      return;
-    }
-
-    ActionLogger.logUserAction('RankingDialog', 'save_ranking_started', {
+  Future<void> _selectRank(Rank rank) async {
+    ActionLogger.logUserAction('RankingDialog', 'rank_selected', {
       'dancerId': widget.dancerId,
       'eventId': widget.eventId,
-      'rankId': _selectedRank!.id,
-      'rankName': _selectedRank!.name,
-      'hasReason': _reasonController.text.trim().isNotEmpty,
-      'reasonLength': _reasonController.text.trim().length,
-    });
-
-    setState(() {
-      _isLoading = true;
+      'rankId': rank.id,
+      'rankName': rank.name,
+      'previousRankId': _currentRankId,
     });
 
     try {
@@ -178,16 +151,15 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
       await rankingService.setRanking(
         eventId: widget.eventId,
         dancerId: widget.dancerId,
-        rankId: _selectedRank!.id,
-        reason: _reasonController.text.trim().isNotEmpty ? _reasonController.text.trim() : null,
+        rankId: rank.id,
       );
 
       if (mounted) {
-        ActionLogger.logUserAction('RankingDialog', 'save_ranking_completed', {
+        ActionLogger.logUserAction('RankingDialog', 'rank_saved', {
           'dancerId': widget.dancerId,
           'eventId': widget.eventId,
-          'rankId': _selectedRank!.id,
-          'rankName': _selectedRank!.name,
+          'rankId': rank.id,
+          'rankName': rank.name,
           'dancerName': _dancerName,
         });
 
@@ -195,196 +167,35 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
         ToastHelper.showSuccess(context, 'Ranking updated for $_dancerName');
       }
     } catch (e) {
-      ActionLogger.logError('RankingDialog._saveRanking', e.toString(), {
+      ActionLogger.logError('RankingDialog._selectRank', e.toString(), {
         'dancerId': widget.dancerId,
         'eventId': widget.eventId,
-        'rankId': _selectedRank?.id,
+        'rankId': rank.id,
       });
 
       if (mounted) {
         ToastHelper.showError(context, 'Error saving ranking: $e');
       }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
     }
+  }
+
+  String _getRankDisplayName(Rank rank) {
+    if (rank.isArchived) {
+      return '${rank.name} (ARCHIVED)';
+    }
+    return rank.name;
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Rank $_dancerName',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    ActionLogger.logUserAction('RankingDialog', 'dialog_cancelled', {
-                      'dancerId': widget.dancerId,
-                      'eventId': widget.eventId,
-                    });
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.close),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 16),
-
-            const Text(
-              'How eager are you to dance with this person?',
-              style: TextStyle(fontSize: 16),
-            ),
-
-            const SizedBox(height: 16),
-
-            const Text(
-              'Rank Options:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 8),
-
-            // Rank options
-            ..._ranks.map((rank) => RadioListTile<Rank>(
-                  title: Row(
-                    children: [
-                      Expanded(child: Text(rank.name)),
-                      if (rank.isArchived)
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            'ARCHIVED',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).colorScheme.outline,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                  subtitle: rank.isArchived
-                      ? Text(
-                          'Still in use by this event',
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: Theme.of(context).colorScheme.outline,
-                            fontStyle: FontStyle.italic,
-                          ),
-                        )
-                      : null,
-                  value: rank,
-                  groupValue: _selectedRank,
-                  onChanged: (Rank? value) {
-                    ActionLogger.logUserAction('RankingDialog', 'rank_selected', {
-                      'dancerId': widget.dancerId,
-                      'eventId': widget.eventId,
-                      'oldRankId': _selectedRank?.id,
-                      'newRankId': value?.id,
-                      'newRankName': value?.name,
-                      'isArchived': value?.isArchived ?? false,
-                    });
-
-                    setState(() {
-                      _selectedRank = value;
-                    });
-                  },
-                  dense: true,
-                  contentPadding: EdgeInsets.zero,
-                )),
-
-            const SizedBox(height: 16),
-
-            // Reason field
-            TextField(
-              controller: _reasonController,
-              decoration: const InputDecoration(
-                labelText: 'Reason (optional)',
-                border: OutlineInputBorder(),
-                hintText: 'e.g., Looking amazing tonight!',
-              ),
-              maxLines: 3,
-              textCapitalization: TextCapitalization.sentences,
-              textInputAction: TextInputAction.done,
-              onSubmitted: (_) {
-                if (_selectedRank != null) {
-                  _saveRanking();
-                }
-              },
-            ),
-
-            const SizedBox(height: 16),
-
-            // Last updated info
-            if (_lastUpdated != null)
-              Text(
-                'Last updated: ${DateFormat('MMM d, y \'at\' h:mm a').format(_lastUpdated!)}',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                ),
-              ),
-
-            const SizedBox(height: 16),
-
-            // Action buttons
-            Row(
-              children: [
-                Expanded(
-                  child: TextButton(
-                    onPressed: _isLoading
-                        ? null
-                        : () {
-                            ActionLogger.logUserAction('RankingDialog', 'dialog_cancelled', {
-                              'dancerId': widget.dancerId,
-                              'eventId': widget.eventId,
-                            });
-                            Navigator.pop(context);
-                          },
-                    child: const Text('Cancel'),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _isLoading ? null : _saveRanking,
-                    child: _isLoading
-                        ? const SizedBox(
-                            height: 16,
-                            width: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const Text('Set Ranking'),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+    return SimpleSelectionDialog<Rank>(
+      title: 'Rank $_dancerName',
+      items: _ranks,
+      itemTitle: _getRankDisplayName,
+      isSelected: (rank) => rank.id == _currentRankId,
+      onItemSelected: _selectRank,
+      isLoading: _isLoading,
+      logPrefix: 'RankingDialog',
     );
   }
 }

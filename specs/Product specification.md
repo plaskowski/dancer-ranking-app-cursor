@@ -259,12 +259,15 @@ Users can adjust rankings during events for various reasons:
     - One-tap selection with immediate "Mark Present" action
     - Search functionality by name or notes
     - Smart filtering prevents suggesting dancers who are already present
-- **Tap dancer**: Opens Full Actions Dialog with:
-  - Set/edit dancer ranking in real-time (→ Ranking Dialog)
-  - Mark present / Mark absent (attendance management)
-  - **Mark Present & Record Dance** (combo action for absent dancers) → marks present + opens Dance Recording Dialog
-  - **Record dance / Edit impression** (context-aware) → opens Dance Recording Dialog with appropriate action text
-  - Edit dancer notes
+- **Tap dancer**: Opens Full Actions Dialog with actions ordered by frequency of use:
+  - **Mark present / Mark absent** (attendance management) - most common action
+  - **Assign/Edit Score** (for present dancers) - second most common
+  - **Set/edit dancer ranking** (→ Ranking Dialog) - third most common
+  - **Record dance / Edit impression** (context-aware) → opens Dance Recording Dialog
+  - **View History** → opens DancerHistoryScreen
+  - **Edit dancer notes** → opens AddDancerDialog
+  - **Mark as Left** (for present dancers who haven't danced yet)
+  - **Remove from Event** (planning mode only)
 
 **Navigation**:
 - ← Back to Home Screen

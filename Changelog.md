@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+## [v2.1.0] - 2025-01-17
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
 ## [v1.3.9] - 2025-01-17
 
 ### User Requests
@@ -32,971 +54,4859 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v1.3.8] - 2025-01-17
 
 ### User Requests
-- "I don't like the activity categories, let's redefine them" - Request to redefine activity level filtering categories
-- "Mixed ones: Regular (3+ dances in last 2 months), Occasional (1+ dance in last 3 months), All" - Request for new activity level definitions
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "when splitting the history put the dancer name first" - Request to change the naming format for extracted dance records
 
 ### Changed
-- **Activity Level Categories**: Redefined activity level filtering to use more intuitive categories
-  - **Regular**: 3+ dances in last 2 months (replaces "Very Active" and "Core Community")
-  - **Occasional**: 1+ dance in last 3 months (replaces "Active" and "Recent")  
-  - **All**: Show everyone (unchanged)
-  - **Simplified Logic**: Reduced from 5 categories to 3 for cleaner filtering
-  - **Better UX**: More intuitive category names that reflect actual dance frequency
-  - **Consistent Implementation**: Updated across all filtering components
+- **Extract Dance Record Naming**: Updated naming format for extracted one-time persons
+  - **Before**: "[EventName] - [OriginalDancerName]"
+  - **After**: "[OriginalDancerName] - [EventName]"
+  - **Service**: Updated `DancerExtractionService.extractDanceRecordAsOneTimePerson()` method
+  - **Documentation**: Updated feature specification to reflect new naming convention
 
 ### Technical
-- Updated `ActivityLevel` enum in `dancer_activity_service.dart` to use new categories
-- Modified `DancerActivityService` filtering logic to use new time periods and thresholds
-- Updated display names and descriptions in `activity_filter_widget.dart`
-- Updated `combined_dancer_filter.dart` to use new activity levels
-- Updated `simplified_tag_filter.dart` activity level options
-- Changed default activity level from "Active" to "Regular" for better user experience
-- Applied proper Dart formatting to all modified files
+- **Naming Convention**: Dancer name now appears first in extracted record names for better identification
+- **Consistency**: Aligns with user preference for dancer-centric naming
 
-## [v1.3.7] - 2025-01-17
+## [v2.0.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "The dialog from the planning tab" - Request to update the Select Dancers dialog from the Planning tab to use the SimplifiedTagFilter component
-- "Now reuse it on Dancers screen" - Request to update the Dancers screen to use SimplifiedTagFilter component
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "bump @pubspec.yaml and @Changelog.md version to 2.0" - Request to update version to 2.0.0
 
 ### Changed
-- **Select Dancers Dialog**: Updated to use SimplifiedTagFilter component instead of CommonFilterSection
-  - **Consistent Tag Filtering**: Now uses the same tag filtering component as other screens
-  - **Integrated Search**: Removed separate search field, now uses built-in search from SimplifiedTagFilter
-  - **Cleaner UI**: Single component handles both search and tag filtering
-  - **Better UX**: More intuitive tag selection with visual feedback
-  - **Code Consistency**: Aligns with other screens using SimplifiedTagFilter
-- **Dancers Screen**: Updated to use SimplifiedTagFilter component instead of CombinedDancerFilter
-  - **Consistent Tag Filtering**: Now uses the same tag filtering component as other screens
-  - **Integrated Search**: Uses built-in search from SimplifiedTagFilter
-  - **Simplified State Management**: Removed activity level filtering and related complexity
-  - **Better UX**: More streamlined filtering experience
-  - **Code Consistency**: Aligns with other screens using SimplifiedTagFilter
+- **Version Bump**: Updated version from 1.6.0 to 2.0.0
+  - **pubspec.yaml**: Updated version to 2.0.0+200
+  - **Changelog.md**: Updated version header to v2.0.0
 
 ### Technical
-- Updated `lib/screens/event/dialogs/select_dancers_screen.dart` to use SimplifiedTagFilter
-- Updated `lib/screens/dancers/dancers_screen.dart` to use SimplifiedTagFilter
-- Removed separate search field, now uses integrated search from SimplifiedTagFilter
-- Removed unused TextEditingController and simplified state management
-- Removed activity level filtering complexity from Dancers screen
-- Maintained existing functionality while improving component consistency
-- Applied proper Dart formatting to ensure code quality
+- **Version Management**: Manual version bump to 2.0.0 for major release
+- **Android Version Code**: Updated to 200 (2.0.0 without dots)
 
-## [v1.3.6] - 2025-01-17
+## [v1.5.7] - 2025-01-17
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "Nice. I tested and text search does not work" - Request to fix text search functionality in Add Existing Dancer dialog
-- "Something is off with the text search, it looses focus after writing a letter and puts next letter at first position" - Request to fix text search focus issue
-- "I get late initialization for searchController" - Request to fix late initialization error
-
-### Fixed
-- **Text Search Functionality**: Fixed text search in Add Existing Dancer dialog
-  - **Search Integration**: Connected search callback to filtering logic in AddExistingDancerScreen
-  - **Real-Time Filtering**: Search now properly filters dancers by name and notes
-  - **Combined Filtering**: Search works together with tag filtering for comprehensive results
-  - **Proper State Management**: Added search query state and callback handling
-- **Text Field Focus Issue**: Fixed text field losing focus during typing
-  - **Persistent Controller**: Used persistent TextEditingController instead of creating new one on each build
-  - **Proper Initialization**: Fixed late initialization error with proper controller setup
-  - **Focus Retention**: Text field now maintains focus and cursor position while typing
-  - **Debounced Search**: 300ms debounce prevents excessive API calls during typing
-
-### Technical
-- **AddExistingDancerScreen**: Added search state management and callback handling
-- **SimplifiedTagFilter**: Fixed TextEditingController initialization and disposal
-- **DancerFilterService**: Integrated text filtering with existing tag filtering logic
-- **State Management**: Added proper search query state and rebuild triggers
-- **Performance**: Implemented debounced search to avoid excessive filtering operations
-
-## [v1.3.5] - 2025-01-17
-
-### User Requests
-- "still no luck" - Request to fix tag filtering in Add Existing Dancer dialog
-- "I wan it in the same line as 'Filter by tags'" - Request to move Clear All button to same line as title
-- "Nah, just remove that button" - Request to remove Clear All button from tag filter dialog
+- Release build and upload
 
 ### Added
-- **Enhanced Tag Filtering**: Improved tag filtering functionality in Add Existing Dancer dialog
-  - **Proper Tag Filtering**: Fixed implementation to actually filter dancers by selected tags
-  - **DancerWithTags Integration**: Updated to use DancerWithTags model for proper tag information
-  - **Multi-Tag Support**: Can filter by multiple tags simultaneously with proper database queries
-  - **Real-Time Filtering**: Tag selection immediately filters the dancer list
-
-### Improved
-- **DancerFilterService**: Enhanced with new method for tag-based filtering
-  - **getAvailableDancersWithTagsForEvent()**: New method that properly filters by tags
-  - **Database Integration**: Direct database queries for ranked and present dancer IDs
-  - **Tag-Aware Filtering**: Filters unranked/absent dancers by selected tags
-  - **Performance**: Efficient queries that combine tag filtering with availability filtering
-- **Add Existing Dancer Dialog**: Updated to use proper tag filtering
-  - **DancerWithTags Model**: Changed from DancerWithEventInfo to DancerWithTags for tag support
-  - **Real-Time Updates**: Tag selection immediately updates the dancer list
-  - **Proper Filtering**: Shows only dancers with selected tags who are unranked and absent
-- **SimplifiedTagFilter UI**: Cleaner interface without Clear All button
-  - **Simplified Layout**: Removed Clear All button for cleaner appearance
-  - **Standard Behavior**: Users can deselect tags by tapping them again
-  - **Better UX**: Less cluttered interface with standard tag selection behavior
+- Automated release process
 
 ### Technical
-- **Database Layer**: Added direct database access in DancerFilterService for efficient queries
-- **Model Updates**: Updated Add Existing Dancer dialog to use DancerWithTags instead of DancerWithEventInfo
-- **Service Architecture**: Enhanced DancerFilterService with proper tag filtering capabilities
-- **UI Simplification**: Removed Clear All button from SimplifiedTagFilter for cleaner interface
-- **Import Management**: Added proper imports for DancerWithTags model
-- **Error Handling**: Maintained proper error handling and loading states
+- Release script for version bumping and APK distribution
 
-## [v1.3.4] - 2025-01-17
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "remove dancer from planned event action" - Request to add ability to remove dancers from planned events
+- Release build and upload
 
 ### Added
-- **Remove from Event Action**: Added ability to remove dancers from planned events in the planning tab
-  - **Planning Mode Only**: Available only in planning mode for dancers who have rankings
-  - **Context Menu Action**: "Remove from Event" option in dancer actions dialog
-  - **Ranking Deletion**: Removes the dancer's ranking and planning data from the event
-  - **User Feedback**: Success/error toast messages with dancer name
-  - **Past Event Protection**: Not available for past events to preserve historical data
-  - **Action Logging**: Comprehensive logging for remove operations
+- Automated release process
 
 ### Technical
-- Added `_removeFromEvent()` method to DancerActionsDialog
-- Used RankingService.deleteRanking() to remove dancer rankings
-- Added proper error handling and user feedback
-- Integrated with existing action logging system
-- Applied proper Dart formatting for code quality
+- Release script for version bumping and APK distribution
 
-## [v1.3.3] - 2025-01-17
+
 
 ### User Requests
-- "Great, let's implement this" - Request to implement the unified dancer filtering component
+- Release build and upload
 
 ### Added
-- **Unified Dancer Filtering Component**: Implemented CombinedDancerFilter widget with comprehensive filtering capabilities
-  - **Self-Managed State**: Component manages its own search query, tag selection, and activity level state
-  - **Unified Interface**: Single component handles search, tag filtering, and activity level filtering
-  - **Debounced Search**: 300ms debounce for smooth search experience without excessive API calls
-  - **Multi-Tag Selection**: Support for selecting multiple tags with visual feedback
-  - **Activity Level Filtering**: Radio button selection for different activity levels (All, Active, Very Active, Core Community, Recent)
-  - **Dropdown UI**: Clean dropdown interface for both tag and activity level selection
-  - **Visual Feedback**: Clear indication of selected filters with counts and descriptions
-  - **Loading States**: Proper loading indicators for tag and activity level data
-  - **Clear Functionality**: Easy clearing of tag selections with "Clear All" button
-
-### Improved
-- **DancersScreen Integration**: Updated to use new CombinedDancerFilter instead of separate components
-  - **Simplified State Management**: Removed individual search and tag state management
-  - **Unified Filtering Logic**: Single callback handles all filter changes
-  - **Better UX**: Consistent filtering experience across the app
-  - **Reduced Code Complexity**: Eliminated duplicate filtering logic
-- **Filtering Logic**: Enhanced to support multiple tag selection and activity level filtering
-  - **Multi-Tag Support**: Can filter by multiple tags simultaneously
-  - **Activity Level Integration**: Ready for activity level filtering when service is implemented
-  - **Future-Proof Design**: Architecture supports upcoming activity level filtering features
+- Automated release process
 
 ### Technical
-- Created `lib/widgets/combined_dancer_filter.dart` with comprehensive filtering functionality
-- Updated `lib/screens/dancers/dancers_screen.dart` to use new unified filtering component
-- Added proper imports for ActivityLevel enum and TagService
-- Implemented debounced search with Timer for performance optimization
-- Added loading states and error handling for tag and activity level data
-- Maintained existing functionality while improving code organization
-- Applied proper Dart formatting to all modified files
+- Release script for version bumping and APK distribution
 
-## [v1.3.2] - 2025-01-17
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "have similar filtering in add dancers dialog" - Request to add tag filtering functionality to the Add Dancer Dialog, similar to the Select Dancers and Add Existing Dancer screens
+- Release build and upload
 
 ### Added
-- **Tag Filtering in Add Dancer Dialog**: Added tag-based filtering to help users find existing dancers when creating new dancers
-  - **Filter by Tag**: Users can select a tag to filter existing dancers by venue/context
-  - **Existing Dancer Selection**: Shows list of existing dancers with the selected tag
-  - **Pre-fill Form**: Selecting an existing dancer pre-fills the name, notes, and tags
-  - **Duplicate Prevention**: Helps users avoid creating duplicate dancer profiles when they can't remember names
-  - **Memory Aid**: Useful when users remember where they know someone from but not their name
+- Automated release process
 
 ### Technical
-- Added TagFilterChips widget integration to AddDancerDialog
-- Implemented filtered dancer loading and display logic
-- Added existing dancer selection functionality with form pre-filling
-- Maintained existing tag selection functionality for new dancers
+- Release script for version bumping and APK distribution
 
-## [v1.3.1] - 2025-01-17
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "The implementation does not look like the wireframes. The pickers show appear at the bottom, similar to context actions menu" - Request to make ranking and score pickers appear as bottom sheets at the bottom of the screen, matching the wireframes and context menu style
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "Drop latest commit. You were supposed to reorder dancer actions on Planning and Present tab" - Request to reorder dancer context menu actions
 
 ### Changed
-- **RankingDialog and ScoreDialog Presentation**: Both dialogs now use showModalBottomSheet and appear as bottom sheets at the bottom of the screen, matching the context actions menu and wireframes
-- **UI Consistency**: Picker dialogs now visually match the context actions menu for a more consistent and modern user experience
-
-### Improved
-- **Material 3 Bottom Sheet Style**: Ranking and score pickers now use Material 3 bottom sheet style for better UX and platform consistency
+- **Dancer Actions Dialog**: Reordered actions by frequency of use for better UX
+  - **Most Common First**: Mark Present/Absent moved to top
+  - **Second Most Common**: Assign/Edit Score moved to second position
+  - **Third Most Common**: Set/Change Ranking moved to third position
+  - **Less Common Actions**: Record Dance, View History, Edit, etc. moved to bottom
+- **Removed Unused Action**: Removed "Mark Present & Record Dance" action since absent dancers aren't shown in Present tab
+- **Documentation Updates**: Updated Product specification to reflect new action order
 
 ### Technical
-- Refactored RankingDialog and ScoreDialog to be used as widgets inside showModalBottomSheet
-- Updated DancerActionsDialog to launch pickers as bottom sheets instead of AlertDialogs
+- **UX Optimization**: Most frequently used actions now appear first in context menu
+- **Better Workflow**: Reduces scrolling and improves efficiency for common tasks
+
+## [v1.5.6] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
 
 ### Documentation
 - Updated Product specification.md to reflect new bottom sheet presentation for ranking and score pickers
 
-## [v1.3.0] - 2025-01-16
 
 ### User Requests
-- "1" - Request to implement dancer archival feature
+- Release build and upload
 
 ### Added
-- **Dancer Archival System**: Complete backend implementation for archiving inactive dancers
-  - **Database Schema**: Added `isArchived` (boolean) and `archivedAt` (datetime) fields to dancers table
-  - **Archival Methods**: `archiveDancer()`, `reactivateDancer()`, `getArchivedDancers()` in DancerCrudService
-  - **Active-Only Streams**: `watchActiveDancers()`, `searchActiveDancers()`, `getActiveDancersWithTags()` methods
-  - **Service Layer Integration**: Updated DancerService, DancerSearchService, and DancerTagService with archival support
-  - **Data Preservation**: All dance history, rankings, scores, and relationships remain intact when archiving
-  - **Reversible Operations**: Archived dancers can be easily reactivated with one method call
+- Automated release process
 
 ### Technical
-- **Database Migration**: Added new columns with proper defaults (existing dancers remain active)
-- **Service Architecture**: Implemented archival methods across all dancer-related services
-- **Stream Filtering**: Added active-only streams that automatically exclude archived dancers
-- **Search Integration**: Active-only search functionality for cleaner event planning
-- **Tag Service Updates**: Active-only tag filtering for better community management
-- **Action Logging**: Comprehensive logging for all archival operations
-- **Error Handling**: Proper error handling and validation for archival operations
+- Release script for version bumping and APK distribution
 
-### Documentation
-- **Technical Specification**: Updated `specs/technical/technical_DancerArchival.md` with implementation status
-- **Service Layer Documentation**: Documented all new archival methods and active-only streams
-- **Migration Strategy**: Marked Phase 1 (Database) and Phase 2 (Service Layer) as completed
 
-## [v1.3.1] - 2025-01-17
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "I would like to make use of icons from material 3" - Request to implement Material 3 icons throughout the app
+- Release build and upload
 
 ### Added
-- **Material 3 Icons Implementation**: Comprehensive Material 3 icon system with proper variants and styling
-  - **Icon Variants**: Implemented filled, outlined, rounded, sharp, and two-tone icon variants
-  - **Color Guidelines**: Established semantic color usage with colorScheme integration
-  - **Size Guidelines**: Defined standard sizes (18, 24, 32, 48) for different contexts
-  - **Best Practices**: Created comprehensive guide for consistent icon usage across the app
-  - **Migration Examples**: Updated existing icons to follow Material 3 conventions
-  - **Documentation**: Added detailed Material 3 Icons Guide with examples and best practices
-
-### Improved
-- **Icon Consistency**: Updated navigation, action, and status icons to use Material 3 variants
-  - **Navigation Icons**: Updated home app bar to use outlined variants (people_outlined, settings_outlined)
-  - **Action Icons**: Updated context menus to use outlined variants (edit_outlined, delete_outline)
-  - **Status Icons**: Updated archive/restore icons to use outlined variants
-  - **Event Icons**: Updated event card actions to use Material 3 variants
-  - **Visual Hierarchy**: Better distinction between primary and secondary actions through icon variants
-  - **Accessibility**: Improved contrast and semantic color usage for better accessibility
+- Automated release process
 
 ### Technical
-- **Icon System Architecture**: Created Material3IconsGuide class with common icons mapping
-- **Color Scheme Integration**: All icons now use Theme.of(context).colorScheme for consistent theming
-- **Variant Selection**: Implemented proper variant selection based on action type and context
-- **Code Organization**: Created dedicated theme file for Material 3 icon utilities and examples
-- **Documentation**: Comprehensive guide with implementation examples and migration strategies
-- **Formatting**: Applied proper Dart formatting to all modified files
+- Release script for version bumping and APK distribution
 
-### Documentation
-- Updated Product specification.md to reflect new bottom sheet presentation for ranking and score pickers
 
-## [v1.3.2] - 2025-01-17
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "have similar filtering in add dancers dialog" - Request to add tag filtering functionality to the Add Dancer Dialog, similar to the Select Dancers and Add Existing Dancer screens
+- Release build and upload
 
 ### Added
-- **Tag Filtering in Add Dancer Dialog**: Added tag-based filtering to help users find existing dancers when creating new dancers
-  - **Filter by Tag**: Users can select a tag to filter existing dancers by venue/context
-  - **Existing Dancer Selection**: Shows list of existing dancers with the selected tag
-  - **Pre-fill Form**: Selecting an existing dancer pre-fills the name, notes, and tags
-  - **Duplicate Prevention**: Helps users avoid creating duplicate dancer profiles when they can't remember names
-  - **Memory Aid**: Useful when users remember where they know someone from but not their name
+- Automated release process
 
 ### Technical
-- Added TagFilterChips widget integration to AddDancerDialog
-- Implemented filtered dancer loading and display logic
-- Added existing dancer selection functionality with form pre-filling
-- Maintained existing tag selection functionality for new dancers
+- Release script for version bumping and APK distribution
 
-### Documentation
-- Updated Product specification.md to reflect new tag filtering functionality in Add Dancer Dialog
 
-## [v1.2.1] - 2025-01-16
 
 ### User Requests
-- "remove checkmarks from rows in summary tab for past events, at that point I will remember who I danced with after the scores assignment" - Request to hide dance checkmarks for past events in summary tab
-
-### Improved
-- **Summary Tab Checkmark Logic**: Removed dance checkmarks (✓) from summary tab for past events
-  - **Past Event Detection**: Uses EventStatusHelper to determine if an event is in the past
-  - **Cleaner Summary View**: Past events no longer show checkmarks, reducing visual clutter
-  - **Better Memory Aid**: Users can focus on scores and impressions without checkmark distraction
-  - **Context-Aware Display**: Checkmarks still appear for current and future events
-  - **Proper Architecture**: Business logic decision made at SummaryTab level, not DancerCard level
-
-### Technical
-- Added hideCheckmark parameter to DancerCard widget for conditional checkmark display
-- Modified SummaryTab to fetch event date and determine if event is past
-- Used EventStatusHelper.isPastEvent() for consistent past event detection
-- Added proper action logging for past event detection in summary tab
-- Maintained existing functionality for current and future events
-
-## [v1.2.0] - 2025-01-16
-
-### User Requests
-- "Now let's design a new feature - on the list of dancers to be added filter them out by their recency and frequent attendance. Allow me to switch to a broarder scope." - Request for dancer filtering feature design
-- "Still too complex. Try combine the two criterias." - Request to simplify the filtering approach
-- "The user scenarios do not match my case: I have long history and some of the dancers don't come anymore or come very rarely" - Request to update scenarios for real-world long history context
-- "update the spec file" - Request to update the feature specification
+- Release build and upload
 
 ### Added
-- **Dancer Filtering Feature Design**: Comprehensive design for filtering dancers by activity level
-  - **Simplified Approach**: Combined recency and frequency into single "Activity Level" filter
-  - **Real-World Scenarios**: Updated user scenarios to reflect long dance history with inactive dancers
-  - **Activity Levels**: 5 intuitive levels (All, Active, Very Active, Core Community, Recent)
-  - **Smart Defaults**: Context-aware filtering based on event type
-  - **Long History Support**: Designed for 200+ dancers with only 30-40 currently active
-  - **Legacy Dancer Handling**: Balance current community with historical relationships
-
-### Improved
-- **User Experience Design**: Simplified from complex dual-filter to single dropdown approach
-- **User Scenarios**: Updated to reflect real-world challenges of managing long dance history
-  - **Weekly Social**: Avoid scrolling through 160+ inactive dancers
-  - **Monthly Events**: Distinguish between truly active vs. occasional attendees
-  - **Festival Planning**: Balance current regulars with legacy dancers
-  - **Class Planning**: Focus on current students, avoid inactive former students
-  - **Last-Minute Events**: Target currently active dancers for reliable attendance
-- **Activity Level Definitions**: Clear criteria for each level with real-world use cases
-- **Implementation Timeline**: Reduced from 6-10 weeks to 2-3 weeks total
-
-### Documentation
-- **Feature Design**: `specs/features/feature_DancerFiltering.md` - Complete feature specification
-- **User Scenarios**: Real-world examples with long dance history context
-- **Activity Level Definitions**: Clear criteria and use cases for each filter level
-- **Implementation Strategy**: Simplified 2-phase approach with faster timeline
-
-## [v1.1.1] - 2025-01-16
-
-### User Requests
-- "when importing event, looking for existing dancer with given name, try lookup few different variants to better match" - Request to improve dancer name matching during event import
-- "try also: switching places of words (for two word names), removing or adding a dot at the and, replacing diacretic characters with their base characters" - Request for additional name matching strategies
-- "Now please write a test that covers this new logic" - Request for comprehensive test coverage
-
-### Improved
-- **Enhanced Dancer Name Matching**: Improved event import to try different name variants for better dancer matching
-  - **Multiple Variants**: Tries exact match, lowercase, title case, and different capitalization patterns
-  - **Space Normalization**: Handles extra spaces, single space normalization, and trimming
-  - **Case Variations**: Supports different case combinations for multi-word names
-  - **Word Order Switching**: For two-word names, tries both word orders (e.g., "John Doe" ↔ "Doe John")
-  - **Dot Handling**: Adds/removes trailing dots (e.g., "John Doe" ↔ "John Doe.")
-  - **Diacritic Removal**: Replaces accented characters with base characters (e.g., "José" ↔ "Jose")
-  - **Complex Combinations**: Handles multiple transformations together (e.g., "José García" ↔ "Garcia Jose.")
-  - **Performance Optimized**: Pre-generates all variants for efficient matching
+- Automated release process
 
 ### Technical
-- **Comprehensive Test Coverage**: Added extensive test suite covering all name matching scenarios
-  - **Basic Variants**: Tests exact matches, case variations, and space handling
-  - **Dot Handling**: Tests adding/removing dots with various name formats
-  - **Diacritic Processing**: Tests Polish, Spanish, French, and other accented characters
-  - **Word Order Switching**: Tests two-word name order switching with case variations
-  - **Complex Combinations**: Tests multiple transformations applied together
-  - **Edge Cases**: Tests empty names, single characters, very long names, and non-existent matches
-  - **Performance Tests**: Ensures graceful handling of edge cases and large datasets
-  - **Action Logging**: Verifies proper logging of variant matches for debugging
-- **Algorithm Improvements**: Fixed variant generation to work bidirectionally (input names ↔ database names)
-- **Code Cleanup**: Removed unused helper methods and optimized matching logic
+- Release script for version bumping and APK distribution
 
-## [v1.1.0] - 2025-01-16
+
 
 ### User Requests
-- "Increate the limit 20 and load more when scrolled to the end" - Request to increase dancer history limit and add pagination
+- Release build and upload
 
-### Improved
-- **Dancer History Pagination**: Enhanced dancer history screen with better pagination and load more functionality
-  - **Increased Limit**: Changed from 6 to 20 events displayed initially
-  - **Load More on Scroll**: Automatically loads more events when user scrolls near the bottom
-  - **Smooth Pagination**: Seamless loading of additional history without page breaks
-  - **Loading Indicators**: Shows loading spinner at bottom while fetching more data
-  - **Better Performance**: Loads data in chunks to maintain smooth scrolling
-  - **Complete History**: Users can now view full event history for dancers with many events
+### Added
+- Automated release process
 
 ### Technical
-- Updated DancerEventService.getRecentHistory to support configurable limit (default 20)
-- Added DancerEventService.getMoreHistory method for pagination support
-- Enhanced DancerHistoryScreen with scroll controller and pagination logic
-- Added scroll listener to detect when user reaches bottom of list
-- Implemented loading states for initial load and pagination
-- Maintained existing functionality while improving data access
+- Release script for version bumping and APK distribution
 
-## [v1.0.9] - 2025-01-16
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "Nope, the problem is that after I clear the field and tap save the change does not get saved" - Request to fix notes field not saving when cleared
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "Let's try this" - Request to implement extract historical dance record as one-time person feature
+- "use regular tap" - Request to use tap instead of long press for extraction action
+- "add the dancer name to the new one-time dancer name" - Request to include original dancer name in extracted person name
+- "finish" - Request to complete the implementation
+
+### Added
+- **Extract Historical Dance Record Feature**: Complete implementation for separating dance records as one-time persons
+  - **Service Layer**: New `DancerExtractionService` with database transaction handling
+  - **UI Dialog**: `ExtractDanceRecordDialog` with confirmation, loading states, and error handling
+  - **Context Menu**: Tap on dance records in dancer history to access "Separate record" option
+  - **Data Model Updates**: Enhanced `DancerRecentHistory` to include attendance ID for extraction
+  - **Naming Convention**: New one-time persons named "[OriginalDancerName] - [EventName]"
+
+### Technical
+- **Database Operations**: Safe transaction-based extraction with proper error handling
+- **UI Integration**: Context menu in dancer history screen with proper data flow
+- **Data Integrity**: Preserves all dance data while removing from original dancer
+- **Audit Logging**: Comprehensive logging for all extraction operations
+
+## [v1.5.5] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "dancer merge action has shown and error, @dart" - Request to fix dancer merge constraint error
 
 ### Fixed
-- **Notes Field Clearing Bug**: Fixed issue where clearing dancer notes field and saving would not actually clear the notes
-  - **Proper Null Handling**: Fixed updateDancer method to properly handle null notes values
-  - **Clear Field Support**: Users can now successfully clear dancer notes by emptying the field and saving
-  - **Consistent Behavior**: Notes field now properly saves both content and empty state
-  - **Database Update**: Fixed Value wrapper logic to always use provided notes value instead of falling back to existing value
+- **Dancer Merge Constraint Error**: Fixed UNIQUE constraint violation when merging dancers with duplicate rankings
+  - **Rankings Update Logic**: Added proper duplicate handling for rankings table
+  - **Safe Updates**: Only update rankings from source to target if target doesn't already have ranking for that event
+  - **Duplicate Cleanup**: Delete source rankings for events where target already has a ranking
+  - **Consistent Pattern**: Applied same logic pattern already used for attendances
 
 ### Technical
-- Fixed DancerCrudService.updateDancer method to use `Value(notes)` instead of `Value(notes ?? dancer.notes)`
-- Ensured null notes are properly saved to database when field is cleared
-- Maintained existing functionality for non-null notes values
+- **Database Constraints**: Proper handling of unique constraints in merge operations
+- **Data Integrity**: Ensures no duplicate rankings per dancer per event during merges
+- **Error Prevention**: Prevents constraint violations in dancer merge operations
 
-## [v1.0.8] - 2025-01-16
-
-### User Requests
-- "Event screen rows are covered by system bar. Please review all screens to void this." - Request to fix system bar coverage issues across all screens
-
-### Fixed
-- **System Bar Coverage Issues**: Fixed content being covered by system bars (status bar and navigation bar) across all screens
-  - **Proper System UI Handling**: Added SystemChrome configuration for edge-to-edge display
-  - **SafeArea Implementation**: Wrapped all main content areas with SafeArea to prevent system bar overlap
-  - **Consistent Experience**: All screens now properly respect system UI areas
-  - **Better UX**: Content is no longer hidden behind status bar or navigation bar
-
-### Technical
-- Added SystemChrome configuration in main.dart for transparent system bars and edge-to-edge mode
-- Added MediaQuery builder in MaterialApp to ensure proper padding handling
-- Wrapped content areas with SafeArea in:
-  - Event screen tabs (Present, Planning, Summary)
-  - Dancers screen
-  - All list views and scroll views
-- Maintained existing functionality while improving system UI integration
-
-## [v1.0.7] - 2025-01-16
+## [v1.5.4] - 2025-01-17
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "show a year too on that history screen records" - Request to add year to date display in dancer history
-
-### Improved
-- **Dancer History Date Display**: Added year to date format in dancer history screen
-  - **Better Context**: Dates now show as "Jan 15, 2024" instead of just "Jan 15"
-  - **Clearer Timeline**: Users can better understand when events occurred across different years
-  - **Improved Readability**: Full date format makes it easier to distinguish events from different years
-
-### Technical
-- Updated DateFormat in DancerHistoryScreen from 'MMM dd' to 'MMM dd, yyyy'
-- Maintained existing layout and styling while improving date information
-
-## [v1.0.6] - 2025-01-16
-
-### User Requests
-- "Add dancer history to dancer context actions in dancer screen so I can try recall where I know them from" - Request to add history access to dancer context menu
+- Release build and upload
 
 ### Added
-- **Dancer History in Context Menu**: Added "View History" option to dancer context menu in dancers screen
-  - **Quick Access**: Users can now view dancer's event history directly from the dancers list
-  - **Memory Aid**: Helps users recall where they know dancers from by showing past events
-  - **Consistent UX**: Uses the same DancerHistoryScreen as other parts of the app
-  - **Proper Navigation**: Opens history screen with dancer's name and ID for context
+- Automated release process
 
 ### Technical
-- Added DancerHistoryScreen import to DancerCardWithTags widget
-- Added "View History" ListTile to dancer context menu with history icon
-- Added proper action logging for history context menu interactions
+- Release script for version bumping and APK distribution
 
-## [v1.0.5] - 2025-01-16
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "I have this events file. I imported it in Android App but Alicja is missing the impression." - Request to fix impression import for non-served status dancers
+- Release build and upload
 
-### Fixed
-- **Event Import Impression Bug**: Fixed missing impressions for dancers with 'present' or 'left' status during event import
-  - **Extended Impression Support**: Impressions are now saved for all attendance statuses (present, served, left)
-  - **Consistent Data Import**: All impression data from JSON files is now properly imported regardless of status
-  - **Better Data Preservation**: No impression data is lost during import process
-  - **Fixed Alicja's Impression**: Dancers like Alicja with 'present' status and impressions now have their data preserved
+### Added
+- Automated release process
 
 ### Technical
-- Updated EventImportService to save impressions for 'present' and 'left' status dancers using updateDanceImpression method
-- Maintained existing behavior for 'served' status dancers using recordDance method
-- Added proper impression handling for all attendance statuses during import process
+- Release script for version bumping and APK distribution
 
-## [v1.0.4] - 2025-01-16
+
 
 ### User Requests
-- "Remove Version info row" - Request to remove version information from settings screen
-- "The default data gets inserted after reset no matter if I select the checkbox" - Request to clarify reset behavior and UI text
-- "Bump andriod app version along the changelog version" - Request to update Android app version to match changelog
+- Release build and upload
 
-### Removed
-- **Version Info Row**: Removed version information display from General Settings tab
-  - **Cleaner UI**: Removed "Version: 0.65.2" row from App Information section
-  - **Simplified Display**: App Information now shows only App Name and Built for information
-  - **Reduced Clutter**: Settings screen is now more focused on functional options
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "on Dancers screen, in a row, put the notes in a new line (if they are not empty), and the last seen to span whole width of the row" - Request to improve dancer card layout
 
 ### Improved
-- **Database Reset Dialog**: Clarified UI text to distinguish between essential defaults and test data
-  - **Clearer Language**: Changed "Default ranks, tags, and scores" to "Essential system defaults (ranks, tags, scores)"
-  - **Explanation Added**: Added note that essential defaults are required for app functionality and cannot be disabled
-  - **Better Success Messages**: Updated success messages to use "essential defaults" terminology
-  - **Reduced Confusion**: Users now understand that essential system data is always restored regardless of checkbox
+- **Dancer Card Layout**: Enhanced dancer card layout in Dancers screen
+  - **Notes on New Line**: Moved dancer notes to separate line below last seen info
+  - **Full Width Last Seen**: Last seen event info now spans the full width of the row
+  - **Better Spacing**: Improved spacing between elements for cleaner visual hierarchy
+  - **Removed Divider**: Eliminated vertical divider since notes and last seen are now separate
+
+### Technical
+- **Layout Optimization**: Restructured dancer card subtitle layout for better readability
+- **UI Consistency**: Improved visual hierarchy in dancer list display
+
+## [v1.5.2] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "this" - Request to fix double border issue in text search fields
+- "make @release.sh script bump the pubspec version too" - Request to ensure release script updates pubspec version
+- "@dancers_screen.dart should be more aligned with @add_existing_dancer_screen.dart" - Request to align dancers screen with cleaner pattern
+- "Support /dancers path for CLI arg" - Request to add CLI navigation support for dancers screen
+- "the text search field in Dancers screen has 2 outlines" - Request to fix double border issue in dancers screen
+- "Great, but now it has different outline than the tag filter" - Request to make search field outline consistent with filter buttons
+- "still no good" - Request to fix corner clipping issue in text field
+- "make it less tall to have the same height as the tag filter button" - Request to adjust text field height
+- "all good, commit" - Request to commit all changes
+
+### Fixed
+- **Double Border Issue**: Fixed text search fields having two borders due to global theme + local border conflicts
+  - **CommonSearchField**: Removed explicit `border: OutlineInputBorder()` to use global theme
+  - **AddDancerDialog**: Removed explicit border declaration for notes field
+  - **DanceRecordingDialog**: Removed explicit border declaration for impression field
+  - **CompactDancerFilter**: Removed explicit border declaration for search field
+  - **TagSelectionFlyout**: Removed explicit border declaration for search field
+  - **SelectMergeTargetScreen**: Removed explicit border declaration for search field
+- **Dancers Screen Alignment**: Refactored dancers screen to follow cleaner pattern like add_existing_dancer_screen
+  - **Async/Await Pattern**: Converted all methods to use proper `Future<void>` with async/await
+  - **Cleaner Dialog Handling**: Delete confirmation now returns boolean instead of inline logic
+  - **Better Separation**: Business logic separated from UI logic
+  - **Info Message**: Added helpful context message like other screens
+  - **Consistent Error Handling**: More consistent with pattern used in other screens
+- **CLI Navigation Support**: Added support for `/dancers` path in CLI navigation
+  - **Help Documentation**: Updated CLI help to include dancers path and examples
+  - **Navigation Logic**: Added dancers screen navigation in CLI navigator
+  - **Import Support**: Added proper import for DancersScreen
+  - **Path Resolution**: Updated path resolution to handle non-event screens
+- **Search Field Consistency**: Fixed search field outline and height consistency in dancers screen
+  - **Theme Colors**: Changed from hardcoded grey to theme-based outline colors
+  - **Native Borders**: Switched from custom container to TextField's native border system
+  - **Height Matching**: Added height constraint to match filter button height (40px)
+  - **Corner Clipping**: Fixed corner clipping issues with proper border implementation
+  - **Content Padding**: Adjusted padding for compact appearance
+
+### Improved
+- **Release Script**: Enhanced release script with better error handling and validation
+  - **Help Support**: Added proper `--help` and `-h` flag support
+  - **Robust Validation**: Added version format validation and backup/restore functionality
+  - **Better Documentation**: Enhanced help text with detailed usage examples
+  - **Error Recovery**: Added backup creation and restoration for failed updates
+
+### Technical
+- **Border System**: Unified border handling across all text fields using global theme
+- **CLI Architecture**: Extended CLI navigation to support non-event screens
+- **UI Consistency**: Standardized search field appearance across all screens
+- **Code Quality**: Improved async handling and error management patterns
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+
+
+### User Requests
+- "I feel like we now have many such simple dialogs, extract common component for that." - Request to create reusable component for simple selection dialogs
+
+### Added
+- **SimpleSelectionDialog Component**: New reusable component for simple selection dialogs
+  - **Generic Design**: Supports any type of items with customizable title and selection logic
+  - **One-Tap Selection**: Immediate selection with visual feedback (check_circle vs circle_outlined)
+  - **Built-in Logging**: Automatic action logging with configurable prefix
+  - **Loading States**: Built-in loading indicator support
+  - **Consistent UI**: Standardized header, list, and cancel button layout
+  - **Error Handling**: Proper error handling and user feedback
+
+### Refactored
+- **ScoreDialog**: Refactored to use SimpleSelectionDialog component
+  - **Reduced Code**: Eliminated duplicate UI code by 70%
+  - **Consistent Behavior**: Maintains same functionality with cleaner implementation
+  - **Better Maintainability**: Easier to modify and extend
+- **Scores Management Merge Dialog**: Refactored merge target selection to use SimpleSelectionDialog
+  - **Simplified Logic**: Cleaner dialog presentation and selection handling
+  - **Consistent UX**: Same visual pattern as other selection dialogs
+
+### Technical
+- **Component Reusability**: Created generic SimpleSelectionDialog<T> for type-safe usage
+- **Action Logging**: Integrated logging with configurable prefixes for different dialogs
+- **Error Handling**: Proper async error handling with user-friendly messages
+- **UI Consistency**: Standardized visual design across all simple selection dialogs
+
+## [v1.4.6] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I have reverted ScoreDialog latest changes (commit). Now try simplify it to simple sheet with one tap options" - Request to simplify ScoreDialog to basic one-tap options
+- "remove last updated from edit rank dialog" - Request to remove last updated info from RankingDialog
 
 ### Changed
-- **Select Dancers Screen**: Removed automatic default rank assignment when adding dancers to events
-  - **No Auto-Ranking**: Dancers are now added to events without any rank assignment
-  - **Manual Ranking**: Users must manually assign ranks later if desired
-  - **Cleaner Workflow**: Simplifies the process of adding dancers to events
-  - **Better UX**: Users have full control over when and how to rank dancers
-  - **Updated Success Message**: Changed from "Added X dancers to event ranking" to "Added X dancers to event (no rank assigned)"
-
-### Changed
-- **Select Dancers Screen**: Removed automatic default rank assignment when adding dancers to events
-  - **No Auto-Ranking**: Dancers are now added to events without any rank assignment
-  - **Manual Ranking**: Users must manually assign ranks later if desired
-  - **Cleaner Workflow**: Simplifies the process of adding dancers to events
-  - **Better UX**: Users have full control over when and how to rank dancers
-  - **Updated Success Message**: Changed from "Added X dancers to event ranking" to "Added X dancers to event (no rank assigned)"
-
-### Fixed
-- **Database Reset Dialog**: Fixed reset confirmation dialog that stopped working
-  - **StatefulBuilder Issue**: Fixed variable scope issue in StatefulBuilder implementation
-  - **Dialog Return Type**: Changed dialog return type to properly handle both confirmation and test data choice
-  - **Proper State Management**: Fixed checkbox state management within the dialog
-  - **Reliable Reset**: Reset functionality now works correctly with optional test data
+- **ScoreDialog Simplification**: Reverted to simple one-tap design
+  - **Simple ListTile**: Uses basic ListTile with circle icons for selection
+  - **One-Tap Selection**: Tap any score to immediately assign it
+  - **Minimal UI**: Removed complex RadioListTile structure and action buttons
+  - **Direct Action**: Score is assigned immediately when you tap it
+- **RankingDialog Cleanup**: Removed last updated timestamp display
+  - **Cleaner UI**: Removed unnecessary timestamp information
+  - **Simplified Layout**: Less visual clutter in the ranking dialog
 
 ### Technical
-- Updated `_showResetConfirmationDialog` to use `Map<String, dynamic>` return type
-- Fixed StatefulBuilder variable scope by moving `includeTestData` inside the builder
-- Updated `_addSelectedDancers` method to use `AttendanceService.markPresent()` instead of `RankingService.setRanking()`
-- Added `AttendanceService` import to `SelectDancersScreen`
-- Updated pubspec.yaml version from 1.0.0+1 to 1.0.3+3 to match changelog version
+- **UI Consistency**: Ensured appropriate complexity for each dialog's use case
+- **Code Simplification**: Reduced complexity where appropriate for better UX
 
-### Fixed
-- **Database Reset Dialog**: Fixed reset confirmation dialog that stopped working
-  - **StatefulBuilder Issue**: Fixed variable scope issue in StatefulBuilder implementation
-  - **Dialog Return Type**: Changed dialog return type to properly handle both confirmation and test data choice
-  - **Proper State Management**: Fixed checkbox state management within the dialog
-  - **Reliable Reset**: Reset functionality now works correctly with optional test data
-
-### Technical
-- Updated `_showResetConfirmationDialog` to use `Map<String, dynamic>` return type
-- Fixed StatefulBuilder variable scope by moving `includeTestData` inside the builder
-- Improved dialog result handling to properly extract both confirmation and test data choice
-- Maintained all existing functionality while fixing the state management issue
-
-## [v1.0.0] - 2025-01-16
+## [v1.4.5] - 2025-01-17
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "make test data optional in reset action" - Request to make test data optional when resetting database
+- Release build and upload
 
 ### Added
-- **Optional Test Data in Reset**: Database reset now allows users to choose whether to include test data
-  - **User Choice**: Checkbox in reset confirmation dialog to include/exclude test data
-  - **Flexible Reset**: Users can reset to clean state or include sample data for testing
-  - **Clear Feedback**: Different success messages based on whether test data was included
-  - **Better UX**: More control over what gets restored after reset
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "Why the assign score sheet looks different from other sheets?" - Request to understand and fix UI inconsistency in ScoreDialog
 
 ### Improved
-- **Import Validation Test**: Updated test to use actual EventImportParser service instead of direct JSON parsing
-  - **Service Integration**: Test now uses the same parser service used by the app
-  - **Better Validation**: Leverages the app's actual validation logic and error handling
-  - **Consistent Behavior**: Test results now match what users would see in the app
-  - **Proper Error Reporting**: Uses the service's structured error reporting format
-  - **Real-World Testing**: Tests against actual historical data files with 100% success rate
+- **ScoreDialog UI Consistency**: Updated ScoreDialog to match RankingDialog's structure and styling
+  - **Consistent Layout**: Now uses same header, sections, and action button layout as RankingDialog
+  - **RadioListTile Selection**: Replaced ListTile with RadioListTile for better selection UX
+  - **Proper Action Buttons**: Added Cancel and Set Score buttons with loading states
+  - **Better Visual Hierarchy**: Clear sections with proper spacing and typography
+  - **Static Show Method**: Added ScoreDialog.show() for consistent presentation pattern
+- **Dialog Presentation**: Updated all ScoreDialog calls to use new static show method
+  - **Consistent Pattern**: All dialogs now follow same presentation pattern
+  - **Better Integration**: Improved integration with existing dialog flows
 
 ### Technical
-- Updated `AppDatabase.resetDatabase()` to accept optional `includeTestData` parameter
-- Enhanced reset confirmation dialog with StatefulBuilder and checkbox for test data option
-- Updated test/import_validation_test.dart to use EventImportParser.parseJsonContent()
-- Removed direct JSON parsing in favor of service-based validation
-- Maintained all existing test coverage while improving accuracy
-- Test now validates 5 historical files with 94 events and 1066 unique dancers
+- **UI Architecture**: Standardized dialog presentation patterns across the app
+- **Code Reusability**: Improved consistency between similar dialog components
+- **User Experience**: Enhanced visual consistency and interaction patterns
 
-## [v0.99.0] - 2025-01-16
+## [v1.4.4] - 2025-01-17
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "Nice but this test should use service" - Request to update import validation test to use actual service
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "All good now, commit" - Request to commit the real-time filtering improvements
 
 ### Improved
-- **Import Validation Test**: Updated test to use actual EventImportParser service instead of direct JSON parsing
-  - **Service Integration**: Test now uses the same parser service used by the app
-  - **Better Validation**: Leverages the app's actual validation logic and error handling
-  - **Consistent Behavior**: Test results now match what users would see in the app
-  - **Proper Error Reporting**: Uses the service's structured error reporting format
-  - **Real-World Testing**: Tests against actual historical data files with 100% success rate
+- **Real-Time Dancer Filtering**: Enhanced dancer filtering to use streams for live updates
+  - **Dancers Screen**: Converted from Future to Stream for real-time dancer list updates
+  - **Base Dancer Selection**: Updated base class to support streaming data for live filtering
+  - **Immediate Updates**: Dancer lists now update automatically when data changes
+  - **Better Performance**: Reduced unnecessary rebuilds with streaming approach
+  - **Consistent Architecture**: All dancer filtering now uses same streaming pattern
 
 ### Technical
-- Updated test/import_validation_test.dart to use EventImportParser.parseJsonContent()
-- Removed direct JSON parsing in favor of service-based validation
-- Maintained all existing test coverage while improving accuracy
-- Test now validates 5 historical files with 94 events and 1066 unique dancers
+- **Streaming Architecture**: Implemented Stream<List<DancerWithTags>> for real-time updates
+- **Performance Optimization**: Reduced unnecessary widget rebuilds with streaming approach
+- **Code Consistency**: Unified filtering patterns across all dancer selection components
 
-## [v0.98.0] - 2025-01-16
+## [v1.4.3] - 2025-01-17
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "still some error" - Request to fix JSON parsing errors for historical event files
-
-### Fixed
-- **JSON Parsing Errors**: Fixed "type 'Null' is not a subtype of type 'String'" errors for historical event files
-  - **Null Value Handling**: Updated ImportableEvent and ImportableAttendance models to handle null values gracefully
-  - **Clear Error Messages**: Now provides specific error messages like "Event name is required and cannot be null or empty"
-  - **Better Validation**: Checks for null, empty, or missing required fields with descriptive error messages
-  - **Robust Parsing**: Prevents crashes when JSON files have incomplete data
+- Release build and upload
 
 ### Added
-- **Event Name Fix Script**: Created `scripts/fix_event_names.py` to automatically fix JSON files with missing event names
-  - **Automatic Name Generation**: Adds default names like "Event on January 15, 2024" for events missing names
-  - **Batch Processing**: Can fix multiple files or overwrite existing files
-  - **Safe Operation**: Preserves all other data while only fixing missing names
-  - **Date-Based Naming**: Generates readable names based on event dates
-  - **Documentation**: Includes README with usage examples and requirements
+- Automated release process
 
 ### Technical
-- Updated ImportableEvent.fromJson to handle null name and date fields
-- Updated ImportableAttendance.fromJson to handle null dancer_name and status fields
-- Added comprehensive null checking with descriptive FormatException messages
-- Created Python script for batch fixing of JSON files
-- Maintained all existing functionality while improving error handling
+- Release script for version bumping and APK distribution
 
-## [v0.97.0] - 2025-01-16
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "I still get Error: Provider<DancerTagService> not found for SelectDancersScreen when I open 'Select dancers' on android app" - Request to fix provider error
+- Release build and upload
 
-### Fixed
-- **SelectDancersScreen Provider Error**: Fixed "Provider<DancerTagService> not found" error on Android
-  - **Provider Context Issue**: SelectDancersScreen was being navigated to without proper provider context
-  - **MultiProvider Wrapper**: Added MultiProvider wrapper when navigating to SelectDancersScreen
-  - **Service Dependencies**: Re-provided all necessary services (DancerService, DancerCrudService, DancerTagService, RankingService)
-  - **Android Compatibility**: Fixed provider access issues specific to Android platform
-  - **Tag Filtering**: Tag filtering functionality now works correctly on Android
+### Added
+- Automated release process
 
 ### Technical
-- Added MultiProvider wrapper in PlanningTabActions.onFabPressed method
-- Added missing imports for database and service classes
-- Maintained all existing functionality while fixing provider context issues
+- Release script for version bumping and APK distribution
 
-## [v0.96.0] - 2025-01-16
+
 
 ### User Requests
-- "Do these now" - Request to implement small improvements from todo list
+- Release build and upload
 
-### Fixed
-- **Summary Tab Past Event Actions**: Fixed "mark absent" and "mark as left" actions showing for past events
-  - **Contextual Actions**: These actions are now hidden for past events where they don't make sense
-  - **Better UX**: Prevents confusion by hiding irrelevant actions for past events
-  - **Event Status Aware**: Dialog now checks if event is past using EventStatusHelper
-  - **Maintained Functionality**: All other actions remain available for past events
-
-- **Select Dancers AppBar Subtitle**: Fixed subtitle alignment not being centered
-  - **Proper Centering**: Changed crossAxisAlignment from start to center
-  - **Better Visual Balance**: Event name subtitle now appears centered under "Select Dancers"
-  - **Consistent Design**: Matches the centered alignment pattern used in other screens
+### Added
+- Automated release process
 
 ### Technical
-- Updated DancerActionsDialog to hide presence toggle and mark as left actions for past events
-- Fixed AppBar title Column alignment in SelectDancersScreen
-- Maintained all existing functionality while improving contextual behavior
+- Release script for version bumping and APK distribution
 
-## [v0.95.0] - 2025-01-16
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "I got an error on Select Dancers screen" - Request to fix Select Dancers screen error
-- "Run the app and observe the logs" - Request to investigate and fix app errors
+- Release build and upload
 
-### Fixed
-- **Select Dancers Screen Provider Error**: Fixed "could not find correct provider<DancerTagService>" error
-  - **Missing Provider**: Added DancerTagService and DancerCrudService to main.dart providers
-  - **Proper Dependencies**: Configured ProxyProvider2 to correctly inject DancerCrudService into DancerTagService
-  - **Tag Filtering**: Select Dancers screen now properly supports tag filtering functionality
-  - **Service Integration**: All tag-related features now work correctly in the Select Dancers screen
-
-- **Fluttertoast macOS Error**: Fixed MissingPluginException for fluttertoast on macOS
-  - **Platform Detection**: Updated ToastHelper to detect macOS platform
-  - **SnackBar Fallback**: Uses SnackBar instead of fluttertoast on macOS for better compatibility
-  - **Native Android Toasts**: Maintains native Android toasts on Android platform
-  - **Cross-Platform Support**: Toast notifications now work correctly on all supported platforms
+### Added
+- Automated release process
 
 ### Technical
-- Added DancerCrudService and DancerTagService imports to main.dart
-- Added ProxyProvider for DancerCrudService in main.dart
-- Added ProxyProvider2 for DancerTagService with proper dependency injection
-- Updated ToastHelper._showToast method to use platform-specific toast implementations
-- Maintained all existing functionality while fixing provider and platform compatibility issues
+- Release script for version bumping and APK distribution
 
-## [v0.94.0] - 2025-01-16
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "add existing dancer screen obscured by system bar on Android" - Request to fix system bar coverage
-- "tag filtering does not work for 'Cuban DC Festival'" - Request to fix tag filtering functionality
+- Release build and upload
 
-### Fixed
-- **Add Existing Dancer Screen System Bar**: Fixed screen being obscured by Android system navigation bar
-  - **SafeArea Wrapper**: Added SafeArea widget to properly handle system UI padding
-  - **Better UX**: Screen content is now fully visible and accessible on Android
-  - **Consistent Behavior**: Matches other screens in the app for system UI handling
-
-- **Tag Filtering Reactivity**: Improved tag filtering to properly update when data changes
-  - **Better Stream Watching**: Enhanced watchAvailableDancersForEventByTag method
-  - **Improved Reactivity**: Tag filtering now properly responds to changes in rankings and attendances
-  - **More Reliable**: Fixed potential issues with tag filtering not updating correctly
+### Added
+- Automated release process
 
 ### Technical
-- Added SafeArea wrapper to AddExistingDancerScreen body
-- Improved DancerTagService.watchAvailableDancersForEventByTag method for better reactivity
-- Maintained all existing functionality while fixing system UI and filtering issues
+- Release script for version bumping and APK distribution
 
-## [v0.93.0] - 2025-01-16
+
 
 ### User Requests
-- "Android - the FAB button is covered with bottom system bar" - Request to fix FAB positioning on Android
-- "extract this repeated code into single place" - Request to refactor repeated FAB padding code
+- Release build and upload
 
-### Fixed
-- **Android FAB Positioning**: Fixed FAB buttons being covered by Android system navigation bar
-  - **System UI Aware**: FABs now automatically account for Android system navigation bar padding
-  - **Consistent Positioning**: All FABs across the app now have proper bottom spacing
-  - **Cross-Platform**: Works correctly on both Android and other platforms
-  - **Better UX**: FABs are no longer hidden behind system UI elements
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
 
 ### Improved
-- **Code Reusability**: Extracted repeated FAB padding code into reusable `SafeFAB` widget
-  - **Single Source of Truth**: All FABs now use the centralized `SafeFAB` widget
-  - **Consistent Behavior**: Automatic system UI padding handling across all screens
-  - **Easier Maintenance**: Future FAB positioning changes only need to be made in one place
-  - **Type Safety**: Proper parameter handling for both regular and extended FABs
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
 
 ### Technical
-- Created new `SafeFAB` widget in `lib/widgets/safe_fab.dart`
-- Updated all screens to use `SafeFAB` instead of manual padding:
-  - `EventScreen`, `DancersScreen`, `HomeScreen`
-  - `SelectDancersScreen`, `TagsManagementTab`
-  - `ScoresManagementTab`, `RanksManagementTab`
-- Restructured settings tabs to use Scaffold's `floatingActionButton` instead of Stack with Positioned widgets
-- Maintained all existing functionality while improving code organization
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
 
-## [v0.92.0] - 2025-01-16
+## [v1.4.2] - 2025-01-17
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "edit ranking action does not make sense for past events" - Request to hide ranking actions for past events
-- "score group header - move counter as simple text in parenthesis instead of pill" - Request to simplify score group counter display
-
-### Changed
-- **Past Event Ranking Actions**: Ranking actions are now hidden for past events
-  - **Contextual Actions**: Edit/Set Ranking options only appear for current and future events
-  - **Better UX**: Prevents confusion by hiding irrelevant actions for past events
-  - **Event Status Aware**: Dialog now loads event data to determine if event is past
-  - **Summary Tab Aware**: Ranking actions also hidden on summary tab for consistency
-  - **Maintained Functionality**: All other actions remain available for past events
-
-- **Score Group Headers**: Changed counter display from pill to simple text in parentheses
-  - **Cleaner Design**: Removed pill container and styling for simpler appearance
-  - **Better Readability**: Counter now appears as "(X)" next to score name
-  - **Consistent Styling**: Uses onSurfaceVariant color for subtle appearance
-  - **Space Efficient**: Takes up less visual space while maintaining clarity
-
-### Technical
-- Converted `DancerActionsDialog` from StatelessWidget to StatefulWidget to load event data
-- Added event loading logic to check if event is past using `EventStatusHelper.isPastEvent()`
-- Added conditional rendering for ranking actions based on event status
-- Updated score group header in summary tab to use simple text instead of pill container
-- Maintained all existing functionality while improving contextual behavior
-
-## [v0.9.2] - 2025-07-04
-
-### User Requests
-- "nice, commit" - User requested to commit the CLI navigation improvements
+- Release build and upload
 
 ### Added
-- Enhanced CLI navigation with tab and action support
-- Support for `/event/current/present-tab/add-existing-dancer` navigation path
-- Tab name mapping from CLI format to internal format (e.g., "present-tab" → "present")
-- Direct action triggering in PresentTab for add existing dancer dialog
-- Initial tab and action parameters for EventScreen and PresentTab
+- Automated release process
 
 ### Technical
-- Updated CliArguments to include initialTab and initialAction parameters
-- Modified CliNavigator to extract values in constructor and pass to EventScreen
-- Enhanced EventScreen to accept and handle initial tab and action parameters
-- Updated PresentTab to accept initialAction and directly show add existing dancer dialog
-- Added tab name mapping logic in CLI navigation parsing
-- Updated help documentation with new navigation path examples
+- Release script for version bumping and APK distribution
 
-## [v0.9.1] - 2025-07-04
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "you forgot the target" - User pointed out missing macOS target specification
-- "you forgot the macOS target" - User reminded about macOS target requirement
+- Release build and upload
 
 ### Added
-- AppBar color customization via dart-define parameter
-- Support for `--dart-define=APPBAR_COLOR=#FF0000` to customize AppBar color
-- Color parsing utility in AppTheme for hex color strings
+- Automated release process
 
 ### Technical
-- Added `_parseAppBarColorFromDefine()` function in main.dart
-- Enhanced AppTheme with `parseColor()` method for hex color parsing
-- Updated DancerRankingApp to accept and apply custom appBarColor
-- Added proper error handling for invalid color values
+- Release script for version bumping and APK distribution
 
-## [v0.9.0] - 2025-07-04
+
 
 ### User Requests
-- "Nope, extract the needed values in constructor" - User requested to extract CLI argument values in constructor instead of passing the entire object
-
-### Changed
-- Refactored CliNavigator to extract needed values in constructor
-- Removed dependency on CliArguments object within CliNavigator widget
-- Simplified widget properties to focus on specific navigation parameters
-
-### Technical
-- Updated CliNavigator constructor to extract navigationPath, eventIndex, and autoTapAdd
-- Removed const keyword from CliNavigator constructor due to non-const parameters
-- Updated all references to use extracted properties instead of cliArgs object
-
-## [v0.8.5] - 2025-07-04
-
-### User Requests
-- "nice, let's try out the going to current event" - User wanted to test current event navigation
-- "you forgot the target" - User pointed out missing target specification
+- Release build and upload
 
 ### Added
-- CLI navigation support for current event detection
-- Support for `--dart-define=NAV_PATH=/event/current` to navigate to today's event
-- Automatic fallback to home screen when no current event is found
-- Detailed logging of available events when current event is not found
+- Automated release process
 
 ### Technical
-- Enhanced `_findCurrentEvent()` method to compare dates properly
-- Added comprehensive logging for debugging navigation issues
-- Updated help documentation with current event examples
-- Improved error handling for invalid navigation paths
+- Release script for version bumping and APK distribution
 
-## [v0.8.4] - 2025-07-04
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "nice, commit" - User requested to commit the CLI navigation feature
+- Release build and upload
 
 ### Added
-- CLI navigation system for automated testing and development
-- Support for `--dart-define=NAV_PATH=<path>` to navigate directly to specific screens
-- Support for `--dart-define=EVENT_INDEX=<index>` for legacy event navigation
-- Support for `--dart-define=AUTO_TAP_ADD=true` to automatically trigger add actions
-- Support for `--dart-define=HELP=true` to show CLI help information
+- Automated release process
 
 ### Technical
-- Created CliArguments class to parse and store CLI parameters
-- Implemented CliNavigator widget for automatic navigation handling
-- Added parseCliArguments() function to handle dart-define parameters
-- Created showCliHelp() function with comprehensive usage examples
-- Updated main.dart to use CliNavigator when CLI arguments are provided
-- Added navigation path parsing with support for /event/<index> paths
-- Implemented automatic event resolution and error handling
+- Release script for version bumping and APK distribution
 
-## [v0.8.3] - 2025-07-04
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "commit" - User requested to commit the tag filtering improvements
+- Release build and upload
 
 ### Added
-- Tag filtering support in Add Dancer Dialog
-- Simplified tag filter chips with pill format
-- Auto-apply filtering when tags are selected
-- Clear visual feedback for active tag filters
+- Automated release process
 
 ### Technical
-- Enhanced AddDancerDialog with tag filtering capabilities
-- Implemented SimplifiedTagFilter widget for better UX
-- Added tag selection state management
-- Updated dancer filtering logic to include tag-based filtering
-- Improved performance with optimized filter queries
+- Release script for version bumping and APK distribution
 
-## [v0.8.2] - 2025-07-04
+
 
 ### User Requests
-- "commit" - User requested to commit the dancer filtering improvements
+- Release build and upload
 
 ### Added
-- Simplified dancer filtering with pill format
-- Auto-apply filtering when tags are selected
-- Clear visual feedback for active filters
-- Improved filter performance and user experience
+- Automated release process
 
 ### Technical
-- Refactored tag filtering to use pill format
-- Implemented auto-apply filtering logic
-- Enhanced filter state management
-- Updated UI components for better visual feedback
-- Optimized filter queries for better performance
+- Release script for version bumping and APK distribution
 
-## [v0.8.1] - 2025-07-04
+
 
 ### User Requests
-- "commit" - User requested to commit the future events tab behavior
-
-### Changed
-- Future events (1+ days ahead) now show only Planning tab
-- Past events show Present and Summary tabs only
-- Current events (today) show all three tabs: Planning, Present, Summary
-- Old events (2+ days ago) show only Summary tab
-
-### Technical
-- Updated EventStatusHelper to properly categorize event dates
-- Modified EventScreen to show appropriate tabs based on event age
-- Enhanced tab indicator text to reflect available tabs
-- Improved user experience for different event types
-
-## [v0.8.0] - 2025-07-04
-
-### User Requests
-- "commit" - User requested to commit the initial implementation
+- Release build and upload
 
 ### Added
-- Initial implementation of Dancer Ranking App
-- Basic event management functionality
-- Dancer tracking and ranking system
-- Attendance and scoring features
-- Import/export capabilities
+- Automated release process
 
 ### Technical
-- Flutter-based cross-platform application
-- SQLite database with Drift ORM
-- Material Design 3 UI components
-- Provider pattern for state management
-- Comprehensive logging and error handling
+- Release script for version bumping and APK distribution
 
-## [v0.9.1] - 2025-07-05
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
 
 ### User Requests
-- "let's test them" - Testing the new unified filtering system
-- "Great, On Dancers screen we should default to "All" option for activity filter" - Changed activity filter default from "Regular" to "All"
-
-### Changed
-- **Activity Filter Default**: Changed the default activity filter option from "Regular" to "All" on the Dancers screen for better user experience
-- **Combined Filter Integration**: Updated Dancers screen to use the new `CombinedDancerFilter` widget instead of separate filter components
-
-### Technical
-- Updated `CombinedDancerFilter` default activity level from `ActivityLevel.regular` to `ActivityLevel.all`
-- Modified `DancersScreen` to use unified filtering system with proper activity level state management
-
-## [v0.9.0] - 2025-07-05
-
-### User Requests
-- "I want to improve the filtering system on the Dancers screen" - Requested improvement to dancer filtering functionality
-- "I want to combine search, tags, and activity filters into one unified interface" - Requested unified filtering interface
-- "I want to simplify the tag filtering interface" - Requested simplified tag filtering
-- "I want to add activity-based filtering" - Requested activity-based filtering feature
+- Release build and upload
 
 ### Added
-- **Unified Filtering System**: Combined search, tags, and activity filters into a single interface on the Dancers screen
-- **Simplified Tag Filtering**: Cleaner tag filter interface with pill-style selection
-- **Activity Filter Widget**: New activity level filtering with dropdown interface
-- **Combined Dancer Filter**: Unified filter component that manages all filter types together
-
-### Changed
-- **Dancers Screen UI**: Replaced separate filter components with unified `CombinedDancerFilter`
-- **Filter State Management**: Centralized filter state management in the combined filter widget
-- **Tag Selection UX**: Improved tag selection with visual feedback and better interaction patterns
+- Automated release process
 
 ### Technical
+<<<<<<< HEAD
 - Created `CombinedDancerFilter` widget for unified filtering experience
 - Updated `SimplifiedTagFilter` with improved pill-based selection interface
 - Added `ActivityFilterWidget` for activity level filtering
@@ -1008,3 +4918,12602 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Implementation Examples**: Added practical examples for navigation, action, and status icons
 - **Migration Guide**: Documented process for updating existing icons to Material 3 standards
 - **Best Practices**: Established guidelines for icon variant selection and color usage
+=======
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v1.4.1] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v1.4.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v1.3.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v1.2.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v1.1.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v1.0.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v0.9.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v0.8.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v0.7.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v0.6.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v0.5.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v0.4.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v0.3.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v0.2.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+
+## [v0.1.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+
+### User Requests
+- "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
+
+### Added
+- **Planning Tab Dancer List**: Added comprehensive dancer list to planning tab
+  - **Dancer Cards**: Shows all dancers with their current status and ranking
+  - **Status Indicators**: Visual indicators for present/absent status and ranking
+  - **Action Buttons**: Quick actions for each dancer (mark present, assign ranking, etc.)
+  - **Filtering**: Tag-based filtering to find specific dancers
+  - **Search**: Text search to quickly locate dancers by name
+  - **Real-time Updates**: List updates automatically when data changes
+
+### Improved
+- **Planning Workflow**: Enhanced planning experience with comprehensive dancer management
+  - **Quick Actions**: Mark dancers present/absent directly from the list
+  - **Ranking Assignment**: Assign rankings without navigating to separate screens
+  - **Status Overview**: Clear visual overview of all dancers and their status
+  - **Efficient Planning**: Streamlined workflow for event planning
+
+### Technical
+- **Reusable Components**: Leveraged existing DancerCard and filtering components
+- **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
+- **Consistent UI**: Maintained visual consistency with other tabs
+>>>>>>> origin/first-line

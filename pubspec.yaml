@@ -3,7 +3,7 @@ description: A social dancer's companion app for planning and tracking dance eve
 
 publish_to: 'none'
 
-version: 1.3.4+134
+version: 2.2.0+220
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -31,6 +31,9 @@ dependencies:
 
   # Native toasts
   fluttertoast: ^8.2.4
+
+  # App information
+  package_info_plus: ^8.0.2
 
   # Icons
   cupertino_icons: ^1.0.6

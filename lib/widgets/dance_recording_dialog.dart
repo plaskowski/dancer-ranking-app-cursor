@@ -48,17 +48,21 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
   }
 
   Future<void> _checkIfAlreadyDanced() async {
-    ActionLogger.logUserAction('DanceRecordingDialog', 'checking_dance_history', {
+    ActionLogger.logUserAction(
+        'DanceRecordingDialog', 'checking_dance_history', {
       'dancerId': widget.dancerId,
       'eventId': widget.eventId,
     });
 
     try {
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
-      final hasDanced = await attendanceService.hasDanced(widget.eventId, widget.dancerId);
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
+      final hasDanced =
+          await attendanceService.hasDanced(widget.eventId, widget.dancerId);
 
       if (mounted) {
-        ActionLogger.logUserAction('DanceRecordingDialog', 'dance_history_checked', {
+        ActionLogger.logUserAction(
+            'DanceRecordingDialog', 'dance_history_checked', {
           'dancerId': widget.dancerId,
           'eventId': widget.eventId,
           'alreadyDanced': hasDanced,
@@ -69,7 +73,8 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
         });
       }
     } catch (e) {
-      ActionLogger.logError('DanceRecordingDialog._checkIfAlreadyDanced', e.toString(), {
+      ActionLogger.logError(
+          'DanceRecordingDialog._checkIfAlreadyDanced', e.toString(), {
         'dancerId': widget.dancerId,
         'eventId': widget.eventId,
       });
@@ -78,19 +83,23 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
   }
 
   Future<void> _loadCurrentImpression() async {
-    ActionLogger.logUserAction('DanceRecordingDialog', 'loading_current_impression', {
+    ActionLogger.logUserAction(
+        'DanceRecordingDialog', 'loading_current_impression', {
       'dancerId': widget.dancerId,
       'eventId': widget.eventId,
     });
 
     try {
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
 
       // Get the current attendance record to load existing impression
-      final attendance = await attendanceService.getAttendance(widget.eventId, widget.dancerId);
+      final attendance = await attendanceService.getAttendance(
+          widget.eventId, widget.dancerId);
 
       if (mounted && attendance != null && attendance.impression != null) {
-        ActionLogger.logUserAction('DanceRecordingDialog', 'current_impression_loaded', {
+        ActionLogger.logUserAction(
+            'DanceRecordingDialog', 'current_impression_loaded', {
           'dancerId': widget.dancerId,
           'eventId': widget.eventId,
           'hasImpression': attendance.impression!.isNotEmpty,
@@ -101,7 +110,8 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
         });
       }
     } catch (e) {
-      ActionLogger.logError('DanceRecordingDialog._loadCurrentImpression', e.toString(), {
+      ActionLogger.logError(
+          'DanceRecordingDialog._loadCurrentImpression', e.toString(), {
         'dancerId': widget.dancerId,
         'eventId': widget.eventId,
       });
@@ -123,16 +133,20 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
     });
 
     try {
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService =
+          Provider.of<AttendanceService>(context, listen: false);
 
       await attendanceService.recordDance(
         eventId: widget.eventId,
         dancerId: widget.dancerId,
-        impression: _impressionController.text.trim().isNotEmpty ? _impressionController.text.trim() : null,
+        impression: _impressionController.text.trim().isNotEmpty
+            ? _impressionController.text.trim()
+            : null,
       );
 
       if (mounted) {
-        ActionLogger.logUserAction('DanceRecordingDialog', 'record_dance_completed', {
+        ActionLogger.logUserAction(
+            'DanceRecordingDialog', 'record_dance_completed', {
           'dancerId': widget.dancerId,
           'eventId': widget.eventId,
           'dancerName': widget.dancerName,
@@ -191,7 +205,6 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
               controller: _impressionController,
               decoration: InputDecoration(
                 labelText: 'Impression (optional)',
-                border: const OutlineInputBorder(),
                 hintText: 'How was the dance? Any notes?',
                 suffixIcon: _impressionController.text.isNotEmpty
                     ? IconButton(
@@ -251,7 +264,8 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
           onPressed: _isLoading
               ? null
               : () {
-                  ActionLogger.logUserAction('DanceRecordingDialog', 'dialog_cancelled', {
+                  ActionLogger.logUserAction(
+                      'DanceRecordingDialog', 'dialog_cancelled', {
                     'dancerId': widget.dancerId,
                     'eventId': widget.eventId,
                   });
@@ -271,7 +285,8 @@ class _DanceRecordingDialogState extends State<DanceRecordingDialog> {
                   width: 16,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(context.danceTheme.onDanceAccent),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        context.danceTheme.onDanceAccent),
                   ),
                 )
               : const Text('Record Dance'),

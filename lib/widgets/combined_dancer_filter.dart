@@ -1,19 +1,20 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../database/database.dart';
 import '../services/dancer/dancer_activity_service.dart';
-import '../services/tag_service.dart';
+import 'tag_selection_flyout.dart';
 
 class CombinedDancerFilter extends StatefulWidget {
   final Function(String, List<int>, ActivityLevel?) onFiltersChanged;
   final Map<ActivityLevel, int>? activityLevelCounts;
+  final List<Tag> availableTags;
 
   const CombinedDancerFilter({
     super.key,
     required this.onFiltersChanged,
+    required this.availableTags,
     this.activityLevelCounts,
   });
 
@@ -24,14 +25,11 @@ class CombinedDancerFilter extends StatefulWidget {
 class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
   String _searchQuery = '';
   List<int> _selectedTagIds = [];
+  List<Tag> _selectedTags = [];
   ActivityLevel? _selectedActivityLevel = ActivityLevel.all;
   bool _isLoadingCounts = false;
   bool _showTagDropdown = false;
   bool _showActivityDropdown = false;
-
-  // Tag-related state
-  List<Tag> _availableTags = [];
-  bool _isLoadingTags = true;
 
   // Debounce timer for search
   Timer? _searchDebounce;
@@ -39,7 +37,6 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
   @override
   void initState() {
     super.initState();
-    _loadTags();
     _loadActivityLevelCounts();
   }
 
@@ -47,27 +44,6 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
   void dispose() {
     _searchDebounce?.cancel();
     super.dispose();
-  }
-
-  Future<void> _loadTags() async {
-    try {
-      final database = Provider.of<AppDatabase>(context, listen: false);
-      final tagService = TagService(database);
-      final tags = await tagService.getTagsWithDancers();
-
-      if (mounted) {
-        setState(() {
-          _availableTags = tags;
-          _isLoadingTags = false;
-        });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isLoadingTags = false;
-        });
-      }
-    }
   }
 
   Future<void> _loadActivityLevelCounts() async {
@@ -95,22 +71,6 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
     });
   }
 
-  void _onTagSelected(int tagId) {
-    final newSelectedTags = List<int>.from(_selectedTagIds);
-
-    if (newSelectedTags.contains(tagId)) {
-      newSelectedTags.remove(tagId);
-    } else {
-      newSelectedTags.add(tagId);
-    }
-
-    setState(() {
-      _selectedTagIds = newSelectedTags;
-      _showTagDropdown = false; // Close dropdown immediately
-    });
-    _notifyParent();
-  }
-
   void _onActivityLevelChanged(ActivityLevel? level) {
     setState(() {
       _selectedActivityLevel = level;
@@ -121,13 +81,6 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
 
   void _notifyParent() {
     widget.onFiltersChanged(_searchQuery, _selectedTagIds, _selectedActivityLevel);
-  }
-
-  void _clearTagSelection() {
-    setState(() {
-      _selectedTagIds = [];
-    });
-    _notifyParent();
   }
 
   String _getLevelDisplayName(ActivityLevel level) {
@@ -162,7 +115,7 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
       children: [
         // Filter Bar
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Row(
             children: [
               // Search field
@@ -258,87 +211,17 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
 
         // Tag Dropdown
         if (_showTagDropdown)
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.grey.shade300),
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Text(
-                    '🏷️ Tags:',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                if (_isLoadingTags)
-                  const Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Center(child: CircularProgressIndicator()),
-                  )
-                else if (_availableTags.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Text('No tags available'),
-                  )
-                else
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Wrap(
-                      spacing: 8.0,
-                      runSpacing: 8.0,
-                      children: _availableTags.map((tag) {
-                        final isSelected = _selectedTagIds.contains(tag.id);
-
-                        return GestureDetector(
-                          onTap: () => _onTagSelected(tag.id),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
-                            decoration: BoxDecoration(
-                              color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(
-                                color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300,
-                              ),
-                            ),
-                            child: Text(
-                              tag.name,
-                              style: TextStyle(
-                                color: isSelected ? Colors.white : Colors.black87,
-                                fontSize: 12,
-                                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                if (_selectedTagIds.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: TextButton(
-                      onPressed: _clearTagSelection,
-                      child: const Text('Clear All'),
-                    ),
-                  ),
-                const SizedBox(height: 8),
-              ],
-            ),
+          TagSelectionFlyout(
+            availableTags: widget.availableTags,
+            selectedTags: _selectedTags,
+            onTagsChanged: (List<Tag> newTags) {
+              setState(() {
+                _selectedTags = newTags;
+                _selectedTagIds = newTags.map((tag) => tag.id).toList();
+                _showTagDropdown = false; // Close dropdown after selection
+              });
+              _notifyParent();
+            },
           ),
 
         // Activity Dropdown
@@ -351,7 +234,7 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
               borderRadius: BorderRadius.circular(8),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),

@@ -127,38 +127,43 @@ class DancerCard extends StatelessWidget {
             // Score pill on the right side
             if (dancer.hasScore && !hideScorePill) ...[
               const SizedBox(width: 8),
-              GestureDetector(
-                onTap: () {
-                  ActionLogger.logUserAction('DancerCard', 'score_pill_tapped', {
-                    'dancerId': dancer.id,
-                    'dancerName': dancer.name,
-                    'eventId': eventId,
-                    'currentScore': dancer.scoreName,
-                  });
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () {
+                    ActionLogger.logUserAction('DancerCard', 'score_pill_tapped', {
+                      'dancerId': dancer.id,
+                      'dancerName': dancer.name,
+                      'eventId': eventId,
+                      'currentScore': dancer.scoreName,
+                    });
 
-                  showDialog(
-                    context: context,
-                    builder: (context) => ScoreDialog(
-                      dancerId: dancer.id,
-                      eventId: eventId,
+                    showModalBottomSheet<bool>(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) => ScoreDialog(
+                        dancerId: dancer.id,
+                        eventId: eventId,
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: context.danceTheme.rankingHigh.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: context.danceTheme.rankingHigh.withOpacity(0.5),
+                      ),
                     ),
-                  );
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: context.danceTheme.rankingHigh.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: context.danceTheme.rankingHigh.withOpacity(0.5),
-                    ),
-                  ),
-                  child: Text(
-                    dancer.scoreName!,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: context.danceTheme.rankingHigh,
+                    child: Text(
+                      dancer.scoreName!,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: context.danceTheme.rankingHigh,
+                      ),
                     ),
                   ),
                 ),
@@ -183,6 +188,7 @@ class DancerCard extends StatelessWidget {
           ],
         ),
         onTap: () {
+          // Only trigger if the tap is not on the score pill area
           ActionLogger.logUserAction('DancerCard', 'dancer_tapped', {
             'dancerId': dancer.id,
             'dancerName': dancer.name,

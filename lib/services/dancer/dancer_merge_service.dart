@@ -29,12 +29,32 @@ class DancerMergeService {
 
         // 2. Update all foreign key references to point to target dancer
 
-        // Update rankings
+        // Update rankings (handle duplicates by keeping target's record)
         await _database.customUpdate(
-          'UPDATE rankings SET dancer_id = ? WHERE dancer_id = ?',
+          '''UPDATE rankings SET dancer_id = ? 
+             WHERE dancer_id = ? 
+             AND NOT EXISTS (
+               SELECT 1 FROM rankings r2 
+               WHERE r2.dancer_id = ? AND r2.event_id = rankings.event_id
+             )''',
           variables: [
             Variable.withInt(targetDancerId),
-            Variable.withInt(sourceDancerId)
+            Variable.withInt(sourceDancerId),
+            Variable.withInt(targetDancerId)
+          ],
+        );
+
+        // Delete duplicate rankings for events where target already exists
+        await _database.customUpdate(
+          '''DELETE FROM rankings 
+             WHERE dancer_id = ? 
+             AND EXISTS (
+               SELECT 1 FROM rankings r2 
+               WHERE r2.dancer_id = ? AND r2.event_id = rankings.event_id
+             )''',
+          variables: [
+            Variable.withInt(sourceDancerId),
+            Variable.withInt(targetDancerId)
           ],
         );
 
