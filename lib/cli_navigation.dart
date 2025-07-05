@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'database/database.dart';
+import 'screens/event/dialogs/select_dancers_screen.dart';
 import 'screens/event/event_screen.dart';
 import 'screens/home/home_screen.dart';
 import 'services/event_service.dart';
@@ -86,11 +87,13 @@ Available Paths:
   /event/<index>          - Navigate to event by index (0-based)
   /event/current/present-tab - Navigate to current event and switch to present tab
   /event/current/present-tab/add-existing-dancer - Navigate to current event, present tab, and trigger add existing dancer dialog
+  /event/current/planning-tab/select-dancers - Navigate to current event, planning tab, and open select dancers dialog
 
 Examples:
   flutter run --dart-define=NAV_PATH=/event/current
   flutter run --dart-define=NAV_PATH=/event/0
   flutter run --dart-define=NAV_PATH=/event/current/present-tab/add-existing-dancer
+  flutter run --dart-define=NAV_PATH=/event/current/planning-tab/select-dancers
   flutter run --dart-define=EVENT_INDEX=0 --dart-define=AUTO_TAP_ADD=true
   flutter run --dart-define=HELP=true
 
@@ -223,6 +226,24 @@ class _CliNavigatorState extends State<CliNavigator> {
             'initialAction': initialAction,
           });
         }
+      }
+
+      // Handle special actions that require different navigation
+      if (initialAction == 'select-dancers') {
+        ActionLogger.logAction('CLI_Navigation', 'cli_navigating_to_select_dancers', {
+          'eventId': targetEvent.id,
+          'eventName': targetEvent.name,
+        });
+
+        if (mounted) {
+          setState(() {
+            _targetScreen = SelectDancersScreen(
+              eventId: targetEvent!.id,
+              eventName: targetEvent.name,
+            );
+          });
+        }
+        return;
       }
 
       if (mounted) {

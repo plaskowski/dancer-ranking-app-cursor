@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../screens/event/event_screen.dart';
 import '../../../services/attendance_service.dart';
 import '../../../services/dancer/dancer_filter_service.dart';
 import '../../../services/dancer_service.dart';
@@ -27,6 +28,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
   final Set<int> _selectedDancerIds = <int>{};
   String _searchQuery = '';
   bool _isLoading = false;
+  int _refreshKey = 0; // Add refresh key for reactive updates
 
   // New tag filtering state
   int? _selectedTagId; // null = show all
@@ -60,19 +62,25 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
     try {
       // Add dancers to event without assigning any rank
       // Users can manually assign ranks later if desired
-      final attendanceService =
-          Provider.of<AttendanceService>(context, listen: false);
+      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
 
       for (final dancerId in _selectedDancerIds) {
         await attendanceService.markPresent(widget.eventId, dancerId);
       }
 
       if (mounted) {
-        Navigator.pop(context, true); // Return true to indicate success
+        // Store count before clearing selections
+        final addedCount = _selectedDancerIds.length;
+
+        // Clear selections and trigger refresh
+        setState(() {
+          _selectedDancerIds.clear();
+          _refreshKey++; // Trigger reactive update
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-                'Added ${_selectedDancerIds.length} dancers to event (no rank assigned)'),
+            content: Text('Added $addedCount dancers to event (no rank assigned)'),
             backgroundColor: context.danceTheme.success,
           ),
         );
@@ -99,13 +107,26 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EventScreen(
+                  eventId: widget.eventId,
+                  initialTab: 'planning',
+                ),
+              ),
+            );
+          },
+        ),
         title: Column(
           children: [
             const Text('Select Dancers'),
             Text(
               widget.eventName,
-              style:
-                  const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
             ),
           ],
         ),
@@ -145,6 +166,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
           // Dancers List
           Expanded(
             child: FutureBuilder<List<DancerWithEventInfo>>(
+              key: ValueKey('${_searchQuery}_${_selectedTagId}_$_refreshKey'),
               future: _getDancersForSelection(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -178,8 +200,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                         Text(
                           'Please try again or contact support',
                           style: TextStyle(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -195,20 +216,13 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.people,
-                            size: 64,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant),
+                        Icon(Icons.people, size: 64, color: Theme.of(context).colorScheme.onSurfaceVariant),
                         const SizedBox(height: 16),
                         Text(
                           _searchQuery.isNotEmpty || _selectedTagId != null
                               ? 'No dancers found with current filters'
                               : 'All dancers are already ranked for this event',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant),
+                          style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onSurfaceVariant),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -230,17 +244,12 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                           dancer.name,
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
-                        subtitle:
-                            dancer.notes != null && dancer.notes!.isNotEmpty
-                                ? Text(
-                                    dancer.notes!,
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurfaceVariant),
-                                  )
-                                : null,
+                        subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
+                            ? Text(
+                                dancer.notes!,
+                                style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                              )
+                            : null,
                         value: isSelected,
                         onChanged: (bool? value) {
                           setState(() {
@@ -272,13 +281,11 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                       height: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            Theme.of(context).colorScheme.onPrimary),
+                        valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                       ),
                     )
                   : const Icon(Icons.check),
-              child: const Icon(
-                  Icons.check), // Required but not used when isExtended is true
+              child: const Icon(Icons.check), // Required but not used when isExtended is true
             )
           : null,
     );
