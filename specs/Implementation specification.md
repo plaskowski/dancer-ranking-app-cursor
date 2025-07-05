@@ -136,6 +136,10 @@
 - **Tag System**: Categorize dancers with custom tags for easy filtering and organization
 - **Last Met Tracking**: Automatically track and display when you last met each dancer at events
 - **Dancer Merging**: Merge duplicate dancer profiles while preserving all historical data
+  - **Safe Ranking Merges**: Handles duplicate rankings by preserving target dancer's rankings
+  - **Attendance Consolidation**: Merges attendance records while avoiding duplicates
+  - **Tag Preservation**: Combines tags from both dancers without duplicates
+  - **Data Integrity**: Maintains unique constraints during merge operations
 - **Dancer Archival**: Archive inactive dancers while preserving all historical records
 - **Search & Filter**: Find dancers by name, notes, or tags with real-time filtering
 

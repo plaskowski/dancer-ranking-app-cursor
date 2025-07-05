@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.5.5] - 2025-01-17
+
+### User Requests
+- "dancer merge action has shown and error, @dart" - Request to fix dancer merge constraint error
+
+### Fixed
+- **Dancer Merge Constraint Error**: Fixed UNIQUE constraint violation when merging dancers with duplicate rankings
+  - **Rankings Update Logic**: Added proper duplicate handling for rankings table
+  - **Safe Updates**: Only update rankings from source to target if target doesn't already have ranking for that event
+  - **Duplicate Cleanup**: Delete source rankings for events where target already has a ranking
+  - **Consistent Pattern**: Applied same logic pattern already used for attendances
+
+### Technical
+- **Database Constraints**: Proper handling of unique constraints in merge operations
+- **Data Integrity**: Ensures no duplicate rankings per dancer per event during merges
+- **Error Prevention**: Prevents constraint violations in dancer merge operations
+
 ## [v1.5.4] - 2025-01-17
 
 ### User Requests
