@@ -39,6 +39,7 @@
 - how to have separate configs for workspaces (e.g. title bar color)
 - codebase has to be cohesive and modular to avoid conflicts between agents lines
 - If the agent ask for choice it should present buttons for them
+- changelog as separate small files to avoid conflicts between agent lines
 
 # Hard ones
 - increase the 25 tool calls limit

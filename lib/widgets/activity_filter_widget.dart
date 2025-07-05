@@ -25,14 +25,10 @@ class _ActivityFilterWidgetState extends State<ActivityFilterWidget> {
     switch (level) {
       case ActivityLevel.all:
         return 'All Dancers';
-      case ActivityLevel.active:
-        return 'Active';
-      case ActivityLevel.veryActive:
-        return 'Very Active';
-      case ActivityLevel.coreCommunity:
-        return 'Core Community';
-      case ActivityLevel.recent:
-        return 'Recent';
+      case ActivityLevel.regular:
+        return 'Regular';
+      case ActivityLevel.occasional:
+        return 'Occasional';
     }
   }
 
@@ -40,14 +36,10 @@ class _ActivityFilterWidgetState extends State<ActivityFilterWidget> {
     switch (level) {
       case ActivityLevel.all:
         return 'Show everyone';
-      case ActivityLevel.active:
-        return '1+ events in 6 months';
-      case ActivityLevel.veryActive:
-        return '3+ events in 6 months';
-      case ActivityLevel.coreCommunity:
-        return '5+ events in year';
-      case ActivityLevel.recent:
-        return '1+ events in 3 months';
+      case ActivityLevel.regular:
+        return '3+ dances in last 2 months';
+      case ActivityLevel.occasional:
+        return '1+ dance in last 3 months';
     }
   }
 
@@ -108,7 +100,8 @@ class _ActivityFilterWidgetState extends State<ActivityFilterWidget> {
                       style: TextStyle(fontSize: 14),
                     ),
                     const SizedBox(width: 4),
-                    Icon(Icons.arrow_drop_down, color: Colors.grey.shade600, size: 16),
+                    Icon(Icons.arrow_drop_down,
+                        color: Colors.grey.shade600, size: 16),
                   ],
                 ),
               ),
@@ -131,14 +124,18 @@ class _ActivityFilterWidgetState extends State<ActivityFilterWidget> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.track_changes, color: Colors.grey.shade600, size: 16),
+                      Icon(Icons.track_changes,
+                          color: Colors.grey.shade600, size: 16),
                       const SizedBox(width: 4),
                       Text(
-                        widget.selectedLevel != null ? _getLevelDisplayName(widget.selectedLevel!) : 'Active',
+                        widget.selectedLevel != null
+                            ? _getLevelDisplayName(widget.selectedLevel!)
+                            : 'Active',
                         style: const TextStyle(fontSize: 14),
                       ),
                       const SizedBox(width: 4),
-                      Icon(Icons.arrow_drop_down, color: Colors.grey.shade600, size: 16),
+                      Icon(Icons.arrow_drop_down,
+                          color: Colors.grey.shade600, size: 16),
                     ],
                   ),
                 ),
@@ -188,12 +185,17 @@ class _ActivityFilterWidgetState extends State<ActivityFilterWidget> {
                       });
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 8.0),
                       child: Row(
                         children: [
                           Icon(
-                            isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-                            color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
+                            isSelected
+                                ? Icons.radio_button_checked
+                                : Icons.radio_button_unchecked,
+                            color: isSelected
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey,
                             size: 20,
                           ),
                           const SizedBox(width: 8),
@@ -204,7 +206,9 @@ class _ActivityFilterWidgetState extends State<ActivityFilterWidget> {
                                 Text(
                                   '${_getLevelDisplayName(level)} ($count)',
                                   style: TextStyle(
-                                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                                    fontWeight: isSelected
+                                        ? FontWeight.w600
+                                        : FontWeight.normal,
                                     fontSize: 14,
                                   ),
                                 ),
