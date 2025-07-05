@@ -205,6 +205,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Service Layer Documentation**: Documented all new archival methods and active-only streams
 - **Migration Strategy**: Marked Phase 1 (Database) and Phase 2 (Service Layer) as completed
 
+## [v0.9.3] - 2025-01-27
+
+### User Requests
+- "I mean in Existing Dancers dialog on present tab" - Fixed reactive updates in Add Existing Dancer dialog
+- "stop, use reactive approach" - Implemented proper reactive solution
+- "All good, commit" - Confirmed reactive updates are working
+
+### Added
+- **Reactive Updates**: Implemented reactive approach for Add Existing Dancer dialog
+  - Added refresh key mechanism to trigger UI updates when data changes
+  - Updated DancerFilterListWidget to support refresh key parameter
+  - Rows now disappear immediately when dancers are marked as present
+  - Improved user experience with real-time feedback
+
 ## [v0.9.2] - 2025-01-27
 
 ### User Requests
