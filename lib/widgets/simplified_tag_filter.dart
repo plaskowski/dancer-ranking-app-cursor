@@ -45,7 +45,7 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
   void initState() {
     super.initState();
     _searchQuery = widget.initialSearchQuery ?? '';
-    _activityLevel = widget.initialActivityLevel ?? 'Active';
+    _activityLevel = widget.initialActivityLevel ?? 'Regular';
     _searchController = TextEditingController(text: _searchQuery);
     _loadTags();
   }
@@ -130,10 +130,8 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
 
   Widget _buildActivityFilterBottomSheet() {
     final activityLevels = [
-      {'name': 'Core Community', 'description': '5+ events in year'},
-      {'name': 'Very Active', 'description': '3+ events in 6 months'},
-      {'name': 'Active', 'description': '1+ events in 6 months'},
-      {'name': 'Recent', 'description': '1+ events in 3 months'},
+      {'name': 'Regular', 'description': '3+ dances in last 2 months'},
+      {'name': 'Occasional', 'description': '1+ dance in last 3 months'},
       {'name': 'All', 'description': 'Show everyone'},
     ];
 
@@ -178,8 +176,11 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                     level['name']!,
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                      color: isSelected ? Theme.of(context).colorScheme.primary : null,
+                      fontWeight:
+                          isSelected ? FontWeight.w600 : FontWeight.normal,
+                      color: isSelected
+                          ? Theme.of(context).colorScheme.primary
+                          : null,
                     ),
                   ),
                   subtitle: Text(
@@ -265,21 +266,26 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                     runSpacing: 8.0,
                     children: _availableTags.map((tag) {
                       final isSelected = _pendingTagIds.contains(tag.id);
-                      print('Building pill for tag ${tag.name} (ID: ${tag.id}), isSelected: $isSelected');
+                      print(
+                          'Building pill for tag ${tag.name} (ID: ${tag.id}), isSelected: $isSelected');
 
                       return GestureDetector(
                         onTap: () {
-                          print('Pill tapped for tag: ${tag.name} (ID: ${tag.id})');
+                          print(
+                              'Pill tapped for tag: ${tag.name} (ID: ${tag.id})');
                           _onTagSelected(tag.id);
                           // Force rebuild of the StatefulBuilder
                           setState(() {});
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 6.0),
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context).colorScheme.surfaceContainerHighest,
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerHighest,
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
                               color: isSelected
@@ -294,7 +300,9 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                                   ? Theme.of(context).colorScheme.onPrimary
                                   : Theme.of(context).colorScheme.onSurface,
                               fontSize: 12,
-                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                              fontWeight: isSelected
+                                  ? FontWeight.w600
+                                  : FontWeight.normal,
                             ),
                           ),
                         ),
@@ -344,7 +352,8 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                         size: 20,
                       ),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
                     ),
                   ),
                 ),
@@ -367,11 +376,14 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                       Icon(Icons.label, color: Colors.grey.shade600, size: 16),
                       const SizedBox(width: 4),
                       Text(
-                        _pendingTagIds.isNotEmpty ? '${_pendingTagIds.length} Tags' : 'Tags',
+                        _pendingTagIds.isNotEmpty
+                            ? '${_pendingTagIds.length} Tags'
+                            : 'Tags',
                         style: const TextStyle(fontSize: 14),
                       ),
                       const SizedBox(width: 4),
-                      Icon(Icons.arrow_drop_down, color: Colors.grey.shade600, size: 16),
+                      Icon(Icons.arrow_drop_down,
+                          color: Colors.grey.shade600, size: 16),
                     ],
                   ),
                 ),
@@ -391,14 +403,16 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.track_changes, color: Colors.grey.shade600, size: 16),
+                      Icon(Icons.track_changes,
+                          color: Colors.grey.shade600, size: 16),
                       const SizedBox(width: 4),
                       Text(
                         _activityLevel,
                         style: const TextStyle(fontSize: 14),
                       ),
                       const SizedBox(width: 4),
-                      Icon(Icons.arrow_drop_down, color: Colors.grey.shade600, size: 16),
+                      Icon(Icons.arrow_drop_down,
+                          color: Colors.grey.shade600, size: 16),
                     ],
                   ),
                 ),

@@ -24,7 +24,7 @@ class CombinedDancerFilter extends StatefulWidget {
 class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
   String _searchQuery = '';
   List<int> _selectedTagIds = [];
-  ActivityLevel? _selectedActivityLevel = ActivityLevel.active;
+  ActivityLevel? _selectedActivityLevel = ActivityLevel.all;
   bool _isLoadingCounts = false;
   bool _showTagDropdown = false;
   bool _showActivityDropdown = false;
@@ -120,8 +120,7 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
   }
 
   void _notifyParent() {
-    widget.onFiltersChanged(
-        _searchQuery, _selectedTagIds, _selectedActivityLevel);
+    widget.onFiltersChanged(_searchQuery, _selectedTagIds, _selectedActivityLevel);
   }
 
   void _clearTagSelection() {
@@ -135,14 +134,10 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
     switch (level) {
       case ActivityLevel.all:
         return 'All Dancers';
-      case ActivityLevel.active:
-        return 'Active';
-      case ActivityLevel.veryActive:
-        return 'Very Active';
-      case ActivityLevel.coreCommunity:
-        return 'Core Community';
-      case ActivityLevel.recent:
-        return 'Recent';
+      case ActivityLevel.regular:
+        return 'Regular';
+      case ActivityLevel.occasional:
+        return 'Occasional';
     }
   }
 
@@ -150,14 +145,10 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
     switch (level) {
       case ActivityLevel.all:
         return 'Show everyone';
-      case ActivityLevel.active:
-        return '1+ events in 6 months';
-      case ActivityLevel.veryActive:
-        return '3+ events in 6 months';
-      case ActivityLevel.coreCommunity:
-        return '5+ events in year';
-      case ActivityLevel.recent:
-        return '1+ events in 3 months';
+      case ActivityLevel.regular:
+        return '3+ dances in last 2 months';
+      case ActivityLevel.occasional:
+        return '1+ dance in last 3 months';
     }
   }
 
@@ -190,11 +181,9 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
                         color: Colors.grey.shade600,
                         fontSize: 14,
                       ),
-                      prefixIcon: Icon(Icons.search,
-                          color: Colors.grey.shade600, size: 20),
+                      prefixIcon: Icon(Icons.search, color: Colors.grey.shade600, size: 20),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     ),
                   ),
                 ),
@@ -222,14 +211,11 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
                       Icon(Icons.label, color: Colors.grey.shade600, size: 16),
                       const SizedBox(width: 4),
                       Text(
-                        _selectedTagIds.isNotEmpty
-                            ? '${_selectedTagIds.length} Tags'
-                            : 'Tags',
+                        _selectedTagIds.isNotEmpty ? '${_selectedTagIds.length} Tags' : 'Tags',
                         style: const TextStyle(fontSize: 14),
                       ),
                       const SizedBox(width: 4),
-                      Icon(Icons.arrow_drop_down,
-                          color: Colors.grey.shade600, size: 16),
+                      Icon(Icons.arrow_drop_down, color: Colors.grey.shade600, size: 16),
                     ],
                   ),
                 ),
@@ -254,18 +240,14 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.track_changes,
-                          color: Colors.grey.shade600, size: 16),
+                      Icon(Icons.track_changes, color: Colors.grey.shade600, size: 16),
                       const SizedBox(width: 4),
                       Text(
-                        _selectedActivityLevel != null
-                            ? _getLevelDisplayName(_selectedActivityLevel!)
-                            : 'Active',
+                        _selectedActivityLevel != null ? _getLevelDisplayName(_selectedActivityLevel!) : 'Active',
                         style: const TextStyle(fontSize: 14),
                       ),
                       const SizedBox(width: 4),
-                      Icon(Icons.arrow_drop_down,
-                          color: Colors.grey.shade600, size: 16),
+                      Icon(Icons.arrow_drop_down, color: Colors.grey.shade600, size: 16),
                     ],
                   ),
                 ),
@@ -325,28 +307,20 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
                         return GestureDetector(
                           onTap: () => _onTagSelected(tag.id),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12.0, vertical: 6.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
                             decoration: BoxDecoration(
-                              color: isSelected
-                                  ? Theme.of(context).primaryColor
-                                  : Colors.grey.shade200,
+                              color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade200,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(
-                                color: isSelected
-                                    ? Theme.of(context).primaryColor
-                                    : Colors.grey.shade300,
+                                color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300,
                               ),
                             ),
                             child: Text(
                               tag.name,
                               style: TextStyle(
-                                color:
-                                    isSelected ? Colors.white : Colors.black87,
+                                color: isSelected ? Colors.white : Colors.black87,
                                 fontSize: 12,
-                                fontWeight: isSelected
-                                    ? FontWeight.w600
-                                    : FontWeight.normal,
+                                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                               ),
                             ),
                           ),
@@ -403,17 +377,12 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
                   return InkWell(
                     onTap: () => _onActivityLevelChanged(level),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                       child: Row(
                         children: [
                           Icon(
-                            isSelected
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_unchecked,
-                            color: isSelected
-                                ? Theme.of(context).primaryColor
-                                : Colors.grey,
+                            isSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+                            color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
                             size: 20,
                           ),
                           const SizedBox(width: 8),
@@ -424,9 +393,7 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
                                 Text(
                                   '${_getLevelDisplayName(level)} ($count)',
                                   style: TextStyle(
-                                    fontWeight: isSelected
-                                        ? FontWeight.w600
-                                        : FontWeight.normal,
+                                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                                     fontSize: 14,
                                   ),
                                 ),
