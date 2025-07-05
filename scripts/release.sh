@@ -222,14 +222,38 @@ update_pubspec_version() {
     # Calculate version code (remove dots and convert to integer)
     local version_code=$(echo $new_version | tr -d '.')
     
+    # Validate version format
+    if [[ ! "$new_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        print_error "Invalid version format: $new_version. Expected format: X.Y.Z"
+        exit 1
+    fi
+    
+    # Create backup of pubspec.yaml
+    cp pubspec.yaml pubspec.yaml.backup
+    
     # Update the version line in pubspec.yaml
-    sed -i.bak "s/^version: .*$/version: $new_version+$version_code/" pubspec.yaml
+    if sed -i.bak "s/^version: .*$/version: $new_version+$version_code/" pubspec.yaml; then
+        # Clean up backup file
+        rm -f pubspec.yaml.bak
+        
+        # Verify the update was successful
+        local updated_version=$(grep "^version:" pubspec.yaml | sed 's/version: //')
+        if [[ "$updated_version" == "$new_version+$version_code" ]]; then
+            print_success "pubspec.yaml version updated to $new_version+$version_code"
+            print_status "Android version code: $version_code"
+        else
+            print_error "Failed to update pubspec.yaml version. Restoring backup..."
+            mv pubspec.yaml.backup pubspec.yaml
+            exit 1
+        fi
+    else
+        print_error "Failed to update pubspec.yaml version. Restoring backup..."
+        mv pubspec.yaml.backup pubspec.yaml
+        exit 1
+    fi
     
-    # Clean up backup file
-    rm -f pubspec.yaml.bak
-    
-    print_success "pubspec.yaml version updated to $new_version+$version_code"
-    print_status "Android version code: $version_code"
+    # Clean up backup
+    rm -f pubspec.yaml.backup
 }
 
 # Function to validate Android version update
@@ -325,8 +349,8 @@ For issues or feature requests, please visit the GitHub repository.
     print_status "Changes committed and pushed to main branch"
 }
 
-# Show usage if no arguments provided
-if [[ $# -eq 0 ]]; then
+# Show usage if no arguments provided or help requested
+if [[ $# -eq 0 ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
     echo "Usage: $0 [bump_type]"
     echo ""
     echo "Bump types:"
@@ -338,6 +362,13 @@ if [[ $# -eq 0 ]]; then
     echo "  $0           # Bump patch version"
     echo "  $0 minor     # Bump minor version"
     echo "  $0 major     # Bump major version"
+    echo ""
+    echo "This script will:"
+    echo "1. Bump version in Changelog.md"
+    echo "2. Update pubspec.yaml version"
+    echo "3. Build release APK"
+    echo "4. Create GitHub release with APK"
+    echo "5. Commit and push changes"
     exit 0
 fi
 

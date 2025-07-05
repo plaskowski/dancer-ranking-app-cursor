@@ -6,6 +6,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [v1.4.7] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I feel like we now have many such simple dialogs, extract common component for that." - Request to create reusable component for simple selection dialogs
@@ -35,6 +59,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **UI Consistency**: Standardized visual design across all simple selection dialogs
 
 ## [v1.4.6] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I have reverted ScoreDialog latest changes (commit). Now try simplify it to simple sheet with one tap options" - Request to simplify ScoreDialog to basic one-tap options
@@ -55,6 +103,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Code Simplification**: Reduced complexity where appropriate for better UX
 
 ## [v1.4.5] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "Why the assign score sheet looks different from other sheets?" - Request to understand and fix UI inconsistency in ScoreDialog
@@ -76,6 +148,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **User Experience**: Enhanced visual consistency and interaction patterns
 
 ## [v1.4.4] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "All good now, commit" - Request to commit the real-time filtering improvements
@@ -94,6 +190,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Code Consistency**: Unified filtering patterns across all dancer selection components
 
 ## [v1.4.3] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -120,6 +240,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.4.2] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -146,6 +290,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.4.1] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -172,6 +340,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.4.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -198,6 +390,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.3.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -224,6 +440,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.2.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -250,6 +490,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.1.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -276,6 +540,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.0.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -302,6 +590,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.9.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -328,6 +640,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.8.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -354,6 +690,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.7.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -380,6 +740,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.6.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -406,6 +790,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.5.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -432,6 +840,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.4.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -458,6 +890,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.3.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -484,6 +940,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.2.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab
@@ -510,6 +990,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.1.0] - 2025-01-17
+## [v1.4.8] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
+## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "I want to see the dancer list in the planning tab" - Request to display dancer list in planning tab

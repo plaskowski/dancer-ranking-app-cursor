@@ -134,12 +134,15 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
         await dancerService.updateDancer(
           widget.dancer!.id,
           name: _nameController.text.trim(),
-          notes: _notesController.text.trim().isNotEmpty ? _notesController.text.trim() : null,
+          notes: _notesController.text.trim().isNotEmpty
+              ? _notesController.text.trim()
+              : null,
         );
 
         // Update first met date if it changed
         if (_firstMetDate != widget.dancer!.firstMetDate) {
-          await dancerService.updateFirstMetDate(widget.dancer!.id, _firstMetDate);
+          await dancerService.updateFirstMetDate(
+              widget.dancer!.id, _firstMetDate);
         }
 
         dancerId = widget.dancer!.id;
@@ -152,7 +155,9 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
         dancerId = await dancerService.createDancer(
           name: _nameController.text.trim(),
-          notes: _notesController.text.trim().isNotEmpty ? _notesController.text.trim() : null,
+          notes: _notesController.text.trim().isNotEmpty
+              ? _notesController.text.trim()
+              : null,
         );
       }
 
@@ -161,17 +166,21 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
       // If we're adding during an event and "already danced" is checked
       if (widget.eventId != null && _alreadyDanced && widget.dancer == null) {
-        ActionLogger.logUserAction('AddDancerDialog', 'recording_dance_during_creation', {
+        ActionLogger.logUserAction(
+            'AddDancerDialog', 'recording_dance_during_creation', {
           'eventId': widget.eventId!,
           'dancerId': dancerId,
           'hasImpression': _impressionController.text.trim().isNotEmpty,
         });
 
-        final attendanceService = Provider.of<AttendanceService>(context, listen: false);
+        final attendanceService =
+            Provider.of<AttendanceService>(context, listen: false);
         await attendanceService.createAttendanceWithDance(
           eventId: widget.eventId!,
           dancerId: dancerId,
-          impression: _impressionController.text.trim().isNotEmpty ? _impressionController.text.trim() : null,
+          impression: _impressionController.text.trim().isNotEmpty
+              ? _impressionController.text.trim()
+              : null,
         );
       }
 
@@ -185,7 +194,10 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
 
         Navigator.pop(context, true); // Return true to indicate success
         ToastHelper.showSuccess(
-            context, widget.dancer != null ? 'Dancer updated successfully!' : 'Dancer added successfully!');
+            context,
+            widget.dancer != null
+                ? 'Dancer updated successfully!'
+                : 'Dancer added successfully!');
       }
     } catch (e) {
       ActionLogger.logError('AddDancerDialog._saveDancer', e.toString(), {
@@ -248,7 +260,6 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                   controller: _notesController,
                   decoration: InputDecoration(
                     labelText: 'Notes (optional)',
-                    border: const OutlineInputBorder(),
                     hintText: 'e.g., Great lead, loves spins',
                     suffixIcon: _notesController.text.isNotEmpty
                         ? IconButton(
@@ -286,7 +297,8 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                     title: const Text('Already danced with this person'),
                     value: _alreadyDanced,
                     onChanged: (value) {
-                      ActionLogger.logUserAction('AddDancerDialog', 'already_danced_toggled', {
+                      ActionLogger.logUserAction(
+                          'AddDancerDialog', 'already_danced_toggled', {
                         'value': value ?? false,
                         'eventId': widget.eventId,
                       });
@@ -359,7 +371,8 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
                                   onPressed: _selectFirstMetDate,
                                   icon: const Icon(Icons.edit_calendar),
                                   label: Text(_firstMetDate != null
-                                      ? DateFormat('MMM d, yyyy').format(_firstMetDate!)
+                                      ? DateFormat('MMM d, yyyy')
+                                          .format(_firstMetDate!)
                                       : 'Select Date'),
                                 ),
                               ),
@@ -388,7 +401,8 @@ class _AddDancerDialogState extends State<AddDancerDialog> {
           onPressed: _isLoading
               ? null
               : () {
-                  ActionLogger.logUserAction('AddDancerDialog', 'dialog_cancelled', {
+                  ActionLogger.logUserAction(
+                      'AddDancerDialog', 'dialog_cancelled', {
                     'isEditing': widget.dancer != null,
                     'eventId': widget.eventId,
                   });

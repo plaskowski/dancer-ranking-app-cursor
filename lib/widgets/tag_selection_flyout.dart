@@ -94,7 +94,6 @@ class _TagSelectionFlyoutState extends State<TagSelectionFlyout> {
                 decoration: const InputDecoration(
                   hintText: 'Search tags...',
                   prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
