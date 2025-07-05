@@ -208,27 +208,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v0.9.1] - 2025-01-27
 
 ### User Requests
-- User asked to "continue" with the implementation
-
-### Added
-- **Tag Selection Flyout Widget**: Created `TagSelectionFlyout` widget in `lib/widgets/tag_selection_flyout.dart`
-  - Compact, flyout-style interface for tag selection
-  - Search functionality with real-time filtering
-  - Checkbox-based selection with visual feedback
-  - Configurable height and search options
-  - Uses Material 3 design patterns
-
-### Changed
-- **Combined Dancer Filter**: Updated `CombinedDancerFilter` widget to use new tag selection API
-  - Added `availableTags` parameter to widget constructor
-  - Updated to use `List<Tag>` instead of `Set<int>` for selected tags
-  - Integrated with `TagSelectionFlyout` for improved UX
-  - Added proper state management for selected tags
+- "use Audit Log approach" - Replaced print statements with proper ActionLogger calls for CLI navigation tracking
 
 ### Technical
-- **Database Integration**: Updated imports to use proper Tag class from database
-- **Type Safety**: Improved type safety with proper Tag object handling
-- **UI Consistency**: Aligned with Material 3 design system
-- **Performance**: Optimized tag filtering with efficient search implementation
+- **CLI Navigation Audit Logging**: Replaced all print statements in CLI navigation flow with structured ActionLogger calls
+  - Updated `cli_navigation.dart` to use ActionLogger for navigation tracking
+  - Updated `event_screen.dart` to log CLI action handling
+  - Updated `present_tab.dart` to log CLI action execution
+  - Updated `home_navigation_service.dart` to log navigation events
+  - Improved debugging and tracking capabilities for CLI navigation flow
+  - Better error tracking and context preservation for troubleshooting
 
 ## [v0.9.0] - 2025-01-27

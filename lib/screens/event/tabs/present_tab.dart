@@ -25,13 +25,24 @@ class PresentTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ActionLogger.logAction(
-        'UI_PresentTab', 'build_called', {'eventId': eventId});
+    ActionLogger.logAction('UI_PresentTab', 'build_called', {'eventId': eventId});
 
     // Handle initial action if specified
     if (initialAction != null) {
+      ActionLogger.logAction('UI_PresentTab', 'cli_initial_action_received', {
+        'eventId': eventId,
+        'initialAction': initialAction,
+      });
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        ActionLogger.logAction('UI_PresentTab', 'cli_executing_initial_action', {
+          'eventId': eventId,
+          'initialAction': initialAction,
+        });
         _performInitialAction(context);
+      });
+    } else {
+      ActionLogger.logAction('UI_PresentTab', 'cli_no_initial_action', {
+        'eventId': eventId,
       });
     }
 
@@ -41,8 +52,7 @@ class PresentTab extends StatelessWidget {
       stream: dancerService.watchDancersForEvent(eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          ActionLogger.logAction(
-              'UI_PresentTab', 'loading_state', {'eventId': eventId});
+          ActionLogger.logAction('UI_PresentTab', 'loading_state', {'eventId': eventId});
           return const Center(child: CircularProgressIndicator());
         }
 
@@ -82,9 +92,7 @@ class PresentTab extends StatelessWidget {
         }
 
         final allDancers = snapshot.data ?? [];
-        final presentDancers = allDancers
-            .where((d) => d.status == 'present' || d.status == 'served')
-            .toList();
+        final presentDancers = allDancers.where((d) => d.status == 'present' || d.status == 'served').toList();
 
         ActionLogger.logListRendering(
             'UI_PresentTab',
@@ -157,8 +165,7 @@ class PresentTab extends StatelessWidget {
             final dancerA = groupedDancers[a]!.first;
             final dancerB = groupedDancers[b]!.first;
 
-            return (dancerA.rankOrdinal ?? 999)
-                .compareTo(dancerB.rankOrdinal ?? 999);
+            return (dancerA.rankOrdinal ?? 999).compareTo(dancerB.rankOrdinal ?? 999);
           });
 
         ActionLogger.logAction('UI_PresentTab', 'grouping_complete', {
@@ -203,20 +210,30 @@ class PresentTab extends StatelessWidget {
   void _performInitialAction(BuildContext context) {
     if (initialAction == null) return;
 
-    print(
-        'CLI Navigation: PresentTab performing initial action "$initialAction"');
+    ActionLogger.logAction('UI_PresentTab', 'cli_performing_initial_action', {
+      'eventId': eventId,
+      'initialAction': initialAction,
+    });
 
     switch (initialAction) {
       case 'add-existing-dancer':
+        ActionLogger.logAction('UI_PresentTab', 'cli_triggering_add_existing_dancer', {
+          'eventId': eventId,
+        });
         _showAddExistingDancerDialog(context);
         break;
       default:
-        print('CLI Navigation: Unknown action "$initialAction"');
+        ActionLogger.logAction('UI_PresentTab', 'cli_unknown_action', {
+          'eventId': eventId,
+          'initialAction': initialAction,
+        });
     }
   }
 
   void _showAddExistingDancerDialog(BuildContext context) {
-    print('CLI Navigation: Showing add existing dancer dialog');
+    ActionLogger.logAction('UI_PresentTab', 'cli_showing_add_existing_dancer_dialog', {
+      'eventId': eventId,
+    });
     final appDb = Provider.of<AppDatabase>(context, listen: false);
 
     // Get event name from EventService
@@ -229,8 +246,7 @@ class PresentTab extends StatelessWidget {
             builder: (context) => Provider<DancerCrudService>(
               create: (_) => DancerCrudService(appDb),
               child: Provider<DancerTagService>(
-                create: (ctx) => DancerTagService(
-                    appDb, Provider.of<DancerCrudService>(ctx, listen: false)),
+                create: (ctx) => DancerTagService(appDb, Provider.of<DancerCrudService>(ctx, listen: false)),
                 child: AddExistingDancerScreen(
                   eventId: eventId,
                   eventName: event.name,
@@ -255,8 +271,7 @@ class PresentTabActions implements EventTabActions {
   });
 
   @override
-  Future<void> onFabPressed(
-      BuildContext context, VoidCallback onRefresh) async {
+  Future<void> onFabPressed(BuildContext context, VoidCallback onRefresh) async {
     // Show speed dial menu with two options
     _showPresentTabSpeedDial(context, onRefresh);
   }
@@ -313,18 +328,14 @@ class PresentTabActions implements EventTabActions {
                 subtitle: const Text('Mark unranked dancers as present'),
                 onTap: () async {
                   Navigator.pop(context);
-                  final appDb =
-                      Provider.of<AppDatabase>(context, listen: false);
+                  final appDb = Provider.of<AppDatabase>(context, listen: false);
                   final result = await Navigator.push<bool>(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Provider<DancerCrudService>(
                         create: (_) => DancerCrudService(appDb),
                         child: Provider<DancerTagService>(
-                          create: (ctx) => DancerTagService(
-                              appDb,
-                              Provider.of<DancerCrudService>(ctx,
-                                  listen: false)),
+                          create: (ctx) => DancerTagService(appDb, Provider.of<DancerCrudService>(ctx, listen: false)),
                           child: AddExistingDancerScreen(
                             eventId: eventId,
                             eventName: eventName,

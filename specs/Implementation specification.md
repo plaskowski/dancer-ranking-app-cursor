@@ -60,3 +60,27 @@
 ### Build & Release
 
 - APK build process was verified and fixed after resolving theme constructor errors. The app now builds successfully for release on the main branch. 
+
+## CLI Navigation
+
+The app supports command-line navigation for automated testing and direct access to specific screens and actions.
+
+### Navigation Format
+- **Path-based**: `/event/{eventId}/{tab}/{action}`
+- **Index-based**: Event index with optional tab and action parameters
+
+### Supported Actions
+- `add-existing-dancer`: Opens the add existing dancer dialog on the present tab
+
+### Audit Logging
+All CLI navigation events are logged using the ActionLogger system for debugging and tracking:
+- Navigation path resolution
+- Event loading and validation
+- Tab mapping and action execution
+- Error handling and fallback behavior
+
+### Implementation Files
+- `lib/cli_navigation.dart`: Main CLI navigation logic
+- `lib/screens/event/event_screen.dart`: Event screen with CLI action handling
+- `lib/screens/event/tabs/present_tab.dart`: Present tab with CLI action execution
+- `lib/screens/home/services/home_navigation_service.dart`: Navigation service with logging 

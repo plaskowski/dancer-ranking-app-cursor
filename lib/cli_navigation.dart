@@ -5,6 +5,7 @@ import 'database/database.dart';
 import 'screens/event/event_screen.dart';
 import 'screens/home/home_screen.dart';
 import 'services/event_service.dart';
+import 'utils/action_logger.dart';
 
 /// CLI Arguments structure
 class CliArguments {
@@ -32,8 +33,7 @@ class CliArguments {
 CliArguments parseCliArguments(List<String> args) {
   const navPathStr = String.fromEnvironment('NAV_PATH');
   const eventIndexStr = String.fromEnvironment('EVENT_INDEX');
-  const autoTapAddStr =
-      String.fromEnvironment('AUTO_TAP_ADD', defaultValue: 'false');
+  const autoTapAddStr = String.fromEnvironment('AUTO_TAP_ADD', defaultValue: 'false');
   const helpStr = String.fromEnvironment('HELP');
 
   // Show help if requested
@@ -134,25 +134,46 @@ class _CliNavigatorState extends State<CliNavigator> {
   }
 
   Future<void> _performCliNavigation() async {
+    ActionLogger.logAction('CLI_Navigation', 'cli_navigation_started', {
+      'navigationPath': widget.navigationPath,
+      'eventIndex': widget.eventIndex,
+    });
+
+    // Add a small delay to ensure Provider is ready
+    await Future.delayed(const Duration(milliseconds: 100));
+
     final eventService = Provider.of<EventService>(context, listen: false);
+    ActionLogger.logAction('CLI_Navigation', 'cli_event_service_obtained', {});
 
     try {
       // Get events once (not as a stream)
+      ActionLogger.logAction('CLI_Navigation', 'cli_loading_events', {});
       final events = await eventService.watchAllEvents().first;
+      ActionLogger.logAction('CLI_Navigation', 'cli_events_loaded', {
+        'eventsCount': events.length,
+      });
+
       Event? targetEvent;
 
       // Handle path-based navigation
       if (widget.navigationPath != null) {
+        ActionLogger.logAction('CLI_Navigation', 'cli_resolving_path', {
+          'navigationPath': widget.navigationPath,
+        });
         targetEvent = _resolveNavigationPath(widget.navigationPath!, events);
       }
       // Handle legacy index-based navigation
       else if (widget.eventIndex != null) {
+        ActionLogger.logAction('CLI_Navigation', 'cli_resolving_index', {
+          'eventIndex': widget.eventIndex,
+        });
         targetEvent = _resolveEventIndex(widget.eventIndex!, events);
       }
 
       if (targetEvent == null) {
-        print(
-            'CLI Navigation: No valid navigation target found. Falling back to home screen.');
+        ActionLogger.logAction('CLI_Navigation', 'cli_no_valid_target_found', {
+          'fallbackToHome': true,
+        });
         if (mounted) {
           setState(() {
             _targetScreen = const HomeScreen();
@@ -161,18 +182,20 @@ class _CliNavigatorState extends State<CliNavigator> {
         return;
       }
 
-      print(
-          'CLI Navigation: Navigating to event "${targetEvent.name}" (ID: ${targetEvent.id})');
+      ActionLogger.logAction('CLI_Navigation', 'cli_navigating_to_event', {
+        'eventId': targetEvent.id,
+        'eventName': targetEvent.name,
+      });
 
       // Parse tab and action from navigation path
       String? initialTab;
       String? initialAction;
 
       if (widget.navigationPath != null) {
-        final parts = widget.navigationPath!
-            .split('/')
-            .where((part) => part.isNotEmpty)
-            .toList();
+        final parts = widget.navigationPath!.split('/').where((part) => part.isNotEmpty).toList();
+        ActionLogger.logAction('CLI_Navigation', 'cli_parsed_path_parts', {
+          'parts': parts,
+        });
         if (parts.length >= 3) {
           final tab = parts[2];
           // Map CLI tab names to actual tab names
@@ -189,13 +212,26 @@ class _CliNavigatorState extends State<CliNavigator> {
             default:
               initialTab = tab; // Use as-is for other cases
           }
+          ActionLogger.logAction('CLI_Navigation', 'cli_mapped_tab', {
+            'originalTab': tab,
+            'mappedTab': initialTab,
+          });
         }
         if (parts.length >= 4) {
           initialAction = parts[3];
+          ActionLogger.logAction('CLI_Navigation', 'cli_initial_action', {
+            'initialAction': initialAction,
+          });
         }
       }
 
       if (mounted) {
+        ActionLogger.logAction('CLI_Navigation', 'cli_setting_target_screen', {
+          'targetScreen': 'EventScreen',
+          'eventId': targetEvent.id,
+          'initialTab': initialTab,
+          'initialAction': initialAction,
+        });
         setState(() {
           _targetScreen = EventScreen(
             eventId: targetEvent!.id,
@@ -205,7 +241,7 @@ class _CliNavigatorState extends State<CliNavigator> {
         });
       }
     } catch (e) {
-      print('CLI Navigation: Error loading events: $e');
+      ActionLogger.logError('CLI_Navigation', 'cli_error_loading_events', {'error': e.toString()});
       if (mounted) {
         setState(() {
           _targetScreen = const HomeScreen();
@@ -270,8 +306,7 @@ class _CliNavigatorState extends State<CliNavigator> {
             default:
               mappedTab = tab; // Use as-is for other cases
           }
-          print(
-              'CLI Navigation: Setting initial tab to "$mappedTab" (from "$tab")');
+          print('CLI Navigation: Setting initial tab to "$mappedTab" (from "$tab")');
         }
 
         if (parts.length >= 4) {
@@ -293,23 +328,19 @@ class _CliNavigatorState extends State<CliNavigator> {
     final todayDate = DateTime(today.year, today.month, today.day);
 
     for (final event in events) {
-      final eventDate =
-          DateTime(event.date.year, event.date.month, event.date.day);
+      final eventDate = DateTime(event.date.year, event.date.month, event.date.day);
       if (eventDate.isAtSameMomentAs(todayDate)) {
         print('CLI Navigation: Found current event "${event.name}" for today');
         return event;
       }
     }
 
-    print(
-        'CLI Navigation: No current event found for today. Available events:');
+    print('CLI Navigation: No current event found for today. Available events:');
     for (int i = 0; i < events.length; i++) {
       final event = events[i];
-      final eventDate =
-          DateTime(event.date.year, event.date.month, event.date.day);
+      final eventDate = DateTime(event.date.year, event.date.month, event.date.day);
       final isToday = eventDate.isAtSameMomentAs(todayDate);
-      print(
-          '  [$i] ${event.name} (${event.date.toString().split(' ')[0]}) ${isToday ? '← TODAY' : ''}');
+      print('  [$i] ${event.name} (${event.date.toString().split(' ')[0]}) ${isToday ? '← TODAY' : ''}');
     }
     return null;
   }
@@ -317,8 +348,7 @@ class _CliNavigatorState extends State<CliNavigator> {
   /// Resolve event index to find target event
   Event? _resolveEventIndex(int index, List<Event> events) {
     if (index >= events.length) {
-      print(
-          'Warning: Event index $index is out of range. Available events: ${events.length}');
+      print('Warning: Event index $index is out of range. Available events: ${events.length}');
       return null;
     }
     return events[index];

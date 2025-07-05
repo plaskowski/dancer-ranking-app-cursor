@@ -41,6 +41,7 @@
 - If the agent ask for choice it should present buttons for them
 - changelog as separate small files to avoid conflicts between agent lines
 - use native patterns (like reactive updates)
+- automation that let you drive initial navigation via CLI arg
 
 # Hard ones
 - increase the 25 tool calls limit
