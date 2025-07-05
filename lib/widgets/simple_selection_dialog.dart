@@ -142,19 +142,6 @@ class _SimpleSelectionDialogState<T> extends State<SimpleSelectionDialog<T>> {
                         ),
                       ),
                     ),
-
-                    // Cancel Button
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextButton(
-                            onPressed: _handleCancel,
-                            child: Text(widget.cancelButtonText ?? 'Cancel'),
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
         ),
