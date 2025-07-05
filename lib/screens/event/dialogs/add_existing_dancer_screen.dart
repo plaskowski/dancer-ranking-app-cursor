@@ -7,6 +7,7 @@ import '../../../models/dancer_with_tags.dart';
 import '../../../services/attendance_service.dart';
 import '../../../services/dancer/dancer_filter_service.dart';
 import '../../../widgets/dancer_filter_list_widget.dart';
+import '../../../widgets/dancer_selection_tile.dart';
 import 'event_dancer_selection_mixin.dart';
 
 class AddExistingDancerScreen extends StatefulWidget {
@@ -72,19 +73,10 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> with 
   }
 
   Widget _buildDancerTile(DancerWithTags dancer) {
-    return Card(
-      margin: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
-      child: ListTile(
-        title: Text(
-          dancer.name,
-          style: const TextStyle(fontWeight: FontWeight.w600),
-        ),
-        subtitle: dancer.notes != null && dancer.notes!.isNotEmpty ? Text(dancer.notes!) : null,
-        trailing: ElevatedButton(
-          onPressed: () => _markDancerPresent(dancer.id, dancer.name),
-          child: const Text('Mark Present'),
-        ),
-      ),
+    return DancerSelectionTile(
+      dancer: dancer,
+      buttonText: 'Mark Present',
+      onPressed: () => _markDancerPresent(dancer.id, dancer.name),
     );
   }
 
