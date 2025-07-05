@@ -4,10 +4,9 @@ import 'package:provider/provider.dart';
 import '../../../models/dancer_with_tags.dart';
 import '../../../screens/event/event_screen.dart';
 import '../../../services/attendance_service.dart';
-import '../../../services/dancer/dancer_filter_service.dart';
-import '../../../theme/theme_extensions.dart';
 import '../../../widgets/safe_fab.dart';
 import '../../../widgets/simplified_tag_filter.dart';
+import 'event_dancer_selection_mixin.dart';
 
 class SelectDancersScreen extends StatefulWidget {
   final int eventId;
@@ -23,19 +22,16 @@ class SelectDancersScreen extends StatefulWidget {
   State<SelectDancersScreen> createState() => _SelectDancersScreenState();
 }
 
-class _SelectDancersScreenState extends State<SelectDancersScreen> {
+class _SelectDancersScreenState extends State<SelectDancersScreen> with EventDancerSelectionMixin {
   final Set<int> _selectedDancerIds = <int>{};
   bool _isLoading = false;
-  int _refreshKey = 0; // Add refresh key for reactive updates
+
+  @override
+  int get eventId => widget.eventId;
 
   Future<void> _addSelectedDancers() async {
     if (_selectedDancerIds.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Please select at least one dancer'),
-          backgroundColor: context.danceTheme.warning,
-        ),
-      );
+      showErrorMessage('Please select at least one dancer');
       return;
     }
 
@@ -59,25 +55,13 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
         // Clear selections and trigger refresh
         setState(() {
           _selectedDancerIds.clear();
-          _refreshKey++; // Trigger reactive update
         });
+        triggerRefresh();
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Added $addedCount dancers to event (no rank assigned)'),
-            backgroundColor: context.danceTheme.success,
-          ),
-        );
+        showSuccessMessage('Added $addedCount dancers to event (no rank assigned)');
       }
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error adding dancers: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
-      }
+      showErrorMessage('Error adding dancers: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -85,32 +69,6 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
         });
       }
     }
-  }
-
-  Future<List<DancerWithTags>> _getAvailableDancers(List<int> tagIds, String searchQuery) async {
-    final filterService = DancerFilterService.of(context);
-
-    // Get dancers based on tag filtering
-    List<DancerWithTags> dancers;
-    if (tagIds.isNotEmpty) {
-      // Use tag filtering when tags are selected
-      dancers = await filterService.getAvailableDancersWithTagsForEvent(
-        widget.eventId,
-        tagIds: tagIds.toSet(),
-      );
-    } else {
-      // Get all available dancers when no tags are selected
-      dancers = await filterService.getAvailableDancersWithTagsForEvent(
-        widget.eventId,
-      );
-    }
-
-    // Apply search filtering if search query is provided
-    if (searchQuery.isNotEmpty) {
-      dancers = filterService.filterDancersByText(dancers, searchQuery);
-    }
-
-    return dancers;
   }
 
   Widget _buildDancerTile(DancerWithTags dancer) {
@@ -181,9 +139,9 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
       ),
       body: _SelectDancersFilterWidget(
         eventId: widget.eventId,
-        getDancers: _getAvailableDancers,
+        getDancers: getAvailableDancers,
         buildDancerTile: _buildDancerTile,
-        refreshKey: _refreshKey,
+        refreshKey: refreshKey,
       ),
       floatingActionButton: _selectedDancerIds.isNotEmpty
           ? SafeFAB(

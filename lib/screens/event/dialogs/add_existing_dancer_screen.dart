@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import '../../../models/dancer_with_tags.dart';
 import '../../../services/attendance_service.dart';
 import '../../../services/dancer/dancer_filter_service.dart';
-import '../../../theme/theme_extensions.dart';
 import '../../../widgets/dancer_filter_list_widget.dart';
+import 'event_dancer_selection_mixin.dart';
 
 class AddExistingDancerScreen extends StatefulWidget {
   final int eventId;
@@ -23,8 +23,9 @@ class AddExistingDancerScreen extends StatefulWidget {
   State<AddExistingDancerScreen> createState() => _AddExistingDancerScreenState();
 }
 
-class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
-  int _refreshKey = 0;
+class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> with EventDancerSelectionMixin {
+  @override
+  int get eventId => widget.eventId;
 
   Future<void> _markDancerPresent(int dancerId, String dancerName) async {
     try {
@@ -34,28 +35,13 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
 
       if (mounted) {
         // Show a brief success message without closing the screen
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('$dancerName marked as present'),
-            backgroundColor: context.danceTheme.success,
-            duration: const Duration(seconds: 1), // Shorter duration for efficiency
-          ),
-        );
+        showSuccessMessage('$dancerName marked as present');
 
         // Trigger a refresh by updating the key
-        setState(() {
-          _refreshKey++;
-        });
+        triggerRefresh();
       }
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error marking dancer as present: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
-      }
+      showErrorMessage('Error marking dancer as present: $e');
     }
   }
 
@@ -107,9 +93,9 @@ class _AddExistingDancerScreenState extends State<AddExistingDancerScreen> {
     return DancerFilterListWidget(
       title: 'Add to ${widget.eventName}',
       infoMessage: 'Showing unranked and absent dancers only. Present dancers managed in Present tab.',
-      getDancers: _getAvailableDancers,
+      getDancers: getAvailableDancers,
       buildDancerTile: _buildDancerTile,
-      refreshKey: _refreshKey,
+      refreshKey: refreshKey,
     );
   }
 }
