@@ -28,7 +28,8 @@ The Present tab will show all dancers in a single, unified list:
 - **Status badges**: Each dancer shows their current status (Present, Expected, Absent)
 
 #### Visual Design
-- **Present dancers**: Normal card background with full functionality
+- **Present dancers (not danced)**: Normal card background, no status indicator
+- **Present dancers (danced)**: Normal card background, dance count indicator
 - **Expected dancers**: Question mark (?) indicator in status area
 - **Absent dancers**: Question mark (?) indicator in status area
 - **Status-based actions**: Different actions available based on dancer status
@@ -48,7 +49,7 @@ The Floating Action Button will provide a comprehensive menu:
 
 #### Single Card Design:
 - **Unified appearance**: All dancers use the same card component
-- **Status indicators**: Question mark (?) for expected/absent, normal for present
+- **Status indicators**: Question mark (?) for expected/absent, dance count for danced present, none for undanced present
 - **Contextual actions**: Actions change based on dancer status
 - **Consistent layout**: Same information structure for all dancers
 
@@ -84,32 +85,32 @@ The Floating Action Button will provide a comprehensive menu:
 │                                                         │
 │  Advanced Dancers (3)                                  │
 │  ┌─────────────────────────────────────────────────────┐ │
-│  │ John Smith                              [Record]   │ │
-│  │ Rank: Advanced • 2 dances recorded                 │ │
+│  │ John Smith • 2 dances recorded                     │ │
+│  │ Rank: Advanced • "Great technique"                 │ │
 │  └─────────────────────────────────────────────────────┘ │
 │  ┌─────────────────────────────────────────────────────┐ │
-│  │ Sarah Johnson                            [Record]   │ │
-│  │ Rank: Advanced • 1 dance recorded                  │ │
+│  │ Sarah Johnson • 1 dance recorded                   │ │
+│  │ Rank: Advanced                                     │ │
 │  └─────────────────────────────────────────────────────┘ │
 │  ┌─────────────────────────────────────────────────────┐ │
-│  │ Mike Wilson                                [?]     │ │
-│  │ Rank: Advanced • Tap to mark present               │ │
+│  │ Mike Wilson                                        │ │
+│  │ Rank: Advanced • "Expected"                        │ │
 │  └─────────────────────────────────────────────────────┘ │
 │                                                         │
 │  Intermediate Dancers (2)                               │
 │  ┌─────────────────────────────────────────────────────┐ │
-│  │ Lisa Brown                              [Record]   │ │
-│  │ Rank: Intermediate • 0 dances recorded             │ │
+│  │ Lisa Brown • 0 dances recorded                     │ │
+│  │ Rank: Intermediate                                 │ │
 │  └─────────────────────────────────────────────────────┘ │
 │  ┌─────────────────────────────────────────────────────┐ │
-│  │ Tom Davis                                   [?]     │ │
-│  │ Rank: Intermediate • Tap to mark present           │ │
+│  │ Tom Davis                                          │ │
+│  │ Rank: Intermediate • "Absent"                      │ │
 │  └─────────────────────────────────────────────────────┘ │
 │                                                         │
 │  Beginner Dancers (1)                                   │
 │  ┌─────────────────────────────────────────────────────┐ │
-│  │ Anna Lee                                     [?]     │ │
-│  │ Rank: Beginner • Tap to mark present               │ │
+│  │ Anna Lee                                           │ │
+│  │ Rank: Beginner • "Expected"                        │ │
 │  └─────────────────────────────────────────────────────┘ │
 │                                                         │
 │                                    [+ Add Dancers]      │
@@ -139,21 +140,39 @@ The Floating Action Button will provide a comprehensive menu:
 
 ### 3. Dancer Card States
 
-#### Present Dancer Card
+#### Present Dancer Card (Danced)
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ John Smith                                  [Record]   │
-│ Rank: Advanced • 2 dances recorded                    │
+│ John Smith • 2 dances recorded                        │
+│ Rank: Advanced • "Great technique"                    │
 │ Tags: #regular, #advanced                             │
 └─────────────────────────────────────────────────────────┘
 ```
 
-#### Expected/Absent Dancer Card
+#### Present Dancer Card (Not Danced)
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ Mike Wilson                                    [?]     │
-│ Rank: Advanced • Tap to mark present                  │
+│ Lisa Brown • 0 dances recorded                        │
+│ Rank: Intermediate                                    │
+│ Tags: #regular, #intermediate                         │
+└─────────────────────────────────────────────────────────┘
+```
+
+#### Expected Dancer Card
+```
+┌─────────────────────────────────────────────────────────┐
+│ Mike Wilson                                           │
+│ Rank: Advanced • "Expected"                           │
 │ Tags: #regular, #advanced                             │
+└─────────────────────────────────────────────────────────┘
+```
+
+#### Absent Dancer Card
+```
+┌─────────────────────────────────────────────────────────┐
+│ Tom Davis                                             │
+│ Rank: Intermediate • "Absent"                         │
+│ Tags: #regular, #intermediate                         │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -164,11 +183,11 @@ The Floating Action Button will provide a comprehensive menu:
 ┌─────────────────────────────────────────────────────────┐
 │                    John Smith                          │
 ├─────────────────────────────────────────────────────────┤
-│ [🎵] Record Dance                                     │
-│ [↩️] Mark as Left                                     │
+│ [📍] Mark Absent                                      │
+│ [⭐] Assign Score                                      │
+│ [🏆] Set Ranking                                      │
 │ [✏️] Edit Dancer                                      │
 │ [📊] View History                                     │
-│ [❌] Mark as Absent                                   │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -177,7 +196,8 @@ The Floating Action Button will provide a comprehensive menu:
 ┌─────────────────────────────────────────────────────────┐
 │                    Mike Wilson                         │
 ├─────────────────────────────────────────────────────────┤
-│ [✅] Mark as Present                                  │
+│ [📍] Mark Present                                     │
+│ [🏆] Set Ranking                                      │
 │ [🗑️] Remove from Event                                │
 │ [✏️] Edit Dancer                                      │
 │ [📊] View History                                     │
@@ -186,14 +206,19 @@ The Floating Action Button will provide a comprehensive menu:
 
 ### 5. Status Indicator Design
 
-#### Present Dancers
-- **No indicator**: Normal card appearance
-- **Record button**: Available for dance recording
+#### Present Dancers (Not Danced)
+- **No indicator**: Normal card appearance, no status indicator
+- **Tap for actions**: Opens contextual action menu
+
+#### Present Dancers (Danced)
+- **Dance count**: Shows number of dances recorded
+- **Dance impression**: Shows dance notes if available
+- **Tap for actions**: Opens contextual action menu
 
 #### Expected/Absent Dancers
-- **Question mark (?)** indicator in status area
-- **No record button**: Cannot record dances until marked present
-- **Tap to mark present**: Primary action to change status
+- **Status text**: Shows "Expected" or "Absent" in description
+- **Tap for actions**: Opens contextual action menu
+- **Primary action**: Mark as present
 
 ## User Workflow
 
