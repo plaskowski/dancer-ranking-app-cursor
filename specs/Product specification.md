@@ -240,6 +240,7 @@ Users can adjust rankings during events for various reasons:
 - Quick access to ranking adjustments and dance recording
 - Shows when each person was first spotted
 - Easy ranking modification based on current presentation/mood
+- **Score Display**: Shows dance scores as bold text after the dance impression for compact, readable flow
 - **Add newly met dancers** (FAB → Add Dancer Dialog)
   - Create new dancer and add to database
   - Option to mark as "already danced with"

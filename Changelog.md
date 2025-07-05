@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.2.2] - 2025-01-17
+
+### User Requests
+- At present tab move the score as text after the dance impression (maybe bold it)
+
+### Changed
+- **Score Display in Present Tab**: Modified score presentation in the "At present" tab for better readability
+  - **Score as Bold Text**: Score now appears as bold text after the dance impression instead of as a separate pill
+  - **Improved Flow**: Score naturally flows with the dancer information in the text content
+  - **Planning Tab Unchanged**: Score pill remains in Planning tab for visual emphasis during planning
+  - **Better UX**: More compact and readable display of dancer information in Present tab
+
+### Technical
+- **DancerCard Widget**: Modified to show score as bold text after impression when not in planning mode
+- **Conditional Display**: Score pill only appears in planning mode, bold text appears in present mode
+- **Text Styling**: Applied bold formatting with primary color for score text
+
 ## [v2.2.1] - 2025-01-17
 
 ### User Requests

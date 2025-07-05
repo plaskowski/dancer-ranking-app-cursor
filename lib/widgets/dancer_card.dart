@@ -105,6 +105,19 @@ class DancerCard extends StatelessWidget {
                           ),
                         ],
 
+                        // Show score as bold text after impression (for non-planning mode)
+                        if (dancer.hasScore && !isPlanningMode) ...[
+                          const TextSpan(text: ' • '),
+                          TextSpan(
+                            text: dancer.scoreName!,
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: context.danceTheme.rankingHigh,
+                            ),
+                          ),
+                        ],
+
                         // Show first met indicator (for any attendance status)
                         if (dancer.isFirstMetHere) ...[
                           const TextSpan(text: ' • '),
@@ -124,8 +137,8 @@ class DancerCard extends StatelessWidget {
               ),
             ),
 
-            // Score pill on the right side
-            if (dancer.hasScore && !hideScorePill) ...[
+            // Score pill on the right side (only show in planning mode)
+            if (dancer.hasScore && !hideScorePill && isPlanningMode) ...[
               const SizedBox(width: 8),
               Material(
                 color: Colors.transparent,
