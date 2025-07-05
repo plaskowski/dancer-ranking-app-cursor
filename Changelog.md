@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.4.1] - 2025-01-17
+
+### User Requests
+- "Start again and try step by step. Let's use Add Existing Dancer screen as the template. Extract a base component from it for now." - Request to create a reusable base component from the Add Existing Dancer screen
+
+### Added
+- **DancerFilterListWidget**: Created reusable base component for dancer filtering and list display
+  - **Common Filtering Logic**: Extracted tag filtering and search functionality into reusable widget
+  - **Flexible Data Source**: Configurable function to get dancers based on filters
+  - **Customizable UI**: Configurable title, info message, and dancer tile builder
+  - **Empty State Handling**: Optional custom empty state builder for specialized displays
+  - **Info Banner Control**: Optional info banner display for context-specific messages
+  - **Consistent UX**: Standardized loading states, error handling, and empty states
+
+### Changed
+- **Add Existing Dancer Screen**: Refactored to use new DancerFilterListWidget base component
+  - **Simplified Implementation**: Reduced from 248 lines to 89 lines (64% reduction)
+  - **Maintained Functionality**: All existing features preserved (tag filtering, search, mark present)
+  - **Better Code Organization**: Separated concerns between base component and specific implementation
+  - **Improved Maintainability**: Common filtering logic now centralized in base component
+  - **Consistent Behavior**: Uses same filtering patterns as other screens
+
+### Technical
+- Created `lib/widgets/dancer_filter_list_widget.dart` with reusable filtering and list display logic
+- Refactored `lib/screens/event/dialogs/add_existing_dancer_screen.dart` to use base component
+- Maintained all existing functionality while improving code organization
+- Applied proper Dart formatting and ensured no compilation errors
+- Base component designed for future reuse across other dancer list screens
+
 ## [v1.4.0] - 2025-01-17
 
 ### User Requests
