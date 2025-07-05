@@ -106,6 +106,29 @@ class DancerFilterService {
     }
   }
 
+  /// Get unranked dancers for an event, optionally filtered by multiple tags
+  Future<List<DancerWithEventInfo>> getUnrankedDancersForEventByTags(
+    int eventId, {
+    Set<int>? tagIds,
+  }) async {
+    if (tagIds != null && tagIds.isNotEmpty) {
+      // For multiple tags, we need to get all unranked dancers and filter by tags
+      final allUnrankedDancers = await _dancerService.getUnrankedDancersForEvent(eventId);
+
+      // Get dancers with tags to filter by tags
+      final dancersWithTags = await _dancerService.getDancersWithTags();
+      final dancersWithTagsMap =
+          Map.fromEntries(dancersWithTags.map((d) => MapEntry(d.id, d.tags.map((t) => t.id).toSet())));
+
+      return allUnrankedDancers.where((dancer) {
+        final dancerTags = dancersWithTagsMap[dancer.id] ?? <int>{};
+        return dancerTags.any((tagId) => tagIds.contains(tagId));
+      }).toList();
+    } else {
+      return _dancerService.getUnrankedDancersForEvent(eventId);
+    }
+  }
+
   /// Get available dancers for an event with tag filtering
   /// Returns dancers who are unranked and absent, optionally filtered by tags
   Future<List<DancerWithTags>> getAvailableDancersWithTagsForEvent(

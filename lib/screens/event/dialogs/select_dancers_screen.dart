@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/dancer_with_tags.dart';
 import '../../../screens/event/event_screen.dart';
 import '../../../services/attendance_service.dart';
 import '../../../services/dancer/dancer_filter_service.dart';
-import '../../../services/dancer_service.dart';
 import '../../../theme/theme_extensions.dart';
-import '../../../utils/action_logger.dart';
 import '../../../widgets/safe_fab.dart';
 import '../../../widgets/simplified_tag_filter.dart';
 
@@ -26,23 +25,8 @@ class SelectDancersScreen extends StatefulWidget {
 
 class _SelectDancersScreenState extends State<SelectDancersScreen> {
   final Set<int> _selectedDancerIds = <int>{};
-  String _searchQuery = '';
   bool _isLoading = false;
   int _refreshKey = 0; // Add refresh key for reactive updates
-
-  // New tag filtering state
-  int? _selectedTagId; // null = show all
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  void _onTagChanged(int? tagId) {
-    setState(() {
-      _selectedTagId = tagId;
-    });
-  }
 
   Future<void> _addSelectedDancers() async {
     if (_selectedDancerIds.isEmpty) {
@@ -103,6 +87,58 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
     }
   }
 
+  Future<List<DancerWithTags>> _getAvailableDancers(List<int> tagIds, String searchQuery) async {
+    final filterService = DancerFilterService.of(context);
+
+    // Get dancers based on tag filtering
+    List<DancerWithTags> dancers;
+    if (tagIds.isNotEmpty) {
+      // Use tag filtering when tags are selected
+      dancers = await filterService.getAvailableDancersWithTagsForEvent(
+        widget.eventId,
+        tagIds: tagIds.toSet(),
+      );
+    } else {
+      // Get all available dancers when no tags are selected
+      dancers = await filterService.getAvailableDancersWithTagsForEvent(
+        widget.eventId,
+      );
+    }
+
+    // Apply search filtering if search query is provided
+    if (searchQuery.isNotEmpty) {
+      dancers = filterService.filterDancersByText(dancers, searchQuery);
+    }
+
+    return dancers;
+  }
+
+  Widget _buildDancerTile(DancerWithTags dancer) {
+    final isSelected = _selectedDancerIds.contains(dancer.id);
+
+    return Card(
+      margin: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+      child: CheckboxListTile(
+        title: Text(
+          dancer.name,
+          style: const TextStyle(fontWeight: FontWeight.w600),
+        ),
+        subtitle: dancer.notes != null && dancer.notes!.isNotEmpty ? Text(dancer.notes!) : null,
+        value: isSelected,
+        onChanged: (bool? value) {
+          setState(() {
+            if (value == true) {
+              _selectedDancerIds.add(dancer.id);
+            } else {
+              _selectedDancerIds.remove(dancer.id);
+            }
+          });
+        },
+        controlAffinity: ListTileControlAffinity.leading,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,132 +179,11 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
             ),
         ],
       ),
-      body: Column(
-        children: [
-          // Filter Section
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SimplifiedTagFilter(
-              selectedTagIds: _selectedTagId != null ? [_selectedTagId!] : [],
-              onTagsChanged: (tagIds) {
-                _onTagChanged(tagIds.isNotEmpty ? tagIds.first : null);
-              },
-              onSearchChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
-              searchHintText: 'Search dancers',
-              initialSearchQuery: _searchQuery,
-            ),
-          ),
-
-          // Dancers List
-          Expanded(
-            child: FutureBuilder<List<DancerWithEventInfo>>(
-              key: ValueKey('${_searchQuery}_${_selectedTagId}_$_refreshKey'),
-              future: _getDancersForSelection(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (snapshot.hasError) {
-                  ActionLogger.logError('SelectDancersScreen', 'stream_error', {
-                    'eventId': widget.eventId,
-                    'error': snapshot.error.toString(),
-                    'stackTrace': snapshot.stackTrace?.toString(),
-                  });
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.error_outline,
-                          size: 64,
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Unable to load dancers',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Theme.of(context).colorScheme.error,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Please try again or contact support',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-
-                final allDancers = snapshot.data ?? [];
-                final filteredDancers = _filterDancers(allDancers);
-
-                if (filteredDancers.isEmpty) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.people, size: 64, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                        const SizedBox(height: 16),
-                        Text(
-                          _searchQuery.isNotEmpty || _selectedTagId != null
-                              ? 'No dancers found with current filters'
-                              : 'All dancers are already ranked for this event',
-                          style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  );
-                }
-
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: filteredDancers.length,
-                  itemBuilder: (context, index) {
-                    final dancer = filteredDancers[index];
-                    final isSelected = _selectedDancerIds.contains(dancer.id);
-
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      child: CheckboxListTile(
-                        title: Text(
-                          dancer.name,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        subtitle: dancer.notes != null && dancer.notes!.isNotEmpty
-                            ? Text(
-                                dancer.notes!,
-                                style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                              )
-                            : null,
-                        value: isSelected,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            if (value == true) {
-                              _selectedDancerIds.add(dancer.id);
-                            } else {
-                              _selectedDancerIds.remove(dancer.id);
-                            }
-                          });
-                        },
-                        controlAffinity: ListTileControlAffinity.leading,
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
+      body: _SelectDancersFilterWidget(
+        eventId: widget.eventId,
+        getDancers: _getAvailableDancers,
+        buildDancerTile: _buildDancerTile,
+        refreshKey: _refreshKey,
       ),
       floatingActionButton: _selectedDancerIds.isNotEmpty
           ? SafeFAB(
@@ -290,17 +205,151 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
           : null,
     );
   }
+}
 
-  Future<List<DancerWithEventInfo>> _getDancersForSelection() async {
-    final filterService = DancerFilterService.of(context);
-    return filterService.getUnrankedDancersForEvent(
-      widget.eventId,
-      tagId: _selectedTagId,
+class _SelectDancersFilterWidget extends StatefulWidget {
+  final int eventId;
+  final Future<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery) getDancers;
+  final Widget Function(DancerWithTags dancer) buildDancerTile;
+  final int? refreshKey;
+
+  const _SelectDancersFilterWidget({
+    required this.eventId,
+    required this.getDancers,
+    required this.buildDancerTile,
+    this.refreshKey,
+  });
+
+  @override
+  State<_SelectDancersFilterWidget> createState() => _SelectDancersFilterWidgetState();
+}
+
+class _SelectDancersFilterWidgetState extends State<_SelectDancersFilterWidget> {
+  List<int> _selectedTagIds = [];
+  String _searchQuery = '';
+
+  void _onTagsChanged(List<int> tagIds) {
+    setState(() {
+      _selectedTagIds = tagIds;
+    });
+  }
+
+  void _onSearchChanged(String query) {
+    setState(() {
+      _searchQuery = query;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Column(
+        children: [
+          // Simplified Filter Section
+          SimplifiedTagFilter(
+            selectedTagIds: _selectedTagIds,
+            onTagsChanged: _onTagsChanged,
+            onSearchChanged: _onSearchChanged,
+          ),
+
+          // Dancers List
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                // Info Banner
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Showing unranked and absent dancers only. Select multiple dancers to add to the event.',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Dancers List
+                const SizedBox(height: 8),
+                ..._buildDancerList(context),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  List<DancerWithEventInfo> _filterDancers(List<DancerWithEventInfo> dancers) {
-    final filterService = DancerFilterService.of(context);
-    return filterService.filterDancersByTextEvent(dancers, _searchQuery);
+  List<Widget> _buildDancerList(BuildContext context) {
+    return [
+      FutureBuilder<List<DancerWithTags>>(
+        key: ValueKey('${_selectedTagIds.toString()}_$_searchQuery${widget.refreshKey ?? 0}'),
+        future: widget.getDancers(_selectedTagIds, _searchQuery),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          final allDancers = snapshot.data ?? [];
+
+          if (allDancers.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.person_search,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    _selectedTagIds.isNotEmpty ? 'No dancers found with current filters' : 'No available dancers',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _selectedTagIds.isNotEmpty ? 'Try different search terms or clear filters' : 'No dancers available',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return Column(
+            children: List.generate(allDancers.length, (index) {
+              final dancer = allDancers[index];
+              return widget.buildDancerTile(dancer);
+            }),
+          );
+        },
+      ),
+    ];
   }
 }
