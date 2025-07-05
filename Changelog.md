@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.2.2] - 2025-01-17
+
+### User Requests
+- At present tab move the score as text after the dance impression (maybe bold it)
+- add a note character for impression and star character for score but switch them so that score goes before impression. Make the score the same color as impressioon.
+- I changed my mind. Remove the note and star. Also, on summary tab don't show the score in the card
+
+### Changed
+- **Score Display Enhancement**: Improved score and impression presentation across tabs
+  - **Clean Text Display**: Removed star and note characters for cleaner appearance
+  - **Score Before Impression**: Score appears before impression for better information flow
+  - **Unified Color Scheme**: Score and impression use the same color for visual consistency
+  - **Score as Bold Text**: Score appears as bold text instead of as a separate pill
+  - **Summary Tab Optimization**: Score hidden on summary tab to reduce visual clutter
+  - **Planning Tab Unchanged**: Score pill remains in Planning tab for visual emphasis during planning
+  - **Better UX**: Clean, readable display with logical information order
+
+### Technical
+- **DancerCard Widget**: Modified to show score before impression without visual icons
+- **Summary Tab Logic**: Added `!isSummaryMode` condition to hide score text on summary tab
+- **Color Unification**: Both score and impression use danceAccent color theme
+- **Conditional Display**: Score pill only appears in planning mode, formatted text appears in present mode (but not summary mode)
+
 ## [v2.2.1] - 2025-01-17
 
 ### User Requests

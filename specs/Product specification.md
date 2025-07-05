@@ -240,6 +240,11 @@ Users can adjust rankings during events for various reasons:
 - Quick access to ranking adjustments and dance recording
 - Shows when each person was first spotted
 - Easy ranking modification based on current presentation/mood
+- **Clean Score & Impression Display**: Shows dance scores and impressions with logical information flow
+  - **Score Before Impression**: Scores appear as bold text before impressions for better information hierarchy
+  - **Clean Text Format**: Simple text display without visual icons for cleaner appearance
+  - **Unified Color Scheme**: Both score and impression use the same color for visual consistency
+  - **Compact Flow**: Natural text flow with logical information order
 - **Add newly met dancers** (FAB → Add Dancer Dialog)
   - Create new dancer and add to database
   - Option to mark as "already danced with"
@@ -283,6 +288,7 @@ Users can adjust rankings during events for various reasons:
 - View complete event attendance with dance completion status
 - Edit scores for any attendee regardless of dance status
 - Review and modify impressions from recorded dances
+- **Clean Card Display**: Scores are hidden in dancer cards to reduce visual clutter and focus on impressions
 - **Statistics Display**: Simple header showing "Recorded X dances total. Met Y people for the first time."
 - **Score Groupings**: Dancers organized by score with count display and sticky headers
 - **Sticky Group Headers**: Score group headers remain pinned at top while scrolling through each group's dancers
