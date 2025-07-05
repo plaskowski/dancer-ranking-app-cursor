@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [v2.1.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - "when splitting the history put the dancer name first" - Request to change the naming format for extracted dance records
@@ -22,7 +34,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistency**: Aligns with user preference for dancer-centric naming
 
 ## [v2.0.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -48,7 +84,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Android Version Code**: Updated to 200 (2.0.0 without dots)
 
 ## [v1.5.7] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -61,7 +121,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -102,7 +186,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Better Workflow**: Reduces scrolling and improves efficiency for common tasks
 
 ## [v1.5.6] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -115,7 +223,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -139,7 +271,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -152,7 +308,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -208,7 +388,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Audit Logging**: Comprehensive logging for all extraction operations
 
 ## [v1.5.5] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -221,7 +425,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -245,7 +473,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -258,7 +510,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -309,7 +585,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Error Prevention**: Prevents constraint violations in dancer merge operations
 
 ## [v1.5.4] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -322,7 +622,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -346,7 +670,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -359,7 +707,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -409,7 +781,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **UI Consistency**: Improved visual hierarchy in dancer list display
 
 ## [v1.5.2] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -422,7 +818,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -446,7 +866,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -459,7 +903,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -494,7 +962,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -507,7 +999,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -531,7 +1047,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -544,7 +1084,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -641,7 +1205,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Code Quality**: Improved async handling and error management patterns
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -654,7 +1242,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -678,7 +1290,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -691,7 +1327,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -726,7 +1386,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -739,7 +1423,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -763,7 +1471,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -776,7 +1508,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -852,7 +1608,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **UI Consistency**: Standardized visual design across all simple selection dialogs
 
 ## [v1.4.6] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -865,7 +1645,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -889,7 +1693,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -902,7 +1730,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -937,7 +1789,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -950,7 +1826,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -974,7 +1874,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -987,7 +1911,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1033,7 +1981,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1046,7 +2018,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1070,7 +2066,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1083,7 +2103,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1118,7 +2162,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1131,7 +2199,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1155,7 +2247,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1168,7 +2284,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1256,7 +2396,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Code Simplification**: Reduced complexity where appropriate for better UX
 
 ## [v1.4.5] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1269,7 +2433,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1293,7 +2481,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1306,7 +2518,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1341,7 +2577,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1354,7 +2614,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1378,7 +2662,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1391,7 +2699,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1437,7 +2769,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1450,7 +2806,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1474,7 +2854,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1487,7 +2891,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1522,7 +2950,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1535,7 +2987,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1559,7 +3035,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1572,7 +3072,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1661,7 +3185,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **User Experience**: Enhanced visual consistency and interaction patterns
 
 ## [v1.4.4] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1674,7 +3222,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1698,7 +3270,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1711,7 +3307,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1746,7 +3366,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1759,7 +3403,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1783,7 +3451,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1796,7 +3488,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1842,7 +3558,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1855,7 +3595,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1879,7 +3643,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1892,7 +3680,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1927,7 +3739,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1940,7 +3776,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1964,7 +3824,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -1977,7 +3861,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2063,7 +3971,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Code Consistency**: Unified filtering patterns across all dancer selection components
 
 ## [v1.4.3] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2076,7 +4008,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2100,7 +4056,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2113,7 +4093,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2148,7 +4152,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2161,7 +4189,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2185,7 +4237,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2198,7 +4274,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2244,7 +4344,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2257,7 +4381,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2281,7 +4429,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2294,7 +4466,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2329,7 +4525,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2342,7 +4562,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2366,7 +4610,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2379,7 +4647,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2473,7 +4765,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.4.2] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2486,7 +4802,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2510,7 +4850,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2523,7 +4887,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2558,7 +4946,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2571,7 +4983,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2595,7 +5031,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2608,7 +5068,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2654,7 +5138,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2667,7 +5175,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2691,7 +5223,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2704,7 +5260,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2739,7 +5319,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2752,7 +5356,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2776,7 +5404,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2789,7 +5441,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2883,7 +5559,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.4.1] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2896,7 +5596,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2920,7 +5644,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2933,7 +5681,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2968,7 +5740,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -2981,7 +5777,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3005,7 +5825,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3018,7 +5862,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3064,7 +5932,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3077,7 +5969,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3101,7 +6017,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3114,7 +6054,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3149,7 +6113,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3162,7 +6150,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3186,7 +6198,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3199,7 +6235,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3293,7 +6353,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.4.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3306,7 +6390,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3330,7 +6438,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3343,7 +6475,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3378,7 +6534,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3391,7 +6571,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3415,7 +6619,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3428,7 +6656,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3474,7 +6726,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3487,7 +6763,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3511,7 +6811,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3524,7 +6848,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3559,7 +6907,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3572,7 +6944,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3596,7 +6992,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3609,7 +7029,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3703,7 +7147,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.3.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3716,7 +7184,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3740,7 +7232,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3753,7 +7269,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3788,7 +7328,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3801,7 +7365,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3825,7 +7413,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3838,7 +7450,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3884,7 +7520,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3897,7 +7557,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3921,7 +7605,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3934,7 +7642,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3969,7 +7701,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -3982,7 +7738,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4006,7 +7786,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4019,7 +7823,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4113,7 +7941,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.2.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4126,7 +7978,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4150,7 +8026,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4163,7 +8063,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4198,7 +8122,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4211,7 +8159,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4235,7 +8207,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4248,7 +8244,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4294,7 +8314,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4307,7 +8351,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4331,7 +8399,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4344,7 +8436,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4379,7 +8495,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4392,7 +8532,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4416,7 +8580,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4429,7 +8617,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4523,7 +8735,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.1.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4536,7 +8772,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4560,7 +8820,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4573,7 +8857,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4608,7 +8916,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4621,7 +8953,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4645,7 +9001,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4658,7 +9038,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4704,7 +9108,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4717,7 +9145,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4741,7 +9193,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4754,7 +9230,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4789,7 +9289,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4802,7 +9326,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4826,7 +9374,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4839,7 +9411,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4933,7 +9529,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v1.0.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4946,7 +9566,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4970,7 +9614,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -4983,7 +9651,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5018,7 +9710,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5031,7 +9747,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5055,7 +9795,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5068,7 +9832,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5114,7 +9902,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5127,7 +9939,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5151,7 +9987,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5164,7 +10024,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5199,7 +10083,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5212,7 +10120,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5236,7 +10168,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5249,7 +10205,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5343,7 +10323,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.9.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5356,7 +10360,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5380,7 +10408,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5393,7 +10445,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5428,7 +10504,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5441,7 +10541,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5465,7 +10589,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5478,7 +10626,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5524,7 +10696,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5537,7 +10733,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5561,7 +10781,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5574,7 +10818,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5609,7 +10877,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5622,7 +10914,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5646,7 +10962,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5659,7 +10999,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5753,7 +11117,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.8.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5766,7 +11154,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5790,7 +11202,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5803,7 +11239,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5838,7 +11298,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5851,7 +11335,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5875,7 +11383,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5888,7 +11420,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5934,7 +11490,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5947,7 +11527,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5971,7 +11575,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -5984,7 +11612,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6019,7 +11671,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6032,7 +11708,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6056,7 +11756,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6069,7 +11793,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6163,7 +11911,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.7.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6176,7 +11948,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6200,7 +11996,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6213,7 +12033,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6248,7 +12092,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6261,7 +12129,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6285,7 +12177,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6298,7 +12214,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6333,7 +12273,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6346,7 +12310,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6370,7 +12358,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6383,7 +12395,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6418,7 +12454,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6431,7 +12491,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6455,7 +12539,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6468,7 +12576,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6562,7 +12694,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.6.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6575,7 +12731,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6599,7 +12779,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6612,7 +12816,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6647,7 +12875,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6660,7 +12912,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6684,7 +12960,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6697,7 +12997,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6743,7 +13067,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6756,7 +13104,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6780,7 +13152,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6793,7 +13189,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6828,7 +13248,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6841,7 +13285,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6865,7 +13333,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6878,7 +13370,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6972,7 +13488,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.5.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -6985,7 +13525,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7009,7 +13573,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7022,7 +13610,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7057,7 +13669,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7070,7 +13706,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7094,7 +13754,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7107,7 +13791,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7153,7 +13861,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7166,7 +13898,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7190,7 +13946,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7203,7 +13983,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7238,7 +14042,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7251,7 +14079,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7275,7 +14127,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7288,7 +14164,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7382,7 +14282,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.4.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7395,7 +14319,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7419,7 +14367,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7432,7 +14404,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7467,7 +14463,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7480,7 +14500,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7504,7 +14548,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7517,7 +14585,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7563,7 +14655,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7576,7 +14692,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7600,7 +14740,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7613,7 +14777,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7648,7 +14836,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7661,7 +14873,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7685,7 +14921,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7698,7 +14958,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7792,7 +15076,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.3.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7805,7 +15113,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7829,7 +15161,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7842,7 +15198,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7877,7 +15257,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7890,7 +15294,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7914,7 +15342,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7927,7 +15379,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7973,7 +15449,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -7986,7 +15486,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8010,7 +15534,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8023,7 +15571,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8058,7 +15630,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8071,7 +15667,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8095,7 +15715,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8108,7 +15752,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8202,7 +15870,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.2.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8215,7 +15907,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8239,7 +15955,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8252,7 +15992,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8287,7 +16051,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8300,7 +16088,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8324,7 +16136,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8337,7 +16173,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8383,7 +16243,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8396,7 +16280,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8420,7 +16328,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8433,7 +16365,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8468,7 +16424,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8481,7 +16461,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8505,7 +16509,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8518,7 +16546,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8612,7 +16664,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Consistent UI**: Maintained visual consistency with other tabs
 
 ## [v0.1.0] - 2025-01-17
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8625,7 +16701,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8649,7 +16749,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8662,7 +16786,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8697,7 +16845,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8710,7 +16882,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8734,7 +16930,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8747,7 +16967,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8793,7 +17037,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.4.8] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8806,7 +17074,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8830,7 +17122,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8843,7 +17159,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8878,7 +17218,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.5.3] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8891,7 +17255,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8915,7 +17303,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v2.0.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
@@ -8928,7 +17340,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [v1.6.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 ## [v2.1.0] - 2025-07-05
+## [v2.2.0] - 2025-07-05
+
+### User Requests
+- Release build and upload
+
+### Added
+- Automated release process
+
+### Technical
+- Release script for version bumping and APK distribution
+
+
 
 ### User Requests
 - Release build and upload
