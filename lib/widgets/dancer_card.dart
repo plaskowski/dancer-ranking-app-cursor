@@ -91,11 +91,11 @@ class DancerCard extends StatelessWidget {
                           ),
                         ],
 
-                        // Show score with star before impression (for non-planning mode)
-                        if (dancer.hasScore && !isPlanningMode) ...[
+                        // Show score before impression (for non-planning mode, not summary mode)
+                        if (dancer.hasScore && !isPlanningMode && !isSummaryMode) ...[
                           const TextSpan(text: ' • '),
                           TextSpan(
-                            text: '★ ${dancer.scoreName!}',
+                            text: dancer.scoreName!,
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
@@ -104,11 +104,11 @@ class DancerCard extends StatelessWidget {
                           ),
                         ],
 
-                        // Show dance impression with note if they have danced and have an impression
+                        // Show dance impression if they have danced and have an impression
                         if (dancer.hasDanced && dancer.impression != null && dancer.impression!.isNotEmpty) ...[
                           const TextSpan(text: ' • '),
                           TextSpan(
-                            text: '♪ ${dancer.impression!}',
+                            text: dancer.impression!,
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.normal,
