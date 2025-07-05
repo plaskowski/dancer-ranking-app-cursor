@@ -7,7 +7,6 @@ Redesign the Present tab to incorporate critical functionality from the Planning
 Currently, the Planning tab provides essential functionality for current events:
 - View expected attendees who haven't arrived yet
 - Remove dancers from event roster (only available in planning mode)
-- Bulk add dancers
 
 If the Planning tab is removed, users lose these capabilities. The Present tab redesign addresses this by incorporating these features into the Present tab workflow.
 
@@ -29,9 +28,9 @@ The Present tab will show all dancers in a single, unified list:
 - **Status badges**: Each dancer shows their current status (Present, Expected, Absent)
 
 #### Visual Design
-- **Present dancers**: Normal appearance with full functionality
-- **Expected dancers**: Muted appearance with "Expected" badge
-- **Absent dancers**: Muted appearance with "Absent" badge
+- **Present dancers**: Normal card background with full functionality
+- **Expected dancers**: Question mark (?) indicator in status area
+- **Absent dancers**: Question mark (?) indicator in status area
 - **Status-based actions**: Different actions available based on dancer status
 
 ### 3. Enhanced FAB Menu
@@ -43,14 +42,13 @@ The Floating Action Button will provide a comprehensive menu:
 - **Record Dance**: Quick dance recording for present dancers
 
 #### Secondary Actions (for Event Management):
-- **Bulk Add Dancers**: Add multiple dancers at once
 - **Manage Expected**: Expand/collapse expected dancers section
 
 ### 4. Enhanced Dancer Cards
 
 #### Single Card Design:
 - **Unified appearance**: All dancers use the same card component
-- **Status badges**: Visual indicator showing Present/Expected/Absent status
+- **Status indicators**: Question mark (?) for expected/absent, normal for present
 - **Contextual actions**: Actions change based on dancer status
 - **Consistent layout**: Same information structure for all dancers
 
@@ -86,31 +84,31 @@ The Floating Action Button will provide a comprehensive menu:
 │                                                         │
 │  Advanced Dancers (3)                                  │
 │  ┌─────────────────────────────────────────────────────┐ │
-│  │ [Present] John Smith                    [Record]   │ │
+│  │ John Smith                              [Record]   │ │
 │  │ Rank: Advanced • 2 dances recorded                 │ │
 │  └─────────────────────────────────────────────────────┘ │
 │  ┌─────────────────────────────────────────────────────┐ │
-│  │ [Present] Sarah Johnson                  [Record]   │ │
+│  │ Sarah Johnson                            [Record]   │ │
 │  │ Rank: Advanced • 1 dance recorded                  │ │
 │  └─────────────────────────────────────────────────────┘ │
 │  ┌─────────────────────────────────────────────────────┐ │
-│  │ [Expected] Mike Wilson                             │ │
+│  │ Mike Wilson                                [?]     │ │
 │  │ Rank: Advanced • Tap to mark present               │ │
 │  └─────────────────────────────────────────────────────┘ │
 │                                                         │
 │  Intermediate Dancers (2)                               │
 │  ┌─────────────────────────────────────────────────────┐ │
-│  │ [Present] Lisa Brown                     [Record]   │ │
+│  │ Lisa Brown                              [Record]   │ │
 │  │ Rank: Intermediate • 0 dances recorded             │ │
 │  └─────────────────────────────────────────────────────┘ │
 │  ┌─────────────────────────────────────────────────────┐ │
-│  │ [Absent] Tom Davis                                 │ │
+│  │ Tom Davis                                   [?]     │ │
 │  │ Rank: Intermediate • Tap to mark present           │ │
 │  └─────────────────────────────────────────────────────┘ │
 │                                                         │
 │  Beginner Dancers (1)                                   │
 │  ┌─────────────────────────────────────────────────────┐ │
-│  │ [Expected] Anna Lee                                │ │
+│  │ Anna Lee                                     [?]     │ │
 │  │ Rank: Beginner • Tap to mark present               │ │
 │  └─────────────────────────────────────────────────────┘ │
 │                                                         │
@@ -135,11 +133,6 @@ The Floating Action Button will provide a comprehensive menu:
 │  │ Mark unranked dancers as present                  │ │
 │  └─────────────────────────────────────────────────────┘ │
 │                                                         │
-│  ┌─────────────────────────────────────────────────────┐ │
-│  │ [📋] Bulk Add Dancers                             │ │
-│  │ Add multiple dancers at once                       │ │
-│  └─────────────────────────────────────────────────────┘ │
-│                                                         │
 │                                    [Cancel]             │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -149,27 +142,18 @@ The Floating Action Button will provide a comprehensive menu:
 #### Present Dancer Card
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ [Present] John Smith                        [Record]   │
+│ John Smith                                  [Record]   │
 │ Rank: Advanced • 2 dances recorded                    │
 │ Tags: #regular, #advanced                             │
 └─────────────────────────────────────────────────────────┘
 ```
 
-#### Expected Dancer Card
+#### Expected/Absent Dancer Card
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ [Expected] Mike Wilson                                │
+│ Mike Wilson                                    [?]     │
 │ Rank: Advanced • Tap to mark present                  │
 │ Tags: #regular, #advanced                             │
-└─────────────────────────────────────────────────────────┘
-```
-
-#### Absent Dancer Card
-```
-┌─────────────────────────────────────────────────────────┐
-│ [Absent] Tom Davis                                    │
-│ Rank: Intermediate • Tap to mark present              │
-│ Tags: #regular, #intermediate                         │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -200,22 +184,16 @@ The Floating Action Button will provide a comprehensive menu:
 └─────────────────────────────────────────────────────────┘
 ```
 
-### 5. Status Badge Design
+### 5. Status Indicator Design
 
-#### Present Status
-```
-[Present] - Green background, white text
-```
+#### Present Dancers
+- **No indicator**: Normal card appearance
+- **Record button**: Available for dance recording
 
-#### Expected Status  
-```
-[Expected] - Orange background, white text
-```
-
-#### Absent Status
-```
-[Absent] - Gray background, white text
-```
+#### Expected/Absent Dancers
+- **Question mark (?)** indicator in status area
+- **No record button**: Cannot record dances until marked present
+- **Tap to mark present**: Primary action to change status
 
 ## User Workflow
 
@@ -227,8 +205,9 @@ The Floating Action Button will provide a comprehensive menu:
 
 ### 2. Mid-Event Additions
 1. **Tap FAB** → Open action menu
-2. **Choose "Bulk Add"** → Add multiple dancers at once
-3. **New dancers appear** → In list with "Expected" status
+2. **Choose "Add New Dancer"** → Create new dancer profile
+3. **Choose "Add Existing Dancer"** → Mark unranked dancers as present
+4. **New dancers appear** → In list with appropriate status
 
 ### 3. Managing No-Shows
 1. **Scan through list** → See expected dancers with muted appearance
@@ -246,7 +225,6 @@ The Floating Action Button will provide a comprehensive menu:
 ### 2. Preserved Functionality
 - **All critical features** from Planning tab maintained
 - **Remove dancer capability** still available
-- **Bulk operations** still supported
 
 ### 3. Improved UX
 - **Clear visual hierarchy** between present and expected
@@ -263,7 +241,7 @@ The Floating Action Button will provide a comprehensive menu:
 ### Phase 1: Core Implementation
 1. **Modify Present tab** to show all dancers with rankings
 2. **Add status badges** to dancer cards
-3. **Enhance FAB menu** with import/bulk actions
+3. **Enhance FAB menu** with individual add actions
 4. **Add remove dancer capability** to expected dancers
 
 ### Phase 2: Polish
@@ -292,7 +270,7 @@ The Floating Action Button will provide a comprehensive menu:
 
 ### 3. Feature Usage
 - **Maintained usage** of remove dancer feature
-- **Improved adoption** of bulk operations
+- **Improved adoption** of individual add operations
 
 ## Risks & Mitigation
 
