@@ -1,5 +1,7 @@
 # Implementation Guide: Multi-Agent Documentation Structure
 
+> **Note**: This is a supporting document for the [Multi-Agent Documentation Structure Proposal](multi-agent-docs-structure.md)
+
 ## Overview
 
 This guide provides step-by-step instructions for implementing the proposed multi-agent documentation structure in the Dancer Ranking App project.
