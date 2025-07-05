@@ -26,6 +26,17 @@ class PlanningTab extends StatefulWidget {
 }
 
 class _PlanningTabState extends State<PlanningTab> {
+  // Add a key to force StreamBuilder refresh
+  int _refreshKey = 0;
+
+  void _triggerRefresh() {
+    if (mounted) {
+      setState(() {
+        _refreshKey++;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ActionLogger.logAction(
@@ -34,6 +45,7 @@ class _PlanningTabState extends State<PlanningTab> {
     final dancerService = Provider.of<DancerService>(context);
 
     return StreamBuilder<List<DancerWithEventInfo>>(
+      key: ValueKey(_refreshKey), // Force rebuild when refresh key changes
       stream: dancerService.watchDancersForEvent(widget.eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -296,9 +308,13 @@ class PlanningTabActions implements EventTabActions {
       ),
     );
 
-    // Refresh the screen if dancers were added
+    // Only refresh if dancers were actually added (result == true)
     if (result == true) {
       onRefresh();
+      
+      // Also trigger refresh for the planning tab specifically
+      final planningTabState = context.findAncestorStateOfType<_PlanningTabState>();
+      planningTabState?._triggerRefresh();
     }
   }
 
