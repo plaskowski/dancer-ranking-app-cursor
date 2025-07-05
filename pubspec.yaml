@@ -32,6 +32,9 @@ dependencies:
   # Native toasts
   fluttertoast: ^8.2.4
 
+  # App information
+  package_info_plus: ^8.0.2
+
   # Icons
   cupertino_icons: ^1.0.6
 
