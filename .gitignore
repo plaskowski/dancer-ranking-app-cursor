@@ -13,6 +13,24 @@
 migrate_working_dir/
 build/
 
+# Node.js related
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.npm
+.eslintcache
+*.tgz
+*.tar.gz
+.nyc_output/
+coverage/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
 # IntelliJ related
 *.iml
 *.ipr
@@ -44,3 +62,16 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 Todolist.human.md
+
+# Screenshot automation outputs
+screenshots/
+screenshot_reports/
+demo-report.html
+*.screenshot.png
+**/test_screenshots/
+baseline_screenshots/
+test_output/
+puppeteer_cache/
+chromedriver
+.screenshots/
+temp_screenshots/
