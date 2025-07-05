@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.5.4] - 2025-01-17
+
+### User Requests
+- "on Dancers screen, in a row, put the notes in a new line (if they are not empty), and the last seen to span whole width of the row" - Request to improve dancer card layout
+
+### Improved
+- **Dancer Card Layout**: Enhanced dancer card layout in Dancers screen
+  - **Notes on New Line**: Moved dancer notes to separate line below last seen info
+  - **Full Width Last Seen**: Last seen event info now spans the full width of the row
+  - **Better Spacing**: Improved spacing between elements for cleaner visual hierarchy
+  - **Removed Divider**: Eliminated vertical divider since notes and last seen are now separate
+
+### Technical
+- **Layout Optimization**: Restructured dancer card subtitle layout for better readability
+- **UI Consistency**: Improved visual hierarchy in dancer list display
+
 ## [v1.5.2] - 2025-01-17
 ## [v1.5.3] - 2025-07-05
 

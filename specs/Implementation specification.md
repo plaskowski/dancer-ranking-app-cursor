@@ -30,9 +30,15 @@
 
 **Last Met Information**:
 - Shows "Last met: [Event Name] • [Date]" for dancers who have attended events
+- Spans the full width of the dancer card row for better readability
 - Automatically updates when new attendances are recorded
 - Only displays for dancers with actual attendance records (excludes absent status)
 - Uses reactive stream for real-time updates
+
+**Dancer Notes**:
+- Displayed on a separate line below the last met information
+- Only shown when notes are not empty
+- Uses consistent styling with last met info for visual hierarchy
 
 **Real-Time Filtering**:
 - Uses streaming architecture for immediate updates when data changes
