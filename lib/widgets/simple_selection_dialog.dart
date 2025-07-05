@@ -125,18 +125,17 @@ class _SimpleSelectionDialogState<T> extends State<SimpleSelectionDialog<T>> {
                             final isSelected = widget.isSelected?.call(item) ?? false;
 
                             return ListTile(
-                              leading: Icon(
-                                isSelected ? Icons.check_circle : Icons.circle_outlined,
-                                color: isSelected
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context).colorScheme.onSurfaceVariant,
-                              ),
                               title: Text(
                                 widget.itemTitle(item),
                                 style: TextStyle(
                                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                  color: isSelected
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Theme.of(context).colorScheme.onSurface,
                                 ),
                               ),
+                              tileColor:
+                                  isSelected ? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3) : null,
                               onTap: () => _handleItemSelected(item),
                             );
                           }).toList(),
