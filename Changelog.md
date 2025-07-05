@@ -5,29 +5,59 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v1.4.7] - 2025-01-17
+## [v1.4.9] - 2025-01-17
+
+### User Requests
+- "this" - Request to fix double border issue in text search fields
+- "make @release.sh script bump the pubspec version too" - Request to ensure release script updates pubspec version
+- "@dancers_screen.dart should be more aligned with @add_existing_dancer_screen.dart" - Request to align dancers screen with cleaner pattern
+- "Support /dancers path for CLI arg" - Request to add CLI navigation support for dancers screen
+- "the text search field in Dancers screen has 2 outlines" - Request to fix double border issue in dancers screen
+- "Great, but now it has different outline than the tag filter" - Request to make search field outline consistent with filter buttons
+- "still no good" - Request to fix corner clipping issue in text field
+- "make it less tall to have the same height as the tag filter button" - Request to adjust text field height
+- "all good, commit" - Request to commit all changes
+
+### Fixed
+- **Double Border Issue**: Fixed text search fields having two borders due to global theme + local border conflicts
+  - **CommonSearchField**: Removed explicit `border: OutlineInputBorder()` to use global theme
+  - **AddDancerDialog**: Removed explicit border declaration for notes field
+  - **DanceRecordingDialog**: Removed explicit border declaration for impression field
+  - **CompactDancerFilter**: Removed explicit border declaration for search field
+  - **TagSelectionFlyout**: Removed explicit border declaration for search field
+  - **SelectMergeTargetScreen**: Removed explicit border declaration for search field
+- **Dancers Screen Alignment**: Refactored dancers screen to follow cleaner pattern like add_existing_dancer_screen
+  - **Async/Await Pattern**: Converted all methods to use proper `Future<void>` with async/await
+  - **Cleaner Dialog Handling**: Delete confirmation now returns boolean instead of inline logic
+  - **Better Separation**: Business logic separated from UI logic
+  - **Info Message**: Added helpful context message like other screens
+  - **Consistent Error Handling**: More consistent with pattern used in other screens
+- **CLI Navigation Support**: Added support for `/dancers` path in CLI navigation
+  - **Help Documentation**: Updated CLI help to include dancers path and examples
+  - **Navigation Logic**: Added dancers screen navigation in CLI navigator
+  - **Import Support**: Added proper import for DancersScreen
+  - **Path Resolution**: Updated path resolution to handle non-event screens
+- **Search Field Consistency**: Fixed search field outline and height consistency in dancers screen
+  - **Theme Colors**: Changed from hardcoded grey to theme-based outline colors
+  - **Native Borders**: Switched from custom container to TextField's native border system
+  - **Height Matching**: Added height constraint to match filter button height (40px)
+  - **Corner Clipping**: Fixed corner clipping issues with proper border implementation
+  - **Content Padding**: Adjusted padding for compact appearance
+
+### Improved
+- **Release Script**: Enhanced release script with better error handling and validation
+  - **Help Support**: Added proper `--help` and `-h` flag support
+  - **Robust Validation**: Added version format validation and backup/restore functionality
+  - **Better Documentation**: Enhanced help text with detailed usage examples
+  - **Error Recovery**: Added backup creation and restoration for failed updates
+
+### Technical
+- **Border System**: Unified border handling across all text fields using global theme
+- **CLI Architecture**: Extended CLI navigation to support non-event screens
+- **UI Consistency**: Standardized search field appearance across all screens
+- **Code Quality**: Improved async handling and error management patterns
+
 ## [v1.4.8] - 2025-07-05
-
-### User Requests
-- Release build and upload
-
-### Added
-- Automated release process
-
-### Technical
-- Release script for version bumping and APK distribution
-
-
-## [v[ERROR] Invalid bump type: --help. Use major, minor, or patch] - 2025-07-05
-
-### User Requests
-- Release build and upload
-
-### Added
-- Automated release process
-
-### Technical
-- Release script for version bumping and APK distribution
 
 
 

@@ -21,7 +21,8 @@ class DancersScreen extends StatefulWidget {
 }
 
 class _DancersScreenState extends State<DancersScreen> {
-  Stream<List<DancerWithTags>> _getDancers(List<int> tagIds, String searchQuery) {
+  Stream<List<DancerWithTags>> _getDancers(
+      List<int> tagIds, String searchQuery) {
     final dancerService = Provider.of<DancerService>(context, listen: false);
     final allDancersStream = dancerService.watchDancersWithTagsAndLastMet();
 
@@ -31,7 +32,8 @@ class _DancersScreenState extends State<DancersScreen> {
 
       // Apply search filter
       if (searchQuery.isNotEmpty) {
-        filteredDancers = filterService.filterDancersByTextWords(allDancers, searchQuery);
+        filteredDancers =
+            filterService.filterDancersByTextWords(allDancers, searchQuery);
       }
 
       // Apply tag filter
@@ -54,15 +56,15 @@ class _DancersScreenState extends State<DancersScreen> {
     );
   }
 
-  void _editDancer(Dancer dancer) {
-    showDialog(
+  Future<void> _editDancer(Dancer dancer) async {
+    await showDialog(
       context: context,
       builder: (context) => AddDancerDialog(dancer: dancer),
     );
   }
 
-  void _deleteDancer(Dancer dancer) {
-    showDialog(
+  Future<void> _deleteDancer(Dancer dancer) async {
+    final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete Dancer'),
@@ -70,35 +72,37 @@ class _DancersScreenState extends State<DancersScreen> {
             'Are you sure you want to delete ${dancer.name}? This will also remove all their rankings and attendance records.'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(context, false),
             child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () async {
-              try {
-                final dancerService = Provider.of<DancerService>(context, listen: false);
-                await dancerService.deleteDancer(dancer.id);
-
-                if (mounted) {
-                  Navigator.pop(context);
-                  ToastHelper.showSuccess(context, '${dancer.name} deleted');
-                }
-              } catch (e) {
-                if (mounted) {
-                  Navigator.pop(context);
-                  ToastHelper.showError(context, 'Error deleting dancer: $e');
-                }
-              }
-            },
-            style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.error),
             child: const Text('Delete'),
           ),
         ],
       ),
     );
+
+    if (confirmed == true) {
+      try {
+        final dancerService =
+            Provider.of<DancerService>(context, listen: false);
+        await dancerService.deleteDancer(dancer.id);
+
+        if (mounted) {
+          ToastHelper.showSuccess(context, '${dancer.name} deleted');
+        }
+      } catch (e) {
+        if (mounted) {
+          ToastHelper.showError(context, 'Error deleting dancer: $e');
+        }
+      }
+    }
   }
 
-  void _mergeDancer(Dancer dancer) async {
+  Future<void> _mergeDancer(Dancer dancer) async {
     final result = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
@@ -114,13 +118,13 @@ class _DancersScreenState extends State<DancersScreen> {
     }
   }
 
-  void _showAddDancerDialog() {
+  Future<void> _showAddDancerDialog() async {
     ActionLogger.logAction(
       'DancersScreen',
       'tap_add_dancer_fab',
       {},
     );
-    showDialog(
+    await showDialog(
       context: context,
       builder: (context) => const AddDancerDialog(),
     );
@@ -132,6 +136,8 @@ class _DancersScreenState extends State<DancersScreen> {
       screenTitle: 'Dancers',
       getDancers: _getDancers,
       buildDancerTile: _buildDancerTile,
+      infoMessage:
+          'Manage your dancers. Edit, delete, or merge dancer profiles.',
       floatingActionButton: SafeFAB(
         onPressed: _showAddDancerDialog,
         child: const Icon(Icons.add),

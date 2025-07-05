@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'database/database.dart';
+import 'screens/dancers/dancers_screen.dart';
 import 'screens/event/dialogs/select_dancers_screen.dart';
 import 'screens/event/event_screen.dart';
 import 'screens/home/home_screen.dart';
@@ -34,7 +35,8 @@ class CliArguments {
 CliArguments parseCliArguments(List<String> args) {
   const navPathStr = String.fromEnvironment('NAV_PATH');
   const eventIndexStr = String.fromEnvironment('EVENT_INDEX');
-  const autoTapAddStr = String.fromEnvironment('AUTO_TAP_ADD', defaultValue: 'false');
+  const autoTapAddStr =
+      String.fromEnvironment('AUTO_TAP_ADD', defaultValue: 'false');
   const helpStr = String.fromEnvironment('HELP');
 
   // Show help if requested
@@ -83,6 +85,7 @@ Arguments:
   HELP=true               - Show this help message
 
 Available Paths:
+  /dancers               - Navigate to dancers management screen
   /event/current          - Navigate to a current event (today's date)
   /event/<index>          - Navigate to event by index (0-based)
   /event/current/present-tab - Navigate to current event and switch to present tab
@@ -90,6 +93,7 @@ Available Paths:
   /event/current/planning-tab/select-dancers - Navigate to current event, planning tab, and open select dancers dialog
 
 Examples:
+  flutter run --dart-define=NAV_PATH=/dancers
   flutter run --dart-define=NAV_PATH=/event/current
   flutter run --dart-define=NAV_PATH=/event/0
   flutter run --dart-define=NAV_PATH=/event/current/present-tab/add-existing-dancer
@@ -157,12 +161,27 @@ class _CliNavigatorState extends State<CliNavigator> {
       });
 
       Event? targetEvent;
+      bool isDancersNavigation = false;
 
       // Handle path-based navigation
       if (widget.navigationPath != null) {
         ActionLogger.logAction('CLI_Navigation', 'cli_resolving_path', {
           'navigationPath': widget.navigationPath,
         });
+
+        // Check if this is a dancers navigation
+        if (widget.navigationPath!.startsWith('/dancers')) {
+          isDancersNavigation = true;
+          ActionLogger.logAction(
+              'CLI_Navigation', 'cli_navigating_to_dancers', {});
+          if (mounted) {
+            setState(() {
+              _targetScreen = const DancersScreen();
+            });
+          }
+          return;
+        }
+
         targetEvent = _resolveNavigationPath(widget.navigationPath!, events);
       }
       // Handle legacy index-based navigation
@@ -173,7 +192,7 @@ class _CliNavigatorState extends State<CliNavigator> {
         targetEvent = _resolveEventIndex(widget.eventIndex!, events);
       }
 
-      if (targetEvent == null) {
+      if (targetEvent == null && !isDancersNavigation) {
         ActionLogger.logAction('CLI_Navigation', 'cli_no_valid_target_found', {
           'fallbackToHome': true,
         });
@@ -195,7 +214,10 @@ class _CliNavigatorState extends State<CliNavigator> {
       String? initialAction;
 
       if (widget.navigationPath != null) {
-        final parts = widget.navigationPath!.split('/').where((part) => part.isNotEmpty).toList();
+        final parts = widget.navigationPath!
+            .split('/')
+            .where((part) => part.isNotEmpty)
+            .toList();
         ActionLogger.logAction('CLI_Navigation', 'cli_parsed_path_parts', {
           'parts': parts,
         });
@@ -230,7 +252,8 @@ class _CliNavigatorState extends State<CliNavigator> {
 
       // Handle special actions that require different navigation
       if (initialAction == 'select-dancers') {
-        ActionLogger.logAction('CLI_Navigation', 'cli_navigating_to_select_dancers', {
+        ActionLogger.logAction(
+            'CLI_Navigation', 'cli_navigating_to_select_dancers', {
           'eventId': targetEvent.id,
           'eventName': targetEvent.name,
         });
@@ -262,7 +285,8 @@ class _CliNavigatorState extends State<CliNavigator> {
         });
       }
     } catch (e) {
-      ActionLogger.logError('CLI_Navigation', 'cli_error_loading_events', {'error': e.toString()});
+      ActionLogger.logError('CLI_Navigation', 'cli_error_loading_events',
+          {'error': e.toString()});
       if (mounted) {
         setState(() {
           _targetScreen = const HomeScreen();
@@ -284,19 +308,31 @@ class _CliNavigatorState extends State<CliNavigator> {
     return _targetScreen!;
   }
 
-  /// Resolve navigation path to find target event
+  /// Resolve navigation path to find target event or screen
   Event? _resolveNavigationPath(String path, List<Event> events) {
     final parts = path.split('/').where((part) => part.isNotEmpty).toList();
 
-    if (parts.length < 2) {
+    if (parts.isEmpty) {
       print('Warning: Invalid navigation path: $path');
       return null;
     }
 
     final screen = parts[0];
-    final target = parts[1];
 
+    // Handle dancers screen
+    if (screen == 'dancers') {
+      print('CLI Navigation: Navigating to dancers screen');
+      return null; // Return null to indicate this is not an event navigation
+    }
+
+    // Handle event navigation
     if (screen == 'event') {
+      if (parts.length < 2) {
+        print('Warning: Invalid event navigation path: $path');
+        return null;
+      }
+
+      final target = parts[1];
       Event? event;
       if (target == 'current') {
         event = _findCurrentEvent(events);
@@ -327,7 +363,8 @@ class _CliNavigatorState extends State<CliNavigator> {
             default:
               mappedTab = tab; // Use as-is for other cases
           }
-          print('CLI Navigation: Setting initial tab to "$mappedTab" (from "$tab")');
+          print(
+              'CLI Navigation: Setting initial tab to "$mappedTab" (from "$tab")');
         }
 
         if (parts.length >= 4) {
@@ -349,19 +386,23 @@ class _CliNavigatorState extends State<CliNavigator> {
     final todayDate = DateTime(today.year, today.month, today.day);
 
     for (final event in events) {
-      final eventDate = DateTime(event.date.year, event.date.month, event.date.day);
+      final eventDate =
+          DateTime(event.date.year, event.date.month, event.date.day);
       if (eventDate.isAtSameMomentAs(todayDate)) {
         print('CLI Navigation: Found current event "${event.name}" for today');
         return event;
       }
     }
 
-    print('CLI Navigation: No current event found for today. Available events:');
+    print(
+        'CLI Navigation: No current event found for today. Available events:');
     for (int i = 0; i < events.length; i++) {
       final event = events[i];
-      final eventDate = DateTime(event.date.year, event.date.month, event.date.day);
+      final eventDate =
+          DateTime(event.date.year, event.date.month, event.date.day);
       final isToday = eventDate.isAtSameMomentAs(todayDate);
-      print('  [$i] ${event.name} (${event.date.toString().split(' ')[0]}) ${isToday ? '← TODAY' : ''}');
+      print(
+          '  [$i] ${event.name} (${event.date.toString().split(' ')[0]}) ${isToday ? '← TODAY' : ''}');
     }
     return null;
   }
@@ -369,7 +410,8 @@ class _CliNavigatorState extends State<CliNavigator> {
   /// Resolve event index to find target event
   Event? _resolveEventIndex(int index, List<Event> events) {
     if (index >= events.length) {
-      print('Warning: Event index $index is out of range. Available events: ${events.length}');
+      print(
+          'Warning: Event index $index is out of range. Available events: ${events.length}');
       return null;
     }
     return events[index];
