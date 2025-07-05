@@ -3,13 +3,14 @@ import 'package:provider/provider.dart';
 
 import '../../database/database.dart';
 import '../../models/dancer_with_tags.dart';
+import '../../services/dancer/dancer_activity_service.dart';
 import '../../services/dancer/dancer_filter_service.dart';
 import '../../services/dancer_service.dart';
 import '../../utils/toast_helper.dart';
 import '../../widgets/add_dancer_dialog.dart';
+import '../../widgets/combined_dancer_filter.dart';
 import '../../widgets/dancer_card_with_tags.dart';
 import '../../widgets/safe_fab.dart';
-import '../../widgets/simplified_tag_filter.dart';
 import 'dialogs/select_merge_target_screen.dart';
 
 class DancersScreen extends StatefulWidget {
@@ -22,16 +23,13 @@ class DancersScreen extends StatefulWidget {
 class _DancersScreenState extends State<DancersScreen> {
   String _searchQuery = '';
   List<int> _selectedTagIds = [];
+  ActivityLevel? _selectedActivityLevel = ActivityLevel.all;
 
-  void _onSearchChanged(String searchQuery) {
+  void _onFiltersChanged(String searchQuery, List<int> selectedTagIds, ActivityLevel? activityLevel) {
     setState(() {
       _searchQuery = searchQuery;
-    });
-  }
-
-  void _onTagsChanged(List<int> selectedTagIds) {
-    setState(() {
       _selectedTagIds = selectedTagIds;
+      _selectedActivityLevel = activityLevel;
     });
   }
 
@@ -41,8 +39,7 @@ class _DancersScreenState extends State<DancersScreen> {
 
     // Apply search filter
     if (_searchQuery.isNotEmpty) {
-      filteredDancers =
-          filterService.filterDancersByTextWords(dancers, _searchQuery);
+      filteredDancers = filterService.filterDancersByTextWords(dancers, _searchQuery);
     }
 
     // Apply tag filter
@@ -50,6 +47,12 @@ class _DancersScreenState extends State<DancersScreen> {
       filteredDancers = filteredDancers.where((dancer) {
         return dancer.tags.any((tag) => _selectedTagIds.contains(tag.id));
       }).toList();
+    }
+
+    // Apply activity filter
+    if (_selectedActivityLevel != null && _selectedActivityLevel != ActivityLevel.all) {
+      // TODO: Implement activity filtering when the service is ready
+      // For now, we'll just return all dancers
     }
 
     return filteredDancers;
@@ -70,11 +73,8 @@ class _DancersScreenState extends State<DancersScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: SimplifiedTagFilter(
-                  selectedTagIds: _selectedTagIds,
-                  onTagsChanged: _onTagsChanged,
-                  onSearchChanged: _onSearchChanged,
-                  initialSearchQuery: _searchQuery,
+                child: CombinedDancerFilter(
+                  onFiltersChanged: _onFiltersChanged,
                 ),
               ),
             ),
@@ -109,19 +109,14 @@ class _DancersScreenState extends State<DancersScreen> {
                           Icon(
                             Icons.people,
                             size: 64,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            _searchQuery.isEmpty && _selectedTagIds.isEmpty
-                                ? 'No dancers yet'
-                                : 'No dancers found',
+                            _searchQuery.isEmpty && _selectedTagIds.isEmpty ? 'No dancers yet' : 'No dancers found',
                             style: TextStyle(
                               fontSize: 18,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -130,9 +125,7 @@ class _DancersScreenState extends State<DancersScreen> {
                                 ? 'Tap + to add your first dancer'
                                 : 'Try adjusting your filters',
                             style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -199,8 +192,7 @@ class _DancersScreenState extends State<DancersScreen> {
           TextButton(
             onPressed: () async {
               try {
-                final dancerService =
-                    Provider.of<DancerService>(context, listen: false);
+                final dancerService = Provider.of<DancerService>(context, listen: false);
                 await dancerService.deleteDancer(dancer.id);
 
                 if (mounted) {
@@ -214,8 +206,7 @@ class _DancersScreenState extends State<DancersScreen> {
                 }
               }
             },
-            style: TextButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.error),
+            style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
             child: const Text('Delete'),
           ),
         ],

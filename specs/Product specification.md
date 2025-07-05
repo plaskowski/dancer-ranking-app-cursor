@@ -358,7 +358,7 @@ Users can adjust rankings during events for various reasons:
 - View list of all dancers with their tags
 - **Search dancers** by name or notes (intelligent word-start matching with debounced input)
 - **Filter dancers by tags** (multi-tag selection with visual feedback)
-- **Filter dancers by activity level** (All, Active, Very Active, Core Community, Recent)
+- **Filter dancers by activity level** (All, Regular, Occasional) - defaults to "All"
 - Add new dancer (FAB)
 - Edit existing dancer (tap → context menu)
 - Delete dancer (tap → context menu, with confirmation)
@@ -369,10 +369,10 @@ Users can adjust rankings during events for various reasons:
 - **Stable Focus**: Search field maintains focus while typing for smooth user experience
 - **Clean Organization**: Tags appear only on main Dancers screen, not on event screens
 - **Archived Dancer Display**: Archived dancers show with muted appearance and grey "archived" label
-- **Activity Level Filtering**: Filter dancers by dance frequency (Regular, Occasional, All)
+- **Activity Level Filtering**: Filter dancers by dance frequency (All, Regular, Occasional) - defaults to "All"
+  - **All**: Show everyone regardless of activity (default)
   - **Regular**: 3+ dances in last 2 months
   - **Occasional**: 1+ dance in last 3 months
-  - **All**: Show everyone regardless of activity
 - **Tap for Context Actions**: Single tap on any dancer card opens modal bottom sheet with Edit, Merge, Archive/Reactivate, and Delete options
 - **Material 3 Design**: Clean interface with proper spacing and visual feedback
 - **Smart Tag Display**: Only shows tags that have associated dancers in database

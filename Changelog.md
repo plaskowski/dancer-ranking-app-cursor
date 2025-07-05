@@ -891,3 +891,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Material Design 3 UI components
 - Provider pattern for state management
 - Comprehensive logging and error handling
+
+## [v0.9.1] - 2025-07-05
+
+### User Requests
+- "let's test them" - Testing the new unified filtering system
+- "Great, On Dancers screen we should default to "All" option for activity filter" - Changed activity filter default from "Regular" to "All"
+
+### Changed
+- **Activity Filter Default**: Changed the default activity filter option from "Regular" to "All" on the Dancers screen for better user experience
+- **Combined Filter Integration**: Updated Dancers screen to use the new `CombinedDancerFilter` widget instead of separate filter components
+
+### Technical
+- Updated `CombinedDancerFilter` default activity level from `ActivityLevel.regular` to `ActivityLevel.all`
+- Modified `DancersScreen` to use unified filtering system with proper activity level state management
+
+## [v0.9.0] - 2025-07-05
+
+### User Requests
+- "I want to improve the filtering system on the Dancers screen" - Requested improvement to dancer filtering functionality
+- "I want to combine search, tags, and activity filters into one unified interface" - Requested unified filtering interface
+- "I want to simplify the tag filtering interface" - Requested simplified tag filtering
+- "I want to add activity-based filtering" - Requested activity-based filtering feature
+
+### Added
+- **Unified Filtering System**: Combined search, tags, and activity filters into a single interface on the Dancers screen
+- **Simplified Tag Filtering**: Cleaner tag filter interface with pill-style selection
+- **Activity Filter Widget**: New activity level filtering with dropdown interface
+- **Combined Dancer Filter**: Unified filter component that manages all filter types together
+
+### Changed
+- **Dancers Screen UI**: Replaced separate filter components with unified `CombinedDancerFilter`
+- **Filter State Management**: Centralized filter state management in the combined filter widget
+- **Tag Selection UX**: Improved tag selection with visual feedback and better interaction patterns
+
+### Technical
+- Created `CombinedDancerFilter` widget for unified filtering experience
+- Updated `SimplifiedTagFilter` with improved pill-based selection interface
+- Added `ActivityFilterWidget` for activity level filtering
+- Integrated activity service with filtering system
+- Updated Dancers screen to use new unified filtering approach
