@@ -6,6 +6,7 @@ import '../../models/dancer_with_tags.dart';
 import '../../services/dancer/dancer_activity_service.dart';
 import '../../services/dancer/dancer_filter_service.dart';
 import '../../services/dancer_service.dart';
+import '../../services/tag_service.dart';
 import '../../utils/action_logger.dart';
 import '../../utils/toast_helper.dart';
 import '../../widgets/add_dancer_dialog.dart';
@@ -75,8 +76,19 @@ class _DancersScreenState extends State<DancersScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: CombinedDancerFilter(
-                  onFiltersChanged: _onFiltersChanged,
+                child: StreamBuilder<List<Tag>>(
+                  stream: Provider.of<TagService>(context, listen: false).watchAllTags(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    final availableTags = snapshot.data ?? [];
+                    return CombinedDancerFilter(
+                      availableTags: availableTags,
+                      onFiltersChanged: _onFiltersChanged,
+                    );
+                  },
                 ),
               ),
             ),
