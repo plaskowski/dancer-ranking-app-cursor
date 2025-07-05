@@ -2,9 +2,17 @@ const { spawn, exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const { program } = require('commander');
-const chalk = require('chalk');
+// const chalk = require('chalk');
 const ora = require('ora');
 const inquirer = require('inquirer');
+
+// Simple color functions for compatibility
+const chalk = {
+    blue: (text) => `\x1b[34m${text}\x1b[0m`,
+    green: (text) => `\x1b[32m${text}\x1b[0m`,
+    red: (text) => `\x1b[31m${text}\x1b[0m`,
+    yellow: (text) => `\x1b[33m${text}\x1b[0m`
+};
 
 const FlutterWebScreenshotBot = require('./automated_screenshots.js');
 

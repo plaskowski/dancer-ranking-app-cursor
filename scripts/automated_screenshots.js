@@ -2,6 +2,14 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 
+// Simple logging functions
+const log = {
+    info: (msg) => console.log(`\x1b[34m[INFO]\x1b[0m ${msg}`),
+    success: (msg) => console.log(`\x1b[32m[SUCCESS]\x1b[0m ${msg}`),
+    error: (msg) => console.log(`\x1b[31m[ERROR]\x1b[0m ${msg}`),
+    warning: (msg) => console.log(`\x1b[33m[WARNING]\x1b[0m ${msg}`)
+};
+
 class FlutterWebScreenshotBot {
     constructor() {
         this.browser = null;
