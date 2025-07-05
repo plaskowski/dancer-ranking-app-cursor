@@ -6,18 +6,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [v1.4.0] - 2025-01-17
-## [v1.5.0] - 2025-07-05
-
-### User Requests
-- Release build and upload
-
-### Added
-- Automated release process
-
-### Technical
-- Release script for version bumping and APK distribution
-
-
 
 ### User Requests
 - "amend the release script to also update the android app version" - Request to update release script for Android version management
@@ -50,18 +38,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added proper error handling for version management
 
 ## [v1.3.8] - 2025-01-17
-## [v1.5.0] - 2025-07-05
-
-### User Requests
-- Release build and upload
-
-### Added
-- Automated release process
-
-### Technical
-- Release script for version bumping and APK distribution
-
-
 
 ### User Requests
 - "I don't like the activity categories, let's redefine them" - Request to redefine activity level filtering categories
@@ -86,18 +62,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Applied proper Dart formatting to all modified files
 
 ## [v1.3.7] - 2025-01-17
-## [v1.5.0] - 2025-07-05
-
-### User Requests
-- Release build and upload
-
-### Added
-- Automated release process
-
-### Technical
-- Release script for version bumping and APK distribution
-
-
 
 ### User Requests
 - "The dialog from the planning tab" - Request to update the Select Dancers dialog from the Planning tab to use the SimplifiedTagFilter component
@@ -127,18 +91,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Applied proper Dart formatting to ensure code quality
 
 ## [v1.3.6] - 2025-01-17
-## [v1.5.0] - 2025-07-05
-
-### User Requests
-- Release build and upload
-
-### Added
-- Automated release process
-
-### Technical
-- Release script for version bumping and APK distribution
-
-
 
 ### User Requests
 - "Nice. I tested and text search does not work" - Request to fix text search functionality in Add Existing Dancer dialog
@@ -165,18 +117,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Performance**: Implemented debounced search to avoid excessive filtering operations
 
 ## [v1.3.5] - 2025-07-05
-## [v1.5.0] - 2025-07-05
-
-### User Requests
-- Release build and upload
-
-### Added
-- Automated release process
-
-### Technical
-- Release script for version bumping and APK distribution
-
-
 
 ### User Requests
 - Release build and upload
@@ -188,18 +128,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Release script for version bumping and APK distribution
 
 ## [v1.3.4] - 2025-01-17
-## [v1.5.0] - 2025-07-05
-
-### User Requests
-- Release build and upload
-
-### Added
-- Automated release process
-
-### Technical
-- Release script for version bumping and APK distribution
-
-
 
 ### User Requests
 - "remove dancer from planned event action" - Request to add ability to remove dancers from planned events
@@ -221,18 +149,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Applied proper Dart formatting for code quality
 
 ## [v1.3.0] - 2025-01-16
-## [v1.5.0] - 2025-07-05
-
-### User Requests
-- Release build and upload
-
-### Added
-- Automated release process
-
-### Technical
-- Release script for version bumping and APK distribution
-
-
 
 ### User Requests
 - "1" - Request to implement dancer archival feature

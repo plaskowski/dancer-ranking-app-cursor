@@ -162,7 +162,7 @@ class _CombinedDancerFilterState extends State<CombinedDancerFilter> {
       children: [
         // Filter Bar
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Row(
             children: [
               // Search field
