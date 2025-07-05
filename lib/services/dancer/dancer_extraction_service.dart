@@ -47,8 +47,8 @@ class DancerExtractionService {
           return false;
         }
 
-        // 3. Create new dancer with name "[EventName] - [OriginalDancerName]"
-        final newDancerName = '${event.name} - $originalDancerName';
+        // 3. Create new dancer with name "[OriginalDancerName] - [EventName]"
+        final newDancerName = '$originalDancerName - ${event.name}';
         final newDancerId = await _database.into(_database.dancers).insert(
               DancersCompanion.insert(
                 name: newDancerName,

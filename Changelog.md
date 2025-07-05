@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.1.0] - 2025-01-17
+
+### User Requests
+- "when splitting the history put the dancer name first" - Request to change the naming format for extracted dance records
+
+### Changed
+- **Extract Dance Record Naming**: Updated naming format for extracted one-time persons
+  - **Before**: "[EventName] - [OriginalDancerName]"
+  - **After**: "[OriginalDancerName] - [EventName]"
+  - **Service**: Updated `DancerExtractionService.extractDanceRecordAsOneTimePerson()` method
+  - **Documentation**: Updated feature specification to reflect new naming convention
+
+### Technical
+- **Naming Convention**: Dancer name now appears first in extracted record names for better identification
+- **Consistency**: Aligns with user preference for dancer-centric naming
+
 ## [v2.0.0] - 2025-01-17
 ## [v2.1.0] - 2025-07-05
 
@@ -183,7 +199,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **UI Dialog**: `ExtractDanceRecordDialog` with confirmation, loading states, and error handling
   - **Context Menu**: Tap on dance records in dancer history to access "Separate record" option
   - **Data Model Updates**: Enhanced `DancerRecentHistory` to include attendance ID for extraction
-  - **Naming Convention**: New one-time persons named "[EventName] - [OriginalDancerName]"
+  - **Naming Convention**: New one-time persons named "[OriginalDancerName] - [EventName]"
 
 ### Technical
 - **Database Operations**: Safe transaction-based extraction with proper error handling

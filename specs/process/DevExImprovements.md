@@ -42,6 +42,7 @@
 - changelog as separate small files to avoid conflicts between agent lines
 - use native patterns (like reactive updates)
 - automation that let you drive initial navigation via CLI arg
+- way to release versions with changelog (how to have only meaningful changes summarized)
 
 # Hard ones
 - increase the 25 tool calls limit

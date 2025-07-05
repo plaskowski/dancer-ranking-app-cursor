@@ -142,7 +142,7 @@
   - **Data Integrity**: Maintains unique constraints during merge operations
 - **Dance Record Extraction**: Extract historical dance records as separate one-time persons
   - **Context Menu Access**: Tap on dance records in dancer history to access extraction
-  - **Safe Extraction**: Creates new dancer with "[EventName] - [OriginalDancerName]" naming
+  - **Safe Extraction**: Creates new dancer with "[OriginalDancerName] - [EventName]" naming
   - **Data Preservation**: Maintains all dance data (impression, score, etc.) in new record
   - **History Cleanup**: Removes extracted record from original dancer's history
 - **Dancer Archival**: Archive inactive dancers while preserving all historical records

@@ -27,7 +27,7 @@ Allow users to extract a specific historical dance record from a dancer's histor
 
 ### 3. One-Time Person Creation
 - **Process**: 
-  - Create new dancer entry with name "[EventName] - [OriginalDancerName]"
+  - Create new dancer entry with name "[OriginalDancerName] - [EventName]"
   - Copy the specific attendance record to the new dancer
   - Remove the attendance record from the original dancer
   - Preserve all other data (impression, score, etc.)
@@ -42,7 +42,7 @@ Allow users to extract a specific historical dance record from a dancer's histor
 1. **Create New Dancer**:
    ```sql
    INSERT INTO dancers (name, notes, firstMetDate, createdAt)
-   VALUES ('[EventName] - [OriginalDancerName] - One-Time Person', 'Extracted from [OriginalDancerName]', [EventDate], NOW())
+   VALUES ('[OriginalDancerName] - [EventName]', 'Extracted from [OriginalDancerName]', [EventDate], NOW())
    ```
 
 2. **Copy Attendance Record**:
