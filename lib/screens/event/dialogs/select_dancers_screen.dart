@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../models/dancer_with_tags.dart';
-import '../../../screens/event/event_screen.dart';
-import '../../../services/attendance_service.dart';
-import '../../../widgets/safe_fab.dart';
+import '../../../services/ranking_service.dart';
 import '../../../widgets/simplified_tag_filter.dart';
 import 'event_dancer_selection_mixin.dart';
 
@@ -23,45 +21,29 @@ class SelectDancersScreen extends StatefulWidget {
 }
 
 class _SelectDancersScreenState extends State<SelectDancersScreen> with EventDancerSelectionMixin {
-  final Set<int> _selectedDancerIds = <int>{};
   bool _isLoading = false;
 
   @override
   int get eventId => widget.eventId;
 
-  Future<void> _addSelectedDancers() async {
-    if (_selectedDancerIds.isEmpty) {
-      showErrorMessage('Please select at least one dancer');
-      return;
-    }
-
+  Future<void> _addDancerToEvent(int dancerId, String dancerName) async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      // Add dancers to event without assigning any rank
-      // Users can manually assign ranks later if desired
-      final attendanceService = Provider.of<AttendanceService>(context, listen: false);
-
-      for (final dancerId in _selectedDancerIds) {
-        await attendanceService.markPresent(widget.eventId, dancerId);
-      }
+      final rankingService = Provider.of<RankingService>(context, listen: false);
+      await rankingService.setRankNeutral(widget.eventId, dancerId);
 
       if (mounted) {
-        // Store count before clearing selections
-        final addedCount = _selectedDancerIds.length;
-
-        // Clear selections and trigger refresh
-        setState(() {
-          _selectedDancerIds.clear();
-        });
+        showSuccessMessage('$dancerName added to event');
         triggerRefresh();
 
-        showSuccessMessage('Added $addedCount dancers to event (no rank assigned)');
+        // Return true to indicate dancers were added (this will trigger refresh in Planning tab)
+        Navigator.pop(context, true);
       }
     } catch (e) {
-      showErrorMessage('Error adding dancers: $e');
+      showErrorMessage('Error adding dancer to event: $e');
     } finally {
       if (mounted) {
         setState(() {
@@ -72,27 +54,24 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> with EventDan
   }
 
   Widget _buildDancerTile(DancerWithTags dancer) {
-    final isSelected = _selectedDancerIds.contains(dancer.id);
-
     return Card(
       margin: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
-      child: CheckboxListTile(
+      child: ListTile(
         title: Text(
           dancer.name,
           style: const TextStyle(fontWeight: FontWeight.w600),
         ),
         subtitle: dancer.notes != null && dancer.notes!.isNotEmpty ? Text(dancer.notes!) : null,
-        value: isSelected,
-        onChanged: (bool? value) {
-          setState(() {
-            if (value == true) {
-              _selectedDancerIds.add(dancer.id);
-            } else {
-              _selectedDancerIds.remove(dancer.id);
-            }
-          });
-        },
-        controlAffinity: ListTileControlAffinity.leading,
+        trailing: ElevatedButton(
+          onPressed: _isLoading ? null : () => _addDancerToEvent(dancer.id, dancer.name),
+          child: _isLoading
+              ? const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Text('Add to Event'),
+        ),
       ),
     );
   }
@@ -104,15 +83,7 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> with EventDan
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => EventScreen(
-                  eventId: widget.eventId,
-                  initialTab: 'planning',
-                ),
-              ),
-            );
+            Navigator.pop(context, false);
           },
         ),
         title: Column(
@@ -124,18 +95,6 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> with EventDan
             ),
           ],
         ),
-        actions: [
-          if (_selectedDancerIds.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Text(
-                  '${_selectedDancerIds.length} selected',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-        ],
       ),
       body: _SelectDancersFilterWidget(
         eventId: widget.eventId,
@@ -143,24 +102,6 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> with EventDan
         buildDancerTile: _buildDancerTile,
         refreshKey: refreshKey,
       ),
-      floatingActionButton: _selectedDancerIds.isNotEmpty
-          ? SafeFAB(
-              onPressed: _isLoading ? null : _addSelectedDancers,
-              isExtended: true,
-              label: Text(_isLoading ? 'Adding...' : 'Add Selected'),
-              icon: _isLoading
-                  ? SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
-                      ),
-                    )
-                  : const Icon(Icons.check),
-              child: const Icon(Icons.check), // Required but not used when isExtended is true
-            )
-          : null,
     );
   }
 }
