@@ -141,10 +141,13 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
                   'currentScore': widget.dancer.scoreName,
                 });
 
-                ScoreDialog.show(
-                  context,
-                  dancerId: widget.dancer.id,
-                  eventId: widget.eventId,
+                showModalBottomSheet<bool>(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => ScoreDialog(
+                    dancerId: widget.dancer.id,
+                    eventId: widget.eventId,
+                  ),
                 ).then((updated) {
                   if (updated == true && context.mounted) {
                     Navigator.pop(context); // Close the action dialog

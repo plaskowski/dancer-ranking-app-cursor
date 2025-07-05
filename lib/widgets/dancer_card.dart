@@ -143,10 +143,12 @@ class DancerCard extends StatelessWidget {
                     'currentScore': dancer.scoreName,
                   });
 
-                  ScoreDialog.show(
-                    context,
-                    dancerId: dancer.id,
-                    eventId: eventId,
+                  showDialog(
+                    context: context,
+                    builder: (context) => ScoreDialog(
+                      dancerId: dancer.id,
+                      eventId: eventId,
+                    ),
                   );
                 },
                 child: Container(

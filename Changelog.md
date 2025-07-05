@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.4.6] - 2025-01-17
+
+### User Requests
+- "I have reverted ScoreDialog latest changes (commit). Now try simplify it to simple sheet with one tap options" - Request to simplify ScoreDialog to basic one-tap options
+- "remove last updated from edit rank dialog" - Request to remove last updated info from RankingDialog
+
+### Changed
+- **ScoreDialog Simplification**: Reverted to simple one-tap design
+  - **Simple ListTile**: Uses basic ListTile with circle icons for selection
+  - **One-Tap Selection**: Tap any score to immediately assign it
+  - **Minimal UI**: Just dancer name, score list, and cancel button
+  - **No Complex Structure**: Removed RadioListTile, action buttons, and sections
+  - **Direct Assignment**: Score is assigned immediately on tap
+- **RankingDialog Cleanup**: Removed last updated information
+  - **Simplified UI**: Removed "Last updated" timestamp display
+  - **Cleaner Layout**: Less visual clutter in the dialog
+  - **Removed Dependencies**: No longer imports intl package for date formatting
+
+### Technical
+- **ScoreDialog**: Reverted to original simple structure with one-tap assignment
+- **RankingDialog**: Removed _lastUpdated variable and related UI elements
+- **UI Consistency**: Both dialogs now have appropriate complexity for their use cases
+- **Code Cleanup**: Removed unnecessary imports and variables
+
 ## [v1.4.5] - 2025-01-17
 
 ### User Requests
