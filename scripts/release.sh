@@ -219,13 +219,38 @@ update_pubspec_version() {
     
     print_status "Updating pubspec.yaml version..."
     
+    # Calculate version code (remove dots and convert to integer)
+    local version_code=$(echo $new_version | tr -d '.')
+    
     # Update the version line in pubspec.yaml
-    sed -i.bak "s/^version: .*$/version: $new_version+$(echo $new_version | tr -d '.')/" pubspec.yaml
+    sed -i.bak "s/^version: .*$/version: $new_version+$version_code/" pubspec.yaml
     
     # Clean up backup file
     rm -f pubspec.yaml.bak
     
-    print_success "pubspec.yaml version updated to $new_version"
+    print_success "pubspec.yaml version updated to $new_version+$version_code"
+    print_status "Android version code: $version_code"
+}
+
+# Function to validate Android version update
+validate_android_version() {
+    local new_version=$1
+    
+    print_status "Validating Android version update..."
+    
+    # Check if pubspec.yaml was updated correctly
+    local current_pubspec_version=$(grep "^version:" pubspec.yaml | sed 's/version: //')
+    local expected_version_code=$(echo $new_version | tr -d '.')
+    local expected_pubspec_version="$new_version+$expected_version_code"
+    
+    if [[ "$current_pubspec_version" != "$expected_pubspec_version" ]]; then
+        print_error "pubspec.yaml version mismatch. Expected: $expected_pubspec_version, Got: $current_pubspec_version"
+        exit 1
+    fi
+    
+    print_success "Android version validation passed"
+    print_status "Version name: $new_version"
+    print_status "Version code: $expected_version_code"
 }
 
 # Main function
@@ -255,6 +280,9 @@ main() {
     # Update pubspec.yaml version
     update_pubspec_version "$new_version"
     
+    # Validate Android version update
+    validate_android_version "$new_version"
+    
     # Build APK
     build_apk
     
@@ -263,12 +291,14 @@ main() {
     print_status "APK size: $apk_size"
     
     # Create release notes
+    local version_code=$(echo $new_version | tr -d '.')
     release_notes="## What's New in v$new_version
 
 This release includes the latest features and improvements for the Dancer Ranking App.
 
 ### Download
 - APK Size: $apk_size
+- Version Code: $version_code
 - Compatible with Android 5.0+ (API level 21+)
 
 ### Installation
@@ -290,6 +320,7 @@ For issues or feature requests, please visit the GitHub repository.
     
     print_success "Release process completed successfully!"
     print_status "Version bumped to: v$new_version"
+    print_status "Android version code: $(echo $new_version | tr -d '.')"
     print_status "APK uploaded to GitHub releases"
     print_status "Changes committed and pushed to main branch"
 }
