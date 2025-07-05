@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.0.0] - 2025-01-17
+
+### User Requests
+- "bump @pubspec.yaml and @Changelog.md version to 2.0" - Request to update version to 2.0.0
+
+### Changed
+- **Version Bump**: Updated version from 1.6.0 to 2.0.0
+  - **pubspec.yaml**: Updated version to 2.0.0+200
+  - **Changelog.md**: Updated version header to v2.0.0
+
+### Technical
+- **Version Management**: Manual version bump to 2.0.0 for major release
+- **Android Version Code**: Updated to 200 (2.0.0 without dots)
+
 ## [v1.5.7] - 2025-01-17
 ## [v1.6.0] - 2025-07-05
 
