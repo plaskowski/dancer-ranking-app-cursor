@@ -17,16 +17,9 @@ jobs:
   merge-and-release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      actions: read
-      checks: write
-      deployments: write
-      issues: write
-      packages: write
-      pull-requests: write
-      repository-projects: write
-      security-events: write
-      statuses: write
+      contents: write          # Required to push commits, create tags, and create releases
+      actions: read           # Required to read workflow artifacts
+      pull-requests: write    # Required for PR operations during merge
     
     steps:
     - name: Checkout main branch
