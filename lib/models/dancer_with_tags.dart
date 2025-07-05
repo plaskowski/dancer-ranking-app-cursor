@@ -3,10 +3,14 @@ import '../database/database.dart';
 class DancerWithTags {
   final Dancer dancer;
   final List<Tag> tags;
+  final String? lastMetEventName;
+  final DateTime? lastMetEventDate;
 
   DancerWithTags({
     required this.dancer,
     required this.tags,
+    this.lastMetEventName,
+    this.lastMetEventDate,
   });
 
   // Convenience getters
@@ -28,6 +32,7 @@ class DancerWithTags {
 
   @override
   String toString() {
-    return 'DancerWithTags(dancer: ${dancer.name}, tags: ${tagNames.join(', ')})';
+    return 'DancerWithTags(dancer: ${dancer.name}, tags: ${tagNames.join(', ')}, lastMetEvent: '
+        '${lastMetEventName ?? '-'} on ${lastMetEventDate?.toIso8601String() ?? '-'}])';
   }
 }

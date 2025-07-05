@@ -114,6 +114,62 @@ class DancerTagService {
     });
   }
 
+  // Get archived dancers with their tags for display
+  Future<List<DancerWithTags>> getArchivedDancersWithTags() async {
+    ActionLogger.logServiceCall(
+        'DancerTagService', 'getArchivedDancersWithTags');
+
+    try {
+      final dancers = await (_database.select(_database.dancers)
+            ..where((d) => d.isArchived.equals(true))
+            ..orderBy([
+              (d) => OrderingTerm.desc(d.archivedAt),
+              (d) => OrderingTerm.asc(d.name)
+            ]))
+          .get();
+
+      final dancersWithTags = <DancerWithTags>[];
+
+      for (final dancer in dancers) {
+        // Get tags for this dancer
+        final tagQuery = _database.select(_database.tags).join([
+          innerJoin(
+            _database.dancerTags,
+            _database.tags.id.equalsExp(_database.dancerTags.tagId),
+          ),
+        ])
+          ..where(_database.dancerTags.dancerId.equals(dancer.id))
+          ..orderBy([OrderingTerm.asc(_database.tags.name)]);
+
+        final tagResults = await tagQuery.get();
+        final tags =
+            tagResults.map((row) => row.readTable(_database.tags)).toList();
+
+        dancersWithTags.add(DancerWithTags(
+          dancer: dancer,
+          tags: tags,
+        ));
+      }
+
+      return dancersWithTags;
+    } catch (e) {
+      ActionLogger.logError(
+          'DancerTagService.getArchivedDancersWithTags', e.toString());
+      rethrow;
+    }
+  }
+
+  // Watch archived dancers with their tags for reactive updates
+  Stream<List<DancerWithTags>> watchArchivedDancersWithTags() {
+    ActionLogger.logServiceCall(
+        'DancerTagService', 'watchArchivedDancersWithTags');
+
+    // Use the existing watchAllDancers stream and transform it
+    return _crudService.watchAllDancers().asyncMap((_) async {
+      return await getArchivedDancersWithTags();
+    });
+  }
+
   // Get unranked dancers for event filtered by single tag
   Future<List<DancerWithEventInfo>> getUnrankedDancersForEventByTag(
     int eventId,
@@ -270,5 +326,78 @@ class DancerTagService {
       });
       rethrow;
     }
+  }
+
+  // Get dancers with their tags and last met event info for display
+  Future<List<DancerWithTags>> getDancersWithTagsAndLastMet() async {
+    ActionLogger.logServiceCall(
+        'DancerTagService', 'getDancersWithTagsAndLastMet');
+
+    try {
+      final dancers = await (_database.select(_database.dancers)
+            ..orderBy([(d) => OrderingTerm.asc(d.name)]))
+          .get();
+      final dancersWithTags = <DancerWithTags>[];
+
+      for (final dancer in dancers) {
+        // Get tags for this dancer
+        final tagQuery = _database.select(_database.tags).join([
+          innerJoin(
+            _database.dancerTags,
+            _database.tags.id.equalsExp(_database.dancerTags.tagId),
+          ),
+        ])
+          ..where(_database.dancerTags.dancerId.equals(dancer.id))
+          ..orderBy([OrderingTerm.asc(_database.tags.name)]);
+
+        final tagResults = await tagQuery.get();
+        final tags =
+            tagResults.map((row) => row.readTable(_database.tags)).toList();
+
+        // Get last met event info (latest attendance, not absent)
+        final lastAttendanceRow =
+            await (_database.select(_database.attendances).join([
+          innerJoin(_database.events,
+              _database.attendances.eventId.equalsExp(_database.events.id)),
+        ])
+                  ..where(_database.attendances.dancerId.equals(dancer.id) &
+                      _database.attendances.status.isNotValue('absent'))
+                  ..orderBy([OrderingTerm.desc(_database.events.date)])
+                  ..limit(1))
+                .getSingleOrNull();
+
+        String? lastMetEventName;
+        DateTime? lastMetEventDate;
+        if (lastAttendanceRow != null) {
+          final event = lastAttendanceRow.readTable(_database.events);
+          lastMetEventName = event.name;
+          lastMetEventDate = event.date;
+        }
+
+        dancersWithTags.add(DancerWithTags(
+          dancer: dancer,
+          tags: tags,
+          lastMetEventName: lastMetEventName,
+          lastMetEventDate: lastMetEventDate,
+        ));
+      }
+
+      return dancersWithTags;
+    } catch (e) {
+      ActionLogger.logError(
+          'DancerTagService.getDancersWithTagsAndLastMet', e.toString());
+      rethrow;
+    }
+  }
+
+  // Watch dancers with their tags and last met event info for reactive updates
+  Stream<List<DancerWithTags>> watchDancersWithTagsAndLastMet() {
+    ActionLogger.logServiceCall(
+        'DancerTagService', 'watchDancersWithTagsAndLastMet');
+
+    // Watch for changes in dancers, attendances, events, and dancer_tags, then transform
+    return _database.select(_database.dancers).watch().asyncMap((_) async {
+      return await getDancersWithTagsAndLastMet();
+    });
   }
 }

@@ -353,9 +353,9 @@ Users can adjust rankings during events for various reasons:
 - ← Back to Event Screen
 
 ### 5. Dancers Screen (`DancersScreen`)
-**Purpose**: Manage all dancers in the database with comprehensive filtering and tag display
+**Purpose**: Manage all dancers in the database with comprehensive tag display, filtering, and archival support
 **Actions**:
-- View list of all dancers with their tags
+- View list of all dancers with their tags (active and archived)
 - **Search dancers** by name or notes (intelligent word-start matching with debounced input)
 - **Filter dancers by tags** (multi-tag selection with visual feedback)
 - **Filter dancers by activity level** (All, Regular, Occasional) - defaults to "All"
@@ -363,6 +363,7 @@ Users can adjust rankings during events for various reasons:
 - Edit existing dancer (tap → context menu)
 - Delete dancer (tap → context menu, with confirmation)
 - **Merge dancers** (tap → context menu → "Merge into...")
+- **Archive/Reactivate dancers** (tap → context menu → "Archive"/"Reactivate")
 **UI Design**:
 - **Combined Filtering**: Search and tag filters work together for precise dancer filtering
 - **Intelligent Search**: Word-start matching for precise name and notes searching
@@ -381,12 +382,16 @@ Users can adjust rankings during events for various reasons:
 - **Clear Functionality**: Easy clearing of tag selections with standard tap behavior
 - **Enhanced Card Layout**: Name with notes and tags displayed below
 - **Tag Display**: Colored chip badges under dancer name showing assigned tags
-- **Combined Filtering**: Search, tag, and activity level filters work together for precise dancer filtering
+- **Combined Filtering**: Search and tag filters work together for precise dancer filtering
 - **Intelligent Search**: Word-start matching for precise name and notes searching
-- **Tap for Context Actions**: Single tap on any dancer card opens modal bottom sheet with Edit, Merge, and Delete options
+- **Stable Focus**: Search field maintains focus while typing for smooth user experience
+- **Clean Organization**: Tags appear only on main Dancers screen, not on event screens
+- **Archived Dancer Display**: Archived dancers show with muted appearance and grey "archived" label
+- **Tap for Context Actions**: Single tap on any dancer card opens modal bottom sheet with Edit, Merge, Archive/Reactivate, and Delete options
 - **Context Menu Options**: 
   - **Edit**: Opens Add/Edit Dancer Dialog for name, notes, and tag modifications
   - **Merge into...**: Opens target selection screen for consolidating duplicate dancer records
+  - **Archive/Reactivate**: Archives active dancers or reactivates archived dancers (with confirmation dialog for archiving)
   - **Delete**: Confirms deletion with warning about related data removal
 - **Consistent Interaction**: Follows same pattern as Tags, Ranks, and Events screens
 - **Clean Design**: No visual clutter with hidden context menus

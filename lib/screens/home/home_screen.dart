@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../database/database.dart';
 import '../../services/event_service.dart';
 import '../../utils/action_logger.dart';
+import '../../widgets/error_display.dart';
 import '../../widgets/safe_fab.dart';
 import 'dialog/create_event_screen.dart';
 import 'widgets/empty_events_view.dart';
@@ -27,8 +28,12 @@ class HomeScreen extends StatelessWidget {
           }
 
           if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
+            return ErrorDisplayFactory.streamError(
+              source: 'HomeScreen.StreamBuilder',
+              error: snapshot.error!,
+              stackTrace: snapshot.stackTrace,
+              title: 'Unable to load events',
+              message: 'Please restart the app or contact support',
             );
           }
 

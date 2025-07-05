@@ -21,8 +21,7 @@ class SummaryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ActionLogger.logAction(
-        'UI_SummaryTab', 'build_called', {'eventId': eventId});
+    ActionLogger.logAction('UI_SummaryTab', 'build_called', {'eventId': eventId});
 
     final dancerService = Provider.of<DancerService>(context);
     final eventService = Provider.of<EventService>(context, listen: false);
@@ -35,15 +34,13 @@ class SummaryTab extends StatelessWidget {
         }
 
         final event = eventSnapshot.data;
-        final isPastEvent =
-            event != null && EventStatusHelper.isPastEvent(event.date);
+        final isPastEvent = event != null && EventStatusHelper.isPastEvent(event.date);
 
         return StreamBuilder<List<DancerWithEventInfo>>(
           stream: dancerService.watchDancersForEvent(eventId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              ActionLogger.logAction(
-                  'UI_SummaryTab', 'loading_state', {'eventId': eventId});
+              ActionLogger.logAction('UI_SummaryTab', 'loading_state', {'eventId': eventId});
               return const Center(child: CircularProgressIndicator());
             }
 
@@ -51,13 +48,39 @@ class SummaryTab extends StatelessWidget {
               ActionLogger.logError('UI_SummaryTab', 'stream_error', {
                 'eventId': eventId,
                 'error': snapshot.error.toString(),
+                'stackTrace': snapshot.stackTrace?.toString(),
               });
-              return Center(child: Text('Error: ${snapshot.error}'));
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 64,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Unable to load event data',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Please restart the app or contact support',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              );
             }
 
             final allDancers = snapshot.data ?? [];
-            final attendedDancers =
-                allDancers.where((d) => d.isPresent || d.hasLeft).toList();
+            final attendedDancers = allDancers.where((d) => d.isPresent || d.hasLeft).toList();
 
             ActionLogger.logListRendering(
                 'UI_SummaryTab',
@@ -78,8 +101,7 @@ class SummaryTab extends StatelessWidget {
               'eventId': eventId,
               'totalDancers': allDancers.length,
               'attendedDancers': attendedDancers.length,
-              'firstMetCount':
-                  attendedDancers.where((d) => d.isFirstMetHere).length,
+              'firstMetCount': attendedDancers.where((d) => d.isFirstMetHere).length,
               'isPastEvent': isPastEvent,
             });
 
@@ -88,8 +110,7 @@ class SummaryTab extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.summarize_outlined,
-                        size: 64, color: Colors.grey),
+                    Icon(Icons.summarize_outlined, size: 64, color: Colors.grey),
                     SizedBox(height: 16),
                     Text('No dances recorded yet'),
                     SizedBox(height: 8),
@@ -114,8 +135,7 @@ class SummaryTab extends StatelessWidget {
 
             // Sort dancers within each score group by name
             for (final scoreName in groupedDancers.keys) {
-              groupedDancers[scoreName]!
-                  .sort((a, b) => a.name.compareTo(b.name));
+              groupedDancers[scoreName]!.sort((a, b) => a.name.compareTo(b.name));
             }
 
             // Sort scores by ordinal (best first)
@@ -127,8 +147,7 @@ class SummaryTab extends StatelessWidget {
                 final dancerA = groupedDancers[a]!.first;
                 final dancerB = groupedDancers[b]!.first;
 
-                return (dancerA.scoreOrdinal ?? 999)
-                    .compareTo(dancerB.scoreOrdinal ?? 999);
+                return (dancerA.scoreOrdinal ?? 999).compareTo(dancerB.scoreOrdinal ?? 999);
               });
 
             ActionLogger.logAction('UI_SummaryTab', 'grouping_complete', {
@@ -234,16 +253,13 @@ class _StickyHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => maxHeight;
 
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return SizedBox.expand(child: child);
   }
 
   @override
   bool shouldRebuild(_StickyHeaderDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
+    return maxHeight != oldDelegate.maxHeight || minHeight != oldDelegate.minHeight || child != oldDelegate.child;
   }
 }
 
@@ -267,7 +283,7 @@ class SummaryGroupHeader extends StatelessWidget {
         color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+            color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
             offset: const Offset(0, 2),
             blurRadius: 4,
           ),
@@ -346,8 +362,7 @@ class SummaryTabActions implements EventTabActions {
   IconData get fabIcon => Icons.add;
 
   @override
-  Future<void> onFabPressed(
-      BuildContext context, VoidCallback onRefresh) async {
+  Future<void> onFabPressed(BuildContext context, VoidCallback onRefresh) async {
     // Show speed dial menu with two options
     _showSummaryTabSpeedDial(context, onRefresh);
   }
@@ -404,18 +419,14 @@ class SummaryTabActions implements EventTabActions {
                 subtitle: const Text('Mark unranked dancers as present'),
                 onTap: () async {
                   Navigator.pop(context);
-                  final appDb =
-                      Provider.of<AppDatabase>(context, listen: false);
+                  final appDb = Provider.of<AppDatabase>(context, listen: false);
                   final result = await Navigator.push<bool>(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Provider<DancerCrudService>(
                         create: (_) => DancerCrudService(appDb),
                         child: Provider<DancerTagService>(
-                          create: (ctx) => DancerTagService(
-                              appDb,
-                              Provider.of<DancerCrudService>(ctx,
-                                  listen: false)),
+                          create: (ctx) => DancerTagService(appDb, Provider.of<DancerCrudService>(ctx, listen: false)),
                           child: AddExistingDancerScreen(
                             eventId: eventId,
                             eventName: eventName,

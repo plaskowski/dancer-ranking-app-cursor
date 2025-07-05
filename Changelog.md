@@ -148,6 +148,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v1.3.4] - 2025-01-17
 
 ### User Requests
+- "remove dancer from planned event action" - Request to add ability to remove dancers from planned events
+
+### Added
+- **Remove from Event Action**: Added ability to remove dancers from planned events in the planning tab
+  - **Planning Mode Only**: Available only in planning mode for dancers who have rankings
+  - **Context Menu Action**: "Remove from Event" option in dancer actions dialog
+  - **Ranking Deletion**: Removes the dancer's ranking and planning data from the event
+  - **User Feedback**: Success/error toast messages with dancer name
+  - **Past Event Protection**: Not available for past events to preserve historical data
+  - **Action Logging**: Comprehensive logging for remove operations
+
+### Technical
+- Added `_removeFromEvent()` method to DancerActionsDialog
+- Used RankingService.deleteRanking() to remove dancer rankings
+- Added proper error handling and user feedback
+- Integrated with existing action logging system
+- Applied proper Dart formatting for code quality
+
+## [v1.3.3] - 2025-01-17
+
+### User Requests
 - "Great, let's implement this" - Request to implement the unified dancer filtering component
 
 ### Added
@@ -182,32 +203,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Maintained existing functionality while improving code organization
 - Applied proper Dart formatting to all modified files
 
-## [v1.3.3] - 2025-01-17
+## [v1.3.2] - 2025-01-17
 
 ### User Requests
-- "Try extract a common component for the same" - Request to extract common components for filtering functionality
+- "have similar filtering in add dancers dialog" - Request to add tag filtering functionality to the Add Dancer Dialog, similar to the Select Dancers and Add Existing Dancer screens
 
 ### Added
-- **Common Filter Components**: Extracted reusable components for consistent filtering across screens
-  - **CommonSearchField**: Reusable search field with consistent styling, clear button, and behavior
-  - **CommonFilterSection**: Combined search and tag filtering component for unified filtering UI
-  - **Consistent Styling**: Material 3 design with proper theming and accessibility
-  - **Flexible Configuration**: Support for different hint texts, labels, and optional tag filtering
-  - **Clear Button Integration**: Built-in clear functionality with proper state management
-
-### Improved
-- **Code Reusability**: Reduced code duplication across multiple screens
-  - **DancersScreen**: Updated to use CommonFilterSection instead of separate search and tag components
-  - **SelectDancersScreen**: Refactored to use unified filtering component
-  - **Consistent UX**: All filtering screens now have identical behavior and appearance
-  - **Maintainability**: Centralized filtering logic for easier updates and bug fixes
+- **Tag Filtering in Add Dancer Dialog**: Added tag-based filtering to help users find existing dancers when creating new dancers
+  - **Filter by Tag**: Users can select a tag to filter existing dancers by venue/context
+  - **Existing Dancer Selection**: Shows list of existing dancers with the selected tag
+  - **Pre-fill Form**: Selecting an existing dancer pre-fills the name, notes, and tags
+  - **Duplicate Prevention**: Helps users avoid creating duplicate dancer profiles when they can't remember names
+  - **Memory Aid**: Useful when users remember where they know someone from but not their name
 
 ### Technical
-- Created `lib/widgets/common_search_field.dart` with comprehensive search field functionality
-- Created `lib/widgets/common_filter_section.dart` that combines search and tag filtering
-- Updated import statements and component usage across multiple screens
-- Maintained existing functionality while improving code organization
-- Applied proper Dart formatting to all modified files
+- Added TagFilterChips widget integration to AddDancerDialog
+- Implemented filtered dancer loading and display logic
+- Added existing dancer selection functionality with form pre-filling
+- Maintained existing tag selection functionality for new dancers
+
+## [v1.3.1] - 2025-01-17
+
+### User Requests
+- "The implementation does not look like the wireframes. The pickers show appear at the bottom, similar to context actions menu" - Request to make ranking and score pickers appear as bottom sheets at the bottom of the screen, matching the wireframes and context menu style
+
+### Changed
+- **RankingDialog and ScoreDialog Presentation**: Both dialogs now use showModalBottomSheet and appear as bottom sheets at the bottom of the screen, matching the context actions menu and wireframes
+- **UI Consistency**: Picker dialogs now visually match the context actions menu for a more consistent and modern user experience
+
+### Improved
+- **Material 3 Bottom Sheet Style**: Ranking and score pickers now use Material 3 bottom sheet style for better UX and platform consistency
+
+### Technical
+- Refactored RankingDialog and ScoreDialog to be used as widgets inside showModalBottomSheet
+- Updated DancerActionsDialog to launch pickers as bottom sheets instead of AlertDialogs
+
+### Documentation
+- Updated Product specification.md to reflect new bottom sheet presentation for ranking and score pickers
 
 ## [v1.3.0] - 2025-01-16
 
@@ -240,18 +272,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v1.3.1] - 2025-01-17
 
 ### User Requests
-- "The implementation does not look like the wireframes. The pickers show appear at the bottom, similar to context actions menu" - Request to make ranking and score pickers appear as bottom sheets at the bottom of the screen, matching the wireframes and context menu style
+- "I would like to make use of icons from material 3" - Request to implement Material 3 icons throughout the app
 
-### Changed
-- **RankingDialog and ScoreDialog Presentation**: Both dialogs now use showModalBottomSheet and appear as bottom sheets at the bottom of the screen, matching the context actions menu and wireframes
-- **UI Consistency**: Picker dialogs now visually match the context actions menu for a more consistent and modern user experience
+### Added
+- **Material 3 Icons Implementation**: Comprehensive Material 3 icon system with proper variants and styling
+  - **Icon Variants**: Implemented filled, outlined, rounded, sharp, and two-tone icon variants
+  - **Color Guidelines**: Established semantic color usage with colorScheme integration
+  - **Size Guidelines**: Defined standard sizes (18, 24, 32, 48) for different contexts
+  - **Best Practices**: Created comprehensive guide for consistent icon usage across the app
+  - **Migration Examples**: Updated existing icons to follow Material 3 conventions
+  - **Documentation**: Added detailed Material 3 Icons Guide with examples and best practices
 
 ### Improved
-- **Material 3 Bottom Sheet Style**: Ranking and score pickers now use Material 3 bottom sheet style for better UX and platform consistency
+- **Icon Consistency**: Updated navigation, action, and status icons to use Material 3 variants
+  - **Navigation Icons**: Updated home app bar to use outlined variants (people_outlined, settings_outlined)
+  - **Action Icons**: Updated context menus to use outlined variants (edit_outlined, delete_outline)
+  - **Status Icons**: Updated archive/restore icons to use outlined variants
+  - **Event Icons**: Updated event card actions to use Material 3 variants
+  - **Visual Hierarchy**: Better distinction between primary and secondary actions through icon variants
+  - **Accessibility**: Improved contrast and semantic color usage for better accessibility
 
 ### Technical
-- Refactored RankingDialog and ScoreDialog to be used as widgets inside showModalBottomSheet
-- Updated DancerActionsDialog to launch pickers as bottom sheets instead of AlertDialogs
+- **Icon System Architecture**: Created Material3IconsGuide class with common icons mapping
+- **Color Scheme Integration**: All icons now use Theme.of(context).colorScheme for consistent theming
+- **Variant Selection**: Implemented proper variant selection based on action type and context
+- **Code Organization**: Created dedicated theme file for Material 3 icon utilities and examples
+- **Documentation**: Comprehensive guide with implementation examples and migration strategies
+- **Formatting**: Applied proper Dart formatting to all modified files
 
 ### Documentation
 - Updated Product specification.md to reflect new bottom sheet presentation for ranking and score pickers
@@ -955,3 +1002,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `ActivityFilterWidget` for activity level filtering
 - Integrated activity service with filtering system
 - Updated Dancers screen to use new unified filtering approach
+
+### Documentation
+- **Material 3 Icons Guide**: Created comprehensive documentation with examples and best practices
+- **Implementation Examples**: Added practical examples for navigation, action, and status icons
+- **Migration Guide**: Documented process for updating existing icons to Material 3 standards
+- **Best Practices**: Established guidelines for icon variant selection and color usage

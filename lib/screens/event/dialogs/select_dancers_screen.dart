@@ -5,6 +5,7 @@ import '../../../services/dancer/dancer_filter_service.dart';
 import '../../../services/dancer_service.dart';
 import '../../../services/ranking_service.dart';
 import '../../../theme/theme_extensions.dart';
+import '../../../utils/action_logger.dart';
 import '../../../widgets/safe_fab.dart';
 import '../../../widgets/simplified_tag_filter.dart';
 
@@ -148,7 +149,39 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> {
                 }
 
                 if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
+                  ActionLogger.logError('SelectDancersScreen', 'stream_error', {
+                    'eventId': widget.eventId,
+                    'error': snapshot.error.toString(),
+                    'stackTrace': snapshot.stackTrace?.toString(),
+                  });
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error_outline,
+                          size: 64,
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Unable to load dancers',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Please try again or contact support',
+                          style: TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 }
 
                 final allDancers = snapshot.data ?? [];

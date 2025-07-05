@@ -77,6 +77,15 @@ class DancerService {
   Stream<List<DancerWithTags>> watchActiveDancersWithTags() =>
       _tagService.watchActiveDancersWithTags();
 
+  Stream<List<DancerWithTags>> watchArchivedDancersWithTags() =>
+      _tagService.watchArchivedDancersWithTags();
+
+  Future<List<DancerWithTags>> getDancersWithTagsAndLastMet() =>
+      _tagService.getDancersWithTagsAndLastMet();
+
+  Stream<List<DancerWithTags>> watchDancersWithTagsAndLastMet() =>
+      _tagService.watchDancersWithTagsAndLastMet();
+
   // Event Methods
   Stream<List<DancerWithEventInfo>> watchDancersForEvent(int eventId) =>
       _eventService.watchDancersForEvent(eventId);

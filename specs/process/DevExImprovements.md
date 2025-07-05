@@ -36,6 +36,9 @@
 - don't put new files into main directory to avoid clutter
 - prevent generating tech spec until I agree on feature and UX spec
 - write the long output to file so I can comment on it, save it for later and track it's changes
+- how to have separate configs for workspaces (e.g. title bar color)
+- codebase has to be cohesive and modular to avoid conflicts between agents lines
+- If the agent ask for choice it should present buttons for them
 
 # Hard ones
 - increase the 25 tool calls limit
@@ -48,5 +51,10 @@
 - second cursor
   - https://egghead.io/launch-multiple-cursor-composer-ai-agents-to-work-in-parallel~y1q56
 
-  ## Przemyslenia
-  Bez szans zeby moc mergowac zmiany roznych agentow kiedy pisza low level code
+## Remember
+- DB migration
+- update wireframes
+- ..
+
+## Przemyslenia
+Bez szans zeby moc mergowac zmiany roznych agentow kiedy pisza low level code

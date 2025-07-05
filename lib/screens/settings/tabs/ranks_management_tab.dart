@@ -29,8 +29,36 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
           }
 
           if (snapshot.hasError) {
+            ActionLogger.logError('RanksManagementTab', 'stream_error', {
+              'error': snapshot.error.toString(),
+              'stackTrace': snapshot.stackTrace?.toString(),
+            });
             return Center(
-              child: Text('Error: ${snapshot.error}'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.error_outline,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Unable to load ranks',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Please restart the app or contact support',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
             );
           }
 
@@ -57,11 +85,9 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
           }
 
           return ReorderableListView.builder(
-            padding:
-                const EdgeInsets.only(bottom: 80, left: 16, right: 16, top: 16),
+            padding: const EdgeInsets.only(bottom: 80, left: 16, right: 16, top: 16),
             itemCount: ranksWithUsage.length,
-            onReorder: (oldIndex, newIndex) =>
-                _reorderRanks(ranksWithUsage, oldIndex, newIndex),
+            onReorder: (oldIndex, newIndex) => _reorderRanks(ranksWithUsage, oldIndex, newIndex),
             itemBuilder: (context, index) {
               final rankWithUsage = ranksWithUsage[index];
               return RankCard(
@@ -69,10 +95,8 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
                 rankWithUsage: rankWithUsage,
                 index: index,
                 onEdit: () => _showEditRankDialog(context, rankWithUsage.rank),
-                onArchive: () =>
-                    _showArchiveRankDialog(context, rankWithUsage.rank),
-                onDelete: () =>
-                    _showDeleteRankDialog(context, rankWithUsage.rank),
+                onArchive: () => _showArchiveRankDialog(context, rankWithUsage.rank),
+                onDelete: () => _showDeleteRankDialog(context, rankWithUsage.rank),
               );
             },
           );
@@ -86,8 +110,7 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
     );
   }
 
-  void _reorderRanks(
-      List<RankWithUsage> ranksWithUsage, int oldIndex, int newIndex) {
+  void _reorderRanks(List<RankWithUsage> ranksWithUsage, int oldIndex, int newIndex) {
     ActionLogger.logUserAction('RanksManagementTab', 'reorder_ranks', {
       'oldIndex': oldIndex,
       'newIndex': newIndex,
@@ -108,16 +131,14 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
 
   Future<void> _updateRankOrdinals(List<Rank> ranks) async {
     try {
-      final rankingService =
-          Provider.of<RankingService>(context, listen: false);
+      final rankingService = Provider.of<RankingService>(context, listen: false);
       await rankingService.updateRankOrdinals(ranks);
 
       ActionLogger.logAction('RanksManagementTab', 'ordinals_updated', {
         'ranksCount': ranks.length,
       });
     } catch (e) {
-      ActionLogger.logError(
-          'RanksManagementTab._updateRankOrdinals', e.toString(), {
+      ActionLogger.logError('RanksManagementTab._updateRankOrdinals', e.toString(), {
         'ranksCount': ranks.length,
       });
 
@@ -159,8 +180,7 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
     );
   }
 
-  void _performAddRank(
-      BuildContext context, TextEditingController controller) async {
+  void _performAddRank(BuildContext context, TextEditingController controller) async {
     final name = controller.text.trim();
     if (name.isEmpty) return;
 
@@ -171,8 +191,7 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
     Navigator.pop(context);
 
     try {
-      final rankingService =
-          Provider.of<RankingService>(context, listen: false);
+      final rankingService = Provider.of<RankingService>(context, listen: false);
       final ranks = await rankingService.getAllRanks();
       final nextOrdinal = ranks.isEmpty ? 1 : ranks.last.ordinal + 1;
 
@@ -183,8 +202,7 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
         ToastHelper.showSuccess(context, 'Rank "$name" created successfully');
       }
     } catch (e) {
-      ActionLogger.logError(
-          'RanksManagementTab._performAddRank', e.toString(), {
+      ActionLogger.logError('RanksManagementTab._performAddRank', e.toString(), {
         'rankName': name,
       });
 
@@ -195,8 +213,7 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
   }
 
   void _showEditRankDialog(BuildContext context, Rank rank) {
-    ActionLogger.logUserAction(
-        'RanksManagementTab', 'edit_rank_dialog_opened', {
+    ActionLogger.logUserAction('RanksManagementTab', 'edit_rank_dialog_opened', {
       'rankId': rank.id,
       'rankName': rank.name,
     });
@@ -247,8 +264,7 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
     });
 
     try {
-      final rankingService =
-          Provider.of<RankingService>(context, listen: false);
+      final rankingService = Provider.of<RankingService>(context, listen: false);
       final success = await rankingService.updateRank(id: rank.id, name: name);
 
       if (mounted) {
@@ -260,8 +276,7 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
         }
       }
     } catch (e) {
-      ActionLogger.logError(
-          'RanksManagementTab._performEditRank', e.toString(), {
+      ActionLogger.logError('RanksManagementTab._performEditRank', e.toString(), {
         'rankId': rank.id,
         'newName': name,
       });
@@ -276,8 +291,7 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
     final isArchiving = !rank.isArchived;
     final action = isArchiving ? 'archive' : 'unarchive';
 
-    ActionLogger.logUserAction(
-        'RanksManagementTab', '${action}_rank_dialog_opened', {
+    ActionLogger.logUserAction('RanksManagementTab', '${action}_rank_dialog_opened', {
       'rankId': rank.id,
       'rankName': rank.name,
       'currentArchivedState': rank.isArchived,
@@ -323,24 +337,20 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
     });
 
     try {
-      final rankingService =
-          Provider.of<RankingService>(context, listen: false);
-      final success = isArchiving
-          ? await rankingService.archiveRank(rank.id)
-          : await rankingService.unarchiveRank(rank.id);
+      final rankingService = Provider.of<RankingService>(context, listen: false);
+      final success =
+          isArchiving ? await rankingService.archiveRank(rank.id) : await rankingService.unarchiveRank(rank.id);
 
       if (mounted) {
         if (success) {
           setState(() {}); // Refresh the list
-          ToastHelper.showSuccess(context,
-              'Rank "${rank.name}" ${isArchiving ? 'archived' : 'un-archived'}');
+          ToastHelper.showSuccess(context, 'Rank "${rank.name}" ${isArchiving ? 'archived' : 'un-archived'}');
         } else {
           ToastHelper.showError(context, 'Failed to $action rank');
         }
       }
     } catch (e) {
-      ActionLogger.logError(
-          'RanksManagementTab._performArchiveRank', e.toString(), {
+      ActionLogger.logError('RanksManagementTab._performArchiveRank', e.toString(), {
         'rankId': rank.id,
         'action': action,
       });
@@ -352,8 +362,7 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
   }
 
   void _showDeleteRankDialog(BuildContext context, Rank rank) {
-    ActionLogger.logUserAction(
-        'RanksManagementTab', 'delete_rank_dialog_opened', {
+    ActionLogger.logUserAction('RanksManagementTab', 'delete_rank_dialog_opened', {
       'rankId': rank.id,
       'rankName': rank.name,
     });
@@ -404,8 +413,7 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
         return;
       }
 
-      final replacementRank =
-          await _showReplacementRankDialog(context, rank, otherRanks);
+      final replacementRank = await _showReplacementRankDialog(context, rank, otherRanks);
       if (replacementRank == null) return;
 
       if (!mounted) return;
@@ -418,15 +426,14 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
       if (mounted) {
         if (success) {
           setState(() {}); // Refresh the list
-          ToastHelper.showSuccess(context,
-              'Rank "${rank.name}" deleted, existing rankings moved to "${replacementRank.name}"');
+          ToastHelper.showSuccess(
+              context, 'Rank "${rank.name}" deleted, existing rankings moved to "${replacementRank.name}"');
         } else {
           ToastHelper.showError(context, 'Failed to delete rank');
         }
       }
     } catch (e) {
-      ActionLogger.logError(
-          'RanksManagementTab._performDeleteRank', e.toString(), {
+      ActionLogger.logError('RanksManagementTab._performDeleteRank', e.toString(), {
         'rankId': rank.id,
       });
 
@@ -436,8 +443,7 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
     }
   }
 
-  Future<Rank?> _showReplacementRankDialog(
-      BuildContext context, Rank rankToDelete, List<Rank> otherRanks) async {
+  Future<Rank?> _showReplacementRankDialog(BuildContext context, Rank rankToDelete, List<Rank> otherRanks) async {
     return showDialog<Rank>(
       context: context,
       builder: (context) => AlertDialog(
@@ -446,8 +452,7 @@ class _RanksManagementTabState extends State<RanksManagementTab> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-                'Existing rankings using "${rankToDelete.name}" will be moved to:'),
+            Text('Existing rankings using "${rankToDelete.name}" will be moved to:'),
             const SizedBox(height: 16),
             ...otherRanks.map((rank) => RadioListTile<Rank>(
                   value: rank,

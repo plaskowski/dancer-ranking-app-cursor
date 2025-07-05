@@ -10,6 +10,7 @@ import '../../../services/ranking_service.dart';
 import '../../../theme/theme_extensions.dart';
 import '../../../utils/action_logger.dart';
 import '../../../widgets/dancer_card.dart';
+import '../../../widgets/error_display.dart';
 import '../../../widgets/import_rankings_dialog.dart';
 import '../dialogs/event_tab_actions.dart';
 import '../dialogs/select_dancers_screen.dart';
@@ -42,11 +43,14 @@ class _PlanningTabState extends State<PlanningTab> {
         }
 
         if (snapshot.hasError) {
-          ActionLogger.logError('UI_PlanningTab', 'stream_error', {
-            'eventId': widget.eventId,
-            'error': snapshot.error.toString(),
-          });
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return ErrorDisplayFactory.streamError(
+            source: 'UI_PlanningTab',
+            error: snapshot.error!,
+            stackTrace: snapshot.stackTrace,
+            context: {'eventId': widget.eventId},
+            title: 'Unable to load event data',
+            message: 'Please restart the app or contact support',
+          );
         }
 
         final allDancers = snapshot.data ?? [];
