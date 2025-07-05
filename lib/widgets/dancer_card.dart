@@ -52,20 +52,24 @@ class DancerCard extends StatelessWidget {
                         ),
 
                         // Show dancer notes if they exist
-                        if (dancer.notes != null && dancer.notes!.isNotEmpty) ...[
+                        if (dancer.notes != null &&
+                            dancer.notes!.isNotEmpty) ...[
                           const TextSpan(text: ' • '),
                           TextSpan(
                             text: dancer.notes!,
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.normal,
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
                             ),
                           ),
                         ],
 
                         // Show ranking reason if it exists
-                        if (dancer.rankingReason != null && dancer.rankingReason!.isNotEmpty) ...[
+                        if (dancer.rankingReason != null &&
+                            dancer.rankingReason!.isNotEmpty) ...[
                           const TextSpan(text: ' • '),
                           TextSpan(
                             text: '"${dancer.rankingReason}"',
@@ -92,7 +96,9 @@ class DancerCard extends StatelessWidget {
                         ],
 
                         // Show dance impression if they have danced and have an impression
-                        if (dancer.hasDanced && dancer.impression != null && dancer.impression!.isNotEmpty) ...[
+                        if (dancer.hasDanced &&
+                            dancer.impression != null &&
+                            dancer.impression!.isNotEmpty) ...[
                           const TextSpan(text: ' • '),
                           TextSpan(
                             text: dancer.impression!,
@@ -129,23 +135,23 @@ class DancerCard extends StatelessWidget {
               const SizedBox(width: 8),
               GestureDetector(
                 onTap: () {
-                  ActionLogger.logUserAction('DancerCard', 'score_pill_tapped', {
+                  ActionLogger.logUserAction(
+                      'DancerCard', 'score_pill_tapped', {
                     'dancerId': dancer.id,
                     'dancerName': dancer.name,
                     'eventId': eventId,
                     'currentScore': dancer.scoreName,
                   });
 
-                  showDialog(
-                    context: context,
-                    builder: (context) => ScoreDialog(
-                      dancerId: dancer.id,
-                      eventId: eventId,
-                    ),
+                  ScoreDialog.show(
+                    context,
+                    dancerId: dancer.id,
+                    eventId: eventId,
                   );
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: context.danceTheme.rankingHigh.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12),

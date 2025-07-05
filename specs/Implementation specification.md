@@ -62,6 +62,37 @@
 - **Consistent Behavior**: All dancer lists behave the same way
 - **Reduced Complexity**: No need for manual refresh mechanisms
 
+## 4. UI Consistency & Dialog Patterns
+
+**Purpose**: Ensure consistent user experience across all dialog components
+
+**Key Features**:
+- **Consistent Dialog Structure**: All dialogs follow same layout patterns
+- **Standardized Presentation**: Modal bottom sheets with consistent styling
+- **Unified Action Buttons**: Cancel/Save button layout with loading states
+- **RadioListTile Selection**: Consistent selection UX across all choice dialogs
+- **Proper Visual Hierarchy**: Clear sections, spacing, and typography
+
+**Dialog Components**:
+- **RankingDialog**: Template for all selection dialogs with proper structure
+- **ScoreDialog**: Updated to match RankingDialog patterns and styling
+- **Static Show Methods**: Consistent `Dialog.show()` pattern for presentation
+- **Loading States**: Proper loading indicators during async operations
+- **Error Handling**: Consistent error display and user feedback
+
+**Implementation**:
+- **Header Section**: Title with close button in consistent layout
+- **Description Text**: Clear explanation of dialog purpose
+- **Options Section**: RadioListTile for selection with proper spacing
+- **Action Buttons**: Cancel and primary action with loading states
+- **Modal Presentation**: `showModalBottomSheet` with `isScrollControlled: true`
+
+**Benefits**:
+- **Consistent UX**: All dialogs feel familiar and predictable
+- **Better Usability**: Clear visual hierarchy and intuitive interactions
+- **Maintainable Code**: Shared patterns reduce development complexity
+- **Professional Appearance**: Polished, consistent interface design
+
 ## Key Features
 
 ### Dancer Management

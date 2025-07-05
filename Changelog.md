@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.4.5] - 2025-01-17
+
+### User Requests
+- "Why the assign score sheet looks different from other sheets?" - Request to understand and fix UI inconsistency in ScoreDialog
+
+### Improved
+- **ScoreDialog UI Consistency**: Updated ScoreDialog to match RankingDialog's structure and styling
+  - **Consistent Layout**: Now uses same header, sections, and action button layout as RankingDialog
+  - **RadioListTile Selection**: Replaced ListTile with RadioListTile for better selection UX
+  - **Proper Action Buttons**: Added Cancel and Set Score buttons with loading states
+  - **Better Visual Hierarchy**: Improved spacing, typography, and section organization
+  - **Static Show Method**: Added `ScoreDialog.show()` static method for consistent presentation
+  - **Loading States**: Added proper loading indicators during save operations
+
+### Technical
+- **ScoreDialog**: Completely refactored to match RankingDialog architecture
+- **Static Show Method**: Added `ScoreDialog.show()` for consistent modal presentation
+- **RadioListTile**: Replaced simple ListTile with RadioListTile for better selection UX
+- **Action Buttons**: Added proper Cancel/Save button layout with loading states
+- **UI Consistency**: All dialog components now follow same design patterns
+
 ## [v1.4.4] - 2025-01-17
 
 ### User Requests
