@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.4.3] - 2025-01-17
+
+### User Requests
+- "Now try use the base class to rewrite @dancers_screen.dart" - Request to refactor Dancers screen to use base class for better code organization
+
+### Changed
+- **Dancers Screen**: Completely refactored to use new BaseDancerListScreen
+  - **Code Reduction**: Reduced from 267 lines to 95 lines (65% reduction)
+  - **Base Class Architecture**: Created generic BaseDancerListScreen for general dancer management
+  - **Consistent Filtering**: Now uses same SimplifiedTagFilter component as other screens
+  - **Maintained Functionality**: All existing features preserved (edit, delete, merge, add dancer)
+  - **Better Code Organization**: Separated concerns between base component and specific implementation
+  - **Improved Maintainability**: Common filtering logic now centralized in base component
+  - **Consistent UX**: Same filtering patterns and empty states as other screens
+
+### Technical
+- **BaseDancerListScreen**: Created new generic base class for general dancer list screens
+- **DancerListFilterWidget**: Added reusable filtering and list display widget
+- **DancersScreen**: Refactored to use base class while maintaining all specific functionality
+- **Code Architecture**: Improved separation between event-specific and general dancer management
+- **Consistent Patterns**: All dancer list screens now use same base architecture
+
 ## [v1.4.2] - 2025-01-17
 
 ### User Requests

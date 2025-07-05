@@ -3,17 +3,14 @@ import 'package:provider/provider.dart';
 
 import '../../database/database.dart';
 import '../../models/dancer_with_tags.dart';
-import '../../services/dancer/dancer_activity_service.dart';
 import '../../services/dancer/dancer_filter_service.dart';
 import '../../services/dancer_service.dart';
-import '../../services/tag_service.dart';
 import '../../utils/action_logger.dart';
 import '../../utils/toast_helper.dart';
 import '../../widgets/add_dancer_dialog.dart';
-import '../../widgets/combined_dancer_filter.dart';
 import '../../widgets/dancer_card_with_tags.dart';
-import '../../widgets/error_display.dart';
 import '../../widgets/safe_fab.dart';
+import '../event/dialogs/base_dancer_selection_screen.dart';
 import 'dialogs/select_merge_target_screen.dart';
 
 class DancersScreen extends StatefulWidget {
@@ -24,176 +21,34 @@ class DancersScreen extends StatefulWidget {
 }
 
 class _DancersScreenState extends State<DancersScreen> {
-  String _searchQuery = '';
-  List<int> _selectedTagIds = [];
-  ActivityLevel? _selectedActivityLevel = ActivityLevel.all;
+  Future<List<DancerWithTags>> _getDancers(List<int> tagIds, String searchQuery) async {
+    final dancerService = Provider.of<DancerService>(context, listen: false);
+    final allDancers = await dancerService.getDancersWithTagsAndLastMet();
 
-  void _onFiltersChanged(String searchQuery, List<int> selectedTagIds, ActivityLevel? activityLevel) {
-    setState(() {
-      _searchQuery = searchQuery;
-      _selectedTagIds = selectedTagIds;
-      _selectedActivityLevel = activityLevel;
-    });
-  }
-
-  List<DancerWithTags> _filterDancers(List<DancerWithTags> dancers) {
     final filterService = DancerFilterService.of(context);
-    List<DancerWithTags> filteredDancers = dancers;
+    List<DancerWithTags> filteredDancers = allDancers;
 
     // Apply search filter
-    if (_searchQuery.isNotEmpty) {
-      filteredDancers = filterService.filterDancersByTextWords(dancers, _searchQuery);
+    if (searchQuery.isNotEmpty) {
+      filteredDancers = filterService.filterDancersByTextWords(allDancers, searchQuery);
     }
 
     // Apply tag filter
-    if (_selectedTagIds.isNotEmpty) {
+    if (tagIds.isNotEmpty) {
       filteredDancers = filteredDancers.where((dancer) {
-        return dancer.tags.any((tag) => _selectedTagIds.contains(tag.id));
+        return dancer.tags.any((tag) => tagIds.contains(tag.id));
       }).toList();
-    }
-
-    // Apply activity filter
-    if (_selectedActivityLevel != null && _selectedActivityLevel != ActivityLevel.all) {
-      // TODO: Implement activity filtering when the service is ready
-      // For now, we'll just return all dancers
     }
 
     return filteredDancers;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final dancerService = Provider.of<DancerService>(context);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dancers'),
-      ),
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // Filter section
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: StreamBuilder<List<Tag>>(
-                  stream: Provider.of<TagService>(context, listen: false).watchAllTags(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    final availableTags = snapshot.data ?? [];
-                    return CombinedDancerFilter(
-                      availableTags: availableTags,
-                      onFiltersChanged: _onFiltersChanged,
-                    );
-                  },
-                ),
-              ),
-            ),
-
-            // Dancers list
-            StreamBuilder<List<DancerWithTags>>(
-              stream: dancerService.watchDancersWithTagsAndLastMet(),
-              builder: (context, snapshot) {
-                try {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const SliverToBoxAdapter(
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
-
-                  if (snapshot.hasError) {
-                    return SliverToBoxAdapter(
-                      child: ErrorDisplayFactory.streamError(
-                        source: 'DancersScreen.StreamBuilder',
-                        error: snapshot.error!,
-                        stackTrace: snapshot.stackTrace,
-                        title: 'Unable to load dancers',
-                        message: 'Please restart the app or contact support',
-                      ),
-                    );
-                  }
-
-                  final allDancers = snapshot.data ?? [];
-                  final dancers = _filterDancers(allDancers);
-
-                  if (dancers.isEmpty) {
-                    return SliverToBoxAdapter(
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.people,
-                              size: 64,
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              _searchQuery.isEmpty && _selectedTagIds.isEmpty ? 'No dancers yet' : 'No dancers found',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              _searchQuery.isEmpty && _selectedTagIds.isEmpty
-                                  ? 'Tap + to add your first dancer'
-                                  : 'Try adjusting your filters',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }
-
-                  return SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final dancer = dancers[index];
-                        return DancerCardWithTags(
-                          dancerWithTags: dancer,
-                          onEdit: () => _editDancer(dancer.dancer),
-                          onDelete: () => _deleteDancer(dancer.dancer),
-                          onMerge: () => _mergeDancer(dancer.dancer),
-                        );
-                      },
-                      childCount: dancers.length,
-                    ),
-                  );
-                } catch (e, stackTrace) {
-                  return SliverToBoxAdapter(
-                    child: ErrorDisplayFactory.streamError(
-                      source: 'DancersScreen.StreamBuilder',
-                      error: e,
-                      stackTrace: stackTrace,
-                      title: 'Error loading dancers',
-                      message: 'Please restart the app or contact support',
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: SafeFAB(
-        onPressed: () {
-          ActionLogger.logAction(
-            'DancersScreen',
-            'tap_add_dancer_fab',
-            {},
-          );
-          _showAddDancerDialog();
-        },
-        child: const Icon(Icons.add),
-      ),
+  Widget _buildDancerTile(DancerWithTags dancer) {
+    return DancerCardWithTags(
+      dancerWithTags: dancer,
+      onEdit: () => _editDancer(dancer.dancer),
+      onDelete: () => _deleteDancer(dancer.dancer),
+      onMerge: () => _mergeDancer(dancer.dancer),
     );
   }
 
@@ -258,9 +113,27 @@ class _DancersScreenState extends State<DancersScreen> {
   }
 
   void _showAddDancerDialog() {
+    ActionLogger.logAction(
+      'DancersScreen',
+      'tap_add_dancer_fab',
+      {},
+    );
     showDialog(
       context: context,
       builder: (context) => const AddDancerDialog(),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BaseDancerListScreen(
+      screenTitle: 'Dancers',
+      getDancers: _getDancers,
+      buildDancerTile: _buildDancerTile,
+      floatingActionButton: SafeFAB(
+        onPressed: _showAddDancerDialog,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
