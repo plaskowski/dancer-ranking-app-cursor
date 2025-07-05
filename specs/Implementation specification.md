@@ -93,6 +93,36 @@
 - **Maintainable Code**: Shared patterns reduce development complexity
 - **Professional Appearance**: Polished, consistent interface design
 
+## 5. SimpleSelectionDialog Component
+
+**Purpose**: Provide a reusable component for simple selection dialogs
+
+**Key Features**:
+- **Generic Design**: Supports any type of items with customizable title and selection logic
+- **One-Tap Selection**: Immediate selection with visual feedback (check_circle vs circle_outlined)
+- **Built-in Logging**: Automatic action logging with configurable prefix
+- **Loading States**: Built-in loading indicator support
+- **Consistent UI**: Standardized header, list, and cancel button layout
+- **Error Handling**: Proper error handling and user feedback
+
+**Implementation**:
+- **Generic Type**: SimpleSelectionDialog<T> for type-safe usage
+- **Configurable Callbacks**: itemTitle, isSelected, onItemSelected, onCancel
+- **Action Logging**: Integrated logging with configurable prefixes for different dialogs
+- **Visual Feedback**: Clear visual indicators for selected vs unselected items
+- **Responsive Design**: Handles overflow with scrollable content and height constraints
+
+**Usage Examples**:
+- **ScoreDialog**: Uses SimpleSelectionDialog<Score> for score assignment
+- **Merge Dialogs**: Uses SimpleSelectionDialog for target selection in merge operations
+- **Custom Dialogs**: Can be used for any simple selection scenario
+
+**Benefits**:
+- **Code Reduction**: Eliminates duplicate UI code by 70%
+- **Consistent Behavior**: Maintains same functionality with cleaner implementation
+- **Better Maintainability**: Easier to modify and extend
+- **Type Safety**: Generic design ensures compile-time type checking
+
 ## Key Features
 
 ### Dancer Management

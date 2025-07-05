@@ -7,6 +7,7 @@ import '../services/dancer_service.dart';
 import '../services/score_service.dart';
 import '../utils/action_logger.dart';
 import '../utils/toast_helper.dart';
+import 'simple_selection_dialog.dart';
 
 class ScoreDialog extends StatefulWidget {
   final int dancerId;
@@ -141,99 +142,14 @@ class _ScoreDialogState extends State<ScoreDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: _isLoading
-            ? const SizedBox(
-                height: 100,
-                child: Center(child: CircularProgressIndicator()),
-              )
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          _dancerName,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          ActionLogger.logUserAction(
-                              'ScoreDialog', 'dialog_cancelled', {
-                            'dancerId': widget.dancerId,
-                            'eventId': widget.eventId,
-                          });
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.close),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  ConstrainedBox(
-                    constraints: const BoxConstraints(
-                      maxHeight: 300, // Limit height to prevent overflow
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: _scores.map((score) {
-                          final isCurrentScore = score.id == _currentScoreId;
-
-                          return ListTile(
-                            leading: Icon(
-                              isCurrentScore
-                                  ? Icons.check_circle
-                                  : Icons.circle_outlined,
-                              color: isCurrentScore
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
-                            ),
-                            title: Text(
-                              score.name,
-                              style: TextStyle(
-                                fontWeight: isCurrentScore
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                              ),
-                            ),
-                            onTap: () => _selectScore(score),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextButton(
-                          onPressed: () {
-                            ActionLogger.logUserAction(
-                                'ScoreDialog', 'dialog_cancelled', {
-                              'dancerId': widget.dancerId,
-                              'eventId': widget.eventId,
-                            });
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Cancel'),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-      ),
+    return SimpleSelectionDialog<Score>(
+      title: _dancerName,
+      items: _scores,
+      itemTitle: (score) => score.name,
+      isSelected: (score) => score.id == _currentScoreId,
+      onItemSelected: _selectScore,
+      isLoading: _isLoading,
+      logPrefix: 'ScoreDialog',
     );
   }
 }
