@@ -57,8 +57,6 @@ class _RankingDialogContent extends StatefulWidget {
 }
 
 class _RankingDialogContentState extends State<_RankingDialogContent> {
-  final _reasonController = TextEditingController();
-
   List<Rank> _ranks = [];
   Rank? _selectedRank;
   String _dancerName = '';
@@ -72,7 +70,6 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
 
   @override
   void dispose() {
-    _reasonController.dispose();
     super.dispose();
   }
 
@@ -93,19 +90,15 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
       final dancer = await dancerService.getDancer(widget.dancerId);
 
       // Load existing ranking if any
-      final existingRanking =
-          await rankingService.getRanking(widget.eventId, widget.dancerId);
+      final existingRanking = await rankingService.getRanking(widget.eventId, widget.dancerId);
 
       // Get all rankings for this event to find archived ranks in use
-      final eventRankings =
-          await rankingService.getRankingsForEvent(widget.eventId);
+      final eventRankings = await rankingService.getRankingsForEvent(widget.eventId);
       final usedRankIds = eventRankings.map((r) => r.rankId).toSet();
 
       // Include any archived ranks that are currently used in this event
       final allRanks = await rankingService.getAllRanks();
-      final archivedRanksInUse = allRanks
-          .where((rank) => rank.isArchived && usedRankIds.contains(rank.id))
-          .toList();
+      final archivedRanksInUse = allRanks.where((rank) => rank.isArchived && usedRankIds.contains(rank.id)).toList();
 
       if (archivedRanksInUse.isNotEmpty) {
         ranks.addAll(archivedRanksInUse);
@@ -130,13 +123,10 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
           _dancerName = dancer?.name ?? 'Unknown';
 
           if (existingRanking != null) {
-            _selectedRank =
-                ranks.firstWhere((r) => r.id == existingRanking.rankId);
-            _reasonController.text = existingRanking.reason ?? '';
+            _selectedRank = ranks.firstWhere((r) => r.id == existingRanking.rankId);
           } else {
             // Default to neutral rank
-            _selectedRank = ranks.firstWhere((r) => r.ordinal == 3,
-                orElse: () => ranks.first);
+            _selectedRank = ranks.firstWhere((r) => r.ordinal == 3, orElse: () => ranks.first);
           }
         });
       }
@@ -154,7 +144,7 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
 
   Future<void> _saveRanking() async {
     if (_selectedRank == null) {
-      ActionLogger.logUserAction('RankingDialog', 'save_validation_failed', {
+      ActionLogger.logUserAction('RankingDialog', 'save_ranking_started', {
         'dancerId': widget.dancerId,
         'eventId': widget.eventId,
         'reason': 'no_rank_selected',
@@ -167,8 +157,6 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
       'eventId': widget.eventId,
       'rankId': _selectedRank!.id,
       'rankName': _selectedRank!.name,
-      'hasReason': _reasonController.text.trim().isNotEmpty,
-      'reasonLength': _reasonController.text.trim().length,
     });
 
     setState(() {
@@ -176,16 +164,12 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
     });
 
     try {
-      final rankingService =
-          Provider.of<RankingService>(context, listen: false);
+      final rankingService = Provider.of<RankingService>(context, listen: false);
 
       await rankingService.setRanking(
         eventId: widget.eventId,
         dancerId: widget.dancerId,
         rankId: _selectedRank!.id,
-        reason: _reasonController.text.trim().isNotEmpty
-            ? _reasonController.text.trim()
-            : null,
       );
 
       if (mounted) {
@@ -242,8 +226,7 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
                 ),
                 IconButton(
                   onPressed: () {
-                    ActionLogger.logUserAction(
-                        'RankingDialog', 'dialog_cancelled', {
+                    ActionLogger.logUserAction('RankingDialog', 'dialog_cancelled', {
                       'dancerId': widget.dancerId,
                       'eventId': widget.eventId,
                     });
@@ -277,13 +260,9 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
                       Expanded(child: Text(rank.name)),
                       if (rank.isArchived)
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .outline
-                                .withOpacity(0.2),
+                            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
@@ -310,8 +289,7 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
                   value: rank,
                   groupValue: _selectedRank,
                   onChanged: (Rank? value) {
-                    ActionLogger.logUserAction(
-                        'RankingDialog', 'rank_selected', {
+                    ActionLogger.logUserAction('RankingDialog', 'rank_selected', {
                       'dancerId': widget.dancerId,
                       'eventId': widget.eventId,
                       'oldRankId': _selectedRank?.id,
@@ -328,26 +306,6 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
                   contentPadding: EdgeInsets.zero,
                 )),
 
-            const SizedBox(height: 16),
-
-            // Reason field
-            TextField(
-              controller: _reasonController,
-              decoration: const InputDecoration(
-                labelText: 'Reason (optional)',
-                border: OutlineInputBorder(),
-                hintText: 'e.g., Looking amazing tonight!',
-              ),
-              maxLines: 3,
-              textCapitalization: TextCapitalization.sentences,
-              textInputAction: TextInputAction.done,
-              onSubmitted: (_) {
-                if (_selectedRank != null) {
-                  _saveRanking();
-                }
-              },
-            ),
-
             // Action buttons
             Row(
               children: [
@@ -356,8 +314,7 @@ class _RankingDialogContentState extends State<_RankingDialogContent> {
                     onPressed: _isLoading
                         ? null
                         : () {
-                            ActionLogger.logUserAction(
-                                'RankingDialog', 'dialog_cancelled', {
+                            ActionLogger.logUserAction('RankingDialog', 'dialog_cancelled', {
                               'dancerId': widget.dancerId,
                               'eventId': widget.eventId,
                             });
