@@ -40,6 +40,7 @@
 - codebase has to be cohesive and modular to avoid conflicts between agents lines
 - If the agent ask for choice it should present buttons for them
 - changelog as separate small files to avoid conflicts between agent lines
+- use native patterns (like reactive updates)
 
 # Hard ones
 - increase the 25 tool calls limit
