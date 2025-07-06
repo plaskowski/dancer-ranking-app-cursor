@@ -3,7 +3,7 @@ description: A social dancer's companion app for planning and tracking dance eve
 
 publish_to: 'none'
 
-version: 2.3.0+222
+version: 2.4.0+223
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
