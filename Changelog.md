@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.2.3] - 2025-01-17
+
+### User Requests
+- Fix issue where newly added dancers don't appear in planning tab list until manual refresh
+
+### Fixed
+- **Planning Tab Refresh**: Fixed issue where dancers added through the FAB (+) button didn't immediately appear in the planning tab list
+- **SelectDancersScreen Return Value**: Modified SelectDancersScreen to properly communicate when dancers have been added to trigger appropriate refresh
+
+### Technical
+- Added tracking mechanism in SelectDancersScreen to monitor when dancers are added to an event
+- Implemented PopScope to handle back button navigation and return appropriate value
+- Modified PlanningTabActions to only refresh when dancers were actually added (result == true)
+
 ## [v2.2.2] - 2025-01-17
 
 ### User Requests
