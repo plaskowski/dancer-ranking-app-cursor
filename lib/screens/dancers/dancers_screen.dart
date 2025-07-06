@@ -22,14 +22,13 @@ class DancersScreen extends StatefulWidget {
 }
 
 class _DancersScreenState extends State<DancersScreen> {
-  ActivityLevel _selectedActivityLevel = ActivityLevel.all;
+  final ActivityLevel _selectedActivityLevel = ActivityLevel.all;
 
-  Stream<List<DancerWithTags>> _getDancers(
-      List<int> tagIds, String searchQuery, [String? activityFilter]) {
+  Stream<List<DancerWithTags>> _getDancers(List<int> tagIds, String searchQuery, [String? activityFilter]) {
     final dancerService = Provider.of<DancerService>(context, listen: false);
     final database = Provider.of<AppDatabase>(context, listen: false);
     final activityService = DancerActivityService(database);
-    
+
     var allDancersStream = dancerService.watchDancersWithTagsAndLastMet();
 
     // Apply activity filter first
@@ -47,8 +46,7 @@ class _DancersScreenState extends State<DancersScreen> {
 
       // Apply search filter
       if (searchQuery.isNotEmpty) {
-        filteredDancers =
-            filterService.filterDancersByTextWords(allDancers, searchQuery);
+        filteredDancers = filterService.filterDancersByTextWords(allDancers, searchQuery);
       }
 
       // Apply tag filter
@@ -103,8 +101,7 @@ class _DancersScreenState extends State<DancersScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.error),
+            style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
             child: const Text('Delete'),
           ),
         ],
@@ -113,8 +110,7 @@ class _DancersScreenState extends State<DancersScreen> {
 
     if (confirmed == true) {
       try {
-        final dancerService =
-            Provider.of<DancerService>(context, listen: false);
+        final dancerService = Provider.of<DancerService>(context, listen: false);
         await dancerService.deleteDancer(dancer.id);
 
         if (mounted) {
@@ -162,8 +158,7 @@ class _DancersScreenState extends State<DancersScreen> {
       screenTitle: 'Dancers',
       getDancers: _getDancers,
       buildDancerTile: _buildDancerTile,
-      infoMessage:
-          'Manage your dancers. Edit, delete, or merge dancer profiles.',
+      infoMessage: 'Manage your dancers. Edit, delete, or merge dancer profiles.',
       floatingActionButton: SafeFAB(
         onPressed: _showAddDancerDialog,
         child: const Icon(Icons.add),

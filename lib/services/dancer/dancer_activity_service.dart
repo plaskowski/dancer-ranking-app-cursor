@@ -1,3 +1,5 @@
+import 'package:drift/drift.dart';
+
 import '../../database/database.dart';
 import '../../models/dancer_with_tags.dart';
 import 'dancer_event_service.dart';
@@ -47,10 +49,10 @@ class DancerActivityService {
 
       for (final dancer in dancers) {
         final dancerLevel = await getDancerActivityLevel(dancer.id);
-        
+
         // Check if dancer meets the activity level criteria
         bool includeInResults = false;
-        
+
         if (level == ActivityLevel.regular) {
           // Regular: Must have 3+ events in last 2 months
           includeInResults = await _isDancerRegular(dancer.id);
@@ -104,10 +106,10 @@ class DancerActivityService {
   /// Get count of events dancer attended in the last N months
   Future<int> getRecentEventCount(int dancerId, int months) async {
     final cutoffDate = DateTime.now().subtract(Duration(days: months * 30));
-    
+
     // Count attendances in recent events
     final query = _database.select(_database.attendances).join([
-      innerJoin(_database.events, _database.events.id.equalsExp(_database.attendances.eventId))
+      innerJoin(_database.events, _database.events.id.equalsExp(_database.attendances.eventId)),
     ])
       ..where(_database.attendances.dancerId.equals(dancerId))
       ..where(_database.events.date.isBiggerThanValue(cutoffDate));
@@ -134,7 +136,7 @@ class DancerActivityService {
     if (await _isDancerRegular(dancerId)) {
       return ActivityLevel.regular;
     }
-    
+
     // Check if dancer is occasional (1+ event in last 3 months)
     if (await _isDancerOccasional(dancerId)) {
       return ActivityLevel.occasional;

@@ -105,7 +105,8 @@ class _BaseDancerSelectionScreenState extends State<BaseDancerSelectionScreen> w
 /// Generic base class for dancer list screens with filtering and actions
 class BaseDancerListScreen extends StatefulWidget {
   final String screenTitle;
-  final Stream<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery, [String? activityFilter]) getDancers;
+  final Stream<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery, [String? activityFilter])
+      getDancers;
   final Widget Function(DancerWithTags dancer) buildDancerTile;
   final String? infoMessage;
   final Widget? floatingActionButton;
@@ -154,7 +155,8 @@ class _BaseDancerListScreenState extends State<BaseDancerListScreen> {
 
 class _DancerSelectionFilterWidget extends StatefulWidget {
   final int eventId;
-  final Future<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery, [String? activityFilter]) getDancers;
+  final Future<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery, [String? activityFilter])
+      getDancers;
   final Widget Function(DancerWithTags dancer) buildDancerTile;
   final int? refreshKey;
   final String infoMessage;
@@ -172,7 +174,8 @@ class _DancerSelectionFilterWidget extends StatefulWidget {
 }
 
 class _DancerListFilterWidget extends StatefulWidget {
-  final Stream<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery, [String? activityFilter]) getDancers;
+  final Stream<List<DancerWithTags>> Function(List<int> tagIds, String searchQuery, [String? activityFilter])
+      getDancers;
   final Widget Function(DancerWithTags dancer) buildDancerTile;
   final int? refreshKey;
   final String? infoMessage;
@@ -272,7 +275,7 @@ class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidg
   List<Widget> _buildDancerList(BuildContext context) {
     return [
       FutureBuilder<List<DancerWithTags>>(
-        key: ValueKey('${_selectedTagIds.toString()}_$_searchQuery_$_activityFilter${widget.refreshKey ?? 0}'),
+        key: ValueKey('${_selectedTagIds.toString()}_${_searchQuery}_$_activityFilter${widget.refreshKey ?? 0}'),
         future: widget.getDancers(_selectedTagIds, _searchQuery, _activityFilter),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -297,8 +300,8 @@ class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidg
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _selectedTagIds.isNotEmpty || _activityFilter != 'All' 
-                        ? 'No dancers found with current filters' 
+                    _selectedTagIds.isNotEmpty || _activityFilter != 'All'
+                        ? 'No dancers found with current filters'
                         : 'No available dancers',
                     style: TextStyle(
                       fontSize: 18,
@@ -307,8 +310,8 @@ class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidg
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _selectedTagIds.isNotEmpty || _activityFilter != 'All' 
-                        ? 'Try different search terms or clear filters' 
+                    _selectedTagIds.isNotEmpty || _activityFilter != 'All'
+                        ? 'Try different search terms or clear filters'
                         : 'No dancers available',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -416,7 +419,7 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
   List<Widget> _buildDancerList(BuildContext context) {
     return [
       StreamBuilder<List<DancerWithTags>>(
-        key: ValueKey('${_selectedTagIds.toString()}_$_searchQuery_$_activityFilter${widget.refreshKey ?? 0}'),
+        key: ValueKey('${_selectedTagIds.toString()}_${_searchQuery}_$_activityFilter${widget.refreshKey ?? 0}'),
         stream: widget.getDancers(_selectedTagIds, _searchQuery, _activityFilter),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -441,8 +444,8 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _selectedTagIds.isNotEmpty || _activityFilter != 'All' 
-                        ? 'No dancers found with current filters' 
+                    _selectedTagIds.isNotEmpty || _activityFilter != 'All'
+                        ? 'No dancers found with current filters'
                         : 'No dancers yet',
                     style: TextStyle(
                       fontSize: 18,
@@ -451,8 +454,8 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _selectedTagIds.isNotEmpty || _activityFilter != 'All' 
-                        ? 'Try adjusting your filters' 
+                    _selectedTagIds.isNotEmpty || _activityFilter != 'All'
+                        ? 'Try adjusting your filters'
                         : 'Tap + to add your first dancer',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
