@@ -194,7 +194,7 @@ class _DancerListFilterWidget extends StatefulWidget {
 class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidget> {
   List<int> _selectedTagIds = [];
   String _searchQuery = '';
-  String _activityFilter = 'All';
+  String _activityFilter = 'Regular';
 
   void _onTagsChanged(List<int> tagIds) {
     setState(() {
@@ -300,9 +300,9 @@ class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidg
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _selectedTagIds.isNotEmpty || _activityFilter != 'All'
-                        ? 'No dancers found with current filters'
-                        : 'No available dancers',
+                    _selectedTagIds.isNotEmpty || _activityFilter != 'Regular' 
+                        ? 'No dancers found with current filters' 
+                        : 'No regular dancers available',
                     style: TextStyle(
                       fontSize: 18,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -310,9 +310,9 @@ class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidg
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _selectedTagIds.isNotEmpty || _activityFilter != 'All'
-                        ? 'Try different search terms or clear filters'
-                        : 'No dancers available',
+                    _selectedTagIds.isNotEmpty || _activityFilter != 'Regular' 
+                        ? 'Try different search terms or clear filters' 
+                        : 'Try changing activity level to "All"',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
@@ -337,7 +337,7 @@ class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidg
 class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
   List<int> _selectedTagIds = [];
   String _searchQuery = '';
-  String _activityFilter = 'All';
+  String _activityFilter = 'Regular';
 
   void _onTagsChanged(List<int> tagIds) {
     setState(() {
@@ -444,9 +444,9 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _selectedTagIds.isNotEmpty || _activityFilter != 'All'
-                        ? 'No dancers found with current filters'
-                        : 'No dancers yet',
+                    _selectedTagIds.isNotEmpty || _activityFilter != 'Regular' 
+                        ? 'No dancers found with current filters' 
+                        : 'No regular dancers yet',
                     style: TextStyle(
                       fontSize: 18,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -454,9 +454,9 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _selectedTagIds.isNotEmpty || _activityFilter != 'All'
-                        ? 'Try adjusting your filters'
-                        : 'Tap + to add your first dancer',
+                    _selectedTagIds.isNotEmpty || _activityFilter != 'Regular' 
+                        ? 'Try adjusting your filters' 
+                        : 'Try changing activity level to "All" or add dancers',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),

@@ -74,8 +74,10 @@ mixin EventDancerSelectionMixin<T extends StatefulWidget> on State<T> {
         return ActivityLevel.regular;
       case 'occasional':
         return ActivityLevel.occasional;
-      default:
+      case 'all':
         return ActivityLevel.all;
+      default:
+        return ActivityLevel.regular; // Default to most active
     }
   }
 

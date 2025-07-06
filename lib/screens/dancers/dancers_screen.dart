@@ -22,7 +22,7 @@ class DancersScreen extends StatefulWidget {
 }
 
 class _DancersScreenState extends State<DancersScreen> {
-  final ActivityLevel _selectedActivityLevel = ActivityLevel.all;
+  ActivityLevel _selectedActivityLevel = ActivityLevel.regular;
 
   Stream<List<DancerWithTags>> _getDancers(List<int> tagIds, String searchQuery, [String? activityFilter]) {
     final dancerService = Provider.of<DancerService>(context, listen: false);
@@ -66,8 +66,10 @@ class _DancersScreenState extends State<DancersScreen> {
         return ActivityLevel.regular;
       case 'occasional':
         return ActivityLevel.occasional;
-      default:
+      case 'all':
         return ActivityLevel.all;
+      default:
+        return ActivityLevel.regular; // Default to most active
     }
   }
 
