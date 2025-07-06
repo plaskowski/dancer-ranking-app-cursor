@@ -65,9 +65,9 @@
 - **Universal Implementation**: Available on all dancer list screens and selection dialogs
 
 **Activity Level Definitions**:
-- **Regular**: Dancers who attended 3 or more events in the last 2 months
+- **Regular**: Dancers who attended 3 or more events in the last 2 months (default)
 - **Occasional**: Dancers who attended 1 or more events in the last 3 months
-- **All**: All dancers regardless of activity level (default)
+- **All**: All dancers regardless of activity level
 
 **Implementation**:
 - **DancerActivityService**: Core service for calculating activity levels

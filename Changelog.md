@@ -15,11 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **DancersScreen**: Main dancers screen now supports activity filtering (Regular, Occasional, All)
   - **Event Dancer Selection**: All event dancer selection dialogs now include activity filters
   - **Activity Levels**: 
-    - **Regular**: Dancers with 3+ events in the last 2 months
+    - **Regular**: Dancers with 3+ events in the last 2 months (default)
     - **Occasional**: Dancers with 1+ event in the last 3 months
     - **All**: Shows all dancers regardless of activity level
   - **UI Integration**: Activity filter dropdown added to SimplifiedTagFilter widget
   - **Database Integration**: Activity calculations based on actual attendance records
+  - **Smart Defaults**: Regular activity level set as default to focus on most active dancers
 
 ### Technical
 - **DancerActivityService**: Enhanced with proper activity level calculations
