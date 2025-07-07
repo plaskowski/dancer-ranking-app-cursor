@@ -20,8 +20,6 @@ class SelectDancersScreen extends StatefulWidget {
 }
 
 class _SelectDancersScreenState extends State<SelectDancersScreen> with EventDancerSelectionMixin {
-  bool _hasAddedDancers = false;
-
   @override
   int get eventId => widget.eventId;
 
@@ -30,30 +28,17 @@ class _SelectDancersScreenState extends State<SelectDancersScreen> with EventDan
     await rankingService.setRankNeutral(widget.eventId, dancerId);
     showSuccessMessage('$dancerName added to event');
     triggerRefresh();
-    
-    // Track that we've added a dancer
-    setState(() {
-      _hasAddedDancers = true;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) async {
-        if (!didPop) {
-          Navigator.of(context).pop(_hasAddedDancers);
-        }
-      },
-      child: BaseDancerSelectionScreen(
-        eventId: widget.eventId,
-        eventName: widget.eventName,
-        onDancerSelected: _onDancerSelected,
-        actionButtonText: 'Add to Event',
-        infoMessage: 'Showing unranked and absent dancers only. Select multiple dancers to add to the event.',
-        screenTitle: 'Add Dancers to Event',
-      ),
+    return BaseDancerSelectionScreen(
+      eventId: widget.eventId,
+      eventName: widget.eventName,
+      onDancerSelected: _onDancerSelected,
+      actionButtonText: 'Add to Event',
+      infoMessage: 'Showing unranked and absent dancers only. Select multiple dancers to add to the event.',
+      screenTitle: 'Add Dancers to Event',
     );
   }
 }
