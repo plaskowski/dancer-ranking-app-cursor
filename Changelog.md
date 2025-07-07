@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.2.3] - 2025-01-17
+
+### User Requests
+- Hide "Mark Present" action in planning tab if the event is a future one
+
+### Improved
+- **Future Event Logic**: Enhanced "Mark Present" action visibility for better UX
+  - **Hide for Future Events**: "Mark Present" action now hidden for events scheduled after today
+  - **Prevent Invalid Actions**: Users can no longer mark presence for events that haven't happened yet
+  - **Logical Workflow**: Maintains presence marking only for current day events
+  - **Better Planning UX**: Planning tab now focuses on ranking and preparation for future events
+  - **Consistent Behavior**: Aligns with existing logic that hides action for past events
+
+### Technical
+- **DancerActionsDialog**: Added `isFutureEvent` condition alongside existing `isPastEvent` logic
+- **Date Logic**: Uses `DateUtils.dateOnly()` to compare event date with current date
+- **Action Logging**: Enhanced logging to track both past and future event status
+- **Conditional Display**: "Mark Present" only appears when `!isPastEvent && !isFutureEvent` (today only)
+
 ## [v2.2.2] - 2025-01-17
 
 ### User Requests
