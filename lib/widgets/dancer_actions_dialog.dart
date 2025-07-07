@@ -68,7 +68,8 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
   Widget build(BuildContext context) {
     final isPastEvent =
         _event != null && EventStatusHelper.isPastEvent(_event!.date);
-    final isFutureEvent = _event != null && _event!.date.isAfter(DateUtils.dateOnly(DateTime.now()));
+    final isFutureEvent =
+        _event != null && EventStatusHelper.isFutureEvent(_event!.date);
 
     ActionLogger.logUserAction('DancerActionsDialog', 'dialog_opened', {
       'dancerId': widget.dancer.id,

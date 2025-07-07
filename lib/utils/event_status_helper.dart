@@ -9,6 +9,11 @@ class EventStatusHelper {
     return eventDate.isBefore(DateUtils.dateOnly(DateTime.now()));
   }
 
+  /// Checks if an event is in the future (after today)
+  static bool isFutureEvent(DateTime eventDate) {
+    return eventDate.isAfter(DateUtils.dateOnly(DateTime.now()));
+  }
+
   /// Checks if an event is "old" (2+ days ago)
   /// Old events only show the Summary tab in EventScreen
   static bool isOldEvent(DateTime eventDate) {
