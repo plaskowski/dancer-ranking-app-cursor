@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../database/database.dart';
 import '../../models/dancer_with_tags.dart';
+import '../../services/dancer/dancer_activity_service.dart';
 import '../../services/dancer/dancer_filter_service.dart';
 import '../../services/dancer_service.dart';
 import '../../utils/action_logger.dart';
@@ -21,10 +22,24 @@ class DancersScreen extends StatefulWidget {
 }
 
 class _DancersScreenState extends State<DancersScreen> {
+  ActivityLevel _selectedActivityLevel = ActivityLevel.all;
+
   Stream<List<DancerWithTags>> _getDancers(
-      List<int> tagIds, String searchQuery) {
+      List<int> tagIds, String searchQuery, [String? activityFilter]) {
     final dancerService = Provider.of<DancerService>(context, listen: false);
-    final allDancersStream = dancerService.watchDancersWithTagsAndLastMet();
+    final database = Provider.of<AppDatabase>(context, listen: false);
+    final activityService = DancerActivityService(database);
+    
+    var allDancersStream = dancerService.watchDancersWithTagsAndLastMet();
+
+    // Apply activity filter first
+    if (activityFilter != null && activityFilter.isNotEmpty) {
+      final activityLevel = _mapActivityStringToLevel(activityFilter);
+      allDancersStream = activityService.filterDancersByActivityLevel(
+        allDancersStream,
+        activityLevel,
+      );
+    }
 
     return allDancersStream.map((allDancers) {
       final filterService = DancerFilterService.of(context);
@@ -45,6 +60,17 @@ class _DancersScreenState extends State<DancersScreen> {
 
       return filteredDancers;
     });
+  }
+
+  ActivityLevel _mapActivityStringToLevel(String activityString) {
+    switch (activityString.toLowerCase()) {
+      case 'regular':
+        return ActivityLevel.regular;
+      case 'occasional':
+        return ActivityLevel.occasional;
+      default:
+        return ActivityLevel.all;
+    }
   }
 
   Widget _buildDancerTile(DancerWithTags dancer) {

@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.4.0] - 2025-01-17
+
+### User Requests
+- "Implement activity filter for all dancers screens" - Request to add activity-based filtering functionality to dancer screens
+
+### Added
+- **Activity Filter for Dancers**: Complete activity filtering system for all dancer screens
+  - **DancersScreen**: Main dancers screen now supports activity filtering (Regular, Occasional, All)
+  - **Event Dancer Selection**: All event dancer selection dialogs now include activity filters
+  - **Activity Levels**: 
+    - **Regular**: Dancers with 3+ events in the last 2 months
+    - **Occasional**: Dancers with 1+ event in the last 3 months
+    - **All**: Shows all dancers regardless of activity level
+  - **UI Integration**: Activity filter dropdown added to SimplifiedTagFilter widget
+  - **Database Integration**: Activity calculations based on actual attendance records
+
+### Technical
+- **DancerActivityService**: Enhanced with proper activity level calculations
+  - **Activity Calculation**: Real database queries for counting recent event attendance
+  - **Filtering Logic**: Stream-based filtering for real-time updates
+  - **Performance**: Efficient database queries with proper indexing
+- **BaseDancerSelectionScreen**: Updated to support activity filtering in all dancer selection contexts
+- **EventDancerSelectionMixin**: Enhanced to include activity filtering for event-specific screens
+- **Stream-based Updates**: Activity filters work with existing reactive data streams
+- **Backward Compatibility**: All existing functionality preserved while adding new activity features
+
 ## [v2.2.3] - 2025-01-17
 
 ### User Requests
@@ -4966,19 +4992,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automated release process
 
 ### Technical
-<<<<<<< HEAD
-- Created `CombinedDancerFilter` widget for unified filtering experience
-- Updated `SimplifiedTagFilter` with improved pill-based selection interface
-- Added `ActivityFilterWidget` for activity level filtering
-- Integrated activity service with filtering system
-- Updated Dancers screen to use new unified filtering approach
-
-### Documentation
-- **Material 3 Icons Guide**: Created comprehensive documentation with examples and best practices
-- **Implementation Examples**: Added practical examples for navigation, action, and status icons
-- **Migration Guide**: Documented process for updating existing icons to Material 3 standards
-- **Best Practices**: Established guidelines for icon variant selection and color usage
-=======
 - Release script for version bumping and APK distribution
 
 
@@ -17576,4 +17589,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Reusable Components**: Leveraged existing DancerCard and filtering components
 - **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
 - **Consistent UI**: Maintained visual consistency with other tabs
->>>>>>> origin/first-line
