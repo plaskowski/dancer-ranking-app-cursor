@@ -19,8 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Consistent Behavior**: Aligns with existing logic that hides action for past events
 
 ### Technical
-- **DancerActionsDialog**: Added `isFutureEvent` condition alongside existing `isPastEvent` logic
-- **Date Logic**: Uses `DateUtils.dateOnly()` to compare event date with current date
+- **EventStatusHelper**: Added `isFutureEvent()` method to match existing `isPastEvent()` pattern
+- **DancerActionsDialog**: Used EventStatusHelper for consistent date logic across the app
+- **Date Logic**: Leverages existing helper class architecture for event date comparisons
 - **Action Logging**: Enhanced logging to track both past and future event status
 - **Conditional Display**: "Mark Present" only appears when `!isPastEvent && !isFutureEvent` (today only)
 
