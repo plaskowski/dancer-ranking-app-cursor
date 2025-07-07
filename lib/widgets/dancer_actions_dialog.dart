@@ -68,6 +68,7 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
   Widget build(BuildContext context) {
     final isPastEvent =
         _event != null && EventStatusHelper.isPastEvent(_event!.date);
+    final isFutureEvent = _event != null && _event!.date.isAfter(DateUtils.dateOnly(DateTime.now()));
 
     ActionLogger.logUserAction('DancerActionsDialog', 'dialog_opened', {
       'dancerId': widget.dancer.id,
@@ -78,6 +79,7 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
       'isPresent': widget.dancer.isPresent,
       'hasRanking': widget.dancer.hasRanking,
       'isPastEvent': isPastEvent,
+      'isFutureEvent': isFutureEvent,
     });
 
     if (_isLoading) {
@@ -95,8 +97,8 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Presence toggle - hide for past events (most common action, put first)
-            if (!isPastEvent)
+            // Presence toggle - hide for past events and future events (most common action, put first)
+            if (!isPastEvent && !isFutureEvent)
               ListTile(
                 leading: Icon(
                   widget.dancer.isPresent
