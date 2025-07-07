@@ -12,18 +12,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improved
 - **Future Event Logic**: Enhanced "Mark Present" action visibility for better UX
-  - **Hide for Future Events**: "Mark Present" action now hidden for events scheduled after today
+  - **Hide for Far Future Events**: "Mark Present" action now hidden for events 1+ days in the future
   - **Prevent Invalid Actions**: Users can no longer mark presence for events that haven't happened yet
-  - **Logical Workflow**: Maintains presence marking only for current day events
-  - **Better Planning UX**: Planning tab now focuses on ranking and preparation for future events
-  - **Consistent Behavior**: Aligns with existing logic that hides action for past events
+  - **Consistent with EventScreen**: Uses same predicate that determines Planning-only tab visibility
+  - **Better Planning UX**: Far future events focus on ranking and preparation without attendance actions
+  - **Logical Workflow**: Aligns with existing UI patterns where far future events show only Planning tab
 
 ### Technical
-- **EventStatusHelper**: Added `isFutureEvent()` method to match existing `isPastEvent()` pattern
-- **DancerActionsDialog**: Used EventStatusHelper for consistent date logic across the app
-- **Date Logic**: Leverages existing helper class architecture for event date comparisons
-- **Action Logging**: Enhanced logging to track both past and future event status
-- **Conditional Display**: "Mark Present" only appears when `!isPastEvent && !isFutureEvent` (today only)
+- **DancerActionsDialog**: Uses existing `EventStatusHelper.isFarFutureEvent()` predicate for consistency
+- **UI Consistency**: Same logic that EventScreen uses for tab visibility now controls action visibility
+- **Date Logic**: Leverages established event categorization (far future = 1+ days away)
+- **Action Logging**: Enhanced logging to track both past and far future event status
+- **Conditional Display**: "Mark Present" only appears when `!isPastEvent && !isFarFutureEvent`
 
 ## [v2.2.2] - 2025-01-17
 
