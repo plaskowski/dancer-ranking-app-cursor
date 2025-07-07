@@ -68,6 +68,8 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
   Widget build(BuildContext context) {
     final isPastEvent =
         _event != null && EventStatusHelper.isPastEvent(_event!.date);
+    final isFarFutureEvent =
+        _event != null && EventStatusHelper.isFarFutureEvent(_event!.date);
 
     ActionLogger.logUserAction('DancerActionsDialog', 'dialog_opened', {
       'dancerId': widget.dancer.id,
@@ -95,8 +97,8 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Presence toggle - hide for past events (most common action, put first)
-            if (!isPastEvent)
+            // Presence toggle - only show for current day events (not past or future)
+            if (!isPastEvent && !isFarFutureEvent)
               ListTile(
                 leading: Icon(
                   widget.dancer.isPresent
@@ -285,8 +287,9 @@ class _DancerActionsDialogState extends State<DancerActionsDialog> {
               },
             ),
 
-            // Mark as Left - only show for present dancers who haven't danced yet and not for past events
+            // Mark as Left - only show for present dancers who haven't danced yet and only for current day events
             if (!isPastEvent &&
+                !isFarFutureEvent &&
                 widget.dancer.isPresent &&
                 !widget.dancer.hasDanced)
               ListTile(

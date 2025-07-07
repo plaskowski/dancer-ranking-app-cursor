@@ -9,15 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### User Requests
 - Fix issue where newly added dancers don't appear in planning tab list until manual refresh
+- Fix "Mark Present" action appearing in future events where it doesn't make logical sense
 
 ### Fixed
 - **Planning Tab Refresh**: Fixed issue where dancers added through the FAB (+) button didn't immediately appear in the planning tab list
 - **SelectDancersScreen Return Value**: Modified SelectDancersScreen to properly communicate when dancers have been added to trigger appropriate refresh
+- **Future Event Actions**: Fixed "Mark Present" and "Mark as Left" actions appearing in dancer context menus for future events
+  - **Logical Workflow**: These actions now only appear for today's events where attendance can actually be tracked
+  - **User Experience**: Removes confusing options that don't make sense for events that haven't happened yet
 
 ### Technical
 - Added tracking mechanism in SelectDancersScreen to monitor when dancers are added to an event
 - Implemented PopScope to handle back button navigation and return appropriate value
 - Modified PlanningTabActions to only refresh when dancers were actually added (result == true)
+- **DancerActionsDialog**: Added `isFarFutureEvent` check to restrict attendance actions to current day events only
 
 ## [v2.2.2] - 2025-01-17
 
