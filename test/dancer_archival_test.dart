@@ -61,7 +61,8 @@ void main() {
     group('Archival Methods Tests', () {
       test('should archive a dancer successfully', () async {
         // Create a dancer
-        final dancerId = await crudService.createDancer(name: 'Dancer to Archive');
+        final dancerId =
+            await crudService.createDancer(name: 'Dancer to Archive');
 
         // Archive the dancer
         final success = await crudService.archiveDancer(dancerId);
@@ -71,12 +72,16 @@ void main() {
         final dancer = await crudService.getDancer(dancerId);
         expect(dancer!.isArchived, isTrue);
         expect(dancer.archivedAt, isNotNull);
-        expect(dancer.archivedAt!.isAfter(DateTime.now().subtract(const Duration(minutes: 1))), isTrue);
+        expect(
+            dancer.archivedAt!
+                .isAfter(DateTime.now().subtract(const Duration(minutes: 1))),
+            isTrue);
       });
 
       test('should reactivate an archived dancer', () async {
         // Create and archive a dancer
-        final dancerId = await crudService.createDancer(name: 'Dancer to Reactivate');
+        final dancerId =
+            await crudService.createDancer(name: 'Dancer to Reactivate');
         await crudService.archiveDancer(dancerId);
 
         // Reactivate the dancer
@@ -91,7 +96,8 @@ void main() {
 
       test('should handle archiving already archived dancer', () async {
         // Create and archive a dancer
-        final dancerId = await crudService.createDancer(name: 'Already Archived');
+        final dancerId =
+            await crudService.createDancer(name: 'Already Archived');
         await crudService.archiveDancer(dancerId);
 
         // Try to archive again
@@ -163,7 +169,8 @@ void main() {
         await crudService.archiveDancer(toArchiveId);
 
         // Search active dancers for "John"
-        final activeResults = await dancerService.searchActiveDancers('John').first;
+        final activeResults =
+            await dancerService.searchActiveDancers('John').first;
 
         expect(activeResults.length, equals(1));
         expect(activeResults.first.id, equals(activeId));
@@ -212,7 +219,9 @@ void main() {
         final dancer1Id = await crudService.createDancer(name: 'Dancer 1');
         await crudService.archiveDancer(dancer1Id);
 
-        await Future.delayed(const Duration(milliseconds: 200));
+        // Wait sufficiently to ensure the timestamps differ even on coarse
+        // system clocks (e.g., SQLite seconds resolution on some platforms).
+        await Future.delayed(const Duration(seconds: 1));
 
         final dancer2Id = await crudService.createDancer(name: 'Dancer 2');
         await crudService.archiveDancer(dancer2Id);
@@ -231,7 +240,11 @@ void main() {
         expect(archivedDancers[1].id, equals(dancer1Id));
 
         // Verify that the timestamps are actually different
-        expect(archivedDancers[0].archivedAt!.isAfter(archivedDancers[1].archivedAt!), isTrue);
+        expect(
+            archivedDancers[0]
+                .archivedAt!
+                .isAfter(archivedDancers[1].archivedAt!),
+            isTrue);
       });
     });
 

@@ -4,10 +4,6 @@ import '../../database/database.dart';
 import '../../utils/action_logger.dart';
 
 class DancerCrudService {
-  // A monotonic counter to guarantee unique archival timestamps even when
-  // multiple dancers are archived within the same millisecond. This avoids
-  // test flakiness when ordering by archivedAt.
-  static int _archivalCounter = 0;
   final AppDatabase _database;
 
   DancerCrudService(this._database);
@@ -233,11 +229,7 @@ class DancerCrudService {
       final result = await _database.update(_database.dancers).replace(
             dancer.copyWith(
               isArchived: true,
-              archivedAt: Value(
-                // Ensure the timestamp is always unique by adding an
-                // ever-increasing microsecond offset.
-                DateTime.now().add(Duration(seconds: ++_archivalCounter)),
-              ),
+              archivedAt: Value(DateTime.now()),
             ),
           );
 
@@ -310,13 +302,7 @@ class DancerCrudService {
     try {
       final dancers = await (_database.select(_database.dancers)
             ..where((d) => d.isArchived.equals(true))
-            // Order primarily by archivedAt (most recently archived first)
-            // and secondarily by id to guarantee deterministic ordering when
-            // multiple dancers have the same timestamp resolution.
-            ..orderBy([
-              (d) => OrderingTerm.desc(d.archivedAt),
-              (d) => OrderingTerm.desc(d.id),
-            ]))
+            ..orderBy([(d) => OrderingTerm.desc(d.archivedAt)]))
           .get();
 
       ActionLogger.logAction(
