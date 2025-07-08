@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../database/database.dart';
 import '../../models/dancer_with_tags.dart';
+import '../../services/dancer/dancer_activity_service.dart';
 import '../../services/dancer/dancer_filter_service.dart';
 import '../../services/dancer_service.dart';
 import '../../utils/action_logger.dart';
@@ -21,10 +22,21 @@ class DancersScreen extends StatefulWidget {
 }
 
 class _DancersScreenState extends State<DancersScreen> {
-  Stream<List<DancerWithTags>> _getDancers(
-      List<int> tagIds, String searchQuery) {
+  Stream<List<DancerWithTags>> _getDancers(List<int> tagIds, String searchQuery, [String? activityFilter]) {
     final dancerService = Provider.of<DancerService>(context, listen: false);
-    final allDancersStream = dancerService.watchDancersWithTagsAndLastMet();
+    final database = Provider.of<AppDatabase>(context, listen: false);
+    final activityService = DancerActivityService(database);
+
+    var allDancersStream = dancerService.watchDancersWithTagsAndLastMet();
+
+    // Apply activity filter first
+    if (activityFilter != null && activityFilter.isNotEmpty) {
+      final activityLevel = _mapActivityStringToLevel(activityFilter);
+      allDancersStream = activityService.filterDancersByActivityLevel(
+        allDancersStream,
+        activityLevel,
+      );
+    }
 
     return allDancersStream.map((allDancers) {
       final filterService = DancerFilterService.of(context);
@@ -32,8 +44,7 @@ class _DancersScreenState extends State<DancersScreen> {
 
       // Apply search filter
       if (searchQuery.isNotEmpty) {
-        filteredDancers =
-            filterService.filterDancersByTextWords(allDancers, searchQuery);
+        filteredDancers = filterService.filterDancersByTextWords(allDancers, searchQuery);
       }
 
       // Apply tag filter
@@ -45,6 +56,19 @@ class _DancersScreenState extends State<DancersScreen> {
 
       return filteredDancers;
     });
+  }
+
+  ActivityLevel _mapActivityStringToLevel(String activityString) {
+    switch (activityString.toLowerCase()) {
+      case 'regular':
+        return ActivityLevel.regular;
+      case 'occasional':
+        return ActivityLevel.occasional;
+      case 'all':
+        return ActivityLevel.all;
+      default:
+        return ActivityLevel.regular; // Default to most active
+    }
   }
 
   Widget _buildDancerTile(DancerWithTags dancer) {
@@ -77,8 +101,7 @@ class _DancersScreenState extends State<DancersScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            style: TextButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.error),
+            style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
             child: const Text('Delete'),
           ),
         ],
@@ -87,8 +110,7 @@ class _DancersScreenState extends State<DancersScreen> {
 
     if (confirmed == true) {
       try {
-        final dancerService =
-            Provider.of<DancerService>(context, listen: false);
+        final dancerService = Provider.of<DancerService>(context, listen: false);
         await dancerService.deleteDancer(dancer.id);
 
         if (mounted) {
@@ -136,8 +158,7 @@ class _DancersScreenState extends State<DancersScreen> {
       screenTitle: 'Dancers',
       getDancers: _getDancers,
       buildDancerTile: _buildDancerTile,
-      infoMessage:
-          'Manage your dancers. Edit, delete, or merge dancer profiles.',
+      infoMessage: 'Manage your dancers. Edit, delete, or merge dancer profiles.',
       floatingActionButton: SafeFAB(
         onPressed: _showAddDancerDialog,
         child: const Icon(Icons.add),

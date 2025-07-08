@@ -5,13 +5,52 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v2.2.3] - 2025-07-08
+## [v2.4.0] - 2025-01-17
 
 ### User Requests
-- Create PR with summary of desktop-as-a-service options that allow Cursor to stay running
+- "Implement activity filter for all dancers screens" - Request to add activity-based filtering functionality to dancer screens
 
-### Documentation
-- Added `docs/Remote_Desktop_Options_For_Cursor.md`: summary of always-on Linux DaaS options and how to keep Cursor running after disconnecting
+### Added
+- **Activity Filter for Dancers**: Complete activity filtering system for all dancer screens
+  - **DancersScreen**: Main dancers screen now supports activity filtering (Regular, Occasional, All)
+  - **Event Dancer Selection**: All event dancer selection dialogs now include activity filters
+  - **Activity Levels**: 
+    - **Regular**: Dancers with 3+ events in the last 2 months (default)
+    - **Occasional**: Dancers with 1+ event in the last 3 months
+    - **All**: Shows all dancers regardless of activity level
+  - **UI Integration**: Activity filter dropdown added to SimplifiedTagFilter widget
+  - **Database Integration**: Activity calculations based on actual attendance records
+  - **Smart Defaults**: Regular activity level set as default to focus on most active dancers
+
+### Technical
+- **DancerActivityService**: Enhanced with proper activity level calculations
+  - **Activity Calculation**: Real database queries for counting recent event attendance
+  - **Filtering Logic**: Stream-based filtering for real-time updates
+  - **Performance**: Efficient database queries with proper indexing
+- **BaseDancerSelectionScreen**: Updated to support activity filtering in all dancer selection contexts
+- **EventDancerSelectionMixin**: Enhanced to include activity filtering for event-specific screens
+- **Stream-based Updates**: Activity filters work with existing reactive data streams
+- **Backward Compatibility**: All existing functionality preserved while adding new activity features
+
+## [v2.2.3] - 2025-01-17
+
+### User Requests
+- Hide "Mark Present" action in planning tab if the event is a future one
+
+### Improved
+- **Future Event Logic**: Enhanced "Mark Present" action visibility for better UX
+  - **Hide for Far Future Events**: "Mark Present" action now hidden for events 1+ days in the future
+  - **Prevent Invalid Actions**: Users can no longer mark presence for events that haven't happened yet
+  - **Consistent with EventScreen**: Uses same predicate that determines Planning-only tab visibility
+  - **Better Planning UX**: Far future events focus on ranking and preparation without attendance actions
+  - **Logical Workflow**: Aligns with existing UI patterns where far future events show only Planning tab
+
+### Technical
+- **DancerActionsDialog**: Uses existing `EventStatusHelper.isFarFutureEvent()` predicate for consistency
+- **UI Consistency**: Same logic that EventScreen uses for tab visibility now controls action visibility
+- **Date Logic**: Leverages established event categorization (far future = 1+ days away)
+- **Action Logging**: Enhanced logging to track both past and far future event status
+- **Conditional Display**: "Mark Present" only appears when `!isPastEvent && !isFarFutureEvent`
 
 ## [v2.2.2] - 2025-01-17
 
@@ -4954,19 +4993,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automated release process
 
 ### Technical
-<<<<<<< HEAD
-- Created `CombinedDancerFilter` widget for unified filtering experience
-- Updated `SimplifiedTagFilter` with improved pill-based selection interface
-- Added `ActivityFilterWidget` for activity level filtering
-- Integrated activity service with filtering system
-- Updated Dancers screen to use new unified filtering approach
-
-### Documentation
-- **Material 3 Icons Guide**: Created comprehensive documentation with examples and best practices
-- **Implementation Examples**: Added practical examples for navigation, action, and status icons
-- **Migration Guide**: Documented process for updating existing icons to Material 3 standards
-- **Best Practices**: Established guidelines for icon variant selection and color usage
-=======
 - Release script for version bumping and APK distribution
 
 
@@ -17564,4 +17590,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Reusable Components**: Leveraged existing DancerCard and filtering components
 - **Streaming Data**: Real-time updates using StreamBuilder for immediate feedback
 - **Consistent UI**: Maintained visual consistency with other tabs
->>>>>>> origin/first-line
