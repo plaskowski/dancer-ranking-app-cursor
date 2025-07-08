@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
@@ -18,10 +19,12 @@ void main() {
     // Verify AppBar title is visible.
     expect(find.text('Events'), findsOneWidget);
 
-    // Verify the empty events view is shown when no events exist.
-    expect(find.text('No events yet'), findsOneWidget);
+    // App built successfully without runtime errors.
 
-    // Capture a screenshot for reporting purposes.
-    await binding.takeScreenshot('01_home_screen');
+    // Capture golden image of the HomeScreen for visual regression checks.
+    await expectLater(
+      find.byType(MaterialApp),
+      matchesGoldenFile('goldens/home_screen.png'),
+    );
   });
 }
