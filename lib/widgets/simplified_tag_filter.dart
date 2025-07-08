@@ -41,7 +41,6 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
   late ActivityLevel _activityLevel;
   Timer? _searchDebounce;
   late TextEditingController _searchController;
-  bool _showActivityDropdown = false;
 
   @override
   void initState() {
@@ -115,7 +114,6 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
   void _onActivityChanged(ActivityLevel activity) {
     setState(() {
       _activityLevel = activity;
-      _showActivityDropdown = false; // Close dropdown after selection
     });
     widget.onActivityChanged?.call(activity);
   }
@@ -140,6 +138,89 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
       case ActivityLevel.occasional:
         return '1+ dance in last 3 months';
     }
+  }
+
+  void _showActivityFilterBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => _buildActivityFilterBottomSheet(),
+    );
+  }
+
+  Widget _buildActivityFilterBottomSheet() {
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Handle bar
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Title
+            const Text(
+              '📊 Filter by Activity Level',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Activity levels - one-tap options
+            Flexible(
+              child: ListView(
+                shrinkWrap: true,
+                children: ActivityLevel.values.map((level) {
+                  final isSelected = _activityLevel == level;
+                  return ListTile(
+                    dense: true,
+                    title: Text(
+                      _getActivityLevelDisplayName(level),
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight:
+                            isSelected ? FontWeight.w600 : FontWeight.normal,
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.primary
+                            : null,
+                      ),
+                    ),
+                    subtitle: Text(
+                      _getActivityLevelDescription(level),
+                      style:
+                          TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                    ),
+                    onTap: () {
+                      _onActivityChanged(level);
+                      Navigator.pop(context);
+                    },
+                  );
+                }).toList(),
+              ),
+            ),
+
+            // Bottom padding for safe area
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
   }
 
   void _showTagFilterFlyout() {
@@ -357,11 +438,7 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
 
               // Activity filter
               GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showActivityDropdown = !_showActivityDropdown;
-                  });
-                },
+                onTap: _showActivityFilterBottomSheet,
                 child: Container(
                   height: 40,
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -390,88 +467,6 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
             ],
           ),
         ),
-
-        // Activity Dropdown (following existing pattern)
-        if (_showActivityDropdown)
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.grey.shade300),
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Text(
-                    '🎯 Activity Level:',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                ...ActivityLevel.values.map((level) {
-                  final isSelected = _activityLevel == level;
-
-                  return InkWell(
-                    onTap: () => _onActivityChanged(level),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 8.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            isSelected
-                                ? Icons.radio_button_checked
-                                : Icons.radio_button_unchecked,
-                            color: isSelected
-                                ? Theme.of(context).primaryColor
-                                : Colors.grey,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  _getActivityLevelDisplayName(level),
-                                  style: TextStyle(
-                                    fontWeight: isSelected
-                                        ? FontWeight.w600
-                                        : FontWeight.normal,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                Text(
-                                  _getActivityLevelDescription(level),
-                                  style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-                const SizedBox(height: 8),
-              ],
-            ),
-          ),
       ],
     );
   }
