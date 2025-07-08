@@ -28,7 +28,7 @@ class AppTheme {
       ),
 
       // Card theme
-      cardTheme: const CardTheme(
+      cardTheme: const CardThemeData(
         elevation: 1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -102,7 +102,7 @@ class AppTheme {
       ),
 
       // Dialog theme
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         elevation: 6,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -158,7 +158,7 @@ class AppTheme {
       ),
 
       // Card theme
-      cardTheme: const CardTheme(
+      cardTheme: const CardThemeData(
         elevation: 1,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -232,7 +232,7 @@ class AppTheme {
       ),
 
       // Dialog theme
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         elevation: 6,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),
