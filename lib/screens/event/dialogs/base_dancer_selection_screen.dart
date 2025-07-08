@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../models/dancer_with_tags.dart';
+import '../../../services/dancer/dancer_activity_service.dart';
 import '../../../widgets/dancer_selection_tile.dart';
 import '../../../widgets/simplified_tag_filter.dart';
 import 'event_dancer_selection_mixin.dart';
@@ -194,7 +195,7 @@ class _DancerListFilterWidget extends StatefulWidget {
 class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidget> {
   List<int> _selectedTagIds = [];
   String _searchQuery = '';
-  String _activityFilter = 'Regular';
+  ActivityLevel _activityFilter = ActivityLevel.regular;
 
   void _onTagsChanged(List<int> tagIds) {
     setState(() {
@@ -208,10 +209,21 @@ class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidg
     });
   }
 
-  void _onActivityChanged(String activity) {
+  void _onActivityChanged(ActivityLevel activity) {
     setState(() {
       _activityFilter = activity;
     });
+  }
+
+  String _activityLevelToString(ActivityLevel level) {
+    switch (level) {
+      case ActivityLevel.all:
+        return 'All';
+      case ActivityLevel.regular:
+        return 'Regular';
+      case ActivityLevel.occasional:
+        return 'Occasional';
+    }
   }
 
   @override
@@ -275,8 +287,8 @@ class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidg
   List<Widget> _buildDancerList(BuildContext context) {
     return [
       FutureBuilder<List<DancerWithTags>>(
-        key: ValueKey('${_selectedTagIds.toString()}_${_searchQuery}_$_activityFilter${widget.refreshKey ?? 0}'),
-        future: widget.getDancers(_selectedTagIds, _searchQuery, _activityFilter),
+        key: ValueKey('${_selectedTagIds.toString()}_${_searchQuery}_${_activityLevelToString(_activityFilter)}${widget.refreshKey ?? 0}'),
+        future: widget.getDancers(_selectedTagIds, _searchQuery, _activityLevelToString(_activityFilter)),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -300,7 +312,7 @@ class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidg
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _selectedTagIds.isNotEmpty || _activityFilter != 'Regular' 
+                    _selectedTagIds.isNotEmpty || _activityFilter != ActivityLevel.regular 
                         ? 'No dancers found with current filters' 
                         : 'No regular dancers available',
                     style: TextStyle(
@@ -310,7 +322,7 @@ class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidg
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _selectedTagIds.isNotEmpty || _activityFilter != 'Regular' 
+                    _selectedTagIds.isNotEmpty || _activityFilter != ActivityLevel.regular 
                         ? 'Try different search terms or clear filters' 
                         : 'Try changing activity level to "All"',
                     style: TextStyle(
@@ -337,7 +349,7 @@ class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidg
 class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
   List<int> _selectedTagIds = [];
   String _searchQuery = '';
-  String _activityFilter = 'Regular';
+  ActivityLevel _activityFilter = ActivityLevel.regular;
 
   void _onTagsChanged(List<int> tagIds) {
     setState(() {
@@ -351,10 +363,21 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
     });
   }
 
-  void _onActivityChanged(String activity) {
+  void _onActivityChanged(ActivityLevel activity) {
     setState(() {
       _activityFilter = activity;
     });
+  }
+
+  String _activityLevelToString(ActivityLevel level) {
+    switch (level) {
+      case ActivityLevel.all:
+        return 'All';
+      case ActivityLevel.regular:
+        return 'Regular';
+      case ActivityLevel.occasional:
+        return 'Occasional';
+    }
   }
 
   @override
@@ -402,8 +425,8 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 // Dancers List
                 const SizedBox(height: 8),
@@ -419,8 +442,8 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
   List<Widget> _buildDancerList(BuildContext context) {
     return [
       StreamBuilder<List<DancerWithTags>>(
-        key: ValueKey('${_selectedTagIds.toString()}_${_searchQuery}_$_activityFilter${widget.refreshKey ?? 0}'),
-        stream: widget.getDancers(_selectedTagIds, _searchQuery, _activityFilter),
+        key: ValueKey('${_selectedTagIds.toString()}_${_searchQuery}_${_activityLevelToString(_activityFilter)}${widget.refreshKey ?? 0}'),
+        stream: widget.getDancers(_selectedTagIds, _searchQuery, _activityLevelToString(_activityFilter)),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -444,7 +467,7 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _selectedTagIds.isNotEmpty || _activityFilter != 'Regular' 
+                    _selectedTagIds.isNotEmpty || _activityFilter != ActivityLevel.regular 
                         ? 'No dancers found with current filters' 
                         : 'No regular dancers yet',
                     style: TextStyle(
@@ -454,7 +477,7 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _selectedTagIds.isNotEmpty || _activityFilter != 'Regular' 
+                    _selectedTagIds.isNotEmpty || _activityFilter != ActivityLevel.regular 
                         ? 'Try adjusting your filters' 
                         : 'Try changing activity level to "All" or add dancers',
                     style: TextStyle(

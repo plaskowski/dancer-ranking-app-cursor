@@ -22,8 +22,6 @@ class DancersScreen extends StatefulWidget {
 }
 
 class _DancersScreenState extends State<DancersScreen> {
-  ActivityLevel _selectedActivityLevel = ActivityLevel.regular;
-
   Stream<List<DancerWithTags>> _getDancers(List<int> tagIds, String searchQuery, [String? activityFilter]) {
     final dancerService = Provider.of<DancerService>(context, listen: false);
     final database = Provider.of<AppDatabase>(context, listen: false);
