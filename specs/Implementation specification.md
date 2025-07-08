@@ -19,6 +19,7 @@
 - **Merge Dancer**: Opens SelectMergeTargetScreen to merge with another dancer
 - **Search**: Filters dancers by name or notes (word-start matching)
 - **Tag Filter**: Filters dancers by selected tag
+- **Activity Filter**: Filters dancers by activity level (Regular, Occasional, All)
 - **Archive Dancer**: Shows confirmation dialog, then archives dancer (preserves all data)
 - **Reactivate Dancer**: Immediately reactivates archived dancer
 - **View History**: Opens DancerHistoryScreen to view all dance history
@@ -46,7 +47,49 @@
 - Search and tag filtering work with real-time data streams
 - No manual refresh required - changes appear immediately
 
-## 3. Real-Time Filtering Architecture
+**Activity Filtering**:
+- **Regular**: Shows dancers with 3+ events in the last 2 months
+- **Occasional**: Shows dancers with 1+ event in the last 3 months
+- **All**: Shows all dancers regardless of activity level
+- Activity levels calculated based on actual attendance records from database
+- Real-time updates as new events and attendances are recorded
+
+## 3. Activity Filtering System
+
+**Purpose**: Filter dancers based on their recent activity level to focus on relevant dancers
+
+**Key Features**:
+- **Activity Levels**: Three predefined activity levels based on recent event attendance
+- **Database-Driven**: Activity calculations use actual attendance records from the database
+- **Real-Time Updates**: Activity filters update automatically as new events are recorded
+- **Universal Implementation**: Available on all dancer list screens and selection dialogs
+
+**Activity Level Definitions**:
+- **Regular**: Dancers who attended 3 or more events in the last 2 months (default)
+- **Occasional**: Dancers who attended 1 or more events in the last 3 months
+- **All**: All dancers regardless of activity level
+
+**Implementation**:
+- **DancerActivityService**: Core service for calculating activity levels
+  - **Database Queries**: Efficient SQL queries to count recent attendances
+  - **Activity Calculation**: Real-time calculation based on attendance records
+  - **Stream Integration**: Works with existing reactive data streams
+- **UI Integration**: Activity filter dropdown added to SimplifiedTagFilter widget
+- **Screen Support**: Implemented in DancersScreen and all event dancer selection screens
+
+**Database Logic**:
+- **Recent Event Counting**: Counts attendances in events within specified timeframes
+- **Cutoff Dates**: Uses DateTime calculations for 2-month and 3-month periods
+- **Performance**: Indexed queries for efficient activity level calculation
+- **Data Integrity**: Based on actual attendance records, not estimated data
+
+**Benefits**:
+- **Focused View**: Users can focus on dancers they interact with regularly
+- **Activity Awareness**: Clear understanding of dancer engagement levels
+- **Efficient Filtering**: Quickly find relevant dancers for events
+- **Data-Driven**: Accurate activity levels based on real event attendance
+
+## 4. Real-Time Filtering Architecture
 
 **Purpose**: Provide immediate updates across all dancer filtering components
 
@@ -68,7 +111,7 @@
 - **Consistent Behavior**: All dancer lists behave the same way
 - **Reduced Complexity**: No need for manual refresh mechanisms
 
-## 4. UI Consistency & Dialog Patterns
+## 5. UI Consistency & Dialog Patterns
 
 **Purpose**: Ensure consistent user experience across all dialog components
 
@@ -99,7 +142,7 @@
 - **Maintainable Code**: Shared patterns reduce development complexity
 - **Professional Appearance**: Polished, consistent interface design
 
-## 5. SimpleSelectionDialog Component
+## 6. SimpleSelectionDialog Component
 
 **Purpose**: Provide a reusable component for simple selection dialogs
 

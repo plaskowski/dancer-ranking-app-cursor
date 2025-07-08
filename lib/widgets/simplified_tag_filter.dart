@@ -4,17 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../database/database.dart';
+import '../services/dancer/dancer_activity_service.dart';
 import '../services/tag_service.dart';
 
 class SimplifiedTagFilter extends StatefulWidget {
   final List<int> selectedTagIds;
   final Function(List<int>) onTagsChanged;
   final Function(String)? onSearchChanged;
-  final Function(String)? onActivityChanged;
+  final Function(ActivityLevel)? onActivityChanged;
   final bool showClearButton;
   final String searchHintText;
   final String? initialSearchQuery;
-  final String? initialActivityLevel;
+  final ActivityLevel? initialActivityLevel;
 
   const SimplifiedTagFilter({
     super.key,
@@ -37,7 +38,7 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
   bool _isLoading = true;
   List<int> _pendingTagIds = [];
   late String _searchQuery;
-  late String _activityLevel;
+  late ActivityLevel _activityLevel;
   Timer? _searchDebounce;
   late TextEditingController _searchController;
 
@@ -45,7 +46,7 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
   void initState() {
     super.initState();
     _searchQuery = widget.initialSearchQuery ?? '';
-    _activityLevel = widget.initialActivityLevel ?? 'Regular';
+    _activityLevel = widget.initialActivityLevel ?? ActivityLevel.regular;
     _searchController = TextEditingController(text: _searchQuery);
     _loadTags();
   }
@@ -110,11 +111,33 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
     });
   }
 
-  void _onActivityChanged(String activity) {
+  void _onActivityChanged(ActivityLevel activity) {
     setState(() {
       _activityLevel = activity;
     });
     widget.onActivityChanged?.call(activity);
+  }
+
+  String _getActivityLevelDisplayName(ActivityLevel level) {
+    switch (level) {
+      case ActivityLevel.all:
+        return 'All';
+      case ActivityLevel.regular:
+        return 'Regular';
+      case ActivityLevel.occasional:
+        return 'Occasional';
+    }
+  }
+
+  String _getActivityLevelDescription(ActivityLevel level) {
+    switch (level) {
+      case ActivityLevel.all:
+        return 'Show everyone';
+      case ActivityLevel.regular:
+        return '3+ dances in last 2 months';
+      case ActivityLevel.occasional:
+        return '1+ dance in last 3 months';
+    }
   }
 
   void _showActivityFilterBottomSheet() {
@@ -129,12 +152,6 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
   }
 
   Widget _buildActivityFilterBottomSheet() {
-    final activityLevels = [
-      {'name': 'Regular', 'description': '3+ dances in last 2 months'},
-      {'name': 'Occasional', 'description': '1+ dance in last 3 months'},
-      {'name': 'All', 'description': 'Show everyone'},
-    ];
-
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -169,12 +186,12 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
             Flexible(
               child: ListView(
                 shrinkWrap: true,
-                children: activityLevels.map((level) {
-                  final isSelected = _activityLevel == level['name'];
+                children: ActivityLevel.values.map((level) {
+                  final isSelected = _activityLevel == level;
                   return ListTile(
                     dense: true,
                     title: Text(
-                      level['name']!,
+                      _getActivityLevelDisplayName(level),
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight:
@@ -185,12 +202,12 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                       ),
                     ),
                     subtitle: Text(
-                      level['description']!,
+                      _getActivityLevelDescription(level),
                       style:
                           TextStyle(fontSize: 12, color: Colors.grey.shade600),
                     ),
                     onTap: () {
-                      _onActivityChanged(level['name']!);
+                      _onActivityChanged(level);
                       Navigator.pop(context);
                     },
                   );
@@ -437,7 +454,7 @@ class _SimplifiedTagFilterState extends State<SimplifiedTagFilter> {
                           color: Colors.grey.shade600, size: 16),
                       const SizedBox(width: 4),
                       Text(
-                        _activityLevel,
+                        _getActivityLevelDisplayName(_activityLevel),
                         style: const TextStyle(fontSize: 14),
                       ),
                       const SizedBox(width: 4),

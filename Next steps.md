@@ -21,6 +21,7 @@
 - [ ] **Data Analytics**: Add charts and insights about dance patterns
 
 ## Recently Completed
+- ✅ **Activity Filter for Dancers**: Complete activity filtering system for all dancer screens with Regular, Occasional, and All activity levels
 - ✅ **Dancers Screen Refactoring**: Completely refactored to use BaseDancerListScreen for better code organization
 - ✅ **Dancer Selection Screen Improvements**: Refactored code organization and improved UX
 - ✅ **Base Component Refactoring**: Created DancerFilterListWidget and migrated Add Existing Dancer screen
@@ -32,6 +33,7 @@
 ## Completed Features ✅
 
 ### Recent Completions
+- [x] **Activity Filter for Dancers**: Complete activity filtering system for all dancer screens with Regular, Occasional, and All activity levels
 - [x] **Dancers Screen Refactoring**: Reduced code by 65% using base class architecture
 - [x] **Dancer Selection Screens**: Improved code organization with mixin refactoring and better UX
 - [x] **Base Component Architecture**: Created reusable DancerFilterListWidget for consistent dancer filtering

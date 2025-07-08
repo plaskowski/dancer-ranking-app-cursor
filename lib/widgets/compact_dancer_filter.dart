@@ -2,15 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../database/database.dart';
+import '../services/dancer/dancer_activity_service.dart';
 import '../services/tag_service.dart';
-
-enum ActivityLevel {
-  all,
-  active,
-  veryActive,
-  core,
-  recent,
-}
 
 class CompactDancerFilter extends StatefulWidget {
   final String searchQuery;
@@ -67,15 +60,11 @@ class _CompactDancerFilterState extends State<CompactDancerFilter> {
   String _getActivityLevelLabel(ActivityLevel level) {
     switch (level) {
       case ActivityLevel.all:
-        return 'All';
-      case ActivityLevel.active:
-        return 'Active';
-      case ActivityLevel.veryActive:
-        return 'Very Active';
-      case ActivityLevel.core:
-        return 'Core';
-      case ActivityLevel.recent:
-        return 'Recent';
+        return 'All Dancers';
+      case ActivityLevel.regular:
+        return 'Regular';
+      case ActivityLevel.occasional:
+        return 'Occasional';
     }
   }
 
@@ -83,14 +72,10 @@ class _CompactDancerFilterState extends State<CompactDancerFilter> {
     switch (level) {
       case ActivityLevel.all:
         return Icons.people_outlined;
-      case ActivityLevel.active:
-        return Icons.person_outline;
-      case ActivityLevel.veryActive:
+      case ActivityLevel.regular:
         return Icons.person;
-      case ActivityLevel.core:
-        return Icons.star_outline;
-      case ActivityLevel.recent:
-        return Icons.schedule;
+      case ActivityLevel.occasional:
+        return Icons.person_outline;
     }
   }
 
