@@ -206,7 +206,7 @@
 
 ### Build & Release
 
-- APK build process was verified and fixed after resolving theme constructor errors. The app now builds successfully for release on the main branch. 
+- APK build process was verified and fixed after resolving theme constructor errors. The app now builds successfully for release on the main branch.
 
 ## CLI Navigation
 

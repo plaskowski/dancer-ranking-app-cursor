@@ -8,7 +8,6 @@ plugins {
 android {
     namespace = "com.example.dancer_ranking_app"
     compileSdk = 35
-    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
