@@ -2681,7 +2681,7 @@ final class $$EventsTableReferences
 
   $$RankingsTableProcessedTableManager get rankingsRefs {
     final manager = $$RankingsTableTableManager($_db, $_db.rankings)
-        .filter((f) => f.eventId.id.sqlEquals($_itemColumn<int>('id')!));
+        .filter((f) => f.eventId.id($_item.id));
 
     final cache = $_typedResult.readTableOrNull(_rankingsRefsTable($_db));
     return ProcessedTableManager(
@@ -2696,7 +2696,7 @@ final class $$EventsTableReferences
 
   $$AttendancesTableProcessedTableManager get attendancesRefs {
     final manager = $$AttendancesTableTableManager($_db, $_db.attendances)
-        .filter((f) => f.eventId.id.sqlEquals($_itemColumn<int>('id')!));
+        .filter((f) => f.eventId.id($_item.id));
 
     final cache = $_typedResult.readTableOrNull(_attendancesRefsTable($_db));
     return ProcessedTableManager(
@@ -2916,7 +2916,7 @@ class $$EventsTableTableManager extends RootTableManager<
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (rankingsRefs)
-                    await $_getPrefetchedData<Event, $EventsTable, Ranking>(
+                    await $_getPrefetchedData(
                         currentTable: table,
                         referencedTable:
                             $$EventsTableReferences._rankingsRefsTable(db),
@@ -2927,7 +2927,7 @@ class $$EventsTableTableManager extends RootTableManager<
                             referencedItems.where((e) => e.eventId == item.id),
                         typedResults: items),
                   if (attendancesRefs)
-                    await $_getPrefetchedData<Event, $EventsTable, Attendance>(
+                    await $_getPrefetchedData(
                         currentTable: table,
                         referencedTable:
                             $$EventsTableReferences._attendancesRefsTable(db),
@@ -2987,7 +2987,7 @@ final class $$DancersTableReferences
 
   $$RankingsTableProcessedTableManager get rankingsRefs {
     final manager = $$RankingsTableTableManager($_db, $_db.rankings)
-        .filter((f) => f.dancerId.id.sqlEquals($_itemColumn<int>('id')!));
+        .filter((f) => f.dancerId.id($_item.id));
 
     final cache = $_typedResult.readTableOrNull(_rankingsRefsTable($_db));
     return ProcessedTableManager(
@@ -3002,7 +3002,7 @@ final class $$DancersTableReferences
 
   $$AttendancesTableProcessedTableManager get attendancesRefs {
     final manager = $$AttendancesTableTableManager($_db, $_db.attendances)
-        .filter((f) => f.dancerId.id.sqlEquals($_itemColumn<int>('id')!));
+        .filter((f) => f.dancerId.id($_item.id));
 
     final cache = $_typedResult.readTableOrNull(_attendancesRefsTable($_db));
     return ProcessedTableManager(
@@ -3017,7 +3017,7 @@ final class $$DancersTableReferences
 
   $$DancerTagsTableProcessedTableManager get dancerTagsRefs {
     final manager = $$DancerTagsTableTableManager($_db, $_db.dancerTags)
-        .filter((f) => f.dancerId.id.sqlEquals($_itemColumn<int>('id')!));
+        .filter((f) => f.dancerId.id($_item.id));
 
     final cache = $_typedResult.readTableOrNull(_dancerTagsRefsTable($_db));
     return ProcessedTableManager(
@@ -3323,7 +3323,7 @@ class $$DancersTableTableManager extends RootTableManager<
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (rankingsRefs)
-                    await $_getPrefetchedData<Dancer, $DancersTable, Ranking>(
+                    await $_getPrefetchedData(
                         currentTable: table,
                         referencedTable:
                             $$DancersTableReferences._rankingsRefsTable(db),
@@ -3335,8 +3335,7 @@ class $$DancersTableTableManager extends RootTableManager<
                             referencedItems.where((e) => e.dancerId == item.id),
                         typedResults: items),
                   if (attendancesRefs)
-                    await $_getPrefetchedData<Dancer, $DancersTable,
-                            Attendance>(
+                    await $_getPrefetchedData(
                         currentTable: table,
                         referencedTable:
                             $$DancersTableReferences._attendancesRefsTable(db),
@@ -3348,7 +3347,7 @@ class $$DancersTableTableManager extends RootTableManager<
                             referencedItems.where((e) => e.dancerId == item.id),
                         typedResults: items),
                   if (dancerTagsRefs)
-                    await $_getPrefetchedData<Dancer, $DancersTable, DancerTag>(
+                    await $_getPrefetchedData(
                         currentTable: table,
                         referencedTable:
                             $$DancersTableReferences._dancerTagsRefsTable(db),
@@ -3407,7 +3406,7 @@ final class $$RanksTableReferences
 
   $$RankingsTableProcessedTableManager get rankingsRefs {
     final manager = $$RankingsTableTableManager($_db, $_db.rankings)
-        .filter((f) => f.rankId.id.sqlEquals($_itemColumn<int>('id')!));
+        .filter((f) => f.rankId.id($_item.id));
 
     final cache = $_typedResult.readTableOrNull(_rankingsRefsTable($_db));
     return ProcessedTableManager(
@@ -3606,7 +3605,7 @@ class $$RanksTableTableManager extends RootTableManager<
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (rankingsRefs)
-                    await $_getPrefetchedData<Rank, $RanksTable, Ranking>(
+                    await $_getPrefetchedData(
                         currentTable: table,
                         referencedTable:
                             $$RanksTableReferences._rankingsRefsTable(db),
@@ -3662,10 +3661,8 @@ final class $$RankingsTableReferences
       .createAlias($_aliasNameGenerator(db.rankings.eventId, db.events.id));
 
   $$EventsTableProcessedTableManager get eventId {
-    final $_column = $_itemColumn<int>('event_id')!;
-
     final manager = $$EventsTableTableManager($_db, $_db.events)
-        .filter((f) => f.id.sqlEquals($_column));
+        .filter((f) => f.id($_item.eventId));
     final item = $_typedResult.readTableOrNull(_eventIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
@@ -3676,10 +3673,8 @@ final class $$RankingsTableReferences
       .createAlias($_aliasNameGenerator(db.rankings.dancerId, db.dancers.id));
 
   $$DancersTableProcessedTableManager get dancerId {
-    final $_column = $_itemColumn<int>('dancer_id')!;
-
     final manager = $$DancersTableTableManager($_db, $_db.dancers)
-        .filter((f) => f.id.sqlEquals($_column));
+        .filter((f) => f.id($_item.dancerId));
     final item = $_typedResult.readTableOrNull(_dancerIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
@@ -3690,10 +3685,8 @@ final class $$RankingsTableReferences
       .createAlias($_aliasNameGenerator(db.rankings.rankId, db.ranks.id));
 
   $$RanksTableProcessedTableManager get rankId {
-    final $_column = $_itemColumn<int>('rank_id')!;
-
     final manager = $$RanksTableTableManager($_db, $_db.ranks)
-        .filter((f) => f.id.sqlEquals($_column));
+        .filter((f) => f.id($_item.rankId));
     final item = $_typedResult.readTableOrNull(_rankIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
@@ -4108,7 +4101,7 @@ final class $$ScoresTableReferences
 
   $$AttendancesTableProcessedTableManager get attendancesRefs {
     final manager = $$AttendancesTableTableManager($_db, $_db.attendances)
-        .filter((f) => f.scoreId.id.sqlEquals($_itemColumn<int>('id')!));
+        .filter((f) => f.scoreId.id($_item.id));
 
     final cache = $_typedResult.readTableOrNull(_attendancesRefsTable($_db));
     return ProcessedTableManager(
@@ -4308,7 +4301,7 @@ class $$ScoresTableTableManager extends RootTableManager<
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (attendancesRefs)
-                    await $_getPrefetchedData<Score, $ScoresTable, Attendance>(
+                    await $_getPrefetchedData(
                         currentTable: table,
                         referencedTable:
                             $$ScoresTableReferences._attendancesRefsTable(db),
@@ -4369,10 +4362,8 @@ final class $$AttendancesTableReferences
       .createAlias($_aliasNameGenerator(db.attendances.eventId, db.events.id));
 
   $$EventsTableProcessedTableManager get eventId {
-    final $_column = $_itemColumn<int>('event_id')!;
-
     final manager = $$EventsTableTableManager($_db, $_db.events)
-        .filter((f) => f.id.sqlEquals($_column));
+        .filter((f) => f.id($_item.eventId));
     final item = $_typedResult.readTableOrNull(_eventIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
@@ -4384,10 +4375,8 @@ final class $$AttendancesTableReferences
           $_aliasNameGenerator(db.attendances.dancerId, db.dancers.id));
 
   $$DancersTableProcessedTableManager get dancerId {
-    final $_column = $_itemColumn<int>('dancer_id')!;
-
     final manager = $$DancersTableTableManager($_db, $_db.dancers)
-        .filter((f) => f.id.sqlEquals($_column));
+        .filter((f) => f.id($_item.dancerId));
     final item = $_typedResult.readTableOrNull(_dancerIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
@@ -4398,10 +4387,9 @@ final class $$AttendancesTableReferences
       .createAlias($_aliasNameGenerator(db.attendances.scoreId, db.scores.id));
 
   $$ScoresTableProcessedTableManager? get scoreId {
-    final $_column = $_itemColumn<int>('score_id');
-    if ($_column == null) return null;
+    if ($_item.scoreId == null) return null;
     final manager = $$ScoresTableTableManager($_db, $_db.scores)
-        .filter((f) => f.id.sqlEquals($_column));
+        .filter((f) => f.id($_item.scoreId!));
     final item = $_typedResult.readTableOrNull(_scoreIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
@@ -4825,7 +4813,7 @@ final class $$TagsTableReferences
 
   $$DancerTagsTableProcessedTableManager get dancerTagsRefs {
     final manager = $$DancerTagsTableTableManager($_db, $_db.dancerTags)
-        .filter((f) => f.tagId.id.sqlEquals($_itemColumn<int>('id')!));
+        .filter((f) => f.tagId.id($_item.id));
 
     final cache = $_typedResult.readTableOrNull(_dancerTagsRefsTable($_db));
     return ProcessedTableManager(
@@ -4984,7 +4972,7 @@ class $$TagsTableTableManager extends RootTableManager<
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (dancerTagsRefs)
-                    await $_getPrefetchedData<Tag, $TagsTable, DancerTag>(
+                    await $_getPrefetchedData(
                         currentTable: table,
                         referencedTable:
                             $$TagsTableReferences._dancerTagsRefsTable(db),
@@ -5034,10 +5022,8 @@ final class $$DancerTagsTableReferences
       .createAlias($_aliasNameGenerator(db.dancerTags.dancerId, db.dancers.id));
 
   $$DancersTableProcessedTableManager get dancerId {
-    final $_column = $_itemColumn<int>('dancer_id')!;
-
     final manager = $$DancersTableTableManager($_db, $_db.dancers)
-        .filter((f) => f.id.sqlEquals($_column));
+        .filter((f) => f.id($_item.dancerId));
     final item = $_typedResult.readTableOrNull(_dancerIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
@@ -5048,10 +5034,8 @@ final class $$DancerTagsTableReferences
       .createAlias($_aliasNameGenerator(db.dancerTags.tagId, db.tags.id));
 
   $$TagsTableProcessedTableManager get tagId {
-    final $_column = $_itemColumn<int>('tag_id')!;
-
     final manager = $$TagsTableTableManager($_db, $_db.tags)
-        .filter((f) => f.id.sqlEquals($_column));
+        .filter((f) => f.id($_item.tagId));
     final item = $_typedResult.readTableOrNull(_tagIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
