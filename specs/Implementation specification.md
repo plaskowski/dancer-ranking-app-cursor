@@ -206,7 +206,8 @@
 
 ### Build & Release
 
-- APK build process was verified and fixed after resolving theme constructor errors. The app now builds successfully for release on the main branch. 
+- APK build process was further improved by **removing the hard-coded `ndkVersion`** from `android/app/build.gradle.kts`. This prevents missing-NDK errors on machines that do not have that specific version installed and ensures `flutter build apk --release` works out of the box.
+- Previous fixes (theme constructor update) remain in place and the app continues to build successfully for release.
 
 ## CLI Navigation
 
