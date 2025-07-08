@@ -425,8 +425,8 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 // Dancers List
                 const SizedBox(height: 8),
