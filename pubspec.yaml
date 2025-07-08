@@ -17,7 +17,7 @@ dependencies:
   uuid: ^4.0.0
   
   # Database / Persistence
-  drift: ^2.20.3
+  drift: ^2.23.0
   sqlite3_flutter_libs: ^0.5.15
   path_provider: ^2.1.4
   path: ^1.9.0
@@ -43,7 +43,7 @@ dev_dependencies:
     sdk: flutter
 
   # Build runner for code generation
-  drift_dev: ^2.20.1
+  drift_dev: ^2.23.0
   build_runner: ^2.4.13
 
   # Linting
