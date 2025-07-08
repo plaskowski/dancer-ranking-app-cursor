@@ -401,9 +401,12 @@ class EventImportValidator {
 
         // Switch order with dot handling
         if (trimmed.endsWith('.')) {
+          // Original name already ends with a dot, so keep it at the same position (after last word)
           variants.add('$word2 $word1.');
         } else {
-          variants.add('$word2. $word1');
+          // Original name doesn\'t have a trailing dot, try placing it after either first or second word
+          variants.add('$word2. $word1'); // After first word (existing behaviour)
+          variants.add('$word2 $word1.'); // After last word (new behaviour)
         }
       }
     }

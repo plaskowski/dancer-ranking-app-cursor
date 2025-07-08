@@ -231,3 +231,17 @@ All CLI navigation events are logged using the ActionLogger system for debugging
 - `lib/screens/event/event_screen.dart`: Event screen with CLI action handling
 - `lib/screens/event/tabs/present_tab.dart`: Present tab with CLI action execution
 - `lib/screens/home/services/home_navigation_service.dart`: Navigation service with logging 
+
+## Import Validation Enhancements (v2.4.1)
+
+**Purpose**: Improve accuracy when matching dancer names during event import validation
+
+**Change Summary**:
+- Enhanced `_generateNameVariants()` logic in `EventImportValidator` to generate additional variants when switching word order for two-word names that include trailing dots. 
+- This ensures inputs such as `"Doe John."` are correctly matched to existing dancers named `"John Doe"`.
+
+**Impacted Files**:
+- `lib/services/event_import_validator.dart`
+
+**Testing**:
+- Updated unit tests (`dancer_name_matching_test.dart`) now pass for dot-placement edge cases. 
