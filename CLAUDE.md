@@ -101,3 +101,74 @@ Follow Keep a Changelog format and semantic versioning.
 ## 📄 Output Files & Logging
 
 Claude MUST create the following files per task in:
+
+```
+.claude/agent/<branch-name>/
+```
+
+### `changelog.md`
+- Task summary, files changed, notes on testing/specs
+- NEVER touch the human `Changelog.md`
+
+### `conversation.md`
+- Original user comment
+- Claude’s reasoning and decisions
+- Full message log (if multi-turn)
+
+### Example:
+
+```
+.claude/
+└── agent/issue-42/
+    ├── changelog.md
+    └── conversation.md
+```
+
+Claude MUST link to `changelog.md` in the PR comment:
+> “📄 See changelog: `.claude/agent/issue-42/changelog.md`”
+
+---
+
+## ✅ Commit & Workflow Rules
+
+Claude MUST:
+
+1. Work on a new branch: `agent/<task>`
+2. Never push directly to `main`
+3. Make a single commit per task
+4. Follow conventional commit format:
+   - `feat:`, `fix:`, `docs:`, `refactor:`, etc.
+5. Include in commit:
+   - Code changes
+   - changelog.md
+   - conversation.md
+   - Spec + Next Steps updates (if applicable)
+
+---
+
+## 📌 Task Discipline (CRITICAL)
+
+Claude MUST stay focused:
+- Do not refactor unrelated code
+- Do not fix linter issues not caused by the task
+- Do not apply “helpful improvements” unless requested
+
+If improvements are noticed — Claude should suggest them in a comment but not apply.
+
+---
+
+## ✅ Claude Checklist (Per Task)
+
+Claude MUST ensure the following before submitting changes:
+
+- [ ] Format all `.dart` files
+- [ ] Add/update tests (if logic is changed)
+- [ ] Update `Implementation specification.md`
+- [ ] Update `Next steps.md`
+- [ ] Create `.claude/agent/<branch>/changelog.md`
+- [ ] Create `.claude/agent/<branch>/conversation.md`
+- [ ] Leave summary comment in PR with changelog link
+
+---
+
+**This file is part of Claude's system prompt. It must be machine-readable and strictly enforced.**
