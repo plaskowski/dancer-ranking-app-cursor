@@ -1,6 +1,6 @@
 # 🧠 Claude Coding Agent Guidelines
 
-This document defines exact behavioral rules for the Claude code assistant in this repository. It integrates architecture constraints, changelog behavior, and a multi-stage workflow for implementing GitHub issues.
+This document defines exact behavioral rules for the Claude code assistant in this repository. It includes architectural constraints, changelog behavior, and a multi-stage workflow for implementing GitHub issues.
 
 ---
 
@@ -55,7 +55,9 @@ Claude may only use:
 
 ## 🛠️ Issue Implementation Lifecycle
 
-Claude MUST follow this structured lifecycle for every task.
+When Claude is asked to implement a GitHub issue, it MUST follow this structured lifecycle:
+
+---
 
 ### 1️⃣ Issue Analysis
 
@@ -64,6 +66,11 @@ Claude MUST:
 - Identify affected screens, components, models or flows
 - Leave a comment summarizing understanding
 - Ask for clarification if needed
+
+🚀 Immediately after analysis, Claude MUST:
+- Create a dedicated branch: `agent/issue-<number>`
+- Open a draft pull request titled: `feat: start planning issue #<number>`
+- Begin committing incremental changes **starting with planning artifacts**
 
 ---
 
@@ -78,56 +85,62 @@ Claude MUST create:
 Must include:
 - User story and behavioral summary
 - ASCII wireframe mockup
-- UX patterns used + where they are reused in the app
+- UX patterns used, and where already present in the app
 
-Claude MUST request user approval before continuing.
+Claude MUST:
+- Commit this file with a descriptive message (`docs: add functional spec for issue #<number>`)
+- Notify the user and await approval before proceeding
 
 ---
 
 ### 3️⃣ Technical Specification
 
-After functional spec is approved, create:
+After functional spec approval, Claude MUST create:
 
 ```
 .claude/agent/issue-<number>/technical-spec.md
 ```
 
-Must include:
-- What components/functions will be created or modified
-- Planned file structure
-- Logic/data flow (no implementation code)
+Must describe:
+- Affected components/screens/functions
+- File-level structure and logic/data flow (no implementation)
+- Out of scope areas
 
-Wait for user approval before proceeding.
+Claude MUST:
+- Commit this file as an incremental step
+- Notify the user and wait for approval
 
 ---
 
-### 4️⃣ Implementation
+### 4️⃣ Implementation (incremental)
 
-Once approved, Claude MUST:
-- Create a branch: `agent/issue-<number>`
-- Implement only what was approved
-- Use a **separate commit for each incremental change**:
-  - One for layout
-  - One for logic
-  - One for test
-  - One for docs
-- Modify only relevant files
-- Reuse components and patterns when possible
-- Notify user when code is ready for formatting
+Once technical spec is approved, Claude MUST:
+
+- Continue committing small, focused changes under the same branch
+- Each iteration of implementation (e.g. layout, state handling, UX logic) must have its own commit
+- Use conventional commit messages (`feat:`, `fix:`, `test:` etc.)
+- Do NOT squash or rebase without permission
 
 ---
 
 ### 5️⃣ Testing
 
 Claude MUST:
-- Add or update tests (widget/unit/integration)
-- If skipping tests, explain in `changelog.md`
+- Add or update relevant tests (widget/unit/integration)
+- Justify missing tests in `changelog.md` if applicable
+- Commit tests in dedicated commits (e.g. `test: add test for ranking tile`)
 
 ---
 
 ### 6️⃣ Finalization
 
 Claude MUST:
+- Add/update:
+  - `changelog.md`
+  - `conversation.md`
+  - `functional-spec.md` (if changes occurred)
+  - `technical-spec.md` (if changes occurred)
+- Push all changes to the branch used for the PR
 - Leave a comment linking:
 
 ```
@@ -142,53 +155,56 @@ Claude MUST:
 
 ## 📄 Output Files
 
-All outputs must be stored under:
+Claude MUST maintain these files under:
 
 ```
 .claude/agent/<branch-name>/
 ```
 
-Each task must contain:
-
-- `changelog.md`
-- `conversation.md`
-- `functional-spec.md`
-- `technical-spec.md`
+- `functional-spec.md` – UI and user needs
+- `technical-spec.md` – implementation outline
+- `changelog.md` – summary of changes
+- `conversation.md` – reasoning & discussion trace
 
 ---
 
-## ✅ Commit Rules
+## ✅ Commit & Branching Rules
 
 Claude MUST:
 
-1. Use a branch: `agent/<task>`
-2. Never push directly to `main`
-3. Use a **separate commit for each logical change**
-4. Follow conventional commit format:
-   - `feat:`, `fix:`, `test:`, `docs:`, etc.
-5. Include all relevant files in commits
+1. Create a branch at the start: `agent/<task>`
+2. Push all outputs and plans to that branch
+3. Use separate, focused commits for:
+   - Planning
+   - UI implementation
+   - Logic
+   - Tests
+   - Documentation
+4. Follow conventional commit format
+5. Avoid rebasing, amending, or force-pushing
 
 ---
 
 ## 📌 Task Discipline
 
 Claude MUST stay focused:
-- No unrelated refactors
-- No extra linting fixes
-- No unsolicited improvements
+- Do not refactor unrelated code
+- Do not fix unrelated lint errors
+- Do not apply improvements unless explicitly requested
 
 ---
 
 ## ✅ Claude Checklist
 
-- [ ] Analyze issue and confirm understanding
-- [ ] Create and submit functional-spec.md
+- [ ] Analyze issue and create `agent/<task>` branch
+- [ ] Create functional-spec.md and commit it
 - [ ] Wait for approval
-- [ ] Create and submit technical-spec.md
+- [ ] Create technical-spec.md and commit it
 - [ ] Wait for approval
-- [ ] Implement task using separate commits
-- [ ] Create changelog.md and conversation.md
-- [ ] Add comment with `.claude/agent/<branch>/changelog.md` link
+- [ ] Implement step by step, commit every increment
+- [ ] Add/update tests
+- [ ] Write changelog.md and conversation.md
+- [ ] Leave PR comment linking `.claude/agent/<branch>/changelog.md`
 
 ---
 
