@@ -23,7 +23,7 @@ jobs:
         uses: anthropics/claude-code-action@main
         with:
           anthropic_api_key: ${{ secrets.CLAUDE_API_KEY }}
-          model: claude-3-sonnet-20240229
+          model: claude-sonnet-4-20250514
           trigger_phrase: "@claude please"
           base_branch: main
           branch_prefix: agent/
