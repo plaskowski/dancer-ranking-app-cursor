@@ -1,34 +1,29 @@
-name: Claude Code Agent
+name: Claude Agent
 
 on:
   issue_comment:
     types: [created]
 
+permissions:
+  id-token: write        # Wymagane do OIDC (jeśli nie używasz PAT)
+  contents: read         # Potrzebne do pobierania plików
+  pull-requests: write   # Potrzebne do tworzenia i komentowania PR-ów
+
 jobs:
-  run-agent:
-    if: startsWith(github.event.comment.body, '@claude')
+  claude:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-      id-token: write
-
     steps:
-      - name: Checkout code
+      - name: ⬇️ Checkout repository
         uses: actions/checkout@v4
 
-      - name: Claude agent
+      - name: 🤖 Claude Code Agent
         uses: anthropics/claude-code-action@main
         with:
-          anthropic_api_key: ${{ secrets.CLAUDE_API_KEY }}
-          model: claude-3.5-sonnet-20240620         # ⭐ Sonnet 4
-          create_pull_request: true                 # 🛡️ zawsze PR, nigdy main
-          branch_prefix: agent/                     # np. agent/issue-42
-          max_tokens: 6000
-          max_turns: 2
-          allowed_tools: |
-            - type: ViewFile
-            - type: Write
-            - type: GrepTool
+          claude_api_key: ${{ secrets.CLAUDE_API_KEY }}     # 🔐 Twój klucz API z Anthropic Console
+          github_token: ${{ secrets.GITHUB_TOKEN }}          # ✅ automatyczny GitHub token
+          model: claude-3-sonnet-20240229                    # 🧠 precyzyjny model Claude 3.5 Sonnet
+          trigger_phrase: "@claude please"                   # 🔁 co wyzwala agenta
+          base_branch: "main"                                # 📌 docelowy branch bazowy
+          branch_prefix: "agent/issue-"                      # 🏷️ prefiks dla gałęzi Claude'a
+          allowed_tools: '["ViewFile", "Write", "GrepTool"]' # 🔐 tylko bezpieczne narzędzia
