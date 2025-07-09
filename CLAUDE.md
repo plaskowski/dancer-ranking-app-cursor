@@ -1,6 +1,6 @@
 # 🧠 Claude Coding Agent Guidelines
 
-This document defines exact behavioral rules for the Claude code assistant in this repository. It integrates Cursor rules, architecture constraints, changelog behavior, and a multi-stage workflow for implementing GitHub issues.
+This document defines exact behavioral rules for the Claude code assistant in this repository. It integrates architecture constraints, changelog behavior, and a multi-stage workflow for implementing GitHub issues.
 
 ---
 
@@ -48,14 +48,14 @@ Claude may only use:
 
 ### Code Quality
 - No `const` in `build()` methods — ❌ forbidden
-- Format all Dart files with `dart format` when the implementation is ready according to user
+- Format all Dart files with `dart format` only after user approval
 - Only fix linter errors relevant to the task
 
 ---
 
 ## 🛠️ Issue Implementation Lifecycle
 
-When Claude is asked to implement a GitHub issue, it MUST follow this structured lifecycle:
+Claude MUST follow this structured lifecycle for every task.
 
 ### 1️⃣ Issue Analysis
 
@@ -75,60 +75,60 @@ Claude MUST create:
 .claude/agent/issue-<number>/functional-spec.md
 ```
 
-This spec MUST include:
+Must include:
 - User story and behavioral summary
-- Wireframe mockup (ASCII format)
-- List of UX patterns used
-- For each pattern: where it already exists in the app
+- ASCII wireframe mockup
+- UX patterns used + where they are reused in the app
 
-Claude MUST notify the user for review.  
-> ✅ Claude MUST NOT continue unless the user explicitly approves the functional spec.
+Claude MUST request user approval before continuing.
 
 ---
 
 ### 3️⃣ Technical Specification
 
-Upon approval of the functional spec, Claude MUST create:
+After functional spec is approved, create:
 
 ```
 .claude/agent/issue-<number>/technical-spec.md
 ```
 
-This file MUST:
-- Outline the components/screens/functions to be added or changed
-- Describe file-level structure and logic/data flow
-- Avoid writing implementation code
+Must include:
+- What components/functions will be created or modified
+- Planned file structure
+- Logic/data flow (no implementation code)
 
-Claude MUST notify the user and wait for approval before proceeding.
+Wait for user approval before proceeding.
 
 ---
 
 ### 4️⃣ Implementation
 
-After technical spec is approved, Claude MUST:
-- Create a new branch: `agent/issue-<number>`
-- Implement only the approved functionality
+Once approved, Claude MUST:
+- Create a branch: `agent/issue-<number>`
+- Implement only what was approved
+- Use a **separate commit for each incremental change**:
+  - One for layout
+  - One for logic
+  - One for test
+  - One for docs
 - Modify only relevant files
-- Reuse existing UX and components
-- Update documentation if required (`Implementation specification.md`, `Next steps.md`)
-- Format Dart code only after confirmation from the user
+- Reuse components and patterns when possible
+- Notify user when code is ready for formatting
 
 ---
 
 ### 5️⃣ Testing
 
 Claude MUST:
-- Add or update tests relevant to the logic/UI changed
-- If tests are skipped, explain why in `changelog.md`
+- Add or update tests (widget/unit/integration)
+- If skipping tests, explain in `changelog.md`
 
 ---
 
 ### 6️⃣ Finalization
 
 Claude MUST:
-- Commit the full set of changes in one commit (unless instructed otherwise)
-- Follow conventional commit naming
-- Leave a PR comment with a link to:
+- Leave a comment linking:
 
 ```
 .claude/agent/issue-<number>/
@@ -140,63 +140,56 @@ Claude MUST:
 
 ---
 
-## 📄 Output Files & Logging
+## 📄 Output Files
 
-For each branch, Claude MUST create:
-
-- `changelog.md` – summary of implementation
-- `conversation.md` – interaction + reasoning trace
-- `functional-spec.md` – planned behavior and wireframe
-- `technical-spec.md` – technical description (no code)
-
-All files MUST be stored in:
+All outputs must be stored under:
 
 ```
 .claude/agent/<branch-name>/
 ```
 
+Each task must contain:
+
+- `changelog.md`
+- `conversation.md`
+- `functional-spec.md`
+- `technical-spec.md`
+
 ---
 
-## ✅ Commit & Workflow Rules
+## ✅ Commit Rules
 
 Claude MUST:
 
-1. Work on a new branch: `agent/<task>`
+1. Use a branch: `agent/<task>`
 2. Never push directly to `main`
-3. Make a single commit per task (unless explicitly told otherwise)
-4. Use conventional commit format:
-   - `feat:`, `fix:`, `docs:`, `refactor:`, etc.
-5. Include in commit:
-   - Code
-   - changelog.md
-   - conversation.md
-   - functional-spec.md
-   - technical-spec.md
-   - Any updated docs (`Implementation specification.md`, `Next steps.md`)
+3. Use a **separate commit for each logical change**
+4. Follow conventional commit format:
+   - `feat:`, `fix:`, `test:`, `docs:`, etc.
+5. Include all relevant files in commits
 
 ---
 
-## 📌 Task Discipline (CRITICAL)
+## 📌 Task Discipline
 
-Claude MUST remain focused:
-- Do not refactor unrelated code
-- Do not fix linter warnings not caused by this task
-- Do not add “helpful improvements” unless asked
+Claude MUST stay focused:
+- No unrelated refactors
+- No extra linting fixes
+- No unsolicited improvements
 
 ---
 
-## ✅ Claude Checklist (Per Task)
+## ✅ Claude Checklist
 
-Claude MUST ensure the following before implementation is marked complete:
-
-- [ ] Create functional-spec.md and wait for approval
-- [ ] Create technical-spec.md and wait for approval
-- [ ] Format all `.dart` files after user approval
-- [ ] Add/update tests
-- [ ] Update documentation (if needed)
+- [ ] Analyze issue and confirm understanding
+- [ ] Create and submit functional-spec.md
+- [ ] Wait for approval
+- [ ] Create and submit technical-spec.md
+- [ ] Wait for approval
+- [ ] Implement task using separate commits
 - [ ] Create changelog.md and conversation.md
-- [ ] Leave PR comment linking `.claude/agent/<branch>/changelog.md`
+- [ ] Add comment with `.claude/agent/<branch>/changelog.md` link
 
 ---
 
-**This file is part of Claude's system prompt. It must be machine-readable and strictly enforced.**
+**This file is part of Claude’s system prompt. It must be machine-readable and strictly enforced.**
