@@ -1,33 +1,23 @@
-name: Claude Code Agent
+name: Claude Agent
 
 on:
   issue_comment:
     types: [created]
 
+permissions:
+  id-token: write       # ✅ wymagane do pobrania OIDC tokenu
+  contents: read        # ✅ dostęp do zawartości repo
+  pull-requests: write  # ✅ Claude może komentować/otwierać PR
+
 jobs:
-  run-agent:
-    if: startsWith(github.event.comment.body, '@claude')
+  claude:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-
     steps:
-      - name: Checkout code
+      - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
 
-      - name: Claude agent
+      - name: 🤖 Claude Code Agent
         uses: anthropics/claude-code-action@main
         with:
-          anthropic_api_key: ${{ secrets.CLAUDE_API_KEY }}
-          model: claude-3.5-sonnet-20240620         # ⭐ Sonnet 4
-          create_pull_request: true                 # 🛡️ zawsze PR, nigdy main
-          branch_prefix: agent/                     # np. agent/issue-42
-          max_tokens: 6000
-          max_turns: 2
-          allowed_tools: |
-            - type: ViewFile
-            - type: Write
-            - type: GrepTool
+          claude_api_key: ${{ secrets.CLAUDE_API_KEY }}
