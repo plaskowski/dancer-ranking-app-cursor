@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write
-      pull-requests: write
-      issues: write
-      id-token: write
+      id-token: write         # ✅ potrzebne do OIDC
+      contents: write         # ✅ commit/push
+      pull-requests: write    # ✅ tworzenie i komentowanie PR
+      issues: write           # ✅ (opcjonalnie) komentowanie w issue
 
     steps:
       - name: Checkout code
@@ -22,13 +22,16 @@ jobs:
       - name: Claude agent
         uses: anthropics/claude-code-action@main
         with:
-          anthropic_api_key: ${{ secrets.CLAUDE_API_KEY }}
-          model: claude-3.5-sonnet-20240620         # ⭐ Sonnet 4
-          create_pull_request: true                 # 🛡️ zawsze PR, nigdy main
-          branch_prefix: agent/                     # np. agent/issue-42
-          max_tokens: 6000
-          max_turns: 2
+          claude_api_key: ${{ secrets.CLAUDE_API_KEY }}
+          model: claude-3-sonnet-20240229
+          trigger_phrase: "@claude please implement this"
+          base_branch: main
+          branch_prefix: agent/
           allowed_tools: |
             - type: ViewFile
             - type: Write
             - type: GrepTool
+          custom_instructions: |
+            Always create a new branch named agent/issue-<number>.
+            Always open or update a pull request for your work.
+            Do not commit directly to main.
