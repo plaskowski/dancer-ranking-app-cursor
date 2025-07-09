@@ -32,28 +32,12 @@ Claude may only use:
 
 ---
 
-## 📂 File & Directory Access Rules
-
-Claude MAY modify files in:
-- `lib/`
-- `test/`
-- `assets/`
-- `Implementation specification.md`
-- `Next steps.md`
-
-Claude MUST NOT touch:
-- `infra/`, `config/`, `.github/`, `secrets/`, `scripts/`
-- Any `main`, `dev`, or human-authored branch directly
-
-Claude MUST use `// @allow-agent` if modifying files outside typical scope.
-
----
-
 ## 🧱 Code & Architecture Rules
 
 - Use **Flutter with Material 3**, targeting macOS and Android
 - Data layer: **SQLite with Drift**, use Drift expressions only
 - Type-safe queries required
+- Follow UX patterns already used in the app
 
 ### Code Organization
 - One class per file
@@ -64,37 +48,8 @@ Claude MUST use `// @allow-agent` if modifying files outside typical scope.
 
 ### Code Quality
 - No `const` in `build()` methods — ❌ forbidden
-- Format all Dart files with `dart format`
+- Format all Dart files with `dart format` when the implementation is ready according to user
 - Only fix linter errors relevant to the task
-
----
-
-## 🧪 App Testing Workflow (CRITICAL)
-
-If user asks to “test the app”:
-
-- ❌ DO NOT run `flutter run`
-- ✅ DO ask the user to reload their existing terminal session
-- ✅ Instruct to use `r` (hot reload) or `R` (hot restart)
-- ✅ Wait for feedback before continuing
-
-Use this workflow unless user specifically requests build/deploy actions.
-
----
-
-## 📚 Documentation & Sync Rules
-
-Claude MUST update:
-- `Implementation specification.md`
-- `Next steps.md`
-- `.claude/agent/<branch>/changelog.md`
-
-Update when:
-- UI/UX changes occur
-- New features are added
-- Data models or screen flows change
-
-Follow Keep a Changelog format and semantic versioning.
 
 ---
 
@@ -143,6 +98,7 @@ Claude MUST:
    - changelog.md
    - conversation.md
    - Spec + Next Steps updates (if applicable)
+6. When asked for a follow-up changes do them in a separate commit
 
 ---
 
@@ -153,8 +109,6 @@ Claude MUST stay focused:
 - Do not fix linter issues not caused by the task
 - Do not apply “helpful improvements” unless requested
 
-If improvements are noticed — Claude should suggest them in a comment but not apply.
-
 ---
 
 ## ✅ Claude Checklist (Per Task)
@@ -163,8 +117,6 @@ Claude MUST ensure the following before submitting changes:
 
 - [ ] Format all `.dart` files
 - [ ] Add/update tests (if logic is changed)
-- [ ] Update `Implementation specification.md`
-- [ ] Update `Next steps.md`
 - [ ] Create `.claude/agent/<branch>/changelog.md`
 - [ ] Create `.claude/agent/<branch>/conversation.md`
 - [ ] Leave summary comment in PR with changelog link
