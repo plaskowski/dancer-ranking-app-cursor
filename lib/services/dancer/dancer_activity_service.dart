@@ -6,9 +6,9 @@ import 'dancer_event_service.dart';
 import 'dancer_models.dart';
 
 enum ActivityLevel {
-  all,
   regular,
   occasional,
+  all,
 }
 
 class DancerActivityService {
