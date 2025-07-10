@@ -275,7 +275,7 @@ class _DancerSelectionFilterWidgetState extends State<_DancerSelectionFilterWidg
                 ),
                 // Dancers List
                 const SizedBox(height: 8),
-                ..._buildDancerList(context),
+                ..._buildDancerList(context)
               ],
             ),
           ),
@@ -425,12 +425,12 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 // Dancers List
                 const SizedBox(height: 8),
-                ..._buildDancerList(context),
+                ..._buildDancerList(context)
               ],
             ),
           ),
