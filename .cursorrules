@@ -23,7 +23,7 @@
 - User asks for deployment commands
 
 ## Documentation Sync Rule
-**CRITICAL**: Whenever you make changes to the implementation (code, UI, functionality, data models), you MUST also update the corresponding sections in the Implementation specification.md file.
+**CRITICAL**: Whenever you make changes to the implementation (code, UI, functionality, data models), you MUST also update the corresponding sections in the specs/Implementation specification.md file.
 
 ### Always Update Specification For:
 - **New features or functionality**: Add to relevant screen descriptions, navigation flow, key features
@@ -125,7 +125,7 @@
    - Add "User Requests" section listing the user's messages that triggered this work
    - Use proper categorization: Added, Changed, Improved, Fixed, Technical
    - Include brief description of what was changed and why
-3. **Update Implementation specification.md** if behavior changed:
+3. **Update specs/Implementation specification.md** if behavior changed:
    - Add new features to relevant screen descriptions and key features
    - Update navigation flow when UI/UX changes
    - Modify database schema documentation for data model changes
