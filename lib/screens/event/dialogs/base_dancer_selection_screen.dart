@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../models/dancer_with_tags.dart';
 import '../../../services/dancer/dancer_activity_service.dart';
 import '../../../widgets/dancer_selection_tile.dart';
+import '../../../widgets/multi_fab_layout.dart';
 import '../../../widgets/simplified_tag_filter.dart';
 import 'event_dancer_selection_mixin.dart';
 
@@ -129,11 +130,27 @@ class BaseDancerListScreen extends StatefulWidget {
 
 class _BaseDancerListScreenState extends State<BaseDancerListScreen> {
   int _refreshKey = 0;
+  bool _showScrollToBottomFAB = false;
+  VoidCallback? _scrollToBottomCallback;
 
   void _triggerRefresh() {
     setState(() {
       _refreshKey++;
     });
+  }
+
+  void _onScrollStateChanged(bool showScrollToBottomFAB) {
+    setState(() {
+      _showScrollToBottomFAB = showScrollToBottomFAB;
+    });
+  }
+
+  void _onScrollToBottomCallback(VoidCallback callback) {
+    _scrollToBottomCallback = callback;
+  }
+
+  void _scrollToBottom() {
+    _scrollToBottomCallback?.call();
   }
 
   @override
@@ -148,8 +165,20 @@ class _BaseDancerListScreenState extends State<BaseDancerListScreen> {
         buildDancerTile: widget.buildDancerTile,
         refreshKey: _refreshKey,
         infoMessage: widget.infoMessage,
+        onScrollStateChanged: _onScrollStateChanged,
+        onScrollToBottomCallback: _onScrollToBottomCallback,
       ),
-      floatingActionButton: widget.floatingActionButton,
+      floatingActionButton: widget.floatingActionButton != null
+          ? MultiFABLayout(
+              primaryFAB: widget.floatingActionButton!,
+              secondaryFAB: FloatingActionButton(
+                onPressed: _scrollToBottom,
+                child: const Icon(Icons.keyboard_arrow_down),
+                tooltip: 'Scroll to bottom',
+              ),
+              showSecondary: _showScrollToBottomFAB,
+            )
+          : null,
     );
   }
 }
@@ -180,12 +209,16 @@ class _DancerListFilterWidget extends StatefulWidget {
   final Widget Function(DancerWithTags dancer) buildDancerTile;
   final int? refreshKey;
   final String? infoMessage;
+  final Function(bool)? onScrollStateChanged;
+  final Function(VoidCallback)? onScrollToBottomCallback;
 
   const _DancerListFilterWidget({
     required this.getDancers,
     required this.buildDancerTile,
     this.refreshKey,
     this.infoMessage,
+    this.onScrollStateChanged,
+    this.onScrollToBottomCallback,
   });
 
   @override
@@ -350,6 +383,48 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
   List<int> _selectedTagIds = [];
   String _searchQuery = '';
   ActivityLevel _activityFilter = ActivityLevel.regular;
+  final ScrollController _scrollController = ScrollController();
+  bool _showScrollToBottomFAB = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_handleScroll);
+    widget.onScrollToBottomCallback?.call(_scrollToBottom);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_handleScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients) return;
+    
+    final isAtBottom = _scrollController.position.pixels >= 
+        _scrollController.position.maxScrollExtent - 100; // 100px threshold
+    
+    final shouldShowFAB = !isAtBottom;
+    
+    if (_showScrollToBottomFAB != shouldShowFAB) {
+      setState(() {
+        _showScrollToBottomFAB = shouldShowFAB;
+      });
+      widget.onScrollStateChanged?.call(shouldShowFAB);
+    }
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
   void _onTagsChanged(List<int> tagIds) {
     setState(() {
@@ -397,6 +472,7 @@ class _DancerListFilterWidgetState extends State<_DancerListFilterWidget> {
           // Dancers List
           Expanded(
             child: ListView(
+              controller: _scrollController,
               padding: EdgeInsets.zero,
               children: [
                 // Info Banner
