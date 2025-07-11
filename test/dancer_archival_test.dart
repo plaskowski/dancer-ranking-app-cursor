@@ -3,6 +3,7 @@ import 'package:dancer_ranking_app/services/dancer/dancer_crud_service.dart';
 import 'package:dancer_ranking_app/services/dancer_service.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:drift/drift.dart' show Value;
 
 void main() {
   group('Dancer Archival System Tests', () {
@@ -208,29 +209,37 @@ void main() {
       });
 
       test('should order archived dancers by archivedAt desc', () async {
-        // Create and archive dancers with delay
-        final dancer1Id = await crudService.createDancer(name: 'Dancer 1');
-        await crudService.archiveDancer(dancer1Id);
+        // Create and archive dancers with explicit archivedAt values
+        final now = DateTime.now();
+        final earlier = now.subtract(const Duration(minutes: 1));
+        final later = now.add(const Duration(minutes: 1));
 
-        await Future.delayed(const Duration(milliseconds: 200));
+        final dancer1Id = await crudService.createDancer(name: 'Dancer 1');
+        await database.update(database.dancers).replace(
+          DancersCompanion(
+            id: Value(dancer1Id),
+            name: Value('Dancer 1'),
+            isArchived: const Value(true),
+            archivedAt: Value(earlier),
+          ),
+        );
 
         final dancer2Id = await crudService.createDancer(name: 'Dancer 2');
-        await crudService.archiveDancer(dancer2Id);
+        await database.update(database.dancers).replace(
+          DancersCompanion(
+            id: Value(dancer2Id),
+            name: Value('Dancer 2'),
+            isArchived: const Value(true),
+            archivedAt: Value(later),
+          ),
+        );
 
         // Get archived dancers
         final archivedDancers = await crudService.getArchivedDancers();
 
         expect(archivedDancers.length, equals(2));
-
-        // Both dancers should be present
-        expect(archivedDancers.any((d) => d.id == dancer1Id), isTrue);
-        expect(archivedDancers.any((d) => d.id == dancer2Id), isTrue);
-
-        // Check that the list is ordered by archivedAt descending (most recent first)
         expect(archivedDancers[0].id, equals(dancer2Id));
         expect(archivedDancers[1].id, equals(dancer1Id));
-
-        // Verify that the timestamps are actually different
         expect(archivedDancers[0].archivedAt!.isAfter(archivedDancers[1].archivedAt!), isTrue);
       });
     });
